@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Avante School Management (ASM) — Alcances y Capacidades del Proyecto</title>
+  <style>
+    @page {
+      size: letter portrait;
+      margin-top: 18mm;
+      margin-bottom: 18mm;
+      margin-left: 15mm;
+      margin-right: 15mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 8.8pt;
+      line-height: 1.40;
+      color: #1e293b;
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .page-break {
+      page-break-before: always;
+      break-before: page;
+    }
+
+    .no-break {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .doc-container {
+      width: 100%;
+      padding: 0;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      color: #0f172a;
+      font-weight: 700;
+      margin-top: 0;
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+
+    h1 {
+      font-size: 18pt;
+      line-height: 1.2;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+
+    h2.section-title {
+      font-size: 11.8pt;
+      color: #1e3a8a;
+      border-bottom: 2px solid #1e3a8a;
+      padding-bottom: 4px;
+      margin-top: 14px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    h2.section-title .section-num {
+      background: #1e3a8a;
+      color: #ffffff;
+      font-size: 8.5pt;
+      padding: 2px 7px;
+      border-radius: 3px;
+      margin-right: 8px;
+    }
+
+    h3.subsection-title {
+      font-size: 9.8pt;
+      color: #1e293b;
+      margin-top: 11px;
+      margin-bottom: 5px;
+      font-weight: 700;
+      border-left: 3px solid #3b82f6;
+      padding-left: 6px;
+    }
+
+    h4 {
+      font-size: 9pt;
+      color: #334155;
+      margin-top: 7px;
+      margin-bottom: 3px;
+    }
+
+    p {
+      margin-top: 0;
+      margin-bottom: 6px;
+      text-align: justify;
+    }
+
+    ul, ol {
+      margin-top: 0;
+      margin-bottom: 7px;
+      padding-left: 17px;
+    }
+
+    li {
+      margin-bottom: 3px;
+    }
+
+    strong {
+      color: #0f172a;
+    }
+
+    /* Portada Ejecutiva */
+    .cover-page {
+      min-height: 8.8in;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px 0 0 0;
+    }
+
+    .cover-badge-category {
+      display: inline-block;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-weight: 700;
+      font-size: 8pt;
+      padding: 3px 10px;
+      border-radius: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      border: 1px solid #bfdbfe;
+    }
+
+    .cover-title {
+      font-size: 26pt;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.15;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .cover-title span {
+      color: #1e40af;
+    }
+
+    .cover-subtitle {
+      font-size: 12.5pt;
+      color: #334155;
+      font-weight: 500;
+      line-height: 1.35;
+      margin-bottom: 18px;
+      max-width: 95%;
+    }
+
+    .cover-desc {
+      font-size: 9.2pt;
+      color: #475569;
+      line-height: 1.5;
+      margin-bottom: 20px;
+      background: #f8fafc;
+      border-left: 4px solid #1e40af;
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .cover-highlights-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .cover-highlight-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+
+    .cover-highlight-card .h-title {
+      font-size: 7.8pt;
+      font-weight: 700;
+      color: #1e3a8a;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .cover-highlight-card .h-val {
+      font-size: 8.2pt;
+      color: #334155;
+      line-height: 1.35;
+    }
+
+    .cover-meta-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 18px;
+      font-size: 7.8pt;
+    }
+
+    .cover-meta-table td {
+      padding: 5px 8px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .cover-meta-table td.label {
+      background: #f1f5f9;
+      font-weight: 700;
+      color: #334155;
+      width: 25%;
+    }
+
+    .cover-meta-table td.val {
+      background: #ffffff;
+      color: #0f172a;
+    }
+
+    .cover-signatures {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 14px;
+      margin-top: auto;
+    }
+
+    .cover-sign-box {
+      text-align: center;
+    }
+
+    .cover-sign-line {
+      border-bottom: 1px dashed #94a3b8;
+      height: 28px;
+      margin-bottom: 5px;
+    }
+
+    .cover-sign-name {
+      font-size: 7.5pt;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .cover-sign-role {
+      font-size: 7pt;
+      color: #64748b;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-bottom: 8px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
+      margin-bottom: 8px;
+    }
+
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+      padding: 7px 9px;
+      margin-bottom: 6px;
+    }
+
+    .card-accent {
+      border-top: 3px solid #1e3a8a;
+      background: #ffffff;
+    }
+
+    .card-title {
+      font-size: 8.5pt;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .callout {
+      padding: 7px 10px;
+      border-radius: 4px;
+      margin: 6px 0;
+      font-size: 8.3pt;
+      line-height: 1.36;
+      border-left: 3.5px solid;
+    }
+
+    .callout-info {
+      background: #eff6ff;
+      border-color: #2563eb;
+      color: #1e3a8a;
+    }
+
+    .callout-success {
+      background: #ecfdf5;
+      border-color: #059669;
+      color: #064e3b;
+    }
+
+    .callout-warning {
+      background: #fffbeb;
+      border-color: #d97706;
+      color: #78350f;
+    }
+
+    .callout-danger {
+      background: #fef2f2;
+      border-color: #dc2626;
+      color: #7f1d1d;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 1.5px 5.5px;
+      border-radius: 3px;
+      font-size: 6.8pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .badge-blue { background: #dbeafe; color: #1e40af; }
+    .badge-green { background: #d1fae5; color: #065f46; }
+    .badge-amber { background: #fef3c7; color: #92400e; }
+    .badge-red { background: #fee2e2; color: #991b1b; }
+    .badge-purple { background: #ede9fe; color: #5b21b6; }
+    .badge-slate { background: #e2e8f0; color: #334155; }
+
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 7px 0;
+      font-size: 7.8pt;
+      line-height: 1.28;
+    }
+
+    table.data-table thead th {
+      background: #1e293b;
+      color: #ffffff;
+      font-weight: 700;
+      text-align: left;
+      padding: 5px 6.5px;
+      border: 1px solid #1e293b;
+      font-size: 7.5pt;
+      letter-spacing: 0.02em;
+    }
+
+    table.data-table tbody td {
+      padding: 4px 6.5px;
+      border: 1px solid #cbd5e1;
+      vertical-align: top;
+    }
+
+    table.data-table tbody tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    .flow-step-box {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 6px;
+      font-size: 7.5pt;
+      position: relative;
+    }
+
+    .flow-step-box .step-num {
+      font-weight: 700;
+      color: #1e40af;
+      font-size: 7.8pt;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .kpi-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+      margin-bottom: 9px;
+    }
+
+    .kpi-card {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 7px;
+      text-align: center;
+    }
+
+    .kpi-val {
+      font-size: 13pt;
+      font-weight: 800;
+      color: #1e3a8a;
+      line-height: 1.1;
+      margin-bottom: 2px;
+    }
+
+    .kpi-lbl {
+      font-size: 7.2pt;
+      font-weight: 700;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .kpi-desc {
+      font-size: 6.9pt;
+      color: #64748b;
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="doc-container">
+
+  <!-- PORTADA EJECUTIVA -->
+  <div class="cover-page">
+    <div>
+      <span class="cover-badge-category">Especificación Maestra de Producto &bull; Versión 2.0 Oficial</span>
+      
+      <div class="cover-title">
+        Avante <span>School Management</span>
+      </div>
+      <div class="cover-subtitle">
+        Documento Oficial de Alcances, Capacidades del Sistema y Hoja de Ruta de Ingeniería
+      </div>
+
+      <div class="cover-desc">
+        <strong>Avante School Management (ASM)</strong> es la plataforma unificada de administración y gobernanza escolar diseñada para instituciones educativas de educación básica y media superior (K-12). Combina una arquitectura cloud multi-tenant de alta disponibilidad con un cliente de escritorio nativo con capacidad de <strong>operación continua sin conexión (Offline-First)</strong>, integración digital de cobro inmediato <strong>CoDi Banxico (0% comisiones)</strong>, admisiones flexibles con soporte de <strong>inscripción condicionada</strong>, y comunicación escolar transaccional mediante la <strong>API Oficial de WhatsApp Business</strong>.
+      </div>
+
+      <div class="cover-highlights-grid">
+        <div class="cover-highlight-card">
+          <div class="h-title">⚡ Continuidad Offline-First</div>
+          <div class="h-val">Operación garantizada de aula y caja de cobro en efectivo ante caídas de red, con sincronización determinista.</div>
+        </div>
+        <div class="cover-highlight-card">
+          <div class="h-title">💳 Finanzas & CoDi 0%</div>
+          <div class="h-val">Cobranza multicanal, CoDi interbancario libre de comisión, domiciliación tokenizada y recargos sobre saldo insoluto.</div>
+        </div>
+        <div class="cover-highlight-card">
+          <div class="h-title">🎓 Curricula & Multigrupo</div>
+          <div class="h-val">Soporte dual de grupos base regulares y grupos de materias optativas/talleres transversales para bachillerato.</div>
+        </div>
+      </div>
+
+      <table class="cover-meta-table">
+        <tr>
+          <td class="label">Producto Oficial:</td>
+          <td class="val"><strong>Avante School Management (ASM)</strong></td>
+          <td class="label">Versión Aprobada:</td>
+          <td class="val">2.0.0 (Decisiones de Negocio Vinculantes)</td>
+        </tr>
+        <tr>
+          <td class="label">Fuente de Verdad:</td>
+          <td class="val"><code>AVANTE-SCHOOL-MANAGEMENT-PRD.md</code></td>
+          <td class="label">Fecha de Emisión:</td>
+          <td class="val">Septiembre 2026</td>
+        </tr>
+        <tr>
+          <td class="label">Niveles Atendidos:</td>
+          <td class="val">Maternal, Kínder, Primaria, Secundaria y Preparatoria</td>
+          <td class="label">Clasificación:</td>
+          <td class="val"><span class="badge badge-blue">Documento Técnico Ejecutivo Vinculante</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="cover-signatures">
+      <div class="cover-sign-box">
+        <div class="cover-sign-line"></div>
+        <div class="cover-sign-name">Comité Directivo y Fundacional</div>
+        <div class="cover-sign-role">Aprobación de Negocio y Visión</div>
+      </div>
+      <div class="cover-sign-box">
+        <div class="cover-sign-line"></div>
+        <div class="cover-sign-name">Liderazgo de Producto (PRD Lead)</div>
+        <div class="cover-sign-role">Definición de Requisitos y Flujos</div>
+      </div>
+      <div class="cover-sign-box">
+        <div class="cover-sign-line"></div>
+        <div class="cover-sign-name">Arquitectura de Software</div>
+        <div class="cover-sign-role">Validación Técnica y Factibilidad</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECCIÓN 1: VISIÓN Y DOLORES -->
+  <h2 class="section-title">
+    <span><span class="section-num">01</span> Visión del Producto y Problemas que Resuelve</span>
+    <span class="badge badge-slate">Estratégico</span>
+  </h2>
+
+  <h3 class="subsection-title">1.1 Definición y Propósito del Producto</h3>
+  <p>
+    <strong>Avante School Management (ASM)</strong> es una solución integral diseñada para modernizar y erradicar la fricción en la gestión académica, administrativa y financiera de colegios e instituciones educativas privadas y públicas. A diferencia de los ERPs genéricos desadaptados a la realidad escolar o sistemas fragmentados, ASM centraliza toda la vida institucional en una experiencia fluida, robusta y accesible para directores, coordinadores, docentes, cajeros y familias.
+  </p>
+
+  <h3 class="subsection-title">1.2 Niveles Educativos Cubiertos</h3>
+  <p>La plataforma cuenta con parametrización pedagógica nativa para cubrir el ciclo formativo completo:</p>
+  <div class="grid-3 no-break">
+    <div class="card card-accent">
+      <div class="card-title">1. Guardería / Maternal <span class="badge badge-blue">0 a 3 años</span></div>
+      <div style="font-size:7.4pt; color:#475569;">Ficha médica prioritaria, control de entrega a personas autorizadas con fotografía y bitácora de cuidados diarios.</div>
+    </div>
+    <div class="card card-accent">
+      <div class="card-title">2. Kínder / Preescolar <span class="badge badge-purple">3 a 6 años</span></div>
+      <div style="font-size:7.4pt; color:#475569;">Evaluación 100% cualitativa basada en rúbricas descriptivas (*Logrado*, *En Proceso*, *Requiere Apoyo*).</div>
+    </div>
+    <div class="card card-accent">
+      <div class="card-title">3. Primaria <span class="badge badge-green">1º a 6º grado</span></div>
+      <div style="font-size:7.4pt; color:#475569;">Evaluaciones numéricas oficiales SEP, boletas trimestrales, pase de lista de grupo base y avisos de tareas.</div>
+    </div>
+  </div>
+  <div class="grid-2 no-break">
+    <div class="card card-accent">
+      <div class="card-title">4. Secundaria <span class="badge badge-amber">1º a 3º grado / 7º a 9º</span></div>
+      <div style="font-size:7.4pt; color:#475569;">Múltiples asignaturas con docentes especializados, cálculo de promedios ponderados y control de materias optativas transversales.</div>
+    </div>
+    <div class="card card-accent">
+      <div class="card-title">5. Preparatoria / Bachillerato <span class="badge badge-red">1º a 6º semestre</span></div>
+      <div style="font-size:7.4pt; color:#475569;">Grupos de materias optativas y talleres multigrupo (estudiantes de distintos grupos base convergen en una misma aula electiva).</div>
+    </div>
+  </div>
+
+  <h3 class="subsection-title">1.3 Los 7 Dolores Críticos de los Colegios que Resuelve ASM</h3>
+  <table class="data-table no-break">
+    <thead>
+      <tr>
+        <th style="width: 25%;">Problema Detectado en Escuelas</th>
+        <th style="width: 40%;">Impacto Negativo Tradicional</th>
+        <th style="width: 35%;">Solución Definitiva en Avante (ASM)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1. Información Dispersa y Silos</strong></td>
+        <td>Datos en libretas físicas, carpetas locales y PCs desconectadas. Pérdida de historial al egresar los alumnos.</td>
+        <td><strong>Expediente Único Digital</strong> centralizado, seguro y multi-campus con matrícula vitalicia única.</td>
+      </tr>
+      <tr>
+        <td><strong>2. Fragilidad en Hojas de Excel</strong></td>
+        <td>Sobreescritura accidental, fórmulas rotas, manipulación no auditada y nula seguridad de datos personales.</td>
+        <td><strong>Base de Datos Relacional Multi-Tenant</strong> con control RBAC, bitácora de auditoría inmutable e historiales congelados.</td>
+      </tr>
+      <tr>
+        <td><strong>3. Fricción y Descontrol en Caja</strong></td>
+        <td>Imposibilidad de conciliar qué dinero hay en efectivo físico y qué ingresó al banco. Cobro de recargos injustos sobre importes totales.</td>
+        <td><strong>Arqueo dual (Efectivo vs. Bancos)</strong>, CoDi 0% comisión y <strong>recargos calculados estrictamente sobre saldo insoluto</strong>.</td>
+      </tr>
+      <tr>
+        <td><strong>4. Burocracia en Admisiones</strong></td>
+        <td>Pérdida de captación de alumnos por exigir documentos oficiales expedidos con demora por la SEP o autoridades previas.</td>
+        <td><strong>Inscripción Condicionada</strong> formalizada mediante <em>Carta Compromiso</em> digital con fecha límite de regularización.</td>
+      </tr>
+      <tr>
+        <td><strong>5. Comunicación Caótica</strong></td>
+        <td>Grupos informales de WhatsApp con faltas de respeto, difusión de datos privados y atención fuera de horario laboral.</td>
+        <td><strong>Canales Oficiales y WhatsApp Business API</strong> con plantillas transaccionales homologadas (inasistencias, cobros, tareas).</td>
+      </tr>
+      <tr>
+        <td><strong>6. Parálisis por Cortes de Red</strong></td>
+        <td>Lluvia, cortes de fibra óptica o apagones paralizan el pase de lista y el cobro de mensualidades en ventanilla.</td>
+        <td><strong>Arquitectura Offline-First</strong>: cobro en efectivo con recibo provisional y registro de notas sin conexión.</td>
+      </tr>
+      <tr>
+        <td><strong>7. Pérdida de Matrícula y Morosidad</strong></td>
+        <td>Cobranza reactiva manual por teléfono; tutores desinformados sobre fechas de pronto pago y desglose de recargos.</td>
+        <td><strong>Portal de Padres transparente</strong>, recordatorios preventivos y domiciliación tokenizada recurrente.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <!-- SECCIÓN 2: ARQUITECTURA Y OFFLINE -->
+  <h2 class="section-title">
+    <span><span class="section-num">02</span> Arquitectura de Alto Nivel y Paradigma Offline-First</span>
+    <span class="badge badge-blue">Técnico</span>
+  </h2>
+
+  <h3 class="subsection-title">2.1 Jerarquía Institucional y Aislamiento Multi-Tenant</h3>
+  <p>
+    El sistema opera como un SaaS multi-tenant estricto. Cada institución educativa (Tenant) mantiene un aislamiento lógico inquebrantable de base de datos, impidiendo cualquier acceso o fuga de información entre escuelas. Bajo la organización, el modelo soporta de forma natural múltiples planteles (Campus), ciclos escolares simultáneos y niveles académicos.
+  </p>
+
+  <div class="card no-break" style="background:#f1f5f9; border: 1px solid #cbd5e1; text-align:center; padding:9px;">
+    <div style="font-weight:700; color:#1e3a8a; margin-bottom:5px; font-size:7.8pt;">JERARQUÍA ESTRUCTURAL DEL DOMINIO ASM</div>
+    <div style="font-size:7.4pt; color:#334155; display:flex; justify-content:space-around; align-items:center;">
+      <div style="background:#ffffff; border:1px solid #94a3b8; border-radius:4px; padding:3px 7px;"><strong>Organización (Tenant)</strong><br><span style="font-size:6.6pt; color:#64748b;">Razón Social / Config</span></div>
+      <div>&rarr;</div>
+      <div style="background:#ffffff; border:1px solid #94a3b8; border-radius:4px; padding:3px 7px;"><strong>Campus / Planteles</strong><br><span style="font-size:6.6pt; color:#64748b;">Sedes Físicas</span></div>
+      <div>&rarr;</div>
+      <div style="background:#ffffff; border:1px solid #94a3b8; border-radius:4px; padding:3px 7px;"><strong>Nivel & Ciclo</strong><br><span style="font-size:6.6pt; color:#64748b;">Prim, Sec, Prep / 26-27</span></div>
+      <div>&rarr;</div>
+      <div style="background:#ffffff; border:1px solid #94a3b8; border-radius:4px; padding:3px 7px;"><strong>Grado & Grupo Base</strong><br><span style="font-size:6.6pt; color:#64748b;">Convivencia / Materias Regulares</span></div>
+      <div>+</div>
+      <div style="background:#eff6ff; border:1px solid #3b82f6; border-radius:4px; padding:3px 7px; color:#1d4ed8;"><strong>Grupos Optativas</strong><br><span style="font-size:6.6pt; color:#2563eb;">Talleres Multigrupo</span></div>
+    </div>
+  </div>
+
+  <h3 class="subsection-title">2.2 Continuidad Operativa: Arquitectura Offline-First Certificada</h3>
+  <p>
+    A diferencia de sistemas 100% web que colapsan ante una interrupción del enlace de telecomunicaciones, ASM incorpora un <strong>cliente de escritorio nativo con base de datos embebida local</strong>. El personal del colegio puede trabajar ininterrumpidamente durante contingencias.
+  </p>
+
+  <table class="data-table no-break">
+    <thead>
+      <tr>
+        <th style="width: 32%;">Módulo / Operación</th>
+        <th style="width: 18%; text-align:center;">Modo Offline (Sin Red)</th>
+        <th style="width: 18%; text-align:center;">Requiere Red Obligatoria</th>
+        <th style="width: 32%;">Comportamiento Operativo y Regla</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Consulta de Alumnos y Expedientes</strong></td>
+        <td style="text-align:center;"><span class="badge badge-green">✓ Soportado</span></td>
+        <td style="text-align:center;">—</td>
+        <td>Caché local inmutable de grupos y alumnos previamente descargados.</td>
+      </tr>
+      <tr>
+        <td><strong>Pase de Lista (Grupos y Optativas)</strong></td>
+        <td style="text-align:center;"><span class="badge badge-green">✓ Soportado</span></td>
+        <td style="text-align:center;">—</td>
+        <td>Registro local instantáneo; se encola en la bitácora local de sincronización.</td>
+      </tr>
+      <tr>
+        <td><strong>Captura de Calificaciones y Tareas</strong></td>
+        <td style="text-align:center;"><span class="badge badge-green">✓ Soportado</span></td>
+        <td style="text-align:center;">—</td>
+        <td>Autoguardado continuo en el cliente docente sin temor a pérdida de datos.</td>
+      </tr>
+      <tr>
+        <td><strong>Cobro de Efectivo en Ventanilla</strong></td>
+        <td style="text-align:center;"><span class="badge badge-green">✓ Soportado</span></td>
+        <td style="text-align:center;">—</td>
+        <td>Emisión de <strong>Recibo Provisional con Folio Local Único</strong> determinista.</td>
+      </tr>
+      <tr>
+        <td><strong>Alta de Nuevos Alumnos y Admisión</strong></td>
+        <td style="text-align:center;"><span class="badge badge-red">✗ No Permitido</span></td>
+        <td style="text-align:center;"><span class="badge badge-blue">✓ Obligatorio</span></td>
+        <td><strong>Regla RN-ADM-02</strong>: Evita colisiones de matrícula única y sobrecupo.</td>
+      </tr>
+      <tr>
+        <td><strong>Pagos Online (CoDi, Tarjeta, SPEI)</strong></td>
+        <td style="text-align:center;"><span class="badge badge-red">✗ No Permitido</span></td>
+        <td style="text-align:center;"><span class="badge badge-blue">✓ Obligatorio</span></td>
+        <td>Requiere comunicación en tiempo real con Banxico y pasarelas de pago.</td>
+      </tr>
+      <tr>
+        <td><strong>Envío de WhatsApp y Correos</strong></td>
+        <td style="text-align:center;">(Encolado)</td>
+        <td style="text-align:center;"><span class="badge badge-blue">✓ Obligatorio</span></td>
+        <td>Los disparadores transaccionales se transmiten al servidor al reconectar.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class="subsection-title">2.3 Protocolo de Cobro en Efectivo Offline (Ventanilla)</h3>
+  <div class="callout callout-warning no-break">
+    <strong>Garantía de Recaudación en Mostrador:</strong> Si la escuela sufre un corte de fibra óptica en periodo de cobro, la cajera escolar no tiene que suspender la fila de cobro. El sistema registra el pago en efectivo contra el cargo almacenado localmente, expide un comprobante impreso con el estatus <em>"Recibo Provisional Offline"</em> y un folio hash criptográfico irrepetible. Al volver el servicio de Internet, el motor de sincronización transmite la transacción al backend cloud, liquida formalmente el saldo y genera el folio fiscal definitivo.
+  </div>
+
+  <h3 class="subsection-title">2.4 Motor de Sincronización Bidireccional y Resolución de Conflictos</h3>
+  <div class="grid-3 no-break">
+    <div class="card">
+      <div class="card-title">1. Cola de Eventos Locales</div>
+      <div style="font-size:7.2pt; color:#475569;">Toda mutación offline se empaqueta como un evento inmutable con marca de tiempo UTC y firma del operador.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">2. Handshake Determinista</div>
+      <div style="font-size:7.2pt; color:#475569;">Al detectar enlace activo, el cliente negocia la versión del tenant contra el servidor central sin interrumpir la interfaz.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">3. Reconciliación Sin Pérdida</div>
+      <div style="font-size:7.2pt; color:#475569;">Resolución automática por timestamps; los cobros en efectivo se concilian primero antes de aplicar recargos moratorios.</div>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECCIÓN 3: CAPACIDADES ACADÉMICAS -->
+  <h2 class="section-title">
+    <span><span class="section-num">03</span> Capacidades del Módulo Académico y Curricular</span>
+    <span class="badge badge-blue">Operación</span>
+  </h2>
+
+  <h3 class="subsection-title">3.1 Arquitectura Dual: Grupos Base vs. Grupos de Materias Optativas</h3>
+  <p>
+    Uno de los desafíos más complejos en escuelas secundarias y preparatorias es la gestión de talleres, laboratorios y materias optativas donde convergen estudiantes de diversos salones. ASM resuelve esta necesidad de raíz mediante su modelo de doble agrupación:
+  </p>
+  <div class="grid-2 no-break">
+    <div class="card card-accent">
+      <div class="card-title">Grupos Base (Convivencia y Currícula General)</div>
+      <p style="font-size:7.6pt; color:#334155; margin-bottom:3px;">
+        Asignación fija del alumno (ej. <em>Preparatoria 1º Semestre "A"</em>). En este grupo se toma la lista institucional matutina, se imparten las materias troncales (Matemáticas, Historia) y se asigna el tutor escolar.
+      </p>
+    </div>
+    <div class="card card-accent">
+      <div class="card-title">Grupos de Materias Optativas / Talleres Multigrupo</div>
+      <p style="font-size:7.6pt; color:#334155; margin-bottom:3px;">
+        Agrupaciones transversales y dinámicas (ej. <em>Taller de Robótica Avanzada</em> o <em>Francés II</em>). Reúnen a 12 alumnos del Grupo A y 15 del Grupo B. El profesor de la optativa pasa lista y captura notas de su materia sin romper la estructura de los grupos base.
+      </p>
+    </div>
+  </div>
+
+  <h3 class="subsection-title">3.2 Pase de Lista Rápido y Protocolo Estricto de Justificación Médica</h3>
+  <ul style="font-size:8.1pt;">
+    <li><strong>Pase de Lista Rápido (&lt; 60 segundos):</strong> El profesor marca con un solo clic a todos los alumnos como <em>"Presentes"</em> y modifica únicamente las excepciones de inasistencia o retraso.</li>
+    <li><strong>Estados de Asistencia Soportados:</strong> <code>Presente</code>, <code>Falta Injustificada</code>, <code>Falta Justificada</code>, <code>Retardo</code> y <code>Salida Anticipada</code>.</li>
+    <li><strong>Disparo Automático de Alerta:</strong> El registro de una falta injustificada dispara inmediatamente un mensaje oficial al tutor registrado para garantizar la seguridad del menor.</li>
+    <li><strong>Protocolo Inmutable de Justificación (Regla de Control):</strong> Los docentes en aula <strong>no tienen facultad para alterar asistencias de días anteriores</strong>. La recepción de recetas o justificantes médicos oficiales y la conversión de <em>Falta Injustificada</em> a <em>Falta Justificada</em> es potestad exclusiva de <strong>Control Escolar o Recepción</strong>, registrando el número de folio médico y motivo en la bitácora inmutable.</li>
+  </ul>
+
+  <h3 class="subsection-title">3.3 Motor de Calificaciones por Escalas Parametrizables</h3>
+  <div class="grid-2 no-break">
+    <div class="card">
+      <div class="card-title">Escala Cualitativa por Rúbricas (Preescolar)</div>
+      <p style="font-size:7.6pt; color:#475569;">
+        Diseñada para los campos formativos de educación inicial y preescolar. Registra logros cualitativos basados en evidencias: <em>Logrado, En Proceso, Requiere Apoyo Prioritario</em>, con caja de comentarios pedagógicos para los padres.
+      </p>
+    </div>
+    <div class="card">
+      <div class="card-title">Escala Numérica Oficial SEP (Primaria a Bachillerato)</div>
+      <p style="font-size:7.6pt; color:#475569;">
+        Soporte de escalas decimales (5.0 a 10.0) o centesimales (0 a 100). <strong>Regla Oficial SEP incorporada:</strong> Las calificaciones reprobatorias inferiores al mínimo aprobatorio (ej. 5.9) <strong>jamás se redondean al alza</strong>, garantizando apego estricto a las normas de acreditación escolar.
+      </p>
+    </div>
+  </div>
+
+  <h3 class="subsection-title">3.4 Protocolo de Rectificación Auditada en Periodos Cerrados</h3>
+  <div class="callout callout-info no-break">
+    Al vencer la fecha límite del periodo de captura, las calificaciones se bloquean automáticamente para los docentes. Si un maestro requiere corregir una calificación por error de captura o revisión de examen, se activa el <strong>Protocolo de Rectificación Formal</strong>: el docente introduce la solicitud con motivo fundamentado; la Dirección o Control Escolar aprueba con firma electrónica; el sistema modifica el valor pero conserva en bitácora inmutable: <em>Usuario solicitante, Valor anterior, Nuevo valor, Fecha y Justificación</em>, marcando en la boleta la leyenda de auditoría <em>"Calificación Rectificada"</em>.
+  </div>
+
+  <h3 class="subsection-title">3.5 Tareas Escolares y Bitácora Conductual</h3>
+  <p>
+    Los docentes asignan tareas con instrucciones claras, archivos adjuntos y fechas límite de entrega. Los tutores reciben la notificación de tarea en su portal y vía WhatsApp, visualizando un calendario semanal de deberes. La bitácora conductual permite documentar incidencias positivas (méritos cívicos) o disciplinarias con acuse digital de enterado por parte del padre de familia.
+  </p>
+
+  <div class="page-break"></div>
+
+  <!-- SECCIÓN 4: ADMISIONES Y EXPEDIENTE -->
+  <h2 class="section-title">
+    <span><span class="section-num">04</span> Admisiones, Expediente Único y Gestión Documental</span>
+    <span class="badge badge-blue">Admisiones</span>
+  </h2>
+
+  <h3 class="subsection-title">4.1 Embudo de Admisiones Digitales</h3>
+  <div class="grid-4 no-break" style="margin-bottom:9px;">
+    <div class="flow-step-box">
+      <span class="step-num">Fase 1: Pre-registro</span>
+      La familia completa en línea los datos del aspirante, grado de interés y campus.
+    </div>
+    <div class="flow-step-box">
+      <span class="step-num">Fase 2: Carga Documental</span>
+      Subida digital de CURP, acta de nacimiento y boletas previas en PDF/JPG.
+    </div>
+    <div class="flow-step-box">
+      <span class="step-num">Fase 3: Dictaminación</span>
+      Control Escolar valida documentos: Aprobado, Requiere Corrección o Prórroga.
+    </div>
+    <div class="flow-step-box" style="border-color:#1e40af; background:#eff6ff;">
+      <span class="step-num" style="color:#1d4ed8;">Fase 4: Inscripción</span>
+      Generación de matrícula oficial, asignación de grupo base y cobro inicial.
+    </div>
+  </div>
+
+  <h3 class="subsection-title">4.2 Inscripción Condicionada con Carta Compromiso (Diferencial Crítico)</h3>
+  <p>
+    En la educación básica y media superior en México y Latinoamérica, un porcentaje significativo de aspirantes no cuenta de forma inmediata con su certificado de estudios oficial previo o carta de buena conducta debido a los tiempos burocráticos de las dependencias gubernamentales. 
+  </p>
+  <div class="callout callout-success no-break">
+    <strong>Flexibilidad para no frenar la captación de alumnos:</strong> Control Escolar puede emitir un dictamen de <strong>"Inscripción Condicionada"</strong>. El sistema genera una <em>Carta Compromiso Digital</em> con fecha de vencimiento parametrizable (ej. 30, 45 o 60 días naturales). El alumno recibe su matrícula con estatus condicionado, puede ingresar a clases y pagar su inscripción. Si transcurre el plazo y la familia no entrega el documento original, el sistema emite alertas preventivas a Dirección y bloquea la emisión de boletas oficiales hasta su regularización.
+  </div>
+
+  <h3 class="subsection-title">4.3 Ciclo de Vida del Estudiante y Matrícula Vitalicia Única</h3>
+  <p>
+    Cada estudiante cuenta con una <strong>Matrícula Escolar Única Vitalicia</strong> inmutable dentro del colegio, generada de forma estrictamente centralizada (en línea) para garantizar cero duplicidades. El alumno transita ordenadamente por los siguientes estados:
+  </p>
+  <div style="display:flex; justify-content:space-between; margin:7px 0;" class="no-break">
+    <span class="badge badge-slate">1. Aspirante</span> &rarr;
+    <span class="badge badge-blue">2. Admitido</span> &rarr;
+    <span class="badge badge-amber">3. Inscrito Condicionado</span> &rarr;
+    <span class="badge badge-green">4. Inscrito Activo</span> &rarr;
+    <span class="badge badge-purple">5. Egresado / Graduado</span>
+  </div>
+
+  <h3 class="subsection-title">4.4 Expediente Único, Ficha Médica y Control de Resguardo Físico</h3>
+  <table class="data-table no-break">
+    <thead>
+      <tr>
+        <th style="width: 25%;">Sección del Expediente</th>
+        <th style="width: 45%;">Datos y Atributos Registrados</th>
+        <th style="width: 30%;">Control y Seguridad</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Identidad y Filiación</strong></td>
+        <td>Nombre, CURP oficial, acta certificada, fecha de nacimiento, género, fotografía de alta resolución y domicilio.</td>
+        <td>Cotejo obligatorio contra documentos oficiales del Registro Civil.</td>
+      </tr>
+      <tr>
+        <td><strong>Ficha Médica y Emergencias</strong></td>
+        <td>Tipo de sangre, alergias severas, padecimientos crónicos, prescripciones en horario escolar, seguro de gastos médicos.</td>
+        <td>Alerta visual prominente en la lista del docente y botiquín escolar.</td>
+      </tr>
+      <tr>
+        <td><strong>Custodia y Entrega Segura</strong></td>
+        <td>Padrón de personas autorizadas para recoger al menor en puerta con identificación oficial (INE) y fotografía.</td>
+        <td>Validación en recepción para preescolar y primaria baja.</td>
+      </tr>
+      <tr>
+        <td><strong>Archivo Físico Escolar</strong></td>
+        <td>Semáforo de resguardo: indica si el acta o certificado original está físicamente resguardado en la gaveta escolar.</td>
+        <td>Trazabilidad de préstamos temporales de documentos a la familia.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <!-- SECCIÓN 5: MOTOR FINANCIERO Y CODI -->
+  <h2 class="section-title">
+    <span><span class="section-num">05</span> Motor Financiero, Cobranza Integral y CoDi Banxico</span>
+    <span class="badge badge-green">Financiero</span>
+  </h2>
+
+  <h3 class="subsection-title">5.1 Catálogo de Conceptos y Calendario Mensual Escolar</h3>
+  <p>
+    El motor financiero de ASM automatiza la dispersión periódica de obligaciones económicas: inscripciones, reinscripciones, colegiaturas regulares (10 o 12 meses), cuotas de materiales, uniformes, talleres extracurriculares y exámenes extraordinarios.
+  </p>
+  <div class="grid-4 no-break">
+    <div class="card" style="border-top:3px solid #3b82f6;">
+      <div class="card-title">1. Emisión de Cargo</div>
+      <div style="font-size:7.2pt; color:#475569;">Día 1 del mes: se genera la cuenta por cobrar en el portal familiar.</div>
+    </div>
+    <div class="card" style="border-top:3px solid #059669;">
+      <div class="card-title">2. Pronto Pago</div>
+      <div style="font-size:7.2pt; color:#475569;">Día 1 al 5: se aplica automáticamente el descuento por pago oportuno.</div>
+    </div>
+    <div class="card" style="border-top:3px solid #f59e0b;">
+      <div class="card-title">3. Vencimiento Regular</div>
+      <div style="font-size:7.2pt; color:#475569;">Día 10 del mes: límite para liquidar importe neto sin recargo.</div>
+    </div>
+    <div class="card" style="border-top:3px solid #dc2626;">
+      <div class="card-title">4. Recargo por Mora</div>
+      <div style="font-size:7.2pt; color:#475569;">Día 11 en adelante: cálculo estricto de recargo por mora mensual.</div>
+    </div>
+  </div>
+
+  <h3 class="subsection-title">5.2 Regla Blindada: Recargos Estrictos sobre Saldo Insoluto</h3>
+  <p>
+    Uno de los motivos de mayor descontento y fricción entre las familias y las escuelas privadas es el cobro indebido de recargos moratorios sobre el importe total de la colegiatura cuando el padre ya realizó un esfuerzo de pago parcial. ASM resuelve esto con rigor contable:
+  </p>
+  <div class="callout callout-success no-break">
+    <strong>Regla de Negocio RN-FIN-01 (Saldo Insoluto):</strong> Si una colegiatura base es de <code>$5,000.00 MXN</code> y el tutor realiza un abono parcial de <code>$3,000.00 MXN</code> antes del vencimiento, el cargo pasa al estatus <em>"Abonado Parcial"</em> con un saldo insoluto de <code>$2,000.00 MXN</code>. Al vencer la fecha regular, <strong>cualquier recargo por mora (ej. 5%) se calcula estricta y únicamente sobre los $2,000.00 MXN pendientes ($100.00 MXN)</strong>, jamás sobre los $5,000.00 MXN iniciales.
+  </div>
+
+  <h3 class="subsection-title">5.3 Gestión de Becas, Saldo a Favor y Anticipos</h3>
+  <div class="grid-2 no-break">
+    <div class="card">
+      <div class="card-title">Becas y Descuentos Institucionales</div>
+      <ul style="font-size:7.4pt; color:#475569; padding-left:14px; margin-bottom:2px;">
+        <li>Becas SEP oficiales, académicas, de excelencia deportiva o socioeconómicas (% o cuota fija).</li>
+        <li>Descuentos familiares automáticos por número de hermanos activos.</li>
+        <li><strong>Regla de No-Retroactividad:</strong> Cancelaciones o ajustes de beca solo aplican a cargos futuros; los recibos liquidados conservan su validez histórica.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Saldo a Favor / Pagos Anticipados</div>
+      <ul style="font-size:7.4pt; color:#475569; padding-left:14px; margin-bottom:2px;">
+        <li>Si una familia paga el ciclo completo anual por adelantado o deposita un excedente, el crédito se custodia como <em>Saldo a Favor</em>.</li>
+        <li>El sistema consume automáticamente este saldo a favor para liquidar las colegiaturas mes con mes sin intervención manual.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="subsection-title">5.4 Canales de Pago Multicanal y Tecnología CoDi (Banxico)</h3>
+  <table class="data-table no-break">
+    <thead>
+      <tr>
+        <th style="width: 25%;">Canal de Cobro</th>
+        <th style="width: 25%;">Comisión Bancaria</th>
+        <th style="width: 25%;">Tiempo de Liquidación</th>
+        <th style="width: 25%;">Mecanismo Operativo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>CoDi (Banco de México)</strong></td>
+        <td><strong>0.00% (Cero Comisión)</strong></td>
+        <td>Inmediata (En segundos)</td>
+        <td>El tutor escanea el QR desde su app bancaria (BBVA, Banorte, Santander, etc.) o recibe solicitud push.</td>
+      </tr>
+      <tr>
+        <td><strong>Pasarela Tarjeta (Débito/Crédito)</strong></td>
+        <td>Configurable (Absorbida o trasladada)</td>
+        <td>Inmediata con webhook seguro</td>
+        <td>Visa, Mastercard, AMEX tokenizadas. Pago en un clic en el portal familiar.</td>
+      </tr>
+      <tr>
+        <td><strong>Transferencia SPEI Automatizada</strong></td>
+        <td>0.00% comisión pasarela</td>
+        <td>Menos de 5 minutos</td>
+        <td>CLABE interbancaria personalizada por alumno con conciliación algorítmica.</td>
+      </tr>
+      <tr>
+        <td><strong>Efectivo en Ventanilla Escolar</strong></td>
+        <td>0.00%</td>
+        <td>Inmediata en mostrador</td>
+        <td>Cobro físico con emisión de recibo foliado (soporte offline-first garantizado).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class="subsection-title">5.5 Conciliación Estricta: Efectivo Físico en Caja vs. Fondos Bancarios</h3>
+  <div class="callout callout-warning no-break">
+    <strong>Arqueos Transparentes sin Errores Contables:</strong> Para evitar discrepancias en los cortes de caja vespertinos, el módulo de finanzas segrega incondicionalmente el dinero en dos fuentes de custodia:
+    <strong>(1) Fondo en Efectivo Físico:</strong> dinero billete sobre billete en bóveda/caja escolar de recepción.
+    <strong>(2) Fondos en Cuentas Bancarias:</strong> dinero acreditado digitalmente mediante CoDi, transferencias SPEI verificadas con voucher/folio y pasarela de tarjetas. El director sabe exactamente cuánto efectivo retirar y cuánto dinero existe en el banco.
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECCIÓN 6: COMUNICACIÓN Y WHATSAPP -->
+  <h2 class="section-title">
+    <span><span class="section-num">06</span> Comunicación Escolar y WhatsApp Business API</span>
+    <span class="badge badge-purple">Comunicación</span>
+  </h2>
+
+  <h3 class="subsection-title">6.1 Canales Oficiales e Integración Empresarial Meta</h3>
+  <p>
+    ASM destierra la anarquía de los grupos abiertos de WhatsApp. La plataforma integra la <strong>WhatsApp Cloud API oficial de Meta</strong> a través de proveedores autorizados (WABA). Esto garantiza cero riesgo de bloqueo de líneas telefónicas institucionales y formalidad absoluta en las notificaciones.
+  </p>
+
+  <h3 class="subsection-title">6.2 Las 4 Plantillas Transaccionales Homologadas</h3>
+  <div class="grid-2 no-break">
+    <div class="card card-accent">
+      <div class="card-title">Plantilla 1: Alerta de Inasistencia / Retardo</div>
+      <p style="font-size:7.4pt; color:#334155; margin-bottom:3px;">
+        <em>"Estimado(a) [Tutor], le informamos que el alumno [Nombre] no se presentó a su clase de [Materia] el día [Fecha]. Si cuenta con justificante médico oficial, favor de presentarlo en Control Escolar."</em>
+      </p>
+    </div>
+    <div class="card card-accent">
+      <div class="card-title">Plantilla 2: Asignación de Tareas y Deberes</div>
+      <p style="font-size:7.4pt; color:#334155; margin-bottom:3px;">
+        <em>"Aviso Escolar: El profesor de [Materia] ha asignado la tarea: [Título]. Fecha límite de entrega: [Fecha]. Consulte las instrucciones completas en el Portal de Padres."</em>
+      </p>
+    </div>
+  </div>
+  <div class="grid-2 no-break">
+    <div class="card card-accent">
+      <div class="card-title">Plantilla 3: Aviso Preventivo con Liga CoDi</div>
+      <p style="font-size:7.4pt; color:#334155; margin-bottom:3px;">
+        <em>"Recordatorio amigable: La colegiatura de [Mes] del alumno [Nombre] vence el [Fecha]. Pague en 10 segundos sin comisiones mediante CoDi o tarjeta en el siguiente enlace: [URL_Segura]"</em>
+      </p>
+    </div>
+    <div class="card card-accent">
+      <div class="card-title">Plantilla 4: Comprobante Digital de Pago</div>
+      <p style="font-size:7.4pt; color:#334155; margin-bottom:3px;">
+        <em>"Pago Acreditado: Hemos recibido su pago de [Monto] MXN amparado con el Folio #[Folio] correspondiente a [Concepto]. Su estado de cuenta está al día. ¡Gracias por su puntualidad!"</em>
+      </p>
+    </div>
+  </div>
+
+  <h3 class="subsection-title">6.3 Trazabilidad y Bitácora de Notificaciones</h3>
+  <p>
+    Cada mensaje cuenta con estados verificados: <code>Enviado</code>, <code>Entregado</code>, <code>Leído</code> o <code>Fallido</code> (teléfono con formato erróneo). Ante cualquier diferendo o reclamo familiar, el colegio cuenta con la bitácora legal que demuestra el envío fehaciente de la notificación.
+  </p>
+
+  <h3 class="subsection-title">6.4 Domiciliación Recurrente Tokenizada y Cadencia de Reintentos</h3>
+  <div class="card no-break">
+    <div class="card-title">Flujo Inteligente de Domiciliación con Tarjeta Tokenizada</div>
+    <p style="font-size:7.6pt; color:#334155; margin-bottom:5px;">
+      Los tutores pueden autorizar voluntariamente (opt-in) el cobro automático recurrente de sus colegiaturas. Los números de tarjeta <strong>jamás se guardan en los servidores de ASM</strong>; se utiliza tokenización segura bancaria. Ante rechazos del banco emisor por fondos insuficientes, ASM no genera recargos inmediatos ni cancela de golpe:
+    </p>
+    <div class="grid-3">
+      <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:4px; padding:5px; font-size:7.2pt;">
+        <strong>Día de Vencimiento (Día 0):</strong> Ejecución del cobro automatizado. Si es declinado, se envía alerta privada de fondos al tutor.
+      </div>
+      <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:4px; padding:5px; font-size:7.2pt;">
+        <strong>Reintento 1 (48 horas):</strong> Segundo intento programado. La gran mayoría de los incidentes de nómina se liquidan aquí.
+      </div>
+      <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:4px; padding:5px; font-size:7.2pt;">
+        <strong>Reintento 2 (96 horas):</strong> Último intento. Si falla, se suspende la domiciliación y el saldo pasa a cobro regular sin penalización fraudulenta.
+      </div>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECCIÓN 7: GOBERNANZA Y RACI -->
+  <h2 class="section-title">
+    <span><span class="section-num">07</span> Gobernanza, Portales de Usuario y Matriz RACI</span>
+    <span class="badge badge-slate">Gobernanza</span>
+  </h2>
+
+  <h3 class="subsection-title">7.1 Ecosistema de Portales Especializados por Rol</h3>
+  <div class="grid-3 no-break">
+    <div class="card">
+      <div class="card-title">1. Portal de Dirección y Rectoría</div>
+      <p style="font-size:7.2pt; color:#475569;">
+        Dashboards consolidados multicampus, retención escolar, embudo de admisiones, morosidad en tiempo real y autorización de becas o bajas.
+      </p>
+    </div>
+    <div class="card">
+      <div class="card-title">2. Portal de Control Escolar</div>
+      <p style="font-size:7.2pt; color:#475569;">
+        Dictaminación de aspirantes, inscripción condicionada con cartas compromiso, matriculación oficial, cierre de periodos y actas SEP.
+      </p>
+    </div>
+    <div class="card">
+      <div class="card-title">3. Portal de Caja y Finanzas</div>
+      <p style="font-size:7.2pt; color:#475569;">
+        Cobro ágil en mostrador (soporte offline), arqueos diarios (efectivo vs bancos), dispersión de cargos y monitoreo de abonos parciales.
+      </p>
+    </div>
+  </div>
+  <div class="grid-2 no-break">
+    <div class="card">
+      <div class="card-title">4. Portal Docente (Enfocado en el Aula)</div>
+      <p style="font-size:7.2pt; color:#475569;">
+        Pase de lista ultra-rápido, captura de calificaciones con autoguardado offline, publicación de tareas. <strong>Cero visibilidad de deudas familiares para proteger la relación pedagógica.</strong>
+      </p>
+    </div>
+    <div class="card">
+      <div class="card-title">5. Portal de Familias y Tutores</div>
+      <p style="font-size:7.2pt; color:#475569;">
+        Selector familiar unificado (un padre con hijos en preescolar y preparatoria gestiona todo en una sola cuenta), pago CoDi/tarjeta, tareas y boletas digitales.
+      </p>
+    </div>
+  </div>
+
+  <h3 class="subsection-title">7.2 Matriz Funcional de Asignación de Responsabilidades (RACI)</h3>
+  <table class="data-table no-break">
+    <thead>
+      <tr>
+        <th style="width: 30%;">Proceso / Acción Crítica</th>
+        <th style="width: 11%; text-align:center;">Director</th>
+        <th style="width: 13%; text-align:center;">Control Esc.</th>
+        <th style="width: 12%; text-align:center;">Finanzas/Caja</th>
+        <th style="width: 12%; text-align:center;">Admisiones</th>
+        <th style="width: 11%; text-align:center;">Docente</th>
+        <th style="width: 11%; text-align:center;">Tutor</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Pre-registrar Aspirante / Prospecto</strong></td>
+        <td style="text-align:center;">👁️ Consulta</td>
+        <td style="text-align:center;">👁️ Consulta</td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">✅ <strong>Ejecuta</strong></td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">✅ En línea</td>
+      </tr>
+      <tr>
+        <td><strong>Aprobar Admisión Regular / Condicionada</strong></td>
+        <td style="text-align:center;">👁️ Visto Bueno</td>
+        <td style="text-align:center;">✅ <strong>Dictamina</strong></td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">—</td>
+      </tr>
+      <tr>
+        <td><strong>Asignar Matrícula Oficial Definitiva</strong></td>
+        <td style="text-align:center;">👁️ Consulta</td>
+        <td style="text-align:center;">✅ <strong>Ejecuta</strong></td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">—</td>
+      </tr>
+      <tr>
+        <td><strong>Pase de Lista Diario y Optativas</strong></td>
+        <td style="text-align:center;">👁️ Consulta</td>
+        <td style="text-align:center;">👁️ Consulta</td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">✅ <strong>Ejecuta</strong></td>
+        <td style="text-align:center;">—</td>
+      </tr>
+      <tr>
+        <td><strong>Justificar Inasistencia Médica Oficial</strong></td>
+        <td style="text-align:center;">👁️ Consulta</td>
+        <td style="text-align:center;">✅ <strong>Ejecuta</strong></td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">👁️ Recepciona</td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">Solicita</td>
+      </tr>
+      <tr>
+        <td><strong>Capturar Notas en Periodo Abierto</strong></td>
+        <td style="text-align:center;">👁️ Consulta</td>
+        <td style="text-align:center;">Supervisa</td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">✅ <strong>Ejecuta</strong></td>
+        <td style="text-align:center;">—</td>
+      </tr>
+      <tr>
+        <td><strong>Rectificar Nota en Periodo Cerrado</strong></td>
+        <td style="text-align:center;">✅ <strong>Autoriza</strong></td>
+        <td style="text-align:center;">✅ <strong>Aplica</strong></td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">Solicita</td>
+        <td style="text-align:center;">—</td>
+      </tr>
+      <tr>
+        <td><strong>Cobrar en Ventanilla (Efectivo/SPEI)</strong></td>
+        <td style="text-align:center;">👁️ Consulta</td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">✅ <strong>Ejecuta</strong></td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">—</td>
+      </tr>
+      <tr>
+        <td><strong>Cobro Offline con Recibo Provisional</strong></td>
+        <td style="text-align:center;">👁️ Consulta</td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">✅ <strong>Ejecuta</strong></td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">—</td>
+      </tr>
+      <tr>
+        <td><strong>Condonar Recargo por Mora</strong></td>
+        <td style="text-align:center;">✅ <strong>Autoriza</strong></td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">Registra</td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">—</td>
+      </tr>
+      <tr>
+        <td><strong>Anular Recibo de Pago (Auditado)</strong></td>
+        <td style="text-align:center;">✅ <strong>Autoriza</strong></td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">Registra</td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">—</td>
+      </tr>
+      <tr>
+        <td><strong>Activar Domiciliación Recurrente</strong></td>
+        <td style="text-align:center;">👁️ Consulta</td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">👁️ Consulta</td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">—</td>
+        <td style="text-align:center;">✅ <strong>Autoriza</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <!-- SECCIÓN 8: ALCANCE MVP VS EXCLUSIONES -->
+  <h2 class="section-title">
+    <span><span class="section-num">08</span> Delimitación del Alcance: MVP vs. Exclusiones</span>
+    <span class="badge badge-amber">Alcance</span>
+  </h2>
+
+  <h3 class="subsection-title">8.1 Las 17 Capacidades Nucleares del MVP (Aprobadas para Producción)</h3>
+  <table class="data-table no-break">
+    <thead>
+      <tr>
+        <th style="width: 8%; text-align:center;">#</th>
+        <th style="width: 32%;">Capacidad Nuclear del MVP</th>
+        <th style="width: 60%;">Detalle Funcional Vinculante</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align:center;"><strong>1</strong></td>
+        <td><strong>Multi-Tenant & Estructura Multicampus</strong></td>
+        <td>Aislamiento total de organizaciones, soporte de planteles, ciclos lectivos y periodos de evaluación.</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><strong>2</strong></td>
+        <td><strong>Usuarios y Matriz RACI de Permisos</strong></td>
+        <td>Roles funcionales delimitados: Director, Admin, Control Escolar, Finanzas, Docente, Tutor y Alumno.</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><strong>3</strong></td>
+        <td><strong>Expediente Digital con Matrícula Vitalicia</strong></td>
+        <td>Ficha personal, CURP, ficha médica de urgencias, registro de contactos prioritarios y foto de perfil.</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><strong>4</strong></td>
+        <td><strong>Admisiones con Inscripción Condicionada</strong></td>
+        <td>Pre-registro de aspirantes, carga documental digital y Carta Compromiso con fecha límite de prórroga.</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><strong>5</strong></td>
+        <td><strong>Grupos Base vs. Optativas Multigrupo</strong></td>
+        <td>Soporte para salones regulares y talleres/electivas compartidos entre varios salones en bachillerato.</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><strong>6</strong></td>
+        <td><strong>Pase de Lista Rápido (&lt; 60 segundos)</strong></td>
+        <td>Asistencia por aula y por materia; justificación médica inmutable exclusiva de Control Escolar.</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><strong>7</strong></td>
+        <td><strong>Motor de Calificaciones por Escala</strong></td>
+        <td>Cualitativa para preescolar; numérica para primaria a bachillerato con reglas SEP de no-redondeo.</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><strong>8</strong></td>
+        <td><strong>Tareas Escolares y Bitácora Conductual</strong></td>
+        <td>Publicación de instrucciones y deberes con acuse de enterado de la familia.</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><strong>9</strong></td>
+        <td><strong>Catálogo de Cobros y Calendario Escolar</strong></td>
+        <td>Colegiaturas, inscripciones, materiales y reglas de vencimiento y pronto pago.</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><strong>10</strong></td>
+        <td><strong>Recargos sobre Saldo Insoluto y Abonos</strong></td>
+        <td>Cálculo moratorio estricto sobre el saldo remanente impago; custodia de crédito en saldo a favor.</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><strong>11</strong></td>
+        <td><strong>Cobranza Digital CoDi (Banxico) 0%</strong></td>
+        <td>Cobro interbancario inmediato mediante QR y solicitud push a apps bancarias sin costo de comisión.</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><strong>12</strong></td>
+        <td><strong>Pasarela con Tarjeta y SPEI Referenciado</strong></td>
+        <td>Tarjetas débito/crédito tokenizadas y transferencias SPEI conciliadas automáticamente.</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><strong>13</strong></td>
+        <td><strong>Caja Física y Arqueo (Efectivo vs. Bancos)</strong></td>
+        <td>Separación rigurosa de dinero billete en mostrador vs. transferencias y depósitos bancarios.</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><strong>14</strong></td>
+        <td><strong>Cliente de Escritorio Offline-First</strong></td>
+        <td>Asistencia, notas, tareas y cobro en efectivo con Recibo Provisional durante cortes de Internet.</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><strong>15</strong></td>
+        <td><strong>Motor de Sincronización Determinista</strong></td>
+        <td>Sincronización bidireccional automática sin intervención del usuario al recuperar conexión.</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><strong>16</strong></td>
+        <td><strong>WhatsApp Business API (4 Plantillas)</strong></td>
+        <td>Mensajes oficiales de inasistencia, tareas, recordatorio con QR CoDi y recibo digital de pago.</td>
+      </tr>
+      <tr>
+        <td style="text-align:center;"><strong>17</strong></td>
+        <td><strong>Portales Web Responsivos Dedicados</strong></td>
+        <td>Portales web optimizados para móviles: Director, Control Escolar, Finanzas, Docente y Tutor.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class="subsection-title">8.2 Exclusiones Explícitas del MVP (Para Blindar Costos y Plazos)</h3>
+  <div class="grid-2 no-break">
+    <div class="card" style="border-left: 3px solid #dc2626;">
+      <div class="card-title" style="color:#dc2626;">❌ Exclusiones Administrativas / Fiscales</div>
+      <ul style="font-size:7.2pt; color:#475569; padding-left:14px;">
+        <li>Nómina de maestros y recursos humanos (asistencia biométrica laboral).</li>
+        <li>Contabilidad fiscal general y generación de pólizas contables externas.</li>
+        <li>Facturación electrónica fiscal automática CFDI 4.0 SAT (Post-MVP Fase B).</li>
+      </ul>
+    </div>
+    <div class="card" style="border-left: 3px solid #dc2626;">
+      <div class="card-title" style="color:#dc2626;">❌ Exclusiones de Infraestructura Física / LMS</div>
+      <ul style="font-size:7.2pt; color:#475569; padding-left:14px;">
+        <li>LMS con reproducción de contenidos SCORM o exámenes virtuales en línea.</li>
+        <li>Aulas virtuales con software de videollamadas incrustado.</li>
+        <li>Rastreo GPS de camiones escolares y torniquetes biométricos de acceso.</li>
+        <li>Monedero electrónico de cafetería escolar (Post-MVP Fase C).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECCIÓN 9: IMPLEMENTACIÓN EN 10 FASES -->
+  <h2 class="section-title">
+    <span><span class="section-num">09</span> Plan de Implementación en 10 Fases y Roadmap</span>
+    <span class="badge badge-purple">Estrategia</span>
+  </h2>
+
+  <h3 class="subsection-title">9.1 Cronograma Secuencial de las 10 Fases del MVP</h3>
+  <table class="data-table no-break">
+    <thead>
+      <tr>
+        <th style="width: 15%;">Fase</th>
+        <th style="width: 30%;">Nombre de la Fase</th>
+        <th style="width: 55%;">Entregable Funcional Clave</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Fase 1</strong></td>
+        <td><strong>Fundación de la Plataforma</strong></td>
+        <td>Esquema Multi-Tenant, provisión de campus, catálogo de roles y gestión de usuarios.</td>
+      </tr>
+      <tr>
+        <td><strong>Fase 2</strong></td>
+        <td><strong>Estructura Académica</strong></td>
+        <td>Niveles, ciclos escolares, periodos, grados, grupos base y grupos de materias optativas.</td>
+      </tr>
+      <tr>
+        <td><strong>Fase 3</strong></td>
+        <td><strong>Operación Académica</strong></td>
+        <td>Pase de lista ultra-rápido, captura de notas con escalas y protocolo de justificantes médicos.</td>
+      </tr>
+      <tr>
+        <td><strong>Fase 4</strong></td>
+        <td><strong>Motor Offline y Sincronización</strong></td>
+        <td>Cliente desktop, base embebida local, cola de mutaciones y resolución de conflictos.</td>
+      </tr>
+      <tr>
+        <td><strong>Fase 5</strong></td>
+        <td><strong>Admisiones y Expedientes</strong></td>
+        <td>Portal de aspirantes, carga documental, Cartas Compromiso e inscripción condicionada.</td>
+      </tr>
+      <tr>
+        <td><strong>Fase 6</strong></td>
+        <td><strong>Cobranza y Estados de Cuenta</strong></td>
+        <td>Catálogo de conceptos, dispersión de colegiaturas, recargos sobre saldo insoluto y saldo a favor.</td>
+      </tr>
+      <tr>
+        <td><strong>Fase 7</strong></td>
+        <td><strong>Pagos Digitales, CoDi y Caja</strong></td>
+        <td>Integración CoDi Banxico 0%, pasarela con tarjeta, cobro en ventanilla y arqueo de caja.</td>
+      </tr>
+      <tr>
+        <td><strong>Fase 8</strong></td>
+        <td><strong>Comunicaciones y WhatsApp</strong></td>
+        <td>Plantillas transaccionales WABA oficiales (asistencia, tareas, cobros y recibos).</td>
+      </tr>
+      <tr>
+        <td><strong>Fase 9</strong></td>
+        <td><strong>Dashboards y Reportes</strong></td>
+        <td>Paneles ejecutivos de matrícula, ingresos y reportes oficiales en PDF/Excel.</td>
+      </tr>
+      <tr>
+        <td><strong>Fase 10</strong></td>
+        <td><strong>Estabilización y Despliegue</strong></td>
+        <td>Auditoría de seguridad, pruebas de carga offline, capacitación y salida a producción.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class="subsection-title">9.2 Roadmap Post-MVP (Fases Futuras Planificadas)</h3>
+  <div class="grid-3 no-break">
+    <div class="card card-accent">
+      <div class="card-title">Fase Post-MVP A: Apps Móviles</div>
+      <p style="font-size:7.2pt; color:#475569;">
+        Lanzamiento de aplicaciones nativas en App Store y Google Play Store con notificaciones push en tiempo real y portal exclusivo para alumnos de bachillerato.
+      </p>
+    </div>
+    <div class="card card-accent">
+      <div class="card-title">Fase Post-MVP B: CFDI 4.0 SAT</div>
+      <p style="font-size:7.2pt; color:#475569;">
+        Timbrado fiscal automático de facturas electrónicas con el complemento obligatorio de instituciones educativas del SAT (México).
+      </p>
+    </div>
+    <div class="card card-accent">
+      <div class="card-title">Fase Post-MVP C: Campus Inteligente</div>
+      <p style="font-size:7.2pt; color:#475569;">
+        Monedero digital prepago para cafetería escolar, control de transporte escolar con geolocalización en tiempo real y control de accesos con torniquetes QR/biométricos.
+      </p>
+    </div>
+  </div>
+
+  <h3 class="subsection-title">9.3 Métricas de Éxito Cuantitativas del Proyecto (KPIs)</h3>
+  <div class="kpi-container no-break">
+    <div class="kpi-card">
+      <div class="kpi-val">&lt; 15 min</div>
+      <div class="kpi-lbl">Inscripción Digital</div>
+      <div class="kpi-desc">Tiempo de captura de solicitud y documentos de aspirante.</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-val">&gt; 60%</div>
+      <div class="kpi-lbl">Cobranza Digital</div>
+      <div class="kpi-desc">Adopción de pagos vía CoDi y pasarelas en los primeros 6 meses.</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-val">-35%</div>
+      <div class="kpi-lbl">Reducción Morosidad</div>
+      <div class="kpi-desc">Disminución de cartera vencida por recordatorios WhatsApp y CoDi.</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-val">&lt; 60 seg</div>
+      <div class="kpi-lbl">Pase de Lista</div>
+      <div class="kpi-desc">Tiempo promedio de toma de asistencia docente en el aula.</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-val">100%</div>
+      <div class="kpi-lbl">Arqueo Conciliado</div>
+      <div class="kpi-desc">Exactitud entre efectivo físico en caja y fondos bancarios.</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-val">100%</div>
+      <div class="kpi-lbl">Integridad Offline</div>
+      <div class="kpi-desc">Cero pérdida de notas y cobros en efectivo tras desconexiones.</div>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECCIÓN 10: CRITERIOS DE ACEPTACIÓN Y GLOSARIO -->
+  <h2 class="section-title">
+    <span><span class="section-num">10</span> Reglas de Negocio, Criterios de Aceptación y Glosario</span>
+    <span class="badge badge-slate">Garantía de Calidad</span>
+  </h2>
+
+  <h3 class="subsection-title">10.1 Criterios de Aceptación Críticos del Sistema (Pruebas de Aceptación)</h3>
+  <table class="data-table no-break">
+    <thead>
+      <tr>
+        <th style="width: 22%;">Código de Criterio</th>
+        <th style="width: 28%;">Escenario Evaluado</th>
+        <th style="width: 50%;">Resultado Esperado y Verificación</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>CA-ACA-01</strong><br>(Optativas Multigrupo)</td>
+        <td>Docente de "Taller de Robótica" ingresa a su lista de asistencia.</td>
+        <td>Visualiza conjuntamente a alumnos inscritos de 1ºA y 1ºB de Preparatoria; pasa lista y evalúa únicamente esa materia sin afectar el grupo base de origen.</td>
+      </tr>
+      <tr>
+        <td><strong>CA-ADM-01</strong><br>(Inscripción Condicionada)</td>
+        <td>Aspirante con certificado oficial de secundaria en trámite.</td>
+        <td>Control Escolar aprueba con <em>Carta Compromiso a 45 días</em>; el sistema asigna matrícula oficial como <code>Inscrito Condicionado</code>, genera cargo de inscripción y habilita asignación a grupo base.</td>
+      </tr>
+      <tr>
+        <td><strong>CA-FIN-01</strong><br>(Recargo sobre Insoluto)</td>
+        <td>Cargo de colegiatura por $4,000 MXN; tutor abona $1,500 MXN previo al vencimiento.</td>
+        <td>Al vencer con recargo del 5%, el sistema calcula el recargo de $125 MXN (5% sobre el saldo insoluto de $2,500 MXN), arrojando un total exigible de $2,625 MXN.</td>
+      </tr>
+      <tr>
+        <td><strong>CA-FIN-02</strong><br>(Cobro con CoDi)</td>
+        <td>Tutor selecciona CoDi en el portal de padres para pagar colegiatura.</td>
+        <td>Se genera código QR oficial Banxico; al confirmar la transferencia interbancaria, el cargo se marca como <code>Liquidado</code> con <strong>0% de comisión</strong> para la escuela y el tutor.</td>
+      </tr>
+      <tr>
+        <td><strong>CA-FIN-03</strong><br>(Arqueo Diferenciado)</td>
+        <td>Administrador emite corte de caja vespertino en ventanilla.</td>
+        <td>El reporte clasifica minuciosamente el dinero recaudado en <em>Efectivo Físico en Mostrador</em> vs. <em>Fondos Bancarios Acreditados</em> (SPEI/CoDi/Tarjetas).</td>
+      </tr>
+      <tr>
+        <td><strong>CA-OFF-01</strong><br>(Cobro Efectivo Offline)</td>
+        <td>Cajera escolar sin conexión a Internet cobra $3,000 MXN en efectivo.</td>
+        <td>El sistema emite un <em>Recibo Provisional Offline</em> con folio local; al restablecer Internet, se sincroniza en la nube y se genera el recibo definitivo.</td>
+      </tr>
+      <tr>
+        <td><strong>CA-DOM-01</strong><br>(Reintentos Domiciliación)</td>
+        <td>Tarjeta de crédito domiciliada es declinada el día de cobro.</td>
+        <td>Se ejecuta reintento 1 a las 48h y reintento 2 a las 96h; si continúa rechazada, se suspende la domiciliación y se notifica al tutor sin recargos lesivos.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class="subsection-title">10.2 Glosario de Términos del Dominio Escolar</h3>
+  <div class="grid-2 no-break" style="font-size:7.4pt;">
+    <div>
+      <p><strong>Tenant (Organización):</strong> Institución educativa cliente con aislamiento absoluto de base de datos y personalización de marca.</p>
+      <p><strong>Grupo Base:</strong> Aula de pertenencia fija del alumno para convivencia principal, actividades cívicas y toma de lista institucional.</p>
+      <p><strong>Grupo de Materia Optativa:</strong> Agrupación académica flexible que reúne a estudiantes de diferentes grupos base para materias electivas o talleres.</p>
+      <p><strong>Inscripción Condicionada:</strong> Matrícula otorgada válidamente pero sujeta a regularización de documentos mediante una Carta Compromiso con fecha límite.</p>
+      <p><strong>Saldo Insoluto:</strong> Remanente o saldo pendiente de liquidar de un cargo escolar tras haber recibido uno o varios abonos parciales.</p>
+    </div>
+    <div>
+      <p><strong>CoDi (Cobro Digital):</strong> Plataforma oficial de Banco de México basada en SPEI que permite transferencias interbancarias inmediatas sin comisión.</p>
+      <p><strong>Offline-First:</strong> Arquitectura donde el software opera de forma autónoma sin red y sincroniza al detectar conectividad.</p>
+      <p><strong>Recibo Provisional Offline:</strong> Comprobante transitorio con folio criptográfico local emitido en ventanilla durante cortes de Internet.</p>
+      <p><strong>Tokenización:</strong> Mecanismo de sustitución de números bancarios sensibles por identificadores encriptados para pagos recurrentes seguros.</p>
+      <p><strong>Matrícula Vitalicia:</strong> Identificador escolar alfanumérico único que acompaña al estudiante a lo largo de toda su trayectoria en la institución.</p>
+    </div>
+  </div>
+
+  <div style="margin-top:12px; border-top:1px solid #cbd5e1; padding-top:7px; font-size:7pt; color:#64748b; text-align:center;" class="no-break">
+    <strong>Fin de la Especificación de Alcances y Capacidades &bull; Avante School Management (ASM)</strong><br>
+    Documento elaborado en estricto cumplimiento del PRD Maestro Versión 2.0.0. Aprobado para ejecución de diseño e ingeniería de software.
+  </div>
+
+</div>
+
+</body>
+</html>
