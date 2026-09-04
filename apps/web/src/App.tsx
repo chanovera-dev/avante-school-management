@@ -2,14 +2,15 @@ import { useState, useEffect } from 'react';
 import { HomePage } from './pages/HomePage.js';
 import { RegisterPage } from './pages/RegisterPage.js';
 import { LoginPage } from './pages/LoginPage.js';
+import { SuperAdminLoginPage } from './pages/SuperAdminLoginPage.js';
 import { DashboardPage } from './pages/DashboardPage.js';
 import { SchoolPortalPage } from './pages/SchoolPortalPage.js';
-import { Globe, School, LayoutDashboard, Sparkles } from 'lucide-react';
+import { Globe, School, LayoutDashboard, Sparkles, ShieldCheck, LogIn } from 'lucide-react';
 
 export function App() {
-  // Función para determinar si el usuario accedió a través de un subdominio institucional
+  // Función para determinar si el usuario accedió a través de un subdominio institucional o admin
   const detectSubdomain = () => {
-    if (typeof window === 'undefined') return { isSubdomain: false, subdomain: 'institutologos' };
+    if (typeof window === 'undefined') return { isSubdomain: false, subdomain: 'institutologos', isAdmin: false };
 
     const hostname = window.location.hostname.toLowerCase();
 
@@ -20,26 +21,36 @@ export function App() {
       hostname === 'avanteschoolmanagement.local' ||
       hostname === 'www.avanteschoolmanagement.local'
     ) {
-      return { isSubdomain: false, subdomain: 'institutologos' };
+      return { isSubdomain: false, subdomain: 'institutologos', isAdmin: false };
     }
 
-    // 2. Subdominios de escuelas (ej. institutologos.localhost o logos.avanteschoolmanagement.local)
+    // 2. Subdominio dedicado para operadores globales de la plataforma
+    if (hostname.startsWith('admin.')) {
+      return { isSubdomain: true, subdomain: 'admin', isAdmin: true };
+    }
+
+    // 3. Subdominios de escuelas (ej. institutologos.localhost o logos.avanteschoolmanagement.local)
     const parts = hostname.split('.');
     if (parts.length > 1) {
       const sub = parts[0];
+      if (sub === 'admin') {
+        return { isSubdomain: true, subdomain: 'admin', isAdmin: true };
+      }
       if (sub !== 'www' && sub !== 'app' && sub !== 'api') {
-        return { isSubdomain: true, subdomain: sub };
+        return { isSubdomain: true, subdomain: sub, isAdmin: false };
       }
     }
 
-    return { isSubdomain: false, subdomain: 'institutologos' };
+    return { isSubdomain: false, subdomain: 'institutologos', isAdmin: false };
   };
 
   const detected = detectSubdomain();
 
-  // Ruta inicial: 'portal' SOLO si se accede por subdominio (ej. institutologos.localhost), de lo contrario 'home' (localhost)
-  const [currentRoute, setCurrentRoute] = useState<'home' | 'register' | 'login' | 'dashboard' | 'portal'>(
-    detected.isSubdomain ? 'portal' : 'home'
+  // Ruta inicial: 'superadmin' si es admin.*, 'portal' si es subdominio escolar, de lo contrario 'home'
+  const [currentRoute, setCurrentRoute] = useState<
+    'home' | 'register' | 'login' | 'dashboard' | 'portal' | 'superadmin'
+  >(
+    detected.isAdmin ? 'superadmin' : detected.isSubdomain ? 'portal' : 'home'
   );
 
   const [activeRole, setActiveRole] = useState<'SUPER_ADMIN' | 'DIRECTOR' | 'DOCENTE' | 'CONTROL_ESCOLAR' | 'FINANZAS' | 'TUTOR'>('DIRECTOR');
@@ -58,8 +69,17 @@ export function App() {
 
   // Si cambia el hostname o se detecta subdominio
   useEffect(() => {
-    const { isSubdomain, subdomain } = detectSubdomain();
-    if (isSubdomain) {
+    const { isSubdomain, subdomain, isAdmin } = detectSubdomain();
+    if (isAdmin) {
+      setCurrentRoute('superadmin');
+      setActiveRole('SUPER_ADMIN');
+      setCurrentTenant({
+        id: 'platform-master',
+        name: 'Avante School Management (Plataforma Global)',
+        subdomain: 'admin',
+        adminEmail: 'superadmin@avanteschoolmanagement.com',
+      });
+    } else if (isSubdomain) {
       setCurrentRoute('portal');
       setCurrentTenant((prev) => ({
         ...prev,
@@ -90,8 +110,20 @@ export function App() {
     setCurrentRoute('dashboard');
   };
 
-  const handleLoginSuccess = (role: 'SUPER_ADMIN' | 'DIRECTOR' | 'DOCENTE' | 'CONTROL_ESCOLAR' | 'FINANZAS' | 'TUTOR') => {
+  const handleLoginSuccess = (
+    role: 'SUPER_ADMIN' | 'DIRECTOR' | 'DOCENTE' | 'CONTROL_ESCOLAR' | 'FINANZAS' | 'TUTOR',
+    userData?: any,
+    tenantData?: any
+  ) => {
     setActiveRole(role);
+    if (tenantData) {
+      setCurrentTenant({
+        id: tenantData.id,
+        name: tenantData.name,
+        subdomain: tenantData.subdomain,
+        adminEmail: userData?.email || tenantData.contactEmail,
+      });
+    }
     setCurrentRoute('dashboard');
   };
 
@@ -114,6 +146,13 @@ export function App() {
         />
       )}
 
+      {currentRoute === 'superadmin' && (
+        <SuperAdminLoginPage
+          onNavigate={setCurrentRoute}
+          onLoginSuccess={handleLoginSuccess}
+        />
+      )}
+
       {currentRoute === 'portal' && (
         <SchoolPortalPage
           onNavigate={setCurrentRoute}
@@ -131,11 +170,11 @@ export function App() {
         />
       )}
 
-      {/* BARRA FLOTANTE DE DESARROLLO LOCAL (Para alternar fácilmente entre dominios) */}
-      <div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-50 bg-slate-900/90 backdrop-blur-xl border border-slate-700/80 px-4 py-2 rounded-2xl shadow-2xl flex items-center gap-3 text-xs font-mono text-slate-300">
-        <div className="flex items-center gap-1.5 text-sky-400 font-bold">
+      {/* BARRA FLOTANTE DE DESARROLLO LOCAL (Para alternar fácilmente entre dominios y accesos) */}
+      <div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 backdrop-blur-xl border border-slate-700/90 px-4 py-2 rounded-2xl shadow-2xl flex flex-wrap items-center justify-center gap-2 text-xs font-mono text-slate-300">
+        <div className="flex items-center gap-1.5 text-sky-400 font-bold mr-1">
           <Sparkles className="w-3.5 h-3.5" />
-          <span>Local Router:</span>
+          <span>Navegación Rápida:</span>
         </div>
 
         <button
@@ -143,10 +182,10 @@ export function App() {
           className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
             currentRoute === 'home' ? 'bg-sky-500 text-slate-950 font-bold shadow-md shadow-sky-500/20' : 'hover:bg-slate-800 text-slate-400 hover:text-white'
           }`}
-          title="Ver Página Principal de Avante School Management (localhost:3001)"
+          title="Página Principal (Landing pública)"
         >
           <Globe className="w-3 h-3" />
-          <span>Principal (localhost)</span>
+          <span>Home</span>
         </button>
 
         <button
@@ -154,10 +193,32 @@ export function App() {
           className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
             currentRoute === 'portal' ? 'bg-emerald-400 text-slate-950 font-bold shadow-md shadow-emerald-400/20' : 'hover:bg-slate-800 text-slate-400 hover:text-white'
           }`}
-          title="Ver Portal de Instituto Logos (institutologos.localhost:3001)"
+          title="Portal Escolar de Instituto Logos"
         >
           <School className="w-3 h-3" />
-          <span>Portal Instituto Logos</span>
+          <span>Portal Logos</span>
+        </button>
+
+        <button
+          onClick={() => setCurrentRoute('login')}
+          className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+            currentRoute === 'login' ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/20' : 'hover:bg-slate-800 text-slate-400 hover:text-white'
+          }`}
+          title="Login Institucional de Colegios"
+        >
+          <LogIn className="w-3 h-3" />
+          <span>Login Escolar</span>
+        </button>
+
+        <button
+          onClick={() => setCurrentRoute('superadmin')}
+          className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+            currentRoute === 'superadmin' ? 'bg-purple-600 text-white font-bold shadow-md shadow-purple-600/30' : 'hover:bg-slate-800 text-purple-400 hover:text-purple-300'
+          }`}
+          title="Consola Master Exclusiva para Super Administrador"
+        >
+          <ShieldCheck className="w-3.5 h-3.5" />
+          <span className="font-bold">SuperAdmin</span>
         </button>
 
         <button
@@ -168,7 +229,7 @@ export function App() {
           title="Ver Panel Escolar Interno"
         >
           <LayoutDashboard className="w-3 h-3" />
-          <span>Panel Interno</span>
+          <span>Dashboard</span>
         </button>
       </div>
     </div>
