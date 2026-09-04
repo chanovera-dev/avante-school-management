@@ -47,6 +47,7 @@ export async function superadminRoutes(fastify: FastifyInstance) {
         studentCount: t.students.length,
         userCount: t.users.length,
         monthlyFeeMXN: t.subscription?.monthlyFeeMXN || 0,
+        levelsOffered: Array.from(new Set(t.campuses.flatMap((c) => c.levelsOffered || []))),
         createdAt: t.createdAt,
       }));
 

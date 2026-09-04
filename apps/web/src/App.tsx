@@ -61,11 +61,13 @@ export function App() {
     name: string;
     subdomain: string;
     adminEmail?: string;
+    levelsOffered?: string[];
   }>({
     id: 'tenant-logos-01',
     name: detected.subdomain === 'institutologos' || detected.subdomain === 'logos' ? 'Instituto Logos' : `Colegio ${detected.subdomain}`,
     subdomain: detected.subdomain,
     adminEmail: 'contacto@chanovera.com',
+    levelsOffered: ['PREESCOLAR', 'PRIMARIA'],
   });
 
   // Si cambia el hostname o se detecta subdominio
@@ -100,12 +102,14 @@ export function App() {
     name: string;
     subdomain: string;
     adminEmail: string;
+    levelsOffered?: string[];
   }) => {
     setCurrentTenant({
       id: school.id,
       name: school.name,
       subdomain: school.subdomain,
       adminEmail: school.adminEmail,
+      levelsOffered: school.levelsOffered,
     });
     setActiveRole('DIRECTOR');
     setCurrentRoute('dashboard');
@@ -123,6 +127,7 @@ export function App() {
         name: tenantData.name,
         subdomain: tenantData.subdomain,
         adminEmail: userData?.email || tenantData.contactEmail,
+        levelsOffered: tenantData.levelsOffered,
       });
     }
     setCurrentRoute('dashboard');
@@ -174,6 +179,7 @@ export function App() {
           />
         ) : (
           <DashboardPage
+            key={currentTenant.id}
             onNavigate={setCurrentRoute}
             activeRole={activeRole}
             setActiveRole={setActiveRole}

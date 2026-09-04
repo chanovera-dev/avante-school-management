@@ -84,6 +84,7 @@ export interface RegisterSchoolRequestDTO {
   adminEmail: string;
   adminPassword: string;
   adminPhone: string;
+  levelsOffered?: string[];
 }
 
 export interface VerifyEmailRequestDTO {
@@ -104,6 +105,7 @@ export interface SuperAdminSchoolSummaryDTO {
   studentCount: number;
   userCount: number;
   monthlyFeeMXN: number;
+  levelsOffered?: string[];
   createdAt: Date;
 }
 

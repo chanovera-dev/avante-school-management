@@ -8054,6 +8054,7 @@ class MemoryStore {
       const campuses = this.campuses.filter((c) => c.tenantId === tenant.id);
       const students = this.students.filter((s) => s.tenantId === tenant.id);
       const users = this.users.filter((u) => u.tenantId === tenant.id);
+      const levelsOffered = Array.from(new Set(campuses.flatMap((c) => c.levelsOffered || [])));
 
       return {
         id: tenant.id,
@@ -8068,6 +8069,7 @@ class MemoryStore {
         studentCount: students.length,
         userCount: users.length,
         monthlyFeeMXN: tenant.subscription?.monthlyFeeMXN || 0,
+        levelsOffered,
         createdAt: tenant.createdAt,
       };
     });

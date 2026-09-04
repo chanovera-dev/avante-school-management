@@ -10,6 +10,7 @@ import {
   SubscriptionPlanTier,
   SubscriptionStatus,
   GatewayFeePolicy,
+  EducationLevel,
 } from '@asm/shared';
 
 const registerSchoolSchema = z.object({
@@ -19,7 +20,47 @@ const registerSchoolSchema = z.object({
   adminEmail: z.string().email(),
   adminPassword: z.string().min(6),
   adminPhone: z.string().min(8),
+  levelsOffered: z.array(z.string()).optional().default([]),
 });
+
+const LEVEL_METADATA_MAP: Record<string, { name: string; cctCode: string; evaluationScale: string; grades: string[] }> = {
+  GUARDERIA: {
+    name: 'Guardería / Maternal',
+    cctCode: '30PDI0001X',
+    evaluationScale: 'CUALITATIVA',
+    grades: ['Lactantes', 'Maternal A', 'Maternal B'],
+  },
+  PREESCOLAR: {
+    name: 'Preescolar / Jardín de Niños',
+    cctCode: '30PJN0145X',
+    evaluationScale: 'CUALITATIVA',
+    grades: ['1º Kínder', '2º Kínder', '3º Kínder'],
+  },
+  KINDER_PREESCOLAR: {
+    name: 'Preescolar / Jardín de Niños',
+    cctCode: '30PJN0145X',
+    evaluationScale: 'CUALITATIVA',
+    grades: ['1º Kínder', '2º Kínder', '3º Kínder'],
+  },
+  PRIMARIA: {
+    name: 'Primaria',
+    cctCode: '30PPR0289Z',
+    evaluationScale: 'NUMERICA_SEP_DECIMAL',
+    grades: ['1º Primaria', '2º Primaria', '3º Primaria', '4º Primaria', '5º Primaria', '6º Primaria'],
+  },
+  SECUNDARIA: {
+    name: 'Secundaria',
+    cctCode: '30PES0100Y',
+    evaluationScale: 'NUMERICA_SEP_DECIMAL',
+    grades: ['1º Secundaria', '2º Secundaria', '3º Secundaria'],
+  },
+  PREPARATORIA: {
+    name: 'Preparatoria / Bachillerato',
+    cctCode: '30PBH0050W',
+    evaluationScale: 'NUMERICA_SEP_DECIMAL',
+    grades: ['1º Semestre', '2º Semestre', '3º Semestre', '4º Semestre', '5º Semestre', '6º Semestre'],
+  },
+};
 
 const verifyEmailSchema = z.object({
   email: z.string().email(),
@@ -41,7 +82,7 @@ export async function onboardingRoutes(fastify: FastifyInstance) {
       });
     }
 
-    const { schoolName, subdomain, adminFullName, adminEmail, adminPassword, adminPhone } =
+    const { schoolName, subdomain, adminFullName, adminEmail, adminPassword, adminPhone, levelsOffered } =
       parseResult.data;
 
     // Validar subdominio único en DB o memoria
@@ -85,6 +126,7 @@ export async function onboardingRoutes(fastify: FastifyInstance) {
     const userId = `user-director-${Date.now()}`;
     const campusId = `campus-${Date.now()}`;
     const passwordHash = bcrypt.hashSync(adminPassword, 10);
+    const offered = levelsOffered || [];
 
     // Guardar en PostgreSQL
     try {
@@ -119,7 +161,7 @@ export async function onboardingRoutes(fastify: FastifyInstance) {
               code: 'CAMPUS-01',
               address: 'Dirección Principal del Colegio',
               phone: adminPhone,
-              levelsOffered: [],
+              levelsOffered: offered,
               isActive: true,
             },
           },
@@ -146,6 +188,27 @@ export async function onboardingRoutes(fastify: FastifyInstance) {
           },
         },
       });
+
+      // Crear niveles educativos correspondientes en BD
+      for (const lvl of offered) {
+        const info = LEVEL_METADATA_MAP[lvl] || {
+          name: lvl,
+          cctCode: '30PPR0000X',
+          evaluationScale: 'NUMERICA_SEP_DECIMAL',
+          grades: [],
+        };
+        const normId = lvl === 'KINDER_PREESCOLAR' ? 'PREESCOLAR' : lvl;
+        await prisma.educationalLevel.create({
+          data: {
+            id: `lvl-${normId.toLowerCase()}-${Date.now()}`,
+            tenantId,
+            level: normId,
+            name: info.name,
+            code: normId,
+            evaluationScale: info.evaluationScale,
+          },
+        });
+      }
     } catch (dbErr) {
       console.error('Error al persistir escuela en PostgreSQL:', dbErr);
     }
@@ -185,7 +248,7 @@ export async function onboardingRoutes(fastify: FastifyInstance) {
       code: 'CAMPUS-01',
       address: 'Dirección Principal del Colegio',
       phone: adminPhone,
-      levelsOffered: [],
+      levelsOffered: offered as EducationLevel[],
       isActive: true,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -217,11 +280,33 @@ export async function onboardingRoutes(fastify: FastifyInstance) {
       expiresAt,
     });
 
+    // Guardar niveles en memoria para este nuevo colegio (limpios, sin directores precargados)
+    for (const lvl of offered) {
+      const info = LEVEL_METADATA_MAP[lvl] || {
+        name: lvl,
+        cctCode: '30PPR0000X',
+        evaluationScale: 'NUMERICA_SEP_DECIMAL',
+        grades: [],
+      };
+      const normId = lvl === 'KINDER_PREESCOLAR' ? 'PREESCOLAR' : lvl;
+      store.educationalLevels.push({
+        id: normId,
+        tenantId,
+        name: info.name,
+        cctCode: info.cctCode,
+        grades: info.grades,
+        isEmailVerified: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+    }
+
     return reply.status(201).send({
       message: 'Escuela registrada exitosamente. Código de verificación generado.',
       tenantId: newTenant.id,
       subdomain: newTenant.subdomain,
       email: adminEmail,
+      levelsOffered: offered,
       devOtpCode: emailResult.devMode ? otpCode : undefined,
     });
   });
@@ -333,6 +418,7 @@ export async function onboardingRoutes(fastify: FastifyInstance) {
         subdomain: tenant?.subdomain,
         plan: tenant?.subscription?.planTier,
         status: tenant?.status || TenantStatus.ACTIVO,
+        levelsOffered: store.campuses.find((c) => c.tenantId === (tenant?.id || tokenEntry.tenantId))?.levelsOffered || [],
       },
     });
   });

@@ -92,32 +92,67 @@ export async function academicRoutes(fastify: FastifyInstance) {
     const tenantId = request.userPayload!.tenantId;
     let levels = store.educationalLevels.filter((l) => l.tenantId === tenantId);
 
-    // Inicializar Preescolar y Primaria limpios si no existen para este tenant
+    // Inicializar sólo los niveles que la escuela realmente oferta (o vacío si no tiene)
     if (levels.length === 0) {
-      const defaultLevels: EducationalLevelDTO[] = [
-        {
-          id: 'PREESCOLAR',
-          tenantId,
-          name: 'Preescolar / Jardín de Niños',
-          cctCode: '30PJN0145X',
-          grades: ['1º Kínder', '2º Kínder', '3º Kínder'],
-          isEmailVerified: false,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          id: 'PRIMARIA',
-          tenantId,
-          name: 'Primaria',
-          cctCode: '30PPR0289Z',
-          grades: ['1º Primaria', '2º Primaria', '3º Primaria', '4º Primaria', '5º Primaria', '6º Primaria'],
-          isEmailVerified: false,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ];
-      store.educationalLevels.push(...defaultLevels);
-      levels = defaultLevels;
+      const campus = store.campuses.find((c) => c.tenantId === tenantId);
+      const offered = campus?.levelsOffered || [];
+
+      if (offered.length > 0) {
+        const levelMap: Record<string, { name: string; cctCode: string; grades: string[] }> = {
+          GUARDERIA: {
+            name: 'Guardería / Maternal',
+            cctCode: '30PDI0001X',
+            grades: ['Lactantes', 'Maternal A', 'Maternal B'],
+          },
+          PREESCOLAR: {
+            name: 'Preescolar / Jardín de Niños',
+            cctCode: '30PJN0145X',
+            grades: ['1º Kínder', '2º Kínder', '3º Kínder'],
+          },
+          KINDER_PREESCOLAR: {
+            name: 'Preescolar / Jardín de Niños',
+            cctCode: '30PJN0145X',
+            grades: ['1º Kínder', '2º Kínder', '3º Kínder'],
+          },
+          PRIMARIA: {
+            name: 'Primaria',
+            cctCode: '30PPR0289Z',
+            grades: ['1º Primaria', '2º Primaria', '3º Primaria', '4º Primaria', '5º Primaria', '6º Primaria'],
+          },
+          SECUNDARIA: {
+            name: 'Secundaria',
+            cctCode: '30PES0100Y',
+            grades: ['1º Secundaria', '2º Secundaria', '3º Secundaria'],
+          },
+          PREPARATORIA: {
+            name: 'Preparatoria / Bachillerato',
+            cctCode: '30PBH0050W',
+            grades: ['1º Semestre', '2º Semestre', '3º Semestre', '4º Semestre', '5º Semestre', '6º Semestre'],
+          },
+        };
+
+        const newLevels: EducationalLevelDTO[] = offered.map((lvl) => {
+          const info = levelMap[lvl] || {
+            name: lvl,
+            cctCode: '30PPR0000X',
+            grades: [],
+          };
+          const normId = lvl === 'KINDER_PREESCOLAR' ? 'PREESCOLAR' : lvl;
+          return {
+            id: normId,
+            tenantId,
+            name: info.name,
+            cctCode: info.cctCode,
+            grades: info.grades,
+            isEmailVerified: false,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          };
+        });
+
+        store.educationalLevels.push(...newLevels);
+        levels = newLevels;
+      }
     }
 
     return reply.send({ levels });

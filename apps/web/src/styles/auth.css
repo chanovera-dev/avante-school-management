@@ -713,3 +713,99 @@
     border: 1px solid var(--color-primary-border);
   }
 }
+
+/* Selector de Niveles Educativos */
+.reg-levels-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-block: 0.5rem;
+}
+
+.reg-levels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+}
+
+.reg-level-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-base);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+
+  .is-chromium & {
+    border-radius: calc(var(--radius-lg) * 2);
+    corner-shape: squircle;
+    -webkit-corner-shape: squircle;
+  }
+
+  &:hover {
+    border-color: var(--color-primary-border);
+    background: var(--color-bg-subtle);
+  }
+
+  &.selected {
+    border-color: var(--color-primary);
+    background: var(--color-primary-bg);
+    box-shadow: 0 0 0 1px var(--color-primary);
+  }
+
+  .reg-level-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 0.375rem;
+  }
+
+  .reg-level-name {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-text-main);
+  }
+
+  .reg-level-check {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    color: transparent;
+    transition: all var(--transition-fast);
+
+    .is-chromium & {
+      border-radius: calc(var(--radius-sm) * 2);
+      corner-shape: squircle;
+      -webkit-corner-shape: squircle;
+    }
+
+    svg {
+      width: 0.875rem;
+      height: 0.875rem;
+    }
+  }
+
+  &.selected .reg-level-check {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #ffffff;
+  }
+
+  .reg-level-desc {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    line-height: 1.3;
+  }
+}
+

@@ -117,6 +117,9 @@ interface DashboardPageProps {
     name: string;
     subdomain: string;
     adminEmail?: string;
+    adminFullName?: string;
+    adminPhone?: string;
+    levelsOffered?: string[];
   };
 }
 
@@ -162,7 +165,7 @@ interface CashSummary {
 interface EducationalLevel {
   id: string;
   name: string;
-  levelCategory: 'PREESCOLAR' | 'PRIMARIA' | 'SECUNDARIA' | 'PREPARATORIA';
+  levelCategory: 'GUARDERIA' | 'PREESCOLAR' | 'PRIMARIA' | 'SECUNDARIA' | 'PREPARATORIA';
   cctCode: string;
   directorName?: string;
   directorTitle?: string;
@@ -1157,50 +1160,142 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [isOnline, setIsOnline] = useState(true);
   const [notification, setNotification] = useState<string | null>(null);
 
-  // Director General del Colegio
-  const generalDirector = {
-    name: 'Director General Institucional',
-    title: 'Dirección General de la Escuela',
-    email: currentTenant.adminEmail || 'contacto@logos.edu.mx',
-    phone: '921 123 4567',
-  };
+  const isDemoTenant = currentTenant.id === 'tenant-logos-01';
 
-  // Niveles Escolares
-  const [educationalLevels, setEducationalLevels] = useState<EducationalLevel[]>([
-    {
-      id: 'PREESCOLAR',
+  const LEVEL_CONFIG_MAP: Record<string, {
+    name: string;
+    levelCategory: 'GUARDERIA' | 'PREESCOLAR' | 'PRIMARIA' | 'SECUNDARIA' | 'PREPARATORIA';
+    cctCode: string;
+    grades: string[];
+    color: string;
+    icon: any;
+  }> = {
+    GUARDERIA: {
+      name: 'Guardería / Maternal',
+      levelCategory: 'GUARDERIA',
+      cctCode: '30PDI0001X',
+      grades: ['Lactantes', 'Maternal A', 'Maternal B'],
+      color: 'border-emerald-500/40 bg-emerald-950/20 text-emerald-300',
+      icon: Baby,
+    },
+    PREESCOLAR: {
       name: 'Preescolar / Jardín de Niños',
       levelCategory: 'PREESCOLAR',
       cctCode: '30PJN0145X',
-      directorName: 'Mtra. Sofía Valenzuela',
-      directorTitle: 'Directora Técnica de Preescolar',
-      directorEmail: 'preescolar@logos.edu.mx',
-      directorPhone: '+52 55 1234 5679',
-      academicCoordinator: 'Profra. Laura Méndez',
-      isEmailVerified: true,
       grades: ['1º Kínder', '2º Kínder', '3º Kínder'],
       color: 'border-pink-500/40 bg-pink-950/20 text-pink-300',
       icon: Palette,
     },
-    {
-      id: 'PRIMARIA',
+    KINDER_PREESCOLAR: {
+      name: 'Preescolar / Jardín de Niños',
+      levelCategory: 'PREESCOLAR',
+      cctCode: '30PJN0145X',
+      grades: ['1º Kínder', '2º Kínder', '3º Kínder'],
+      color: 'border-pink-500/40 bg-pink-950/20 text-pink-300',
+      icon: Palette,
+    },
+    PRIMARIA: {
       name: 'Primaria',
       levelCategory: 'PRIMARIA',
       cctCode: '30PPR0289Z',
-      directorName: 'Lic. Armando Paredes',
-      directorTitle: 'Director Técnico de Primaria',
-      directorEmail: 'primaria@logos.edu.mx',
-      directorPhone: '+52 55 1234 5680',
-      academicCoordinator: 'Prof. Mario Casas',
-      isEmailVerified: true,
       grades: ['1º Primaria', '2º Primaria', '3º Primaria', '4º Primaria', '5º Primaria', '6º Primaria'],
       color: 'border-sky-500/40 bg-sky-950/20 text-sky-300',
       icon: BookOpen,
     },
-  ]);
+    SECUNDARIA: {
+      name: 'Secundaria',
+      levelCategory: 'SECUNDARIA',
+      cctCode: '30PES0100Y',
+      grades: ['1º Secundaria', '2º Secundaria', '3º Secundaria'],
+      color: 'border-amber-500/40 bg-amber-950/20 text-amber-300',
+      icon: Compass,
+    },
+    PREPARATORIA: {
+      name: 'Preparatoria / Bachillerato',
+      levelCategory: 'PREPARATORIA',
+      cctCode: '30PBH0050W',
+      grades: ['1º Semestre', '2º Semestre', '3º Semestre', '4º Semestre', '5º Semestre', '6º Semestre'],
+      color: 'border-purple-500/40 bg-purple-950/20 text-purple-300',
+      icon: Award,
+    },
+  };
+
+  // Director General del Colegio
+  const generalDirector = {
+    name: isDemoTenant ? 'Director General Institucional' : (currentTenant.adminFullName || 'Director(a) General'),
+    title: 'Dirección General de la Escuela',
+    email: currentTenant.adminEmail || '',
+    phone: currentTenant.adminPhone || '',
+  };
+
+  // Niveles Escolares
+  const [educationalLevels, setEducationalLevels] = useState<EducationalLevel[]>(() => {
+    if (isDemoTenant) {
+      return [
+        {
+          id: 'PREESCOLAR',
+          name: 'Preescolar / Jardín de Niños',
+          levelCategory: 'PREESCOLAR',
+          cctCode: '30PJN0145X',
+          directorName: 'Mtra. Sofía Valenzuela',
+          directorTitle: 'Directora Técnica de Preescolar',
+          directorEmail: 'preescolar@logos.edu.mx',
+          directorPhone: '+52 55 1234 5679',
+          academicCoordinator: 'Profra. Laura Méndez',
+          isEmailVerified: true,
+          grades: ['1º Kínder', '2º Kínder', '3º Kínder'],
+          color: 'border-pink-500/40 bg-pink-950/20 text-pink-300',
+          icon: Palette,
+        },
+        {
+          id: 'PRIMARIA',
+          name: 'Primaria',
+          levelCategory: 'PRIMARIA',
+          cctCode: '30PPR0289Z',
+          directorName: 'Lic. Armando Paredes',
+          directorTitle: 'Director Técnico de Primaria',
+          directorEmail: 'primaria@logos.edu.mx',
+          directorPhone: '+52 55 1234 5680',
+          academicCoordinator: 'Prof. Mario Casas',
+          isEmailVerified: true,
+          grades: ['1º Primaria', '2º Primaria', '3º Primaria', '4º Primaria', '5º Primaria', '6º Primaria'],
+          color: 'border-sky-500/40 bg-sky-950/20 text-sky-300',
+          icon: BookOpen,
+        },
+      ];
+    }
+
+    const offered = currentTenant.levelsOffered || [];
+    return offered.map((lvl) => {
+      const config = LEVEL_CONFIG_MAP[lvl] || {
+        name: lvl,
+        levelCategory: 'PRIMARIA' as const,
+        cctCode: '30PPR0000X',
+        grades: [],
+        color: 'border-sky-500/40 bg-sky-950/20 text-sky-300',
+        icon: BookOpen,
+      };
+      const normId = lvl === 'KINDER_PREESCOLAR' ? 'PREESCOLAR' : lvl;
+      return {
+        id: normId,
+        name: config.name,
+        levelCategory: config.levelCategory,
+        cctCode: config.cctCode,
+        directorName: '',
+        directorTitle: '',
+        directorEmail: '',
+        directorPhone: '',
+        academicCoordinator: '',
+        isEmailVerified: false,
+        grades: config.grades,
+        color: config.color,
+        icon: config.icon,
+      };
+    });
+  });
 
   // DOCENTES / MAESTROS TITULARES
-  const [teachers, setTeachers] = useState<Teacher[]>([
+  const [teachers, setTeachers] = useState<Teacher[]>(isDemoTenant ? [
     {
       id: 'teacher-01',
       fullName: 'Prof. Roberto Salazar',
@@ -1245,7 +1340,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       assignedSubject: 'Campos Formativos Integrados',
       isEmailVerified: true,
     },
-  ]);
+  ] : []);
 
   // Catálogo Oficial SEP
   const [sepSubjects] = useState<SepSubject[]>([
@@ -1264,9 +1359,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   ]);
 
   // Selección en la vista de Calificaciones SEP
-  const [selectedTeacherId, setSelectedTeacherId] = useState<string>('teacher-01');
-  const [selectedGradeGroup, setSelectedGradeGroup] = useState<string>('Primaria 1º "A"');
-  const [selectedSubjectId, setSelectedSubjectId] = useState<string>('sub-prim-leng');
+  const [selectedTeacherId, setSelectedTeacherId] = useState<string>(isDemoTenant ? 'teacher-01' : '');
+  const [selectedGradeGroup, setSelectedGradeGroup] = useState<string>(isDemoTenant ? 'Primaria 1º "A"' : '');
+  const [selectedSubjectId, setSelectedSubjectId] = useState<string>(isDemoTenant ? 'sub-prim-leng' : '');
   const [activeGradePeriod, setActiveGradePeriod] = useState<'ALL' | 'P1' | 'P2' | 'P3'>('ALL');
 
   // Modal Boleta Oficial SEP
@@ -1275,10 +1370,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
   // Registros y Selección del Pase de Lista Diario
   const [attendanceDate, setAttendanceDate] = useState<string>(new Date().toISOString().split('T')[0]);
-  const [attendanceGroup, setAttendanceGroup] = useState<string>('Primaria 1º "A"');
-  const [attendanceTeacherId, setAttendanceTeacherId] = useState<string>('teacher-01');
+  const [attendanceGroup, setAttendanceGroup] = useState<string>(isDemoTenant ? 'Primaria 1º "A"' : '');
+  const [attendanceTeacherId, setAttendanceTeacherId] = useState<string>(isDemoTenant ? 'teacher-01' : '');
   const [attendanceSubjectId, setAttendanceSubjectId] = useState<string>('ALL');
-  const [attendanceRecords, setAttendanceRecords] = useState<AttendanceItem[]>([
+  const [attendanceRecords, setAttendanceRecords] = useState<AttendanceItem[]>(isDemoTenant ? [
     {
       id: 'att-01',
       studentId: 'student-01',
@@ -1309,10 +1404,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       status: 'PRESENTE',
       notes: 'Puntual (08:30 hrs)',
     },
-  ]);
+  ] : []);
 
   // Justificantes Oficiales de Inasistencia
-  const [justifications, setJustifications] = useState<JustificationItem[]>([
+  const [justifications, setJustifications] = useState<JustificationItem[]>(isDemoTenant ? [
     {
       id: 'just-01',
       folio: 'JUST-2026-001',
@@ -1331,7 +1426,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       status: 'APROBADO',
       createdAt: '01/Sep/2026',
     },
-  ]);
+  ] : []);
 
   // Modales de Justificante
   const [showJustifyModal, setShowJustifyModal] = useState<boolean>(false);
@@ -1349,7 +1444,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Circulares, Citatorios y Comunicados Institucionales
-  const [notices, setNotices] = useState<SchoolNoticeItem[]>([
+  const [notices, setNotices] = useState<SchoolNoticeItem[]>(isDemoTenant ? [
     {
       id: 'not-01',
       folio: 'CIR-2026-001',
@@ -1408,7 +1503,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       isAcknowledgedByCurrentTutor: true,
       acknowledgedToken: 'ACK-MED-77124',
     },
-  ]);
+  ] : []);
 
   const [noticeFilter, setNoticeFilter] = useState<'ALL' | 'CIRCULAR_GENERAL' | 'CITATORIO_PADRES' | 'AVISO_URGENTE'>('ALL');
   const [showCreateNoticeModal, setShowCreateNoticeModal] = useState<boolean>(false);
@@ -1431,7 +1526,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Credenciales Escolares Digitales con Código QR
-  const [credentials, setCredentials] = useState<SchoolCredentialItem[]>([
+  const [credentials, setCredentials] = useState<SchoolCredentialItem[]>(isDemoTenant ? [
     {
       id: 'crd-std-01',
       credentialCode: 'CRD-2026-PRI-001',
@@ -1492,9 +1587,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       status: 'ACTIVA',
       issueDate: '02/Sep/2026',
     },
-  ]);
+  ] : []);
 
-  const [accessLogs, setAccessLogs] = useState<AccessLogItem[]>([
+  const [accessLogs, setAccessLogs] = useState<AccessLogItem[]>(isDemoTenant ? [
     {
       id: 'log-01',
       personId: 'teacher-01',
@@ -1534,10 +1629,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       accessGranted: true,
       notes: 'Puntual • Torniquete 02',
     },
-  ]);
+  ] : []);
 
   const [credentialFilter, setCredentialFilter] = useState<'STUDENT' | 'TEACHER'>('STUDENT');
-  const [selectedGroupForCreds, setSelectedGroupForCreds] = useState<string>('Primaria 1º "A"');
+  const [selectedGroupForCreds, setSelectedGroupForCreds] = useState<string>(isDemoTenant ? 'Primaria 1º "A"' : '');
   const [showPrintBadgeModal, setShowPrintBadgeModal] = useState<boolean>(false);
   const [activeCredentialForPrint, setActiveCredentialForPrint] = useState<SchoolCredentialItem | null>(null);
   const [showScannerModal, setShowScannerModal] = useState<boolean>(false);
@@ -1546,7 +1641,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [scannerResult, setScannerResult] = useState<{ success: boolean; message: string; personName?: string } | null>(null);
 
   // Cuaderno Digital de Tareas y Entregas Extemporáneas
-  const [assignments, setAssignments] = useState<SchoolAssignmentItem[]>([
+  const [assignments, setAssignments] = useState<SchoolAssignmentItem[]>(isDemoTenant ? [
     {
       id: 'tar-01',
       folio: 'TAR-2026-001',
@@ -1610,9 +1705,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       status: 'ACTIVA',
       maxScore: 10,
     },
-  ]);
+  ] : []);
 
-  const [assignmentSubmissions, setAssignmentSubmissions] = useState<StudentSubmissionItem[]>([
+  const [assignmentSubmissions, setAssignmentSubmissions] = useState<StudentSubmissionItem[]>(isDemoTenant ? [
     {
       id: 'subm-01',
       assignmentId: 'tar-01',
@@ -1659,7 +1754,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       hasMedicalJustification: false,
       isExtemporaneous: false,
     },
-  ]);
+  ] : []);
 
   const [taskFilter, setTaskFilter] = useState<'ALL' | 'TAREA' | 'PROYECTO'>('ALL');
   const [showCreateTaskModal, setShowCreateTaskModal] = useState<boolean>(false);
@@ -1684,7 +1779,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   }>({});
 
   // Horarios Escolares y Distribución Semanal de Aulas
-  const [scheduleSlots, setScheduleSlots] = useState<ClassScheduleSlotItem[]>([
+  const [scheduleSlots, setScheduleSlots] = useState<ClassScheduleSlotItem[]>(isDemoTenant ? [
     // LUNES
     {
       id: 'sch-01',
@@ -2224,9 +2319,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       facility: 'AULA_REGULAR',
       colorHex: '#64748b',
     },
-  ]);
+  ] : []);
 
-  const [selectedGroupForSchedule, setSelectedGroupForSchedule] = useState<string>('Primaria 1º "A"');
+  const [selectedGroupForSchedule, setSelectedGroupForSchedule] = useState<string>(isDemoTenant ? 'Primaria 1º "A"' : '');
   const [selectedDayForSchedule, setSelectedDayForSchedule] = useState<'ALL' | 'LUNES' | 'MARTES' | 'MIERCOLES' | 'JUEVES' | 'VIERNES'>('ALL');
   const [showCreateSlotModal, setShowCreateSlotModal] = useState<boolean>(false);
   const [slotConflictError, setSlotConflictError] = useState<string | null>(null);
@@ -2244,7 +2339,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Admisiones y Preinscripciones en Línea
-  const [applicants, setApplicants] = useState<AdmissionApplicantItem[]>([
+  const [applicants, setApplicants] = useState<AdmissionApplicantItem[]>(isDemoTenant ? [
     {
       id: 'app-01',
       folio: 'ADM-2026-001',
@@ -2397,7 +2492,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       appliedAt: '2026-08-25',
       notes: 'Dictamen de aceptación emitido. Listo para formalizar inscripción y generar matrícula.',
     },
-  ]);
+  ] : []);
 
   const [selectedApplicantStatusFilter, setSelectedApplicantStatusFilter] = useState<string>('ALL');
   const [selectedApplicantLevelFilter, setSelectedApplicantLevelFilter] = useState<string>('ALL');
@@ -2434,7 +2529,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [publicSearchResult, setPublicSearchResult] = useState<AdmissionApplicantItem | null>(null);
 
   // Biblioteca Escolar y Préstamos
-  const [books, setBooks] = useState<SchoolBookItem[]>([
+  const [books, setBooks] = useState<SchoolBookItem[]>(isDemoTenant ? [
     {
       id: 'book-01',
       isbn: '978-607-07-2879-2',
@@ -2505,9 +2600,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       availableCopies: 4,
       summary: 'Descubrimientos paleontológicos e infografías del período Jurásico y Cretácico.',
     },
-  ]);
+  ] : []);
 
-  const [bookLoans, setBookLoans] = useState<BookLoanItem[]>([
+  const [bookLoans, setBookLoans] = useState<BookLoanItem[]>(isDemoTenant ? [
     {
       id: 'prest-01',
       folio: 'PREST-2026-001',
@@ -2541,7 +2636,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       loanType: 'SALA',
       librarianNotes: 'Devuelto en excelente estado de conservación.',
     },
-  ]);
+  ] : []);
 
   const [librarySubTab, setLibrarySubTab] = useState<'catalog' | 'loans' | 'clearance'>('catalog');
   const [selectedBookCategoryFilter, setSelectedBookCategoryFilter] = useState<string>('ALL');
@@ -2576,7 +2671,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Transporte Escolar y Rutas Seguras
-  const [transportRoutes, setTransportRoutes] = useState<TransportRouteItem[]>([
+  const [transportRoutes, setTransportRoutes] = useState<TransportRouteItem[]>(isDemoTenant ? [
     {
       id: 'route-01',
       code: 'RUTA-NORTE-01',
@@ -2663,9 +2758,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         },
       ],
     },
-  ]);
+  ] : []);
 
-  const [transportEnrollments, setTransportEnrollments] = useState<StudentTransportEnrollmentItem[]>([
+  const [transportEnrollments, setTransportEnrollments] = useState<StudentTransportEnrollmentItem[]>(isDemoTenant ? [
     {
       id: 'enr-01',
       routeId: 'route-01',
@@ -2695,9 +2790,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       tutorPhone: '+52 55 9876 5432',
       shift: 'AMBOS',
     },
-  ]);
+  ] : []);
 
-  const [transportBoardingLogs, setTransportBoardingLogs] = useState<DailyTransportBoardingLogItem[]>([
+  const [transportBoardingLogs, setTransportBoardingLogs] = useState<DailyTransportBoardingLogItem[]>(isDemoTenant ? [
     {
       id: 'log-01',
       routeId: 'route-01',
@@ -2726,7 +2821,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       checkOutTime: '07:45',
       notes: 'Entrega en tiempo y forma en bahía escolar.',
     },
-  ]);
+  ] : []);
 
   const [transportSubTab, setTransportSubTab] = useState<'routes' | 'boarding' | 'enrollment'>('routes');
   const [selectedTransportRouteId, setSelectedTransportRouteId] = useState<string>('route-01');
@@ -2760,7 +2855,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Cafetería Escolar y Monedero Digital
-  const [cafeteriaProducts, setCafeteriaProducts] = useState<CafeteriaProductItem[]>([
+  const [cafeteriaProducts, setCafeteriaProducts] = useState<CafeteriaProductItem[]>(isDemoTenant ? [
     {
       id: 'prod-01',
       name: 'Sándwich Integral de Pavo y Panela',
@@ -2833,9 +2928,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       stockQuantity: 30,
       available: true,
     },
-  ]);
+  ] : []);
 
-  const [studentWallets, setStudentWallets] = useState<StudentWalletItem[]>([
+  const [studentWallets, setStudentWallets] = useState<StudentWalletItem[]>(isDemoTenant ? [
     {
       id: 'wallet-01',
       studentId: 'student-01',
@@ -2875,9 +2970,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       status: 'ACTIVO',
       updatedAt: '2026-09-02',
     },
-  ]);
+  ] : []);
 
-  const [cafeteriaTransactions, setCafeteriaTransactions] = useState<CafeteriaTransactionItem[]>([
+  const [cafeteriaTransactions, setCafeteriaTransactions] = useState<CafeteriaTransactionItem[]>(isDemoTenant ? [
     {
       id: 'tx-01',
       folio: 'CAF-2026-001',
@@ -2918,7 +3013,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       time: '10:45',
       cashierNotes: 'Cobro en receso escolar con credencial digital QR',
     },
-  ]);
+  ] : []);
 
   const [cafeteriaSubTab, setCafeteriaSubTab] = useState<'menu' | 'pos' | 'wallets' | 'history'>('menu');
   const [cafeteriaCategoryFilter, setCafeteriaCategoryFilter] = useState<string>('TODOS');
@@ -2954,7 +3049,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Enfermería Escolar y Expediente Clínico de Salud
-  const [medicalConsultations, setMedicalConsultations] = useState<MedicalConsultationItem[]>([
+  const [medicalConsultations, setMedicalConsultations] = useState<MedicalConsultationItem[]>(isDemoTenant ? [
     {
       id: 'enf-01',
       folio: 'ENF-2026-001',
@@ -3005,9 +3100,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       requiresPickupByParent: true,
       status: 'RETIRADO_CON_TUTOR',
     },
-  ]);
+  ] : []);
 
-  const [scheduledMedications, setScheduledMedications] = useState<ScheduledMedicationItem[]>([
+  const [scheduledMedications, setScheduledMedications] = useState<ScheduledMedicationItem[]>(isDemoTenant ? [
     {
       id: 'med-01',
       studentId: 'student-02',
@@ -3045,9 +3140,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       lastAdministeredAt: '2026-09-02 07:55',
       status: 'ACTIVO',
     },
-  ]);
+  ] : []);
 
-  const [firstAidSupplies, setFirstAidSupplies] = useState<FirstAidSupplyItem[]>([
+  const [firstAidSupplies, setFirstAidSupplies] = useState<FirstAidSupplyItem[]>(isDemoTenant ? [
     {
       id: 'sup-01',
       name: 'Solución Antiséptica Microdacyn 250ml',
@@ -3118,7 +3213,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       unit: 'Equipos',
       minStockAlert: 1,
     },
-  ]);
+  ] : []);
 
   const [infirmarySubTab, setInfirmarySubTab] = useState<'consultations' | 'medications' | 'supplies'>('consultations');
   const [selectedConsultationForReport, setSelectedConsultationForReport] = useState<MedicalConsultationItem | null>(null);
@@ -3154,7 +3249,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Talleres Extracurriculares y Academias Vespertinas
-  const [extracurricularWorkshops, setExtracurricularWorkshops] = useState<ExtracurricularWorkshopItem[]>([
+  const [extracurricularWorkshops, setExtracurricularWorkshops] = useState<ExtracurricularWorkshopItem[]>(isDemoTenant ? [
     {
       id: 'work-01',
       code: 'TAL-ROB-01',
@@ -3240,9 +3335,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       targetLevels: ['PRIMARIA'],
       status: 'ACTIVO',
     },
-  ]);
+  ] : []);
 
-  const [workshopEnrollments, setWorkshopEnrollments] = useState<WorkshopEnrollmentItem[]>([
+  const [workshopEnrollments, setWorkshopEnrollments] = useState<WorkshopEnrollmentItem[]>(isDemoTenant ? [
     {
       id: 'wenr-01',
       workshopId: 'work-01',
@@ -3299,9 +3394,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       parentAuthorization: true,
       status: 'ACTIVO',
     },
-  ]);
+  ] : []);
 
-  const [workshopAttendanceLogs, setWorkshopAttendanceLogs] = useState<WorkshopAttendanceLogItem[]>([
+  const [workshopAttendanceLogs, setWorkshopAttendanceLogs] = useState<WorkshopAttendanceLogItem[]>(isDemoTenant ? [
     {
       id: 'watt-01',
       workshopId: 'work-01',
@@ -3320,7 +3415,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       status: 'PRESENTE',
       notes: 'Participó activamente en la práctica de pases y tiro a gol.',
     },
-  ]);
+  ] : []);
 
   const [workshopsSubTab, setWorkshopsSubTab] = useState<'catalog' | 'attendance' | 'enrollments'>('catalog');
   const [selectedWorkshopForAttendance, setSelectedWorkshopForAttendance] = useState<string>('work-01');
@@ -3350,7 +3445,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Inventario Escolar y Control de Activos Fijos
-  const [schoolAssets, setSchoolAssets] = useState<SchoolAssetItem[]>([
+  const [schoolAssets, setSchoolAssets] = useState<SchoolAssetItem[]>(isDemoTenant ? [
     {
       id: 'ast-01',
       assetTag: 'ACT-TEC-001',
@@ -3452,9 +3547,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       condition: 'REGULAR_REQUIERE_SERVICIO',
       notes: 'Requiere pintura anticorrosiva y ajuste de red tensora.',
     },
-  ]);
+  ] : []);
 
-  const [assetMaintenanceTickets, setAssetMaintenanceTickets] = useState<AssetMaintenanceTicketItem[]>([
+  const [assetMaintenanceTickets, setAssetMaintenanceTickets] = useState<AssetMaintenanceTicketItem[]>(isDemoTenant ? [
     {
       id: 'tkt-01',
       ticketNumber: 'MNT-2026-001',
@@ -3489,12 +3584,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       resolutionNotes: 'Se limpiaron los filtros electrostáticos y se recalibró la matriz óptica con software Epson. Funcionando al 100%.',
       status: 'RESUELTO',
     },
-  ]);
+  ] : []);
 
   const [inventorySubTab, setInventorySubTab] = useState<'assets' | 'conaliteg' | 'uniforms' | 'tickets' | 'audit'>('assets');
 
   // CONALITEG y Almacén de Uniformes
-  const [conalitegPackages, setConalitegPackages] = useState<ConalitegPackageItem[]>([
+  const [conalitegPackages, setConalitegPackages] = useState<ConalitegPackageItem[]>(isDemoTenant ? [
     {
       id: 'con-01',
       remesaFolio: 'REM-CONALITEG-2026-018',
@@ -3557,9 +3652,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       zoneSupervisorOffice: 'Supervisión Escolar Preescolar Zona 08',
       createdAt: '2026-08-12T10:00:00.000Z',
     },
-  ]);
+  ] : []);
 
-  const [conalitegReceipts, setConalitegReceipts] = useState<ConalitegReceiptItem[]>([
+  const [conalitegReceipts, setConalitegReceipts] = useState<ConalitegReceiptItem[]>(isDemoTenant ? [
     {
       id: 'rec-01',
       folio: 'ACU-2026-001',
@@ -3630,9 +3725,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       deliveredByStaff: 'Mtra. Dulce María Santillán',
       createdAt: '2026-08-27T09:40:00.000Z',
     },
-  ]);
+  ] : []);
 
-  const [schoolUniforms, setSchoolUniforms] = useState<SchoolUniformItem[]>([
+  const [schoolUniforms, setSchoolUniforms] = useState<SchoolUniformItem[]>(isDemoTenant ? [
     {
       id: 'uni-01',
       sku: 'UNI-PRI-POLO-08',
@@ -3713,7 +3808,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       lastRestockDate: '2026-08-15',
       createdAt: '2026-08-15T13:00:00.000Z',
     },
-  ]);
+  ] : []);
 
   const [showNewConalitegPackageModal, setShowNewConalitegPackageModal] = useState<boolean>(false);
   const [showNewConalitegReceiptModal, setShowNewConalitegReceiptModal] = useState<boolean>(false);
@@ -3767,10 +3862,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   // --- CERTIFICACIÓN DIGITAL & KÁRDEX OFICIAL ---
   const [certificatesSubTab, setCertificatesSubTab] = useState<'certificates' | 'kardex' | 'validator'>('certificates');
   const [selectedCertTypeFilter, setSelectedCertTypeFilter] = useState<string>('ALL');
-  const [selectedStudentForKardex, setSelectedStudentForKardex] = useState<string>('student-01');
+  const [selectedStudentForKardex, setSelectedStudentForKardex] = useState<string>(isDemoTenant ? 'student-01' : '');
   const [selectedCertForDetail, setSelectedCertForDetail] = useState<OfficialCertificateItem | null>(null);
 
-  const [officialCertificates, setOfficialCertificates] = useState<OfficialCertificateItem[]>([
+  const [officialCertificates, setOfficialCertificates] = useState<OfficialCertificateItem[]>(isDemoTenant ? [
     {
       id: 'cert-01',
       folio: 'CE-2026-PRI-001',
@@ -3870,7 +3965,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       qrValidationUrl: '/verify/doc/tok-kd-4d5e6f7a8b9c',
       createdAt: '2026-08-30T16:00:00.000Z',
     },
-  ]);
+  ] : []);
 
   const [kardexRecord, setKardexRecord] = useState<StudentKardexData>({
     studentId: 'student-01',
@@ -3950,7 +4045,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [showNewSupervisionModal, setShowNewSupervisionModal] = useState<boolean>(false);
   const [showAuditDetailModal, setShowAuditDetailModal] = useState<boolean>(false);
 
-  const [auditLogs, setAuditLogs] = useState<AuditLogItem[]>([
+  const [auditLogs, setAuditLogs] = useState<AuditLogItem[]>(isDemoTenant ? [
     {
       id: 'aud-01',
       folio: 'AUD-2026-SEP-001',
@@ -4061,9 +4156,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       integrityHash: 'e5f67890123456789abcdef0123456789abcdef0123456789abcdef01a2b3c4d',
       verifiedTamperFree: true,
     },
-  ]);
+  ] : []);
 
-  const [supervisionInspections, setSupervisionInspections] = useState<SupervisionInspectionItem[]>([
+  const [supervisionInspections, setSupervisionInspections] = useState<SupervisionInspectionItem[]>(isDemoTenant ? [
     {
       id: 'insp-sep-01',
       officialNoticeNumber: 'OFICIO-SZ05-2026-089',
@@ -4089,7 +4184,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       signedByInspector: true,
       signedByDirector: true,
     },
-  ]);
+  ] : []);
 
   const [newSupervisionInspectionForm, setNewSupervisionInspectionForm] = useState({
     officialNoticeNumber: 'OFICIO-SZ05-2026-104',
@@ -4135,7 +4230,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Encuestas Institucionales y Clima Escolar
-  const [institutionalSurveys, setInstitutionalSurveys] = useState<InstitutionalSurveyItem[]>([
+  const [institutionalSurveys, setInstitutionalSurveys] = useState<InstitutionalSurveyItem[]>(isDemoTenant ? [
     {
       id: 'srv-01',
       code: 'ENC-2026-T1',
@@ -4209,9 +4304,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       averageRating: 4.6,
       status: 'ACTIVA',
     },
-  ]);
+  ] : []);
 
-  const [surveyResponses, setSurveyResponses] = useState<SurveyResponseItem[]>([
+  const [surveyResponses, setSurveyResponses] = useState<SurveyResponseItem[]>(isDemoTenant ? [
     {
       id: 'resp-01',
       surveyId: 'srv-01',
@@ -4229,9 +4324,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       comments: 'Estamos muy satisfechos con el avance de Carlos.',
       submittedAt: '2026-08-28 16:40',
     },
-  ]);
+  ] : []);
 
-  const [confidentialSuggestions, setConfidentialSuggestions] = useState<ConfidentialSuggestionItem[]>([
+  const [confidentialSuggestions, setConfidentialSuggestions] = useState<ConfidentialSuggestionItem[]>(isDemoTenant ? [
     {
       id: 'sug-01',
       folio: 'BUZ-2026-001',
@@ -4257,7 +4352,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       submittedAt: '2026-08-30 09:45',
       status: 'RECIBIDO',
     },
-  ]);
+  ] : []);
 
   const [surveysSubTab, setSurveysSubTab] = useState<'catalog' | 'nps' | 'suggestions'>('catalog');
   const [selectedSurveyForRespond, setSelectedSurveyForRespond] = useState<InstitutionalSurveyItem | null>(null);
@@ -4303,7 +4398,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Calendario Cívico SEP, Sesiones CTE y Organización de Eventos
-  const [schoolEvents, setSchoolEvents] = useState<SchoolEventItem[]>([
+  const [schoolEvents, setSchoolEvents] = useState<SchoolEventItem[]>(isDemoTenant ? [
     {
       id: 'evt-01',
       code: 'EVT-2026-001',
@@ -4438,7 +4533,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       commissions: [],
       status: 'PROGRAMADO',
     },
-  ]);
+  ] : []);
 
   const [eventsSubTab, setEventsSubTab] = useState<'calendar' | 'cte' | 'festivals'>('calendar');
   const [selectedEventForDetail, setSelectedEventForDetail] = useState<SchoolEventItem | null>(null);
@@ -4469,7 +4564,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [cteNewAgreementInput, setCteNewAgreementInput] = useState<string>('');
 
   // --- RECLUTAMIENTO Y RECURSOS HUMANOS ESCOLARES ---
-  const [jobVacancies, setJobVacancies] = useState<JobVacancyItem[]>([
+  const [jobVacancies, setJobVacancies] = useState<JobVacancyItem[]>(isDemoTenant ? [
     {
       id: 'vac-01',
       code: 'VAC-2026-001',
@@ -4523,9 +4618,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       closingDate: '2026-10-05',
       status: 'ABIERTA',
     },
-  ]);
+  ] : []);
 
-  const [teacherCandidates, setTeacherCandidates] = useState<TeacherCandidateItem[]>([
+  const [teacherCandidates, setTeacherCandidates] = useState<TeacherCandidateItem[]>(isDemoTenant ? [
     {
       id: 'cand-01',
       folio: 'CAND-2026-001',
@@ -4598,7 +4693,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       appliedDate: '2026-08-30',
       lastUpdatedDate: '2026-08-30',
     },
-  ]);
+  ] : []);
 
   const [recruitmentSubTab, setRecruitmentSubTab] = useState<'vacancies' | 'pipeline' | 'credentials'>('vacancies');
   const [selectedCandidateForDetail, setSelectedCandidateForDetail] = useState<TeacherCandidateItem | null>(null);
@@ -4636,7 +4731,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // --- PROTECCIÓN CIVIL ESCOLAR Y SIMULACROS ---
-  const [civilProtectionDrills, setCivilProtectionDrills] = useState<CivilProtectionDrillItem[]>([
+  const [civilProtectionDrills, setCivilProtectionDrills] = useState<CivilProtectionDrillItem[]>(isDemoTenant ? [
     {
       id: 'sim-01',
       code: 'SIM-2026-001',
@@ -4710,9 +4805,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       notes: 'Verificación del funcionamiento de detectores de humo y alarma sonora local.',
       createdAt: '2026-11-12T13:00:00.000Z',
     },
-  ]);
+  ] : []);
 
-  const [emergencyBrigades, setEmergencyBrigades] = useState<EmergencyBrigadeItem[]>([
+  const [emergencyBrigades, setEmergencyBrigades] = useState<EmergencyBrigadeItem[]>(isDemoTenant ? [
     {
       id: 'brig-01',
       code: 'BRIG-01',
@@ -4809,7 +4904,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         },
       ],
     },
-  ]);
+  ] : []);
 
   const [safetySubTab, setSafetySubTab] = useState<'drills' | 'brigades' | 'zones'>('drills');
   const [selectedDrillForDetail, setSelectedDrillForDetail] = useState<CivilProtectionDrillItem | null>(null);
@@ -4852,7 +4947,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Estado para Consejo de Participación Escolar (CEPS) y Mesa Directiva APF
-  const [cepsCommittees, setCepsCommittees] = useState<CepsCommitteeItem[]>([
+  const [cepsCommittees, setCepsCommittees] = useState<CepsCommitteeItem[]>(isDemoTenant ? [
     {
       id: 'ceps-01',
       name: 'Comité de Fomento a la Lectura y Mejora de los Aprendizajes',
@@ -4923,9 +5018,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       ],
       status: 'ACTIVO',
     },
-  ]);
+  ] : []);
 
-  const [apfBoardMembers, setApfBoardMembers] = useState<ApfBoardMemberItem[]>([
+  const [apfBoardMembers, setApfBoardMembers] = useState<ApfBoardMemberItem[]>(isDemoTenant ? [
     {
       id: 'apf-01',
       role: 'PRESIDENTE',
@@ -4986,9 +5081,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       phone: '55 5432 9876',
       appointedDate: '2026-09-08',
     },
-  ]);
+  ] : []);
 
-  const [schoolAssemblies, setSchoolAssemblies] = useState<SchoolAssemblyItem[]>([
+  const [schoolAssemblies, setSchoolAssemblies] = useState<SchoolAssemblyItem[]>(isDemoTenant ? [
     {
       id: 'asemb-01',
       code: 'ACT-APF-2026-001',
@@ -5028,7 +5123,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       signedByApfPresident: true,
       createdAt: '2026-09-22T16:30:00.000Z',
     },
-  ]);
+  ] : []);
 
   const [communitySubTab, setCommunitySubTab] = useState<'committees' | 'apf_board' | 'assemblies'>('committees');
   const [showNewAssemblyModal, setShowNewAssemblyModal] = useState<boolean>(false);
@@ -5060,7 +5155,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [newAgreementInput, setNewAgreementInput] = useState('');
 
   // 34. Infraestructura Escolar y Mantenimiento Preventivo
-  const [facilityInspections, setFacilityInspections] = useState<FacilityInspectionItem[]>([
+  const [facilityInspections, setFacilityInspections] = useState<FacilityInspectionItem[]>(isDemoTenant ? [
     {
       id: 'insp-01',
       code: 'INSP-2026-001',
@@ -5191,9 +5286,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       evidenceNotes: 'Validado conforme a norma de Protección Civil y accesibilidad SEP.',
       createdAt: '2026-08-28T11:00:00.000Z',
     },
-  ]);
+  ] : []);
 
-  const [facilityWorkOrders, setFacilityWorkOrders] = useState<FacilityWorkOrderItem[]>([
+  const [facilityWorkOrders, setFacilityWorkOrders] = useState<FacilityWorkOrderItem[]>(isDemoTenant ? [
     {
       id: 'ot-01',
       folio: 'OT-MNT-2026-001',
@@ -5253,7 +5348,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       approvedByDirector: true,
       createdAt: '2026-09-18T16:00:00.000Z',
     },
-  ]);
+  ] : []);
 
   const [maintenanceSubTab, setMaintenanceSubTab] = useState<'work_orders' | 'inspections' | 'systems'>('work_orders');
   const [showNewWorkOrderModal, setShowNewWorkOrderModal] = useState<boolean>(false);
@@ -5294,7 +5389,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // 35. Becas Institucionales y Exenciones SEP (5% Obligatorio)
-  const [scholarshipApplications, setScholarshipApplications] = useState<ScholarshipApplicationItem[]>([
+  const [scholarshipApplications, setScholarshipApplications] = useState<ScholarshipApplicationItem[]>(isDemoTenant ? [
     {
       id: 'bec-01',
       folio: 'BEC-2026-001',
@@ -5386,7 +5481,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       documentsVerified: true,
       createdAt: '2026-09-01T15:00:00.000Z',
     },
-  ]);
+  ] : []);
 
   const [scholarshipSubTab, setScholarshipSubTab] = useState<'applications' | 'compliance' | 'criteria'>('applications');
   const [showNewScholarshipModal, setShowNewScholarshipModal] = useState<boolean>(false);
@@ -5416,7 +5511,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Evaluaciones de los Estudiantes
-  const [gradesData, setGradesData] = useState<StudentGradeItem[]>([
+  const [gradesData, setGradesData] = useState<StudentGradeItem[]>(isDemoTenant ? [
     {
       id: 'grd-01',
       studentId: 'student-01',
@@ -5627,7 +5722,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       period3Absences: 0,
       observations: 'Buena comprensión lógica y operaciones fundamentales.',
     },
-  ]);
+  ] : []);
 
   // Modales Directores y Verificación
   const [showRegisterDirectorModal, setShowRegisterDirectorModal] = useState(false);
@@ -5726,7 +5821,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [cashPayAmount, setCashPayAmount] = useState<number>(0);
 
   // Escuelas
-  const [schools, setSchools] = useState<RegisteredSchool[]>([
+  const [schools, setSchools] = useState<RegisteredSchool[]>(isDemoTenant ? [
     {
       id: currentTenant.id,
       name: currentTenant.name,
@@ -5739,10 +5834,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       studentCount: 0,
       campusCount: 1,
     },
-  ]);
+  ] : []);
 
   // Alumnos y Grupos
-  const [students, setStudents] = useState<Student[]>([
+  const [students, setStudents] = useState<Student[]>(isDemoTenant ? [
     {
       id: 'student-01',
       studentCode: '2026-PRI-001',
@@ -5791,8 +5886,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       status: 'INSCRITO_ACTIVO',
       isConditional: false,
     },
-  ]);
-  const [groups, setGroups] = useState<AcademicGroup[]>([
+  ] : []);
+  const [groups, setGroups] = useState<AcademicGroup[]>(isDemoTenant ? [
     {
       id: 'grp-k1',
       name: 'Kínder 1º "A"',
@@ -5865,7 +5960,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       type: 'REGULAR',
       studentCount: 0,
     },
-  ]);
+  ] : []);
 
   const [charges, setCharges] = useState<Charge[]>([]);
   const [cashSummary, setCashSummary] = useState<CashSummary>({
@@ -10458,12 +10553,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <h1 className="font-extrabold text-base sm:text-lg text-white leading-tight">
                   {currentTenant.name || 'Instituto Logos'}
                 </h1>
-                <span className="bg-sky-500/15 text-sky-400 border border-sky-500/30 text-[10px] font-mono px-2 py-0.5 rounded-full font-bold">
-                  Preescolar & Primaria
-                </span>
+                {educationalLevels.length > 0 ? (
+                  <div className="bg-sky-500/15 text-sky-400 border border-sky-500/30 text-[10px] font-mono px-2 py-0.5 rounded-full font-bold">
+                    {educationalLevels.map((l) => l.name.split('/')[0].trim()).join(' & ')}
+                  </div>
+                ) : (
+                  <div className="bg-slate-800 text-slate-400 border border-slate-700 text-[10px] font-mono px-2 py-0.5 rounded-full font-bold">
+                    Sin niveles configurados
+                  </div>
+                )}
               </div>
               <div className="text-[11px] text-slate-400 font-mono flex items-center gap-2">
-                <span>{currentTenant.subdomain || 'logos'}.avanteschoolmanagement.local</span>
+                <div>{currentTenant.subdomain || 'logos'}.avanteschoolmanagement.local</div>
               </div>
             </div>
           </div>
@@ -10477,12 +10578,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               title="Ver Portal Institucional de la Escuela con accesos para maestros, directores y padres"
             >
               <Globe2 className="w-3.5 h-3.5" />
-              <span>Ver Portal Institucional</span>
+              <div>Ver Portal Institucional</div>
             </button>
 
             {/* Selector Rápido de Nivel Escolar */}
             <div className="flex items-center bg-slate-950 border border-slate-800 rounded-xl p-0.5 text-xs font-bold">
               <button
+                type="button"
                 onClick={() => setSelectedLevelFilter('ALL')}
                 className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
                   selectedLevelFilter === 'ALL' ? 'bg-sky-500 text-slate-950' : 'text-slate-400 hover:text-white'
@@ -10490,24 +10592,23 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               >
                 Todos
               </button>
-              <button
-                onClick={() => setSelectedLevelFilter('PREESCOLAR')}
-                className={`px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 cursor-pointer ${
-                  selectedLevelFilter === 'PREESCOLAR' ? 'bg-pink-500 text-slate-950' : 'text-slate-400 hover:text-pink-300'
-                }`}
-              >
-                <Palette className="w-3.5 h-3.5" />
-                <span>Preescolar</span>
-              </button>
-              <button
-                onClick={() => setSelectedLevelFilter('PRIMARIA')}
-                className={`px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 cursor-pointer ${
-                  selectedLevelFilter === 'PRIMARIA' ? 'bg-sky-500 text-slate-950' : 'text-slate-400 hover:text-sky-300'
-                }`}
-              >
-                <BookOpen className="w-3.5 h-3.5" />
-                <span>Primaria</span>
-              </button>
+              {educationalLevels.map((lvl) => {
+                const IconComp = lvl.icon || Layers;
+                const isSelected = selectedLevelFilter === lvl.id;
+                return (
+                  <button
+                    key={lvl.id}
+                    type="button"
+                    onClick={() => setSelectedLevelFilter(lvl.id)}
+                    className={`px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 cursor-pointer ${
+                      isSelected ? 'bg-sky-500 text-slate-950' : 'text-slate-400 hover:text-sky-300'
+                    }`}
+                  >
+                    <IconComp className="w-3.5 h-3.5" />
+                    <div>{lvl.name.split('/')[0].trim()}</div>
+                  </button>
+                );
+              })}
             </div>
 
             {/* Switch Offline / Online */}
@@ -10921,14 +11022,27 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   Direcciones Técnicas y Niveles Escolares
                 </h3>
                 <p className="text-xs text-slate-400 mt-0.5">
-                  Registra al director(a) de Preescolar y Primaria para que, tras verificar su correo, puedan dar de alta a su plantilla de maestros.
+                  Registra al director(a) de cada nivel escolar ofertado para que, tras verificar su correo, puedan dar de alta a su plantilla de maestros.
                 </p>
               </div>
             </div>
 
             {/* Tarjetas de Niveles */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {educationalLevels.map((lvl) => {
+            {educationalLevels.length === 0 ? (
+              <div className="bg-slate-900 border border-slate-800 rounded-3xl p-10 text-center shadow-xl space-y-4">
+                <div className="w-16 h-16 bg-sky-500/10 text-sky-400 border border-sky-500/20 rounded-3xl flex items-center justify-center mx-auto">
+                  <School className="w-8 h-8" />
+                </div>
+                <div className="max-w-md mx-auto space-y-1">
+                  <h3 className="text-lg font-black text-white">Sin niveles educativos registrados</h3>
+                  <p className="text-xs text-slate-400">
+                    Esta institución no tiene niveles educativos configurados todavía.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {educationalLevels.map((lvl) => {
                 const Icon = lvl.icon;
                 const levelStudentsCount = students.filter((s) => s.levelId === lvl.id).length;
                 const levelTeachersCount = teachers.filter((t) => t.levelId === lvl.id).length;
@@ -11042,8 +11156,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 );
               })}
             </div>
-          </div>
-        )}
+          )}
+        </div>
+      )}
 
         {/* 2. MÓDULO DE DOCENTES & MAESTROS */}
         {activeTab === 'teachers' && (
@@ -12368,7 +12483,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
                     <span className="text-[11px] font-bold text-slate-400 block">Carnets de Alumnos</span>
                     <span className="text-2xl font-black text-cyan-400">{studentCreds}</span>
-                    <span className="text-[10px] text-slate-500 block mt-0.5">Preescolar & Primaria</span>
+                    <div className="text-[10px] text-slate-500 block mt-0.5">Carnets activos</div>
                   </div>
 
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
@@ -31215,8 +31330,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       <footer className="bg-slate-900 border-t border-slate-800 py-3 text-center text-xs text-slate-500">
         <div className="container-app flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>Avante School Management (ASM) • Sistema Escolar Multi-Tenant Offline-First</span>
-          <span className="font-mono text-slate-400">{currentTenant.name} • Preescolar & Primaria</span>
+          <div>Avante School Management (ASM) • Sistema Escolar Multi-Tenant Offline-First</div>
+          <div className="font-mono text-slate-400">
+            {currentTenant.name}
+            {educationalLevels.length > 0 ? ` • ${educationalLevels.map((l) => l.name.split('/')[0].trim()).join(' & ')}` : ''}
+          </div>
         </div>
       </footer>
     </div>

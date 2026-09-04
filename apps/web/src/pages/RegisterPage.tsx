@@ -26,6 +26,7 @@ interface RegisterPageProps {
     name: string;
     subdomain: string;
     adminEmail: string;
+    levelsOffered?: string[];
   }) => void;
 }
 
@@ -58,12 +59,21 @@ const COUNTRIES: Country[] = [
   { code: '+1809', name: 'Rep. Dominicana', flag: '🇩🇴', placeholder: '809 123 4567' },
 ];
 
+const AVAILABLE_LEVELS = [
+  { id: 'GUARDERIA', name: 'Guardería / Maternal', desc: 'Lactantes, maternal A y B' },
+  { id: 'PREESCOLAR', name: 'Preescolar / Kínder', desc: '1º, 2º y 3º de Kínder' },
+  { id: 'PRIMARIA', name: 'Primaria', desc: '1º a 6º de Primaria' },
+  { id: 'SECUNDARIA', name: 'Secundaria', desc: '1º a 3º de Secundaria' },
+  { id: 'PREPARATORIA', name: 'Preparatoria / Bachillerato', desc: '1º a 6º Semestre' },
+];
+
 export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate, onSchoolRegistered }) => {
   const [step, setStep] = useState<1 | 2>(1);
-  const [schoolName, setSchoolName] = useState('Instituto Logos');
-  const [subdomain, setSubdomain] = useState('institutologos');
-  const [directorName, setDirectorName] = useState('Director General');
-  const [email, setEmail] = useState('institutologoscoatzacoalcos@gmail.com');
+  const [schoolName, setSchoolName] = useState('');
+  const [subdomain, setSubdomain] = useState('');
+  const [directorName, setDirectorName] = useState('');
+  const [email, setEmail] = useState('');
+  const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
   
   // Selector de País
   const [selectedCountry, setSelectedCountry] = useState<Country>(COUNTRIES[0]); // México
@@ -71,9 +81,9 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate, onSchool
   const [countrySearch, setCountrySearch] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const [phoneNumber, setPhoneNumber] = useState('921 123 4567');
-  const [password, setPassword] = useState('Admin123!');
-  const [confirmPassword, setConfirmPassword] = useState('Admin123!');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   
   const [inputOtp, setInputOtp] = useState('');
   const [devOtpCode, setDevOtpCode] = useState<string | null>(null);
@@ -99,7 +109,13 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate, onSchool
       c.code.includes(countrySearch)
   );
 
-  const fullPhone = `${selectedCountry.code} ${phoneNumber}`;
+  const toggleLevel = (id: string) => {
+    setSelectedLevels((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
+  const fullPhone = phoneNumber ? `${selectedCountry.code} ${phoneNumber}` : '';
 
   // 1. Envío al Backend Fastify: POST /api/onboarding/register-school
   const handleStep1Submit = async (e: React.FormEvent) => {
@@ -135,6 +151,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate, onSchool
           adminEmail: email,
           adminPassword: password,
           adminPhone: fullPhone,
+          levelsOffered: selectedLevels,
         }),
       });
 
@@ -194,6 +211,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate, onSchool
         name: data.tenant.name,
         subdomain: data.tenant.subdomain,
         adminEmail: data.user.email,
+        levelsOffered: data.tenant.levelsOffered || selectedLevels,
       });
 
       onNavigate('dashboard');
@@ -329,6 +347,37 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate, onSchool
                     <div className="reg-subdomain-suffix">
                       .avanteschoolmanagement.local
                     </div>
+                  </div>
+                </div>
+
+                {/* Niveles Educativos que Oferta el Colegio */}
+                <div className="form-group mb-0 reg-levels-container">
+                  <label className="form-label">
+                    Niveles Educativos que Imparte el Colegio
+                  </label>
+                  <p className="text-muted text-xs mb-2">
+                    Selecciona los niveles que ofrece tu institución para crear sus módulos de gestión:
+                  </p>
+                  <div className="reg-levels-grid">
+                    {AVAILABLE_LEVELS.map((lvl) => {
+                      const isSelected = selectedLevels.includes(lvl.id);
+                      return (
+                        <button
+                          key={lvl.id}
+                          type="button"
+                          onClick={() => toggleLevel(lvl.id)}
+                          className={`reg-level-card ${isSelected ? 'selected' : ''}`}
+                        >
+                          <div className="reg-level-header">
+                            <div className="reg-level-name">{lvl.name}</div>
+                            <div className="reg-level-check">
+                              <Check />
+                            </div>
+                          </div>
+                          <div className="reg-level-desc">{lvl.desc}</div>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 

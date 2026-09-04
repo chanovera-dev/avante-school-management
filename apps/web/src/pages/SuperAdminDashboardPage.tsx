@@ -35,6 +35,7 @@ interface SchoolItem {
   studentCount: number;
   userCount: number;
   monthlyFeeMXN: number;
+  levelsOffered?: string[];
   createdAt: string;
 }
 
@@ -51,7 +52,7 @@ interface Metrics {
 
 interface SuperAdminDashboardPageProps {
   onNavigate: (route: 'home' | 'register' | 'login' | 'dashboard' | 'portal' | 'superadmin') => void;
-  onSwitchToSchool: (tenant: { id: string; name: string; subdomain: string; adminEmail?: string }) => void;
+  onSwitchToSchool: (tenant: { id: string; name: string; subdomain: string; adminEmail?: string; levelsOffered?: string[] }) => void;
 }
 
 export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = ({
@@ -550,6 +551,7 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
                                 name: school.name,
                                 subdomain: school.subdomain,
                                 adminEmail: school.contactEmail,
+                                levelsOffered: school.levelsOffered,
                               })
                             }
                             className="btn btn-outline btn-sm btn-icon-square btn-action-primary"
