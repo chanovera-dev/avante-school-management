@@ -10,6 +10,7 @@ const isChromium =
   /chrome|crios|crmo|edg|brave|opera|opr|vivaldi/i.test(ua);
 
 if (isChromium && typeof document !== 'undefined') {
+  document.documentElement.classList.add('is-chromium');
   document.body.classList.add('is-chromium');
 }
 

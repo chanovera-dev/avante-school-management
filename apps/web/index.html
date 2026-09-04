@@ -8,27 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script>
-      (function () {
-        try {
-          var ua = navigator.userAgent.toLowerCase();
-          var isChromium = (Boolean(window.chrome) || /crios/i.test(ua)) &&
-            /chrome|crios|crmo|edg|brave|opera|opr|vivaldi/i.test(ua);
-          if (isChromium) {
-            document.documentElement.classList.add('is-chromium');
-            if (document.body) {
-              document.body.classList.add('is-chromium');
-            } else {
-              document.addEventListener('DOMContentLoaded', function () {
-                document.body.classList.add('is-chromium');
-              });
-            }
-          }
-        } catch (e) {}
-      })();
-    </script>
   </head>
-  <body class="bg-slate-50 text-slate-900 antialiased font-['Plus_Jakarta_Sans',sans-serif]">
+  <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

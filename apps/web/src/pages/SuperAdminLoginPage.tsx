@@ -78,32 +78,20 @@ export const SuperAdminLoginPage: React.FC<SuperAdminLoginPageProps> = ({
       <div className="auth-glow-bottom-right" />
 
       {/* Header Corporativo SaaS */}
-      <header className="auth-header" style={{ backdropFilter: 'blur(12px)', background: 'rgba(255, 255, 255, 0.95)' }}>
+      <header className="auth-header">
         <div className="container-app auth-header-inner">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div
-              style={{
-                background: 'linear-gradient(135deg, var(--color-purple), #4338ca)',
-                color: '#ffffff',
-                width: '2.25rem',
-                height: '2.25rem',
-                borderRadius: 'var(--radius-md)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 4px 14px var(--color-purple-glow)'
-              }}
-            >
-              <Cpu style={{ width: '1.25rem', height: '1.25rem' }} />
+          <div className="auth-header-brand">
+            <div className="auth-header-brand-icon">
+              <Cpu />
             </div>
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ fontWeight: 800, fontSize: '1rem', color: 'var(--color-text-main)' }}>Avante Core Ops</span>
-                <span className="badge badge-purple" style={{ fontSize: '0.625rem' }}>
+              <div className="auth-header-brand-title">
+                <h2>Avante Core Ops</h2>
+                <div className="badge badge-purple badge-xs">
                   Admin Console
-                </span>
+                </div>
               </div>
-              <p style={{ fontSize: '0.6875rem', color: 'var(--color-text-muted)' }}>
+              <p className="auth-header-brand-desc">
                 Consola Central de Gestión de Infraestructura & Multi-Tenant
               </p>
             </div>
@@ -113,8 +101,8 @@ export const SuperAdminLoginPage: React.FC<SuperAdminLoginPageProps> = ({
             onClick={() => onNavigate('login')}
             className="btn btn-outline btn-sm"
           >
-            <ArrowLeft style={{ width: '0.875rem', height: '0.875rem' }} />
-            <span>Volver al Login Escolar</span>
+            <ArrowLeft />
+            Volver al Login Escolar
           </button>
         </div>
       </header>
@@ -122,41 +110,33 @@ export const SuperAdminLoginPage: React.FC<SuperAdminLoginPageProps> = ({
       {/* Contenedor Principal */}
       <main className="auth-main">
         <div className="auth-card auth-card-purple">
-          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+          <div className="auth-card-header">
             <div>
-              <div className="badge badge-purple" style={{ marginBottom: '0.75rem' }}>
-                <ShieldCheck style={{ width: '0.875rem', height: '0.875rem' }} />
-                <span>Acceso Restringido • Nivel 0</span>
+              <div className="badge badge-purple mb-3">
+                <ShieldCheck />
+                Acceso Restringido • Nivel 0
               </div>
-              <h1 style={{ fontSize: '1.5rem', fontWeight: 900, color: 'var(--color-text-main)' }}>
+              <h1 className="auth-title">
                 Super Administrador
               </h1>
-              <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '0.25rem' }}>
+              <p className="auth-subtitle">
                 Portal para operadores de la red de colegios Avante School Management.
               </p>
             </div>
-            <div
-              style={{
-                padding: '0.625rem',
-                background: 'var(--color-purple-bg)',
-                border: '1px solid var(--color-purple-border)',
-                borderRadius: 'var(--radius-lg)',
-                color: 'var(--color-purple)'
-              }}
-            >
-              <Server style={{ width: '1.5rem', height: '1.5rem' }} />
+            <div className="auth-card-header-icon">
+              <Server />
             </div>
           </div>
 
           {errorMessage && (
             <div className="alert alert-danger">
-              <AlertCircle style={{ width: '1rem', height: '1rem', flexShrink: 0, marginTop: '0.125rem' }} />
-              <span>{errorMessage}</span>
+              <AlertCircle />
+              <p className="m-0">{errorMessage}</p>
             </div>
           )}
 
-          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <div className="form-group" style={{ marginBottom: 0 }}>
+          <form onSubmit={handleLogin} className="auth-form">
+            <div className="form-group mb-0">
               <label className="form-label">Credencial de Operador (Email)</label>
               <div className="auth-input-wrapper">
                 <Mail className="input-icon" />
@@ -165,14 +145,13 @@ export const SuperAdminLoginPage: React.FC<SuperAdminLoginPageProps> = ({
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="form-input"
-                  style={{ fontFamily: 'var(--font-mono)' }}
+                  className="form-input font-mono"
                   placeholder="superadmin@avanteschoolmanagement.com"
                 />
               </div>
             </div>
 
-            <div className="form-group" style={{ marginBottom: 0 }}>
+            <div className="form-group mb-0">
               <label className="form-label">Contraseña Maestra</label>
               <div className="auth-input-wrapper">
                 <Lock className="input-icon" />
@@ -181,8 +160,7 @@ export const SuperAdminLoginPage: React.FC<SuperAdminLoginPageProps> = ({
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="form-input"
-                  style={{ fontFamily: 'var(--font-mono)' }}
+                  className="form-input font-mono"
                 />
               </div>
             </div>
@@ -190,39 +168,27 @@ export const SuperAdminLoginPage: React.FC<SuperAdminLoginPageProps> = ({
             <button
               type="submit"
               disabled={loading}
-              className="btn btn-purple btn-lg"
-              style={{ width: '100%', marginTop: '0.5rem' }}
+              className="btn btn-purple btn-lg w-full mt-2"
             >
               {loading ? (
-                <span>Validando Credenciales...</span>
+                'Validando Credenciales...'
               ) : (
                 <>
-                  <span>Ingresar a Consola Master</span>
-                  <ArrowRight style={{ width: '1rem', height: '1rem' }} />
+                  Ingresar a Consola Master
+                  <ArrowRight />
                 </>
               )}
             </button>
           </form>
 
           {/* Caja Informativa de Seguridad */}
-          <div style={{ paddingTop: '1rem', borderTop: '1px solid var(--color-border-subtle)' }}>
-            <div
-              style={{
-                background: 'var(--color-bg-base)',
-                border: '1px solid var(--color-border-subtle)',
-                padding: '0.75rem',
-                borderRadius: 'var(--radius-md)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                fontSize: '0.75rem'
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)' }}>
-                <KeyRound style={{ width: '1rem', height: '1rem', color: 'var(--color-purple)' }} />
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6875rem' }}>
+          <div className="auth-card-demo-box">
+            <div className="auth-demo-card">
+              <div className="auth-demo-card-left">
+                <KeyRound />
+                <p>
                   Cuenta Demo: superadmin@...
-                </span>
+                </p>
               </div>
               <button
                 type="button"
@@ -230,7 +196,7 @@ export const SuperAdminLoginPage: React.FC<SuperAdminLoginPageProps> = ({
                   setEmail('superadmin@avanteschoolmanagement.com');
                   setPassword('Admin123!');
                 }}
-                style={{ color: 'var(--color-purple)', fontWeight: 700, fontSize: '0.6875rem', textDecoration: 'underline' }}
+                className="auth-demo-card-btn"
               >
                 Rellenar
               </button>
@@ -240,7 +206,7 @@ export const SuperAdminLoginPage: React.FC<SuperAdminLoginPageProps> = ({
       </main>
 
       {/* Footer */}
-      <footer className="auth-footer" style={{ textAlign: 'center', fontFamily: 'var(--font-mono)' }}>
+      <footer className="auth-footer text-center font-mono">
         <div className="container-app">
           Avante Global Infrastructure • TLS 1.3 Strict • PostgreSQL asm_db
         </div>

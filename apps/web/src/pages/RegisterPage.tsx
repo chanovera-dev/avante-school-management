@@ -233,21 +233,25 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate, onSchool
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white flex flex-col justify-between selection:bg-sky-500 selection:text-white">
+    <div className="auth-page">
+      {/* Glows */}
+      <div className="auth-glow-top-left" />
+      <div className="auth-glow-bottom-right" />
+
       {/* Header */}
-      <header className="border-b border-slate-800/80 py-4">
-        <div className="container-app flex items-center justify-between">
+      <header className="auth-header">
+        <div className="container-app auth-header-inner">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavigate('home')}>
-            <div className="bg-sky-600 text-white font-black text-xl w-9 h-9 rounded-xl flex items-center justify-center">
+            <div className="brand-logo">
               ASM
             </div>
-            <span className="font-extrabold text-lg text-white">Avante School Management</span>
+            <div className="brand-title">Avante School Management</div>
           </div>
-          <div className="flex items-center gap-4 text-xs">
-            <span className="text-slate-400">¿Ya tienes cuenta de colegio?</span>
+          <div className="auth-header-action">
+            <p className="auth-header-question">¿Ya tienes cuenta de colegio?</p>
             <button
               onClick={() => onNavigate('login')}
-              className="text-sky-400 hover:text-sky-300 font-bold hover:underline"
+              className="btn btn-primary btn-sm"
             >
               Iniciar Sesión
             </button>
@@ -256,147 +260,143 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate, onSchool
       </header>
 
       {/* Contenedor Central */}
-      <main className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8">
-        <div className="max-w-xl w-full bg-slate-900 border border-slate-800 p-8 sm:p-10 rounded-3xl shadow-2xl relative">
+      <main className="auth-main">
+        <div className="auth-card auth-card-wide">
           {/* Badge Superior */}
-          <div className="flex items-center justify-between mb-6">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-sky-950 text-sky-400 border border-sky-800/80">
-              <Sparkles className="w-3.5 h-3.5" />
+          <div className="flex-row-between mb-3">
+            <div className="badge badge-sky">
+              <Sparkles />
               Paso {step} de 2 • Plan Lanzamiento Gratuito
-            </span>
-            <span className="text-xs text-slate-500 font-mono">Paso {step}/2</span>
+            </div>
+            <div className="font-mono text-muted">Paso {step}/2</div>
           </div>
 
           {errorMessage && (
-            <div className="mb-6 p-4 rounded-xl bg-red-950/80 border border-red-800 text-red-200 text-xs flex items-start gap-2.5 animate-fade-in">
-              <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-              <div className="leading-relaxed">
-                <strong className="font-bold block mb-0.5">Atención:</strong>
-                <span>{errorMessage}</span>
+            <div className="alert alert-danger">
+              <AlertCircle />
+              <div>
+                <p className="font-bold m-0">Atención:</p>
+                <p className="m-0">{errorMessage}</p>
               </div>
             </div>
           )}
 
           {successMessage && (
-            <div className="mb-6 p-4 rounded-xl bg-emerald-950/80 border border-emerald-800 text-emerald-200 text-xs flex items-center gap-2 animate-fade-in">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-              <span>{successMessage}</span>
+            <div className="alert alert-success">
+              <CheckCircle2 />
+              <p className="m-0">{successMessage}</p>
             </div>
           )}
 
           {step === 1 ? (
             /* PASO 1: DATOS DE LA ESCUELA Y DIRECTOR */
             <div>
-              <h1 className="text-2xl sm:text-3xl font-black text-white mb-2">Registra tu Colegio</h1>
-              <p className="text-slate-400 text-xs sm:text-sm mb-6">
+              <h1 className="auth-title">Registra tu Colegio</h1>
+              <p className="auth-subtitle mb-4">
                 Crea el entorno de tu escuela en Avante School Management con subdominio propio.
               </p>
 
-              <form onSubmit={handleStep1Submit} className="space-y-4">
-                <div>
-                  <label className="block text-xs font-bold uppercase text-slate-300 mb-1">
+              <form onSubmit={handleStep1Submit} className="auth-form">
+                <div className="form-group mb-0">
+                  <label className="form-label">
                     Nombre Oficial de la Institución
                   </label>
-                  <div className="relative">
-                    <Building2 className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <div className="auth-input-wrapper">
+                    <Building2 className="input-icon" />
                     <input
                       type="text"
                       required
                       value={schoolName}
                       onChange={(e) => setSchoolName(e.target.value)}
                       placeholder="Ej. Instituto Logos"
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none transition-all"
+                      className="form-input"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-bold uppercase text-slate-300 mb-1">
+                <div className="form-group mb-0">
+                  <label className="form-label">
                     Subdominio para tu Escuela
                   </label>
-                  <div className="flex items-center bg-slate-950 border border-slate-700 rounded-xl overflow-hidden focus-within:border-sky-500 focus-within:ring-1 focus-within:ring-sky-500">
+                  <div className="reg-subdomain-group">
                     <input
                       type="text"
                       required
                       value={subdomain}
                       onChange={(e) => setSubdomain(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
                       placeholder="institutologos"
-                      className="flex-1 bg-transparent px-3.5 py-2.5 text-sm text-white outline-none font-mono"
                     />
-                    <span className="bg-slate-800 text-slate-400 text-xs px-3 py-2.5 border-l border-slate-700 font-mono">
+                    <div className="reg-subdomain-suffix">
                       .avanteschoolmanagement.local
-                    </span>
+                    </div>
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-bold uppercase text-slate-300 mb-1">
+                <div className="form-group mb-0">
+                  <label className="form-label">
                     Nombre del Director o Administrador
                   </label>
-                  <div className="relative">
-                    <User className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <div className="auth-input-wrapper">
+                    <User className="input-icon" />
                     <input
                       type="text"
                       required
                       value={directorName}
                       onChange={(e) => setDirectorName(e.target.value)}
                       placeholder="Director General"
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:border-sky-500 outline-none"
+                      className="form-input"
                     />
                   </div>
                 </div>
 
                 {/* Teléfono Institucional */}
-                <div className="relative" ref={dropdownRef}>
-                  <label className="block text-xs font-bold uppercase text-slate-300 mb-1">
+                <div className="form-group mb-0" ref={dropdownRef}>
+                  <label className="form-label">
                     Teléfono Institucional
                   </label>
-                  <div className="flex items-center bg-slate-950 border border-slate-700 rounded-xl overflow-visible focus-within:border-sky-500 focus-within:ring-1 focus-within:ring-sky-500 transition-all">
+                  <div className="reg-phone-wrapper">
                     {/* Botón Trigger de País */}
                     <button
                       type="button"
                       onClick={() => setIsCountryDropdownOpen(!isCountryDropdownOpen)}
-                      className="bg-slate-900 hover:bg-slate-850 border-r border-slate-800 flex items-center gap-1.5 px-3 py-2.5 rounded-l-xl transition-colors cursor-pointer shrink-0"
+                      className="reg-country-btn"
                     >
-                      <span className="text-lg leading-none">{selectedCountry.flag}</span>
-                      <span className="text-xs font-mono font-bold text-slate-200">{selectedCountry.code}</span>
+                      <div className="country-flag">{selectedCountry.flag}</div>
+                      <div className="country-code">{selectedCountry.code}</div>
                       <ChevronDown
-                        className={`w-3.5 h-3.5 text-slate-400 transition-transform ${
-                          isCountryDropdownOpen ? 'rotate-180 text-sky-400' : ''
-                        }`}
+                        className={isCountryDropdownOpen ? 'rotated' : ''}
                       />
                     </button>
 
                     {/* Input de Número */}
-                    <div className="relative flex-1 flex items-center">
-                      <Phone className="w-4 h-4 text-slate-500 absolute left-3.5 pointer-events-none" />
+                    <div className="reg-phone-input-box">
+                      <Phone className="input-icon" />
                       <input
                         type="tel"
                         required
                         value={phoneNumber}
                         onChange={(e) => setPhoneNumber(e.target.value)}
                         placeholder={selectedCountry.placeholder}
-                        className="w-full bg-transparent pl-10 pr-4 py-2.5 text-sm text-white outline-none font-mono"
                       />
                     </div>
                   </div>
 
                   {/* Menú Desplegable Flotante */}
                   {isCountryDropdownOpen && (
-                    <div className="absolute left-0 top-full mt-2 w-72 bg-slate-900/95 backdrop-blur-xl border border-slate-700 rounded-2xl shadow-2xl p-2 z-50 animate-in fade-in zoom-in-95 duration-150">
-                      <div className="relative mb-2">
-                        <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+                    <div className="reg-country-dropdown">
+                      <div className="reg-country-search">
+                        <Search className="input-icon" />
                         <input
                           type="text"
                           autoFocus
                           value={countrySearch}
                           onChange={(e) => setCountrySearch(e.target.value)}
                           placeholder="Buscar país o código..."
-                          className="w-full bg-slate-950 border border-slate-750 rounded-xl pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-500 outline-none focus:border-sky-500"
+                          className="form-input"
                         />
                       </div>
 
-                      <div className="max-h-52 overflow-y-auto space-y-1 pr-1 custom-scrollbar">
+                      <div className="reg-country-list">
                         {filteredCountries.length > 0 ? (
                           filteredCountries.map((c, i) => {
                             const isSelected = selectedCountry.name === c.name;
@@ -409,25 +409,21 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate, onSchool
                                   setIsCountryDropdownOpen(false);
                                   setCountrySearch('');
                                 }}
-                                className={`w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-xs transition-all ${
-                                  isSelected
-                                    ? 'bg-sky-500/15 text-sky-300 font-bold border border-sky-500/30'
-                                    : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-                                }`}
+                                className={`reg-country-item ${isSelected ? 'selected' : ''}`}
                               >
-                                <div className="flex items-center gap-2.5 truncate">
-                                  <span className="text-base leading-none shrink-0">{c.flag}</span>
-                                  <span className="truncate">{c.name}</span>
+                                <div className="country-item-left">
+                                  <div className="country-flag">{c.flag}</div>
+                                  <div>{c.name}</div>
                                 </div>
-                                <div className="flex items-center gap-2 shrink-0 ml-2 font-mono">
-                                  <span className="text-slate-400 text-[11px]">{c.code}</span>
-                                  {isSelected && <Check className="w-3.5 h-3.5 text-sky-400" />}
+                                <div className="country-item-right">
+                                  <div>{c.code}</div>
+                                  {isSelected && <Check />}
                                 </div>
                               </button>
                             );
                           })
                         ) : (
-                          <div className="text-center py-4 text-xs text-slate-500">
+                          <div className="text-center text-muted">
                             No se encontraron países
                           </div>
                         )}
@@ -436,85 +432,81 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate, onSchool
                   )}
                 </div>
 
-                <div>
-                  <label className="block text-xs font-bold uppercase text-slate-300 mb-1">
+                <div className="form-group mb-0">
+                  <label className="form-label">
                     Correo Electrónico del Director
                   </label>
-                  <div className="relative">
-                    <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <div className="auth-input-wrapper">
+                    <Mail className="input-icon" />
                     <input
                       type="email"
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="director@colegio.edu.mx"
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:border-sky-500 outline-none"
+                      className="form-input"
                     />
                   </div>
                 </div>
 
                 {/* Contraseñas */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold uppercase text-slate-300 mb-1">
+                <div className="grid-cols-2 gap-4">
+                  <div className="form-group mb-0">
+                    <label className="form-label">
                       Contraseña de Acceso
                     </label>
-                    <div className="relative">
-                      <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <div className="auth-input-wrapper">
+                      <Lock className="input-icon" />
                       <input
                         type="password"
                         required
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Mínimo 6 caracteres"
-                        className="w-full bg-slate-950 border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:border-sky-500 outline-none font-mono"
+                        className="form-input font-mono"
                       />
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-bold uppercase text-slate-300 mb-1">
+                  <div className="form-group mb-0">
+                    <label className="form-label">
                       Confirmar Contraseña
                     </label>
-                    <div className="relative">
-                      <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <div className="auth-input-wrapper">
+                      <Lock className="input-icon" />
                       <input
                         type="password"
                         required
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         placeholder="Repite tu contraseña"
-                        className={`w-full bg-slate-950 border rounded-xl pl-10 pr-4 py-2.5 text-sm text-white outline-none font-mono transition-colors ${
-                          confirmPassword && password !== confirmPassword
-                            ? 'border-red-500 focus:border-red-500'
-                            : 'border-slate-700 focus:border-sky-500'
-                        }`}
+                        className="form-input font-mono"
                       />
                     </div>
                   </div>
                 </div>
 
                 {confirmPassword && password !== confirmPassword && (
-                  <p className="text-[11px] text-red-400 font-medium">
+                  <p className="text-danger m-0">
                     ⚠️ Las contraseñas aún no coinciden.
                   </p>
                 )}
 
-                <div className="pt-3">
+                <div className="mt-2">
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full bg-sky-500 hover:bg-sky-400 disabled:bg-slate-700 text-slate-950 font-black text-sm py-3.5 rounded-xl shadow-lg shadow-sky-500/20 transition-all flex items-center justify-center gap-2"
+                    className="btn btn-primary btn-lg w-full"
                   >
                     {isLoading ? (
                       <>
-                        <Loader2 className="w-4 h-4 animate-spin text-slate-950" />
-                        <span>Generando código de verificación...</span>
+                        <Loader2 className="animate-spin" />
+                        Generando código de verificación...
                       </>
                     ) : (
                       <>
-                        <span>Continuar a Verificación</span>
-                        <ArrowRight className="w-4 h-4" />
+                        Continuar a Verificación
+                        <ArrowRight />
                       </>
                     )}
                   </button>
@@ -523,32 +515,32 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate, onSchool
             </div>
           ) : (
             /* PASO 2: VERIFICACIÓN DE CORREO (CÓDIGO OTP) */
-            <div className="text-center">
-              <div className="w-16 h-16 bg-sky-500/10 border border-sky-500/30 rounded-2xl mx-auto flex items-center justify-center text-sky-400 mb-4">
-                <MailCheck className="w-8 h-8" />
+            <div className="reg-otp-box">
+              <div className="reg-otp-icon">
+                <MailCheck />
               </div>
 
-              <h2 className="text-2xl sm:text-3xl font-black text-white mb-2">Verifica tu Correo</h2>
-              <p className="text-slate-400 text-xs sm:text-sm max-w-md mx-auto mb-4">
-                Hemos enviado un código de seguridad de 6 dígitos para <strong className="text-white">{email}</strong>.
+              <h2 className="auth-title mb-1">Verifica tu Correo</h2>
+              <p className="auth-subtitle mb-4">
+                Hemos enviado un código de seguridad de 6 dígitos para {email}.
               </p>
 
               {/* Indicador de desarrollo local */}
               {devOtpCode && (
-                <div className="bg-sky-950/80 border border-sky-800/90 p-3 rounded-2xl text-left mb-6 flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2 text-sky-300 font-medium">
-                    <Terminal className="w-4 h-4 text-sky-400 shrink-0" />
-                    <span>Código entregado en consola (Modo Local):</span>
+                <div className="reg-otp-dev-box">
+                  <div className="flex items-center gap-2">
+                    <Terminal />
+                    <div>Código entregado en consola (Modo Local):</div>
                   </div>
-                  <strong className="text-sm font-mono font-black text-sky-400 tracking-widest bg-sky-900/80 px-2.5 py-0.5 rounded border border-sky-700">
+                  <div className="dev-code">
                     {devOtpCode}
-                  </strong>
+                  </div>
                 </div>
               )}
 
-              <form onSubmit={handleVerifyOtp} className="space-y-6">
-                <div>
-                  <label className="block text-xs font-bold uppercase text-slate-300 mb-2">
+              <form onSubmit={handleVerifyOtp} className="auth-form w-full">
+                <div className="form-group mb-0 text-center">
+                  <label className="form-label">
                     Ingresa el Código de 6 Dígitos
                   </label>
                   <input
@@ -558,49 +550,49 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate, onSchool
                     autoFocus
                     value={inputOtp}
                     onChange={(e) => setInputOtp(e.target.value.replace(/\D/g, ''))}
-                    className="w-56 mx-auto text-center font-mono text-3xl font-black tracking-widest bg-slate-950 border-2 border-sky-500 rounded-2xl py-3 text-white outline-none focus:ring-4 focus:ring-sky-500/20"
+                    className="reg-otp-input"
                     placeholder="------"
                   />
                 </div>
 
-                <div className="flex gap-3">
+                <div className="flex-row-between gap-3 mt-4">
                   <button
                     type="button"
                     onClick={() => setStep(1)}
                     disabled={isLoading}
-                    className="flex-1 bg-slate-800 hover:bg-slate-750 text-slate-300 text-xs py-3 rounded-xl font-bold transition-colors flex items-center justify-center gap-2"
+                    className="btn btn-secondary btn-md flex-1"
                   >
-                    <ArrowLeft className="w-4 h-4" />
-                    <span>Regresar</span>
+                    <ArrowLeft />
+                    Regresar
                   </button>
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="flex-1 bg-gradient-to-r from-sky-500 to-cyan-400 hover:from-sky-400 hover:to-cyan-300 disabled:opacity-50 text-slate-950 font-black text-sm py-3 rounded-xl shadow-lg shadow-sky-500/20 transition-all flex items-center justify-center gap-2"
+                    className="btn btn-primary btn-md flex-1"
                   >
                     {isLoading ? (
                       <>
-                        <Loader2 className="w-4 h-4 animate-spin text-slate-950" />
-                        <span>Verificando...</span>
+                        <Loader2 className="animate-spin" />
+                        Verificando...
                       </>
                     ) : (
                       <>
-                        <CheckCircle2 className="w-4 h-4" />
-                        <span>Verificar y Activar Escuela</span>
+                        <CheckCircle2 />
+                        Verificar y Activar Escuela
                       </>
                     )}
                   </button>
                 </div>
 
-                <div className="pt-2">
+                <div className="mt-2 text-center">
                   <button
                     type="button"
                     onClick={handleResendCode}
                     disabled={isLoading}
-                    className="text-xs text-slate-400 hover:text-sky-400 font-medium flex items-center justify-center gap-1.5 mx-auto transition-colors"
+                    className="auth-footer-btn flex-center m-0"
                   >
-                    <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
-                    <span>Reenviar código</span>
+                    <RefreshCw className={isLoading ? 'animate-spin' : ''} />
+                    Reenviar código
                   </button>
                 </div>
               </form>
@@ -610,7 +602,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate, onSchool
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-800 py-4 text-center text-xs text-slate-500">
+      <footer className="auth-footer text-center font-mono">
         <div className="container-app">
           Avante School Management (ASM) • Dominio de desarrollo: avanteschoolmanagement.local
         </div>
@@ -618,3 +610,4 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate, onSchool
     </div>
   );
 };
+

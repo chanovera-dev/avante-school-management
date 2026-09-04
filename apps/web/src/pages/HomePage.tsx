@@ -22,8 +22,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           <div className="brand-logo" onClick={() => onNavigate('home')}>
             <div className="brand-icon">ASM</div>
             <div>
-              <span className="brand-title">Avante School Management</span>
-              <span className="brand-subtitle">Plataforma SaaS Escolar Offline-First</span>
+              <div className="brand-title">Avante School Management</div>
+              <div className="brand-subtitle">Plataforma SaaS Escolar Offline-First</div>
             </div>
           </div>
 
@@ -45,8 +45,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               onClick={() => onNavigate('register')}
               className="btn btn-primary"
             >
-              <span>Registrar mi Colegio</span>
-              <ArrowRight style={{ width: '1rem', height: '1rem' }} />
+              Registrar mi Colegio
+              <ArrowRight />
             </button>
           </div>
         </div>
@@ -57,12 +57,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         <div className="hero-glow" />
 
         <div className="badge badge-sky">
-          <Sparkles style={{ width: '0.875rem', height: '0.875rem' }} />
-          <span>Plan de Lanzamiento 100% Gratuito para Colegios</span>
+          <Sparkles />
+          Plan de Lanzamiento 100% Gratuito para Colegios
         </div>
 
         <h1 className="hero-title">
-          La gestión escolar que <span className="text-gradient">nunca se detiene</span>, con o sin Internet.
+          La gestión escolar que <strong className="text-gradient">nunca se detiene</strong>, con o sin Internet.
         </h1>
 
         <p className="hero-description">
@@ -76,30 +76,30 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             onClick={() => onNavigate('register')}
             className="btn btn-primary btn-lg"
           >
-            <span>Crear Cuenta de Escuela Gratis</span>
-            <ArrowRight style={{ width: '1.25rem', height: '1.25rem' }} />
+            Crear Cuenta de Escuela Gratis
+            <ArrowRight />
           </button>
           <button
             onClick={() => onNavigate('dashboard')}
             className="btn btn-secondary btn-lg"
           >
-            <span>Explorar Demo en Vivo</span>
-            <ChevronRight style={{ width: '1rem', height: '1rem' }} />
+            Explorar Demo en Vivo
+            <ChevronRight />
           </button>
         </div>
 
         <div className="hero-bullets">
           <div className="bullet-item">
-            <CheckCircle2 style={{ width: '1rem', height: '1rem' }} />
-            <span>Sin tarjeta de crédito requerida</span>
+            <CheckCircle2 />
+            <p>Sin tarjeta de crédito requerida</p>
           </div>
           <div className="bullet-item">
-            <CheckCircle2 style={{ width: '1rem', height: '1rem' }} />
-            <span>Configuración en menos de 3 minutos</span>
+            <CheckCircle2 />
+            <p>Configuración en menos de 3 minutos</p>
           </div>
           <div className="bullet-item">
-            <CheckCircle2 style={{ width: '1rem', height: '1rem' }} />
-            <span>Verificación de correo inmediata</span>
+            <CheckCircle2 />
+            <p>Verificación de correo inmediata</p>
           </div>
         </div>
       </section>
@@ -116,7 +116,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             {/* Tarjeta 1: Offline First */}
             <div className="feature-card">
               <div className="feature-icon-wrapper primary">
-                <WifiOff style={{ width: '1.75rem', height: '1.75rem' }} />
+                <WifiOff />
               </div>
               <h3>Continuidad Offline Total</h3>
               <p>
@@ -127,7 +127,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             {/* Tarjeta 2: CoDi Banxico */}
             <div className="feature-card">
               <div className="feature-icon-wrapper emerald">
-                <QrCode style={{ width: '1.75rem', height: '1.75rem' }} />
+                <QrCode />
               </div>
               <h3>Cobranza con CoDi® (0% Comisión)</h3>
               <p>
@@ -138,7 +138,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             {/* Tarjeta 3: Admisiones e Inscripción Condicionada */}
             <div className="feature-card">
               <div className="feature-icon-wrapper indigo">
-                <GraduationCap style={{ width: '1.75rem', height: '1.75rem' }} />
+                <GraduationCap />
               </div>
               <h3>Inscripciones con Carta Compromiso</h3>
               <p>
@@ -151,7 +151,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
       {/* 4. Niveles Educativos */}
       <section id="niveles" className="container-app levels-section">
-        <div className="section-header" style={{ marginBottom: '3rem' }}>
+        <div className="section-header section-header-mb">
           <h2 className="section-tag">Flexibilidad Total</h2>
           <p className="section-title">De Guardería a Preparatoria en una Sola Plataforma</p>
         </div>
@@ -184,8 +184,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               onClick={() => onNavigate('register')}
               className="btn btn-primary btn-lg"
             >
-              <span>Registrar mi Colegio Gratis</span>
-              <ArrowRight style={{ width: '1.25rem', height: '1.25rem' }} />
+              Registrar mi Colegio Gratis
+              <ArrowRight />
             </button>
           </div>
         </div>
@@ -194,14 +194,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       {/* 6. Footer */}
       <footer className="site-footer">
         <div className="container-app footer-content">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span style={{ fontWeight: 700, color: 'var(--color-text-secondary)' }}>
-              Avante School Management (ASM)
-            </span>
-            <span>•</span>
-            <span>© 2026 Todos los derechos reservados</span>
+          <div className="footer-brand-info">
+            <p className="footer-brand-name">Avante School Management (ASM)</p>
+            <p>•</p>
+            <p>© 2026 Todos los derechos reservados</p>
           </div>
-          <div style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-text-muted)' }}>
+          <div className="footer-host">
             Host: avanteschoolmanagement.local
           </div>
         </div>

@@ -223,84 +223,53 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
     <div className="sa-page">
       {/* Toast de Notificaciones */}
       {toastMessage && (
-        <div
-          style={{
-            position: 'fixed',
-            top: '1rem',
-            right: '1rem',
-            zIndex: 999,
-            padding: '0.75rem 1rem',
-            borderRadius: 'var(--radius-lg)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.625rem',
-            fontSize: '0.75rem',
-            fontWeight: 600,
-            backdropFilter: 'blur(12px)',
-            background: toastMessage.type === 'success' ? 'rgba(6, 78, 59, 0.9)' : 'rgba(136, 19, 55, 0.9)',
-            border: `1px solid ${toastMessage.type === 'success' ? 'var(--color-success-border)' : 'var(--color-danger-border)'}`,
-            color: '#ffffff',
-            boxShadow: 'var(--shadow-xl)'
-          }}
-        >
+        <div className={`sa-toast ${toastMessage.type === 'success' ? 'sa-toast-success' : 'sa-toast-danger'}`}>
           {toastMessage.type === 'success' ? (
-            <CheckCircle2 style={{ width: '1rem', height: '1rem', color: 'var(--color-success)' }} />
+            <CheckCircle2 />
           ) : (
-            <AlertTriangle style={{ width: '1rem', height: '1rem', color: 'var(--color-danger)' }} />
+            <AlertTriangle />
           )}
-          <span>{toastMessage.text}</span>
+          <p>{toastMessage.text}</p>
         </div>
       )}
 
       {/* Header Superior Corporativo */}
       <header className="sa-header">
         <div className="container-app sa-header-inner">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div
-              style={{
-                background: 'linear-gradient(135deg, var(--color-purple), #4338ca)',
-                color: '#ffffff',
-                width: '2.5rem',
-                height: '2.5rem',
-                borderRadius: 'var(--radius-md)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 4px 14px var(--color-purple-glow)'
-              }}
-            >
-              <Server style={{ width: '1.25rem', height: '1.25rem' }} />
+          <div className="sa-header-brand">
+            <div className="sa-brand-icon">
+              <Server />
             </div>
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ fontWeight: 800, fontSize: '1.125rem', color: 'var(--color-text-main)' }}>Avante Core Ops</span>
-                <span className="badge badge-purple" style={{ fontSize: '0.625rem' }}>
+              <div className="sa-header-title">
+                <h2>Avante Core Ops</h2>
+                <div className="badge badge-purple badge-xs">
                   Consola SuperAdmin
-                </span>
+                </div>
               </div>
-              <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
+              <p className="sa-header-desc">
                 Padrón Maestro de Escuelas, Licenciamiento y Base de Datos PostgreSQL
               </p>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div className="sa-header-actions">
             <button
               onClick={fetchData}
               disabled={loading}
               className="btn btn-secondary btn-sm"
               title="Refrescar datos en vivo"
             >
-              <RefreshCw className={loading ? 'animate-spin' : ''} style={{ width: '0.875rem', height: '0.875rem' }} />
-              <span>Actualizar</span>
+              <RefreshCw className={loading ? 'animate-spin' : ''} />
+              Actualizar
             </button>
 
             <button
               onClick={() => onNavigate('login')}
-              className="btn btn-outline btn-sm"
+              className="btn btn-outline btn-sm btn-action-primary"
             >
-              <Building2 style={{ width: '0.875rem', height: '0.875rem', color: 'var(--color-primary)' }} />
-              <span>Login Escolar</span>
+              <Building2 />
+              Login Escolar
             </button>
 
             <button
@@ -310,8 +279,8 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
               }}
               className="btn btn-danger btn-sm"
             >
-              <LogOut style={{ width: '0.875rem', height: '0.875rem' }} />
-              <span>Cerrar Sesión</span>
+              <LogOut />
+              Cerrar Sesión
             </button>
           </div>
         </div>
@@ -320,80 +289,65 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
       {/* Contenedor Central */}
       <main className="container-app sa-main">
         {/* BANNER DE BIENVENIDA Y ESTADO */}
-        <div
-          style={{
-            background: 'linear-gradient(135deg, var(--color-primary) 0%, #0056d6 50%, #0a2540 100%)',
-            border: 'none',
-            padding: '2rem',
-            borderRadius: 'var(--radius-2xl)',
-            boxShadow: 'var(--shadow-lg)',
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '1rem',
-            color: '#ffffff'
-          }}
-        >
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', fontWeight: 800, color: '#b8d9ff', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              <ShieldCheck style={{ width: '1rem', height: '1rem', color: '#67e8f9' }} />
-              <span>Infraestructura Master • PostgreSQL Activa (asm_db)</span>
+        <div className="sa-hero-banner">
+          <div className="sa-hero-info">
+            <div className="sa-hero-badge">
+              <ShieldCheck />
+              Infraestructura Master • PostgreSQL Activa (asm_db)
             </div>
-            <h1 style={{ fontSize: '1.625rem', fontWeight: 900, color: '#ffffff' }}>
+            <h1 className="sa-hero-title">
               Tablero de Gestión de Ecosistema Escolar
             </h1>
-            <p style={{ color: 'rgba(255, 255, 255, 0.88)', fontSize: '0.8125rem', maxWidth: '44rem', lineHeight: 1.5 }}>
+            <p className="sa-hero-desc">
               Monitoreo centralizado de todas las instituciones educativas privadas y públicas alojadas en el SaaS. Administra el estado de las escuelas, modifica suscripciones y gestiona la depuración de datos.
             </p>
           </div>
 
           <button
             onClick={() => onNavigate('register')}
-            className="btn btn-outline btn-sm"
-            style={{ background: '#ffffff', color: 'var(--color-primary)', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
+            className="btn btn-outline btn-sm sa-hero-btn"
           >
-            <Building2 style={{ width: '1rem', height: '1rem' }} />
-            <span>Dar de Alta Escuela</span>
+            <Building2 />
+            Dar de Alta Escuela
           </button>
         </div>
 
         {/* 1. DASHBOARD DE ESTADÍSTICAS GLOBALES (KPIs) */}
         <div>
-          <h2 style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <TrendingUp style={{ width: '1rem', height: '1rem', color: 'var(--color-purple)' }} />
-            <span>Métricas Globales de la Red Escolar</span>
+          <h2 className="sa-section-title">
+            <TrendingUp />
+            Métricas Globales de la Red Escolar
           </h2>
 
           <div className="sa-kpi-grid">
             {/* Card 1: Escuelas */}
             <div className="sa-kpi-card">
               <div className="kpi-header">
-                <span className="kpi-label">Colegios Registrados</span>
-                <div className="kpi-icon" style={{ background: 'var(--color-purple-bg)', color: '#c084fc' }}>
-                  <Building2 style={{ width: '1rem', height: '1rem' }} />
+                <div className="kpi-label">Colegios Registrados</div>
+                <div className="kpi-icon kpi-icon-purple">
+                  <Building2 />
                 </div>
               </div>
               <div className="kpi-value">
                 {metrics ? metrics.totalTenants : schools.length}
               </div>
               <div className="kpi-subtext">
-                <span style={{ color: 'var(--color-success)', fontWeight: 600 }}>
+                <div className="kpi-subtext-item text-success">
                   {metrics ? metrics.activeTenants : schools.filter((s) => s.status === 'ACTIVO').length} activos
-                </span>
-                <span>•</span>
-                <span style={{ color: 'var(--color-warning)', fontWeight: 600 }}>
+                </div>
+                <div>•</div>
+                <div className="kpi-subtext-item text-warning">
                   {metrics ? metrics.pendingVerification : 0} pendientes
-                </span>
+                </div>
               </div>
             </div>
 
             {/* Card 2: Alumnos */}
             <div className="sa-kpi-card">
               <div className="kpi-header">
-                <span className="kpi-label">Alumnos Matriculados</span>
-                <div className="kpi-icon" style={{ background: 'var(--color-primary-bg)', color: 'var(--color-primary-hover)' }}>
-                  <GraduationCap style={{ width: '1rem', height: '1rem' }} />
+                <div className="kpi-label">Alumnos Matriculados</div>
+                <div className="kpi-icon kpi-icon-primary">
+                  <GraduationCap />
                 </div>
               </div>
               <div className="kpi-value">
@@ -407,9 +361,9 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
             {/* Card 3: Usuarios Totales */}
             <div className="sa-kpi-card">
               <div className="kpi-header">
-                <span className="kpi-label">Usuarios & Personal</span>
-                <div className="kpi-icon" style={{ background: 'var(--color-success-bg)', color: 'var(--color-success)' }}>
-                  <Users style={{ width: '1rem', height: '1rem' }} />
+                <div className="kpi-label">Usuarios & Personal</div>
+                <div className="kpi-icon kpi-icon-success">
+                  <Users />
                 </div>
               </div>
               <div className="kpi-value">
@@ -423,12 +377,12 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
             {/* Card 4: Ingresos Mensuales SaaS (MRR) */}
             <div className="sa-kpi-card">
               <div className="kpi-header">
-                <span className="kpi-label">MRR Proyectado</span>
-                <div className="kpi-icon" style={{ background: 'var(--color-warning-bg)', color: 'var(--color-warning)' }}>
-                  <DollarSign style={{ width: '1rem', height: '1rem' }} />
+                <div className="kpi-label">MRR Proyectado</div>
+                <div className="kpi-icon kpi-icon-warning">
+                  <DollarSign />
                 </div>
               </div>
-              <div className="kpi-value" style={{ color: 'var(--color-success)' }}>
+              <div className="kpi-value kpi-value-success">
                 ${metrics ? metrics.totalProjectedMonthlyRevenue.toLocaleString('es-MX', { minimumFractionDigits: 2 }) : '0.00'}
               </div>
               <div className="kpi-subtext">
@@ -442,34 +396,32 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
         <div className="sa-table-card">
           <div className="sa-table-header">
             <div>
-              <h2 style={{ fontSize: '1.125rem', fontWeight: 900, color: 'var(--color-text-main)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Layers style={{ width: '1.25rem', height: '1.25rem', color: 'var(--color-purple)' }} />
-                <span>Padrón de Colegios e Instituciones Registradas</span>
-              </h2>
-              <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '0.25rem' }}>
+              <div className="sa-table-title-group">
+                <Layers />
+                <h2>Padrón de Colegios e Instituciones Registradas</h2>
+              </div>
+              <p className="sa-table-subtitle">
                 Listado completo de escuelas en base de datos. Puedes acceder a su portal institucional, cambiar estatus o eliminarlas.
               </p>
             </div>
 
             {/* Barra de Filtros y Búsqueda */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.5rem' }}>
-              <div style={{ position: 'relative' }}>
-                <Search style={{ width: '1rem', height: '1rem', position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-faint)', pointerEvents: 'none' }} />
+            <div className="sa-table-controls">
+              <div className="sa-search-wrapper">
+                <Search className="input-icon" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Buscar por nombre, subdominio..."
                   className="form-input"
-                  style={{ paddingLeft: '2.25rem', fontSize: '0.75rem', width: '16rem' }}
                 />
               </div>
 
               <select
                 value={statusFilter}
                 onChange={(e: any) => setStatusFilter(e.target.value)}
-                className="form-select"
-                style={{ fontSize: '0.75rem', width: 'auto' }}
+                className="form-select sa-filter-select"
               >
                 <option value="ALL">Todos los estatus</option>
                 <option value="ACTIVO">Activos</option>
@@ -487,16 +439,16 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
                   <th>Institución Escolar</th>
                   <th>Subdominio</th>
                   <th>Contacto / Director</th>
-                  <th style={{ textAlign: 'center' }}>Plan Licencia</th>
-                  <th style={{ textAlign: 'center' }}>Alumnos</th>
-                  <th style={{ textAlign: 'center' }}>Estatus</th>
-                  <th style={{ textAlign: 'right' }}>Acciones</th>
+                  <th className="text-center">Plan Licencia</th>
+                  <th className="text-center">Alumnos</th>
+                  <th className="text-center">Estatus</th>
+                  <th className="text-right">Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredSchools.length === 0 ? (
                   <tr>
-                    <td colSpan={7} style={{ textAlign: 'center', paddingBlock: '2.5rem', color: 'var(--color-text-muted)' }}>
+                    <td colSpan={7} className="table-empty-cell">
                       {loading ? 'Cargando datos desde la base de datos...' : 'No se encontraron escuelas registradas con los filtros seleccionados.'}
                     </td>
                   </tr>
@@ -504,28 +456,14 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
                   filteredSchools.map((school) => (
                     <tr key={school.id}>
                       {/* Nombre */}
-                      <td style={{ fontWeight: 700, color: 'var(--color-text-main)' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
-                          <div
-                            style={{
-                              width: '2rem',
-                              height: '2rem',
-                              background: 'var(--color-bg-card)',
-                              borderRadius: 'var(--radius-md)',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              color: '#c084fc',
-                              fontWeight: 800,
-                              fontSize: '0.75rem',
-                              border: '1px solid var(--color-border-subtle)'
-                            }}
-                          >
+                      <td className="sa-school-cell">
+                        <div className="sa-school-info">
+                          <div className="sa-school-badge">
                             {school.name.slice(0, 2).toUpperCase()}
                           </div>
                           <div>
-                            <div>{school.name}</div>
-                            <div style={{ fontSize: '0.625rem', color: 'var(--color-text-faint)', fontFamily: 'var(--font-mono)' }}>
+                            <div className="sa-school-name">{school.name}</div>
+                            <div className="sa-school-id">
                               ID: {school.id}
                             </div>
                           </div>
@@ -533,21 +471,21 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
                       </td>
 
                       {/* Subdominio */}
-                      <td style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-primary-hover)' }}>
+                      <td className="sa-school-domain">
                         {school.subdomain}.avanteschoolmanagement.local
                       </td>
 
                       {/* Contacto */}
                       <td>
-                        <div style={{ color: 'var(--color-text-secondary)' }}>{school.contactEmail}</div>
+                        <div className="text-secondary">{school.contactEmail}</div>
                         {school.contactPhone && (
-                          <div style={{ fontSize: '0.625rem', color: 'var(--color-text-faint)' }}>{school.contactPhone}</div>
+                          <div className="sa-school-phone">{school.contactPhone}</div>
                         )}
                       </td>
 
                       {/* Plan */}
-                      <td style={{ textAlign: 'center' }}>
-                        <span
+                      <td className="text-center">
+                        <div
                           className={`badge ${
                             school.planTier === 'ENTERPRISE'
                               ? 'badge-purple'
@@ -559,51 +497,50 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
                           }`}
                         >
                           {school.planTier === 'FREE_TIER_LAUNCH' ? 'LANZAMIENTO GRATIS' : school.planTier}
-                        </span>
+                        </div>
                       </td>
 
                       {/* Alumnos */}
-                      <td style={{ textAlign: 'center', fontWeight: 800, color: 'var(--color-text-main)' }}>
+                      <td className="text-center font-bold">
                         {school.studentCount}
                       </td>
 
                       {/* Estatus */}
-                      <td style={{ textAlign: 'center' }}>
+                      <td className="text-center">
                         <button
                           type="button"
                           onClick={() => handleToggleStatus(school)}
-                          className={`badge ${
+                          className={`badge sa-badge-btn ${
                             school.status === 'ACTIVO'
                               ? 'badge-emerald'
                               : school.status === 'PENDIENTE_VERIFICACION'
                               ? 'badge-amber'
                               : 'badge-rose'
                           }`}
-                          style={{ cursor: 'pointer' }}
                           title="Haz clic para alternar estatus"
                         >
                           {school.status === 'ACTIVO' ? (
                             <>
-                              <CheckCircle2 style={{ width: '0.75rem', height: '0.75rem' }} />
-                              <span>ACTIVO</span>
+                              <CheckCircle2 />
+                              ACTIVO
                             </>
                           ) : school.status === 'PENDIENTE_VERIFICACION' ? (
                             <>
-                              <Clock style={{ width: '0.75rem', height: '0.75rem' }} />
-                              <span>PENDIENTE</span>
+                              <Clock />
+                              PENDIENTE
                             </>
                           ) : (
                             <>
-                              <XCircle style={{ width: '0.75rem', height: '0.75rem' }} />
-                              <span>SUSPENDIDO</span>
+                              <XCircle />
+                              SUSPENDIDO
                             </>
                           )}
                         </button>
                       </td>
 
                       {/* Acciones */}
-                      <td style={{ textAlign: 'right' }}>
-                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem' }}>
+                      <td className="text-right">
+                        <div className="sa-action-group">
                           {/* Cambiar a Escuela */}
                           <button
                             type="button"
@@ -615,11 +552,10 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
                                 adminEmail: school.contactEmail,
                               })
                             }
-                            className="btn btn-outline btn-sm"
-                            style={{ padding: '0.375rem', color: 'var(--color-primary-hover)' }}
+                            className="btn btn-outline btn-sm btn-icon-square btn-action-primary"
                             title="Entrar al Dashboard de este colegio"
                           >
-                            <ExternalLink style={{ width: '1rem', height: '1rem' }} />
+                            <ExternalLink />
                           </button>
 
                           {/* Editar Plan */}
@@ -630,22 +566,20 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
                               setEditPlan(school.planTier);
                               setEditFee(school.monthlyFeeMXN);
                             }}
-                            className="btn btn-outline btn-sm"
-                            style={{ padding: '0.375rem', color: '#c084fc' }}
+                            className="btn btn-outline btn-sm btn-icon-square btn-action-purple"
                             title="Cambiar plan de suscripción"
                           >
-                            <CreditCard style={{ width: '1rem', height: '1rem' }} />
+                            <CreditCard />
                           </button>
 
                           {/* Eliminar Escuela */}
                           <button
                             type="button"
                             onClick={() => setSchoolToDelete(school)}
-                            className="btn btn-outline btn-sm"
-                            style={{ padding: '0.375rem', color: 'var(--color-danger)' }}
+                            className="btn btn-outline btn-sm btn-icon-square btn-action-danger"
                             title="Eliminar escuela de la base de datos"
                           >
-                            <Trash2 style={{ width: '1rem', height: '1rem' }} />
+                            <Trash2 />
                           </button>
                         </div>
                       </td>
@@ -661,56 +595,36 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
       {/* MODAL DE CONFIRMACIÓN DE ELIMINACIÓN DE ESCUELA */}
       {schoolToDelete && (
         <div className="modal-backdrop">
-          <div className="modal-card" style={{ borderColor: 'var(--color-danger-border)' }}>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
-              <div
-                style={{
-                  padding: '0.75rem',
-                  background: 'var(--color-danger-bg)',
-                  border: '1px solid var(--color-danger-border)',
-                  color: 'var(--color-danger)',
-                  borderRadius: 'var(--radius-lg)',
-                  flexShrink: 0
-                }}
-              >
-                <AlertTriangle style={{ width: '1.5rem', height: '1.5rem' }} />
+          <div className="modal-card sa-modal-card-danger">
+            <div className="sa-modal-header">
+              <div className="sa-modal-danger-icon">
+                <AlertTriangle />
               </div>
               <div>
                 <h3 className="modal-title">¿Eliminar escuela definitivamente?</h3>
-                <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '0.25rem' }}>
+                <p className="auth-subtitle">
                   Esta acción es irreversible y afectará la base de datos PostgreSQL de producción.
                 </p>
               </div>
             </div>
 
-            <div
-              style={{
-                background: 'var(--color-bg-base)',
-                border: '1px solid var(--color-border-subtle)',
-                padding: '1rem',
-                borderRadius: 'var(--radius-md)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.5rem',
-                fontSize: '0.75rem'
-              }}
-            >
+            <div className="sa-modal-info-box">
               <div>
-                <span style={{ color: 'var(--color-text-faint)', fontWeight: 700, display: 'block' }}>Colegio:</span>
-                <span style={{ color: 'var(--color-text-main)', fontWeight: 800, fontSize: '0.875rem' }}>{schoolToDelete.name}</span>
+                <div className="sa-modal-label">Colegio:</div>
+                <div className="sa-modal-val">{schoolToDelete.name}</div>
               </div>
               <div>
-                <span style={{ color: 'var(--color-text-faint)', fontWeight: 700, display: 'block' }}>Subdominio:</span>
-                <span style={{ color: 'var(--color-primary)', fontFamily: 'var(--font-mono)' }}>
+                <div className="sa-modal-label">Subdominio:</div>
+                <div className="sa-modal-domain">
                   {schoolToDelete.subdomain}.avanteschoolmanagement.local
-                </span>
+                </div>
               </div>
-              <div style={{ color: 'var(--color-danger)', fontSize: '0.6875rem', paddingTop: '0.5rem', borderTop: '1px solid var(--color-border-subtle)' }}>
+              <p className="sa-modal-warning-text">
                 ⚠️ Se eliminarán en cascada todos sus campus, usuarios registrados, expedientes de {schoolToDelete.studentCount} alumnos, calificaciones y transacciones asociadas.
-              </div>
+              </p>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.75rem', paddingTop: '0.5rem' }}>
+            <div className="sa-modal-actions">
               <button
                 type="button"
                 disabled={isDeleting}
@@ -727,11 +641,11 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
                 className="btn btn-danger btn-sm"
               >
                 {isDeleting ? (
-                  <span>Eliminando de PostgreSQL...</span>
+                  'Eliminando de PostgreSQL...'
                 ) : (
                   <>
-                    <Trash2 style={{ width: '0.875rem', height: '0.875rem' }} />
-                    <span>Confirmar y Eliminar</span>
+                    <Trash2 />
+                    Confirmar y Eliminar
                   </>
                 )}
               </button>
@@ -743,23 +657,15 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
       {/* MODAL PARA CAMBIAR PLAN DE SUSCRIPCIÓN */}
       {schoolToEdit && (
         <div className="modal-backdrop">
-          <div className="modal-card" style={{ borderColor: 'rgba(147, 51, 234, 0.4)' }}>
-            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <div
-                  style={{
-                    padding: '0.75rem',
-                    background: 'var(--color-purple-bg)',
-                    border: '1px solid var(--color-purple-border)',
-                    color: '#c084fc',
-                    borderRadius: 'var(--radius-lg)'
-                  }}
-                >
-                  <CreditCard style={{ width: '1.5rem', height: '1.5rem' }} />
+          <div className="modal-card sa-modal-card-purple">
+            <div className="sa-modal-header-between">
+              <div className="flex-row-between gap-3">
+                <div className="sa-modal-purple-icon">
+                  <CreditCard />
                 </div>
                 <div>
                   <h3 className="modal-title">Gestionar Licencia SaaS</h3>
-                  <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>{schoolToEdit.name}</p>
+                  <p className="auth-subtitle">{schoolToEdit.name}</p>
                 </div>
               </div>
               <button
@@ -767,12 +673,12 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
                 onClick={() => setSchoolToEdit(null)}
                 className="modal-close"
               >
-                <X style={{ width: '1.25rem', height: '1.25rem' }} />
+                <X />
               </button>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', fontSize: '0.75rem' }}>
-              <div className="form-group" style={{ marginBottom: 0 }}>
+            <div className="flex-col gap-4">
+              <div className="form-group mb-0">
                 <label className="form-label">Nivel de Plan</label>
                 <select
                   value={editPlan}
@@ -792,20 +698,19 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
                 </select>
               </div>
 
-              <div className="form-group" style={{ marginBottom: 0 }}>
+              <div className="form-group mb-0">
                 <label className="form-label">Cuota Mensual (MXN)</label>
                 <input
                   type="number"
                   min="0"
                   value={editFee}
                   onChange={(e) => setEditFee(parseFloat(e.target.value) || 0)}
-                  className="form-input"
-                  style={{ fontFamily: 'var(--font-mono)' }}
+                  className="form-input font-mono"
                 />
               </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.75rem', paddingTop: '0.5rem' }}>
+            <div className="sa-modal-actions">
               <button
                 type="button"
                 onClick={() => setSchoolToEdit(null)}

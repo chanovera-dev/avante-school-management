@@ -68,15 +68,15 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
               <h1 className="brand-title">
                 {currentTenant.name || 'Instituto Logos'}
               </h1>
-              <div style={{ fontSize: '0.6875rem', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)', display: 'flex', gap: '0.5rem' }}>
-                <span>{currentTenant.subdomain || 'institutologos'}.avanteschoolmanagement.local</span>
-                <span>•</span>
-                <span style={{ color: 'var(--color-primary-hover)', fontWeight: 600 }}>Portal Oficial</span>
+              <div className="footer-brand-info">
+                <p>{currentTenant.subdomain || 'institutologos'}.avanteschoolmanagement.local</p>
+                <p>•</p>
+                <p className="footer-brand-name">Portal Oficial</p>
               </div>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div className="nav-actions">
             <button
               onClick={() => onNavigate('home')}
               className="btn btn-ghost btn-sm"
@@ -90,8 +90,8 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
               }}
               className="btn btn-primary btn-sm"
             >
-              <span>Panel de Administración</span>
-              <ChevronRight style={{ width: '0.875rem', height: '0.875rem' }} />
+              Panel de Administración
+              <ChevronRight />
             </button>
           </div>
         </div>
@@ -102,19 +102,19 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
         <div className="portal-hero">
           <div>
             <div className="badge badge-sky">
-              <Sparkles style={{ width: '0.875rem', height: '0.875rem' }} />
-              <span>Ciclo Escolar 2026 - 2027</span>
+              <Sparkles />
+              Ciclo Escolar 2026 - 2027
             </div>
           </div>
           <h2>
             Bienvenido al Portal de <br />
-            <span className="text-gradient">
+            <strong className="text-gradient">
               {currentTenant.name || 'Instituto Logos'}
-            </span>
+            </strong>
           </h2>
           <p>
-            Niveles Incorporados: <strong style={{ color: '#f472b6' }}>🎨 Preescolar</strong> y{' '}
-            <strong style={{ color: 'var(--color-primary-hover)' }}>🎒 Primaria</strong>. Selecciona tu perfil institucional para ingresar o solicita la inscripción de un nuevo alumno.
+            Niveles Incorporados: <strong>🎨 Preescolar</strong> y{' '}
+            <strong>🎒 Primaria</strong>. Selecciona tu perfil institucional para ingresar o solicita la inscripción de un nuevo alumno.
           </p>
         </div>
 
@@ -123,8 +123,8 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
           <div className="banner-text">
             <div>
               <div className="badge badge-emerald">
-                <UserPlus style={{ width: '0.875rem', height: '0.875rem' }} />
-                <span>Inscripciones y Admisiones Abiertas</span>
+                <UserPlus />
+                Inscripciones y Admisiones Abiertas
               </div>
             </div>
             <h3>¿Deseas inscribir a tu hijo(a) en Kínder o Primaria?</h3>
@@ -137,8 +137,8 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
             onClick={() => setShowStudentEnrollModal(true)}
             className="btn btn-banner btn-lg"
           >
-            <span>Iniciar Solicitud de Inscripción</span>
-            <ArrowRight style={{ width: '1rem', height: '1rem' }} />
+            Iniciar Solicitud de Inscripción
+            <ArrowRight />
           </button>
         </div>
 
@@ -146,25 +146,18 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
         <div className="portal-roles-section">
           <div className="portal-roles-header">
             <h3>
-              <School style={{ width: '1.25rem', height: '1.25rem', color: 'var(--color-primary-hover)' }} />
+              <School />
               Accesos al Sistema por Perfil Institucional
             </h3>
-            <span>Selecciona tu área de trabajo</span>
+            <p>Selecciona tu área de trabajo</p>
           </div>
 
           <div className="portal-roles-grid">
             {/* 1. DIRECTORES */}
             <div className="portal-role-card">
               <div>
-                <div
-                  className="role-icon"
-                  style={{
-                    background: 'var(--color-primary-bg)',
-                    border: '1px solid var(--color-primary-border)',
-                    color: 'var(--color-primary)'
-                  }}
-                >
-                  <ShieldCheck style={{ width: '1.5rem', height: '1.5rem' }} />
+                <div className="role-icon">
+                  <ShieldCheck />
                 </div>
                 <h4>Portal de Directores</h4>
                 <p>
@@ -178,25 +171,17 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                   onNavigate('dashboard');
                 }}
                 className="btn btn-secondary btn-sm"
-                style={{ width: '100%' }}
               >
-                <span>Entrar como Director</span>
-                <ChevronRight style={{ width: '0.875rem', height: '0.875rem' }} />
+                Entrar como Director
+                <ChevronRight />
               </button>
             </div>
 
             {/* 2. MAESTROS / DOCENTES */}
             <div className="portal-role-card">
               <div>
-                <div
-                  className="role-icon"
-                  style={{
-                    background: 'var(--color-success-bg)',
-                    border: '1px solid var(--color-success-border)',
-                    color: 'var(--color-success)'
-                  }}
-                >
-                  <UserCheck style={{ width: '1.5rem', height: '1.5rem' }} />
+                <div className="role-icon">
+                  <UserCheck />
                 </div>
                 <h4>Portal de Maestros</h4>
                 <p>
@@ -210,25 +195,17 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                   onNavigate('dashboard');
                 }}
                 className="btn btn-secondary btn-sm"
-                style={{ width: '100%' }}
               >
-                <span>Entrar como Maestro</span>
-                <ChevronRight style={{ width: '0.875rem', height: '0.875rem' }} />
+                Entrar como Maestro
+                <ChevronRight />
               </button>
             </div>
 
             {/* 3. PERSONAL ADMINISTRATIVO / CAJA */}
             <div className="portal-role-card">
               <div>
-                <div
-                  className="role-icon"
-                  style={{
-                    background: 'var(--color-warning-bg)',
-                    border: '1px solid var(--color-warning-border)',
-                    color: 'var(--color-warning)'
-                  }}
-                >
-                  <DollarSign style={{ width: '1.5rem', height: '1.5rem' }} />
+                <div className="role-icon">
+                  <DollarSign />
                 </div>
                 <h4>Finanzas y Recepción</h4>
                 <p>
@@ -242,25 +219,17 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                   onNavigate('dashboard');
                 }}
                 className="btn btn-secondary btn-sm"
-                style={{ width: '100%' }}
               >
-                <span>Entrar a Caja Escolar</span>
-                <ChevronRight style={{ width: '0.875rem', height: '0.875rem' }} />
+                Entrar a Caja Escolar
+                <ChevronRight />
               </button>
             </div>
 
             {/* 4. PADRES Y FAMILIAS */}
             <div className="portal-role-card">
               <div>
-                <div
-                  className="role-icon"
-                  style={{
-                    background: 'rgba(99, 102, 241, 0.12)',
-                    border: '1px solid rgba(99, 102, 241, 0.3)',
-                    color: '#818cf8'
-                  }}
-                >
-                  <Users style={{ width: '1.5rem', height: '1.5rem' }} />
+                <div className="role-icon">
+                  <Users />
                 </div>
                 <h4>Portal de Familias</h4>
                 <p>
@@ -274,10 +243,9 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                   onNavigate('dashboard');
                 }}
                 className="btn btn-secondary btn-sm"
-                style={{ width: '100%' }}
               >
-                <span>Entrar como Tutor</span>
-                <ChevronRight style={{ width: '0.875rem', height: '0.875rem' }} />
+                Entrar como Tutor
+                <ChevronRight />
               </button>
             </div>
           </div>
@@ -290,9 +258,9 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
           <div className="modal-card">
             <div className="modal-header">
               <div>
-                <span className="badge badge-emerald" style={{ marginBottom: '0.25rem' }}>
+                <div className="badge badge-emerald">
                   Admisiones 2026-2027
-                </span>
+                </div>
                 <h3 className="modal-title">Solicitud de Inscripción en Línea</h3>
               </div>
               <button
@@ -304,31 +272,20 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
             </div>
 
             {enrollSubmitted ? (
-              <div style={{ paddingBlock: '2rem', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
-                <div
-                  style={{
-                    width: '4rem',
-                    height: '4rem',
-                    background: 'var(--color-success-bg)',
-                    color: 'var(--color-success)',
-                    borderRadius: 'var(--radius-full)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}
-                >
-                  <CheckCircle2 style={{ width: '2rem', height: '2rem' }} />
+              <div className="flex-col flex-center gap-3">
+                <div className="badge badge-emerald">
+                  <CheckCircle2 />
                 </div>
-                <h4 style={{ fontSize: '1.125rem', fontWeight: 900, color: 'var(--color-text-main)' }}>
+                <h4 className="modal-title">
                   ¡Solicitud Registrada con Éxito!
                 </h4>
-                <p style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)', maxWidth: '20rem' }}>
+                <p className="auth-subtitle">
                   Hemos enviado los datos de preinscripción y ficha de pago a <strong>{studentForm.parentEmail}</strong>.
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleStudentSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
-                <div className="form-group" style={{ marginBottom: 0 }}>
+              <form onSubmit={handleStudentSubmit} className="flex-col gap-3">
+                <div className="form-group">
                   <label className="form-label">Nombre Completo del Aspirante</label>
                   <input
                     type="text"
@@ -340,8 +297,8 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                   />
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
-                  <div className="form-group" style={{ marginBottom: 0 }}>
+                <div className="grid-cols-2 gap-3">
+                  <div className="form-group">
                     <label className="form-label">Nivel Escolar</label>
                     <select
                       value={studentForm.level}
@@ -352,7 +309,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                       <option value="Primaria">Primaria</option>
                     </select>
                   </div>
-                  <div className="form-group" style={{ marginBottom: 0 }}>
+                  <div className="form-group">
                     <label className="form-label">Grado Solicitado</label>
                     <input
                       type="text"
@@ -365,8 +322,8 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
-                  <div className="form-group" style={{ marginBottom: 0 }}>
+                <div className="grid-cols-2 gap-3">
+                  <div className="form-group">
                     <label className="form-label">Nombre del Padre o Tutor</label>
                     <input
                       type="text"
@@ -377,7 +334,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                       className="form-input"
                     />
                   </div>
-                  <div className="form-group" style={{ marginBottom: 0 }}>
+                  <div className="form-group">
                     <label className="form-label">Teléfono de Contacto</label>
                     <input
                       type="tel"
@@ -386,12 +343,11 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                       onChange={(e) => setStudentForm({ ...studentForm, parentPhone: e.target.value })}
                       placeholder="Ej. 921 555 9988"
                       className="form-input"
-                      style={{ fontFamily: 'var(--font-mono)' }}
                     />
                   </div>
                 </div>
 
-                <div className="form-group" style={{ marginBottom: 0 }}>
+                <div className="form-group">
                   <label className="form-label">Correo Electrónico del Tutor</label>
                   <input
                     type="email"
@@ -400,26 +356,23 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                     onChange={(e) => setStudentForm({ ...studentForm, parentEmail: e.target.value })}
                     placeholder="tutor@ejemplo.com"
                     className="form-input"
-                    style={{ fontFamily: 'var(--font-mono)' }}
                   />
                 </div>
 
-                <div style={{ display: 'flex', gap: '0.75rem', paddingTop: '0.5rem' }}>
+                <div className="flex-row-between gap-3">
                   <button
                     type="button"
                     onClick={() => setShowStudentEnrollModal(false)}
                     className="btn btn-secondary"
-                    style={{ flex: 1 }}
                   >
                     Cancelar
                   </button>
                   <button
                     type="submit"
                     className="btn btn-success"
-                    style={{ flex: 1 }}
                   >
-                    <CheckCircle2 style={{ width: '1rem', height: '1rem' }} />
-                    <span>Enviar Solicitud</span>
+                    <CheckCircle2 />
+                    Enviar Solicitud
                   </button>
                 </div>
               </form>
@@ -431,10 +384,10 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
       {/* FOOTER */}
       <footer className="site-footer">
         <div className="container-app footer-content">
-          <span>{currentTenant.name} • Portal Institucional Multi-Rol</span>
-          <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-text-muted)' }}>
+          <p>{currentTenant.name} • Portal Institucional Multi-Rol</p>
+          <p className="footer-host">
             {currentTenant.subdomain}.avanteschoolmanagement.local
-          </span>
+          </p>
         </div>
       </footer>
     </div>

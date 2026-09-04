@@ -5,7 +5,8 @@
 
 /* Botones */
 .btn {
-  display: inline-flex;
+  display: flex;
+  width: fit-content;
   align-items: center;
   justify-content: center;
   gap: 0.625rem;
@@ -23,6 +24,12 @@
   white-space: nowrap;
   outline: none;
   box-sizing: border-box;
+
+  svg {
+    width: 1.125rem;
+    height: 1.125rem;
+    flex-shrink: 0;
+  }
 
   .is-chromium & {
     border-radius: calc(var(--radius-md) * 2);
@@ -46,6 +53,11 @@
   font-size: 0.75rem;
   border-radius: var(--radius-sm);
 
+  svg {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+
   .is-chromium & {
     border-radius: calc(var(--radius-sm) * 2);
     corner-shape: squircle;
@@ -59,6 +71,11 @@
   padding: 0 1.75rem;
   font-size: 1rem;
   border-radius: var(--radius-lg);
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
 
   .is-chromium & {
     border-radius: calc(var(--radius-lg) * 2);
@@ -261,7 +278,8 @@
 
 /* Badges / Etiquetas */
 .badge {
-  display: inline-flex;
+  display: flex;
+  width: fit-content;
   align-items: center;
   gap: 0.375rem;
   padding: 0.25rem 0.625rem;
@@ -271,6 +289,12 @@
   border: 1px solid transparent;
   text-transform: uppercase;
   letter-spacing: 0.03em;
+
+  svg {
+    width: 0.875rem;
+    height: 0.875rem;
+    flex-shrink: 0;
+  }
 
   .is-chromium & {
     border-radius: calc(var(--radius-sm) * 2);

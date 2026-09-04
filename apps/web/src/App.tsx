@@ -183,65 +183,55 @@ export function App() {
       )}
 
       {/* BARRA FLOTANTE DE DESARROLLO LOCAL (Para alternar fácilmente entre dominios y accesos) */}
-      <div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 backdrop-blur-xl border border-slate-700/90 px-4 py-2 rounded-2xl shadow-2xl flex flex-wrap items-center justify-center gap-2 text-xs font-mono text-slate-300">
-        <div className="flex items-center gap-1.5 text-sky-400 font-bold mr-1">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>Navegación Rápida:</span>
+      <div className="dev-floating-bar">
+        <div className="dev-floating-title">
+          <Sparkles />
+          <div>Navegación Rápida:</div>
         </div>
 
         <button
           onClick={() => setCurrentRoute('home')}
-          className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
-            currentRoute === 'home' ? 'bg-sky-500 text-slate-950 font-bold shadow-md shadow-sky-500/20' : 'hover:bg-slate-800 text-slate-400 hover:text-white'
-          }`}
+          className={`dev-btn ${currentRoute === 'home' ? 'active-home' : ''}`}
           title="Página Principal (Landing pública)"
         >
-          <Globe className="w-3 h-3" />
-          <span>Home</span>
+          <Globe />
+          Home
         </button>
 
         <button
           onClick={() => setCurrentRoute('portal')}
-          className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
-            currentRoute === 'portal' ? 'bg-emerald-400 text-slate-950 font-bold shadow-md shadow-emerald-400/20' : 'hover:bg-slate-800 text-slate-400 hover:text-white'
-          }`}
+          className={`dev-btn ${currentRoute === 'portal' ? 'active-portal' : ''}`}
           title="Portal Escolar de Instituto Logos"
         >
-          <School className="w-3 h-3" />
-          <span>Portal Logos</span>
+          <School />
+          Portal Logos
         </button>
 
         <button
           onClick={() => setCurrentRoute('login')}
-          className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
-            currentRoute === 'login' ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/20' : 'hover:bg-slate-800 text-slate-400 hover:text-white'
-          }`}
+          className={`dev-btn ${currentRoute === 'login' ? 'active-login' : ''}`}
           title="Login Institucional de Colegios"
         >
-          <LogIn className="w-3 h-3" />
-          <span>Login Escolar</span>
+          <LogIn />
+          Login Escolar
         </button>
 
         <button
           onClick={() => setCurrentRoute('superadmin')}
-          className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
-            currentRoute === 'superadmin' ? 'bg-purple-600 text-white font-bold shadow-md shadow-purple-600/30' : 'hover:bg-slate-800 text-purple-400 hover:text-purple-300'
-          }`}
+          className={`dev-btn ${currentRoute === 'superadmin' ? 'active-sa' : ''}`}
           title="Consola Master Exclusiva para Super Administrador"
         >
-          <ShieldCheck className="w-3.5 h-3.5" />
-          <span className="font-bold">SuperAdmin</span>
+          <ShieldCheck />
+          SuperAdmin
         </button>
 
         <button
           onClick={() => setCurrentRoute('dashboard')}
-          className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
-            currentRoute === 'dashboard' ? 'bg-indigo-500 text-white font-bold shadow-md shadow-indigo-500/20' : 'hover:bg-slate-800 text-slate-400 hover:text-white'
-          }`}
+          className={`dev-btn ${currentRoute === 'dashboard' ? 'active-dash' : ''}`}
           title="Ver Panel Escolar Interno"
         >
-          <LayoutDashboard className="w-3 h-3" />
-          <span>Dashboard</span>
+          <LayoutDashboard />
+          Dashboard
         </button>
       </div>
     </div>

@@ -77,14 +77,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, onLoginSuccess
         <div className="container-app auth-header-inner">
           <div className="brand-logo" onClick={() => onNavigate('home')}>
             <div className="brand-icon">ASM</div>
-            <span className="brand-title">Avante School Management</span>
+            <div className="brand-title">Avante School Management</div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '0.75rem' }}>
-            <span style={{ color: 'var(--color-text-muted)' }}>¿No tienes escuela registrada?</span>
+          <div className="auth-header-action">
+            <p className="auth-header-question">¿No tienes escuela registrada?</p>
             <button
               onClick={() => onNavigate('register')}
               className="btn btn-ghost"
-              style={{ color: 'var(--color-primary-hover)', fontWeight: 700 }}
             >
               Registrar mi Escuela Gratis
             </button>
@@ -96,29 +95,29 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, onLoginSuccess
       <main className="auth-main">
         <div className="auth-card">
           <div>
-            <div className="badge badge-sky" style={{ marginBottom: '0.75rem' }}>
-              <Building2 style={{ width: '0.875rem', height: '0.875rem' }} />
-              <span>Portal Institucional Escolar</span>
+            <div className="badge badge-sky">
+              <Building2 />
+              Portal Institucional Escolar
             </div>
-            <h1 style={{ fontSize: '1.5rem', fontWeight: 900, color: 'var(--color-text-main)' }}>
+            <h1 className="auth-title">
               Iniciar Sesión
             </h1>
-            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.75rem', marginTop: '0.25rem' }}>
+            <p className="auth-subtitle">
               Ingresa al sistema con la cuenta asignada por tu institución educativa.
             </p>
           </div>
 
           {errorMessage && (
             <div className="alert alert-danger">
-              <AlertCircle style={{ width: '1rem', height: '1rem', flexShrink: 0, marginTop: '0.125rem' }} />
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
-                <span>{errorMessage}</span>
+              <AlertCircle />
+              <div>
+                <p>{errorMessage}</p>
                 {errorMessage.includes('Super Administrador') && (
                   <div>
                     <button
                       type="button"
                       onClick={() => onNavigate('superadmin')}
-                      style={{ color: '#d8b4fe', fontWeight: 700, textDecoration: 'underline' }}
+                      className="btn btn-ghost btn-sm"
                     >
                       Ir a la Consola Super Admin &rarr;
                     </button>
@@ -128,8 +127,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, onLoginSuccess
             </div>
           )}
 
-          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <div className="form-group" style={{ marginBottom: 0 }}>
+          <form onSubmit={handleLogin} className="flex-col gap-4">
+            <div className="form-group">
               <label className="form-label">Correo Electrónico Institucional</label>
               <div className="auth-input-wrapper">
                 <Mail className="input-icon" />
@@ -144,7 +143,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, onLoginSuccess
               </div>
             </div>
 
-            <div className="form-group" style={{ marginBottom: 0 }}>
+            <div className="form-group">
               <label className="form-label">Contraseña</label>
               <div className="auth-input-wrapper">
                 <Lock className="input-icon" />
@@ -154,7 +153,6 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, onLoginSuccess
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="form-input"
-                  style={{ fontFamily: 'var(--font-mono)' }}
                 />
               </div>
             </div>
@@ -163,14 +161,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, onLoginSuccess
               type="submit"
               disabled={loading}
               className="btn btn-primary btn-lg"
-              style={{ width: '100%', marginTop: '0.5rem' }}
             >
               {loading ? (
-                <span>Comprobando acceso...</span>
+                'Comprobando acceso...'
               ) : (
                 <>
-                  <span>Acceder al Sistema</span>
-                  <ArrowRight style={{ width: '1rem', height: '1rem' }} />
+                  Acceder al Sistema
+                  <ArrowRight />
                 </>
               )}
             </button>
@@ -178,50 +175,47 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, onLoginSuccess
 
           {/* Cuentas Institucionales de Demostración */}
           <div className="auth-presets">
-            <span className="presets-title">Cuentas Escolares de Demostración</span>
+            <div className="presets-title">Cuentas Escolares de Demostración</div>
             <div className="presets-grid">
               <button
                 type="button"
                 onClick={() => handleQuickFill('contacto@chanovera.com')}
                 className="preset-btn"
               >
-                <span className="preset-role">🏫 Director Logos</span>
-                <span className="preset-email">contacto@chanovera.com</span>
+                <div className="preset-role">🏫 Director Logos</div>
+                <div className="preset-email">contacto@chanovera.com</div>
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickFill('caja@colegiohidalgo.edu.mx')}
                 className="preset-btn"
               >
-                <span className="preset-role">💵 Finanzas / Caja</span>
-                <span className="preset-email">caja@colegiohidalgo.edu.mx</span>
+                <div className="preset-role">💵 Finanzas / Caja</div>
+                <div className="preset-email">caja@colegiohidalgo.edu.mx</div>
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickFill('control@colegiohidalgo.edu.mx')}
                 className="preset-btn"
               >
-                <span className="preset-role">🎓 Control Escolar</span>
-                <span className="preset-email">control@colegiohidalgo.edu.mx</span>
+                <div className="preset-role">🎓 Control Escolar</div>
+                <div className="preset-email">control@colegiohidalgo.edu.mx</div>
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickFill('docente@colegiohidalgo.edu.mx')}
                 className="preset-btn"
               >
-                <span className="preset-role">👨‍🏫 Docente Titular</span>
-                <span className="preset-email">docente@colegiohidalgo.edu.mx</span>
+                <div className="preset-role">👨‍🏫 Docente Titular</div>
+                <div className="preset-email">docente@colegiohidalgo.edu.mx</div>
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickFill('padre@familia.com')}
                 className="preset-btn"
-                style={{ gridColumn: 'span 2' }}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span className="preset-role">👨‍👩‍👧 Portal Familiar (Tutor Titular)</span>
-                  <span className="preset-email">padre@familia.com</span>
-                </div>
+                <div className="preset-role">👨‍👩‍👧 Portal Familiar (Tutor Titular)</div>
+                <div className="preset-email">padre@familia.com</div>
               </button>
             </div>
           </div>
@@ -230,14 +224,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, onLoginSuccess
 
       {/* Footer con enlace discreto a consola master */}
       <footer className="auth-footer">
-        <div className="container-app" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
-          <span>Avante School Management (ASM) • Plataforma Escolar Multi-Tenant</span>
+        <div className="container-app auth-footer-inner">
+          <p>Avante School Management (ASM) • Plataforma Escolar Multi-Tenant</p>
           <button
             onClick={() => onNavigate('superadmin')}
-            style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)', fontSize: '0.6875rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
+            className="auth-footer-btn"
           >
-            <span>Consola Global Operativa (SaaS Master)</span>
-            <span>&rarr;</span>
+            Consola Global Operativa (SaaS Master) &rarr;
           </button>
         </div>
       </footer>
