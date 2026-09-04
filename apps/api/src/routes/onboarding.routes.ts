@@ -2,6 +2,7 @@ import { FastifyInstance } from 'fastify';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import { store } from '../store/memory.store.js';
+import { prisma } from '../lib/prisma.js';
 import { emailService } from '../services/email.service.js';
 import {
   UserRole,
@@ -43,11 +44,15 @@ export async function onboardingRoutes(fastify: FastifyInstance) {
     const { schoolName, subdomain, adminFullName, adminEmail, adminPassword, adminPhone } =
       parseResult.data;
 
-    // Validar subdominio único
-    const existingSubdomain = store.tenants.find(
+    // Validar subdominio único en DB o memoria
+    const dbSubdomain = await prisma.tenant.findUnique({
+      where: { subdomain: subdomain.toLowerCase() },
+    });
+    const memSubdomain = store.tenants.find(
       (t) => t.subdomain.toLowerCase() === subdomain.toLowerCase()
     );
-    if (existingSubdomain) {
+
+    if (dbSubdomain || memSubdomain) {
       return reply.status(409).send({
         error: 'Subdomain In Use',
         message: `El subdominio '${subdomain}' ya está en uso. Por favor elige otro diferente.`,
@@ -55,10 +60,14 @@ export async function onboardingRoutes(fastify: FastifyInstance) {
     }
 
     // Validar correo único
-    const existingUser = store.users.find(
+    const dbUser = await prisma.user.findFirst({
+      where: { email: { equals: adminEmail, mode: 'insensitive' } },
+    });
+    const memUser = store.users.find(
       (u) => u.email.toLowerCase() === adminEmail.toLowerCase()
     );
-    if (existingUser) {
+
+    if (dbUser || memUser) {
       return reply.status(409).send({
         error: 'Email In Use',
         message: `El correo electrónico '${adminEmail}' ya está registrado.`,
@@ -75,8 +84,73 @@ export async function onboardingRoutes(fastify: FastifyInstance) {
     const tenantId = `tenant-${Date.now()}`;
     const userId = `user-director-${Date.now()}`;
     const campusId = `campus-${Date.now()}`;
+    const passwordHash = bcrypt.hashSync(adminPassword, 10);
 
-    // Crear Tenant en estado PENDIENTE_VERIFICACION
+    // Guardar en PostgreSQL
+    try {
+      await prisma.tenant.create({
+        data: {
+          id: tenantId,
+          name: schoolName,
+          subdomain: subdomain.toLowerCase(),
+          legalBusinessName: schoolName,
+          contactEmail: adminEmail,
+          contactPhone: adminPhone,
+          timeZone: 'America/Mexico_City',
+          currency: 'MXN',
+          gatewayFeePolicy: 'TRANSFERRED_TO_TUTOR',
+          whatsappEnabled: true,
+          status: 'PENDIENTE_VERIFICACION',
+          isEmailVerified: false,
+          subscription: {
+            create: {
+              id: `sub-${Date.now()}`,
+              planTier: 'FREE_TIER_LAUNCH',
+              status: 'FREE',
+              maxStudentsLimit: 999999,
+              monthlyFeeMXN: 0,
+              isFreeLaunchPromo: true,
+            },
+          },
+          campuses: {
+            create: {
+              id: campusId,
+              name: 'Campus Principal',
+              code: 'CAMPUS-01',
+              address: 'Dirección Principal del Colegio',
+              phone: adminPhone,
+              levelsOffered: [],
+              isActive: true,
+            },
+          },
+          users: {
+            create: {
+              id: userId,
+              campusId,
+              email: adminEmail,
+              fullName: adminFullName,
+              role: 'DIRECTOR',
+              phone: adminPhone,
+              isEmailVerified: false,
+              isActive: true,
+              passwordHash,
+            },
+          },
+          verificationTokens: {
+            create: {
+              email: adminEmail.toLowerCase(),
+              code: otpCode,
+              userId,
+              expiresAt,
+            },
+          },
+        },
+      });
+    } catch (dbErr) {
+      console.error('Error al persistir escuela en PostgreSQL:', dbErr);
+    }
+
+    // Sincronizar en memoria
     const newTenant = {
       id: tenantId,
       name: schoolName,
@@ -104,7 +178,6 @@ export async function onboardingRoutes(fastify: FastifyInstance) {
       updatedAt: new Date(),
     };
 
-    // Crear Campus Principal
     const newCampus = {
       id: campusId,
       tenantId,
@@ -118,8 +191,6 @@ export async function onboardingRoutes(fastify: FastifyInstance) {
       updatedAt: new Date(),
     };
 
-    // Crear Usuario Director
-    const passwordHash = bcrypt.hashSync(adminPassword, 10);
     const newUser = {
       id: userId,
       tenantId,
@@ -167,9 +238,25 @@ export async function onboardingRoutes(fastify: FastifyInstance) {
 
     const { email, code } = parseResult.data;
 
-    const tokenEntry = store.verificationTokens.find(
+    // Buscar token en DB o memoria
+    let tokenEntry = store.verificationTokens.find(
       (t) => t.email.toLowerCase() === email.toLowerCase() && t.code === code
     );
+
+    if (!tokenEntry) {
+      const dbToken = await prisma.emailVerificationToken.findFirst({
+        where: { email: email.toLowerCase(), code },
+      });
+      if (dbToken) {
+        tokenEntry = {
+          email: dbToken.email,
+          code: dbToken.code,
+          tenantId: dbToken.tenantId,
+          userId: dbToken.userId,
+          expiresAt: dbToken.expiresAt,
+        };
+      }
+    }
 
     if (!tokenEntry) {
       return reply.status(400).send({
@@ -185,9 +272,26 @@ export async function onboardingRoutes(fastify: FastifyInstance) {
       });
     }
 
-    // Activar Tenant y Usuario en la base de datos
-    const tenant = store.tenants.find((t) => t.id === tokenEntry.tenantId);
-    const user = store.users.find((u) => u.id === tokenEntry.userId);
+    // Activar en PostgreSQL
+    try {
+      await prisma.tenant.update({
+        where: { id: tokenEntry.tenantId },
+        data: { status: 'ACTIVO', isEmailVerified: true },
+      });
+      await prisma.user.update({
+        where: { id: tokenEntry.userId },
+        data: { isEmailVerified: true },
+      });
+      await prisma.emailVerificationToken.deleteMany({
+        where: { email: email.toLowerCase() },
+      });
+    } catch (err) {
+      console.warn('Error al activar en PostgreSQL:', err);
+    }
+
+    // Activar en memoria
+    const tenant = store.tenants.find((t) => t.id === tokenEntry!.tenantId);
+    const user = store.users.find((u) => u.id === tokenEntry!.userId);
 
     if (tenant) {
       tenant.status = TenantStatus.ACTIVO;
@@ -207,28 +311,28 @@ export async function onboardingRoutes(fastify: FastifyInstance) {
 
     // Generar Token JWT de sesión
     const token = fastify.jwt.sign({
-      id: user!.id,
-      tenantId: tenant!.id,
-      role: user!.role,
-      email: user!.email,
+      id: user?.id || tokenEntry.userId,
+      tenantId: tenant?.id || tokenEntry.tenantId,
+      role: user?.role || UserRole.DIRECTOR,
+      email: user?.email || email,
     });
 
     return reply.send({
       message: '¡Correo verificado con éxito! Bienvenido a Avante School Management.',
       token,
       user: {
-        id: user!.id,
-        email: user!.email,
-        fullName: user!.fullName,
-        role: user!.role,
-        tenantId: tenant!.id,
+        id: user?.id || tokenEntry.userId,
+        email: user?.email || email,
+        fullName: user?.fullName || 'Director General',
+        role: user?.role || UserRole.DIRECTOR,
+        tenantId: tenant?.id || tokenEntry.tenantId,
       },
       tenant: {
-        id: tenant!.id,
-        name: tenant!.name,
-        subdomain: tenant!.subdomain,
-        plan: tenant!.subscription?.planTier,
-        status: tenant!.status,
+        id: tenant?.id || tokenEntry.tenantId,
+        name: tenant?.name || 'Tu Escuela',
+        subdomain: tenant?.subdomain,
+        plan: tenant?.subscription?.planTier,
+        status: tenant?.status || TenantStatus.ACTIVO,
       },
     });
   });
@@ -253,6 +357,23 @@ export async function onboardingRoutes(fastify: FastifyInstance) {
 
     const emailResult = await emailService.sendVerificationEmail(email, newCode, tenant?.name || 'Tu Escuela');
 
+    // Actualizar en DB
+    try {
+      await prisma.emailVerificationToken.deleteMany({ where: { email: email.toLowerCase() } });
+      await prisma.emailVerificationToken.create({
+        data: {
+          email: email.toLowerCase(),
+          code: newCode,
+          tenantId: user.tenantId,
+          userId: user.id,
+          expiresAt,
+        },
+      });
+    } catch (err) {
+      console.warn('Error al actualizar token en PostgreSQL:', err);
+    }
+
+    // Actualizar en memoria
     const existing = store.verificationTokens.find((t) => t.email.toLowerCase() === email.toLowerCase());
     if (existing) {
       existing.code = newCode;

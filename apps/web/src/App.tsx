@@ -3,6 +3,7 @@ import { HomePage } from './pages/HomePage.js';
 import { RegisterPage } from './pages/RegisterPage.js';
 import { LoginPage } from './pages/LoginPage.js';
 import { SuperAdminLoginPage } from './pages/SuperAdminLoginPage.js';
+import { SuperAdminDashboardPage } from './pages/SuperAdminDashboardPage.js';
 import { DashboardPage } from './pages/DashboardPage.js';
 import { SchoolPortalPage } from './pages/SchoolPortalPage.js';
 import { Globe, School, LayoutDashboard, Sparkles, ShieldCheck, LogIn } from 'lucide-react';
@@ -162,12 +163,23 @@ export function App() {
       )}
 
       {currentRoute === 'dashboard' && (
-        <DashboardPage
-          onNavigate={setCurrentRoute}
-          activeRole={activeRole}
-          setActiveRole={setActiveRole}
-          currentTenant={currentTenant}
-        />
+        activeRole === 'SUPER_ADMIN' ? (
+          <SuperAdminDashboardPage
+            onNavigate={setCurrentRoute}
+            onSwitchToSchool={(tenant) => {
+              setCurrentTenant(tenant);
+              setActiveRole('DIRECTOR');
+              setCurrentRoute('dashboard');
+            }}
+          />
+        ) : (
+          <DashboardPage
+            onNavigate={setCurrentRoute}
+            activeRole={activeRole}
+            setActiveRole={setActiveRole}
+            currentTenant={currentTenant}
+          />
+        )
       )}
 
       {/* BARRA FLOTANTE DE DESARROLLO LOCAL (Para alternar fácilmente entre dominios y accesos) */}
