@@ -135,7 +135,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
 
           <button
             onClick={() => setShowStudentEnrollModal(true)}
-            className="btn btn-success btn-lg"
+            className="btn btn-banner btn-lg"
           >
             <span>Iniciar Solicitud de Inscripción</span>
             <ArrowRight style={{ width: '1rem', height: '1rem' }} />

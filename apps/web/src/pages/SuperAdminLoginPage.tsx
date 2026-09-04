@@ -78,7 +78,7 @@ export const SuperAdminLoginPage: React.FC<SuperAdminLoginPageProps> = ({
       <div className="auth-glow-bottom-right" />
 
       {/* Header Corporativo SaaS */}
-      <header className="auth-header" style={{ backdropFilter: 'blur(12px)', background: 'rgba(2, 6, 23, 0.7)' }}>
+      <header className="auth-header" style={{ backdropFilter: 'blur(12px)', background: 'rgba(255, 255, 255, 0.95)' }}>
         <div className="container-app auth-header-inner">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <div
@@ -98,7 +98,7 @@ export const SuperAdminLoginPage: React.FC<SuperAdminLoginPageProps> = ({
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ fontWeight: 800, fontSize: '1rem', color: '#ffffff' }}>Avante Core Ops</span>
+                <span style={{ fontWeight: 800, fontSize: '1rem', color: 'var(--color-text-main)' }}>Avante Core Ops</span>
                 <span className="badge badge-purple" style={{ fontSize: '0.625rem' }}>
                   Admin Console
                 </span>
@@ -141,7 +141,7 @@ export const SuperAdminLoginPage: React.FC<SuperAdminLoginPageProps> = ({
                 background: 'var(--color-purple-bg)',
                 border: '1px solid var(--color-purple-border)',
                 borderRadius: 'var(--radius-lg)',
-                color: '#c084fc'
+                color: 'var(--color-purple)'
               }}
             >
               <Server style={{ width: '1.5rem', height: '1.5rem' }} />
@@ -219,7 +219,7 @@ export const SuperAdminLoginPage: React.FC<SuperAdminLoginPageProps> = ({
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)' }}>
-                <KeyRound style={{ width: '1rem', height: '1rem', color: '#c084fc' }} />
+                <KeyRound style={{ width: '1rem', height: '1rem', color: 'var(--color-purple)' }} />
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6875rem' }}>
                   Cuenta Demo: superadmin@...
                 </span>
@@ -230,7 +230,7 @@ export const SuperAdminLoginPage: React.FC<SuperAdminLoginPageProps> = ({
                   setEmail('superadmin@avanteschoolmanagement.com');
                   setPassword('Admin123!');
                 }}
-                style={{ color: '#c084fc', fontWeight: 700, fontSize: '0.6875rem', textDecoration: 'underline' }}
+                style={{ color: 'var(--color-purple)', fontWeight: 700, fontSize: '0.6875rem', textDecoration: 'underline' }}
               >
                 Rellenar
               </button>

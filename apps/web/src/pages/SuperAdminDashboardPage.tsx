@@ -273,7 +273,7 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ fontWeight: 800, fontSize: '1.125rem', color: '#ffffff' }}>Avante Core Ops</span>
+                <span style={{ fontWeight: 800, fontSize: '1.125rem', color: 'var(--color-text-main)' }}>Avante Core Ops</span>
                 <span className="badge badge-purple" style={{ fontSize: '0.625rem' }}>
                   Consola SuperAdmin
                 </span>
@@ -299,7 +299,7 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
               onClick={() => onNavigate('login')}
               className="btn btn-outline btn-sm"
             >
-              <Building2 style={{ width: '0.875rem', height: '0.875rem', color: 'var(--color-primary-hover)' }} />
+              <Building2 style={{ width: '0.875rem', height: '0.875rem', color: 'var(--color-primary)' }} />
               <span>Login Escolar</span>
             </button>
 
@@ -322,34 +322,36 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
         {/* BANNER DE BIENVENIDA Y ESTADO */}
         <div
           style={{
-            background: 'linear-gradient(135deg, rgba(88, 28, 135, 0.4) 0%, rgba(15, 23, 42, 0.9) 100%)',
-            border: '1px solid rgba(147, 51, 234, 0.3)',
-            padding: '1.5rem',
+            background: 'linear-gradient(135deg, var(--color-primary) 0%, #0056d6 50%, #0a2540 100%)',
+            border: 'none',
+            padding: '2rem',
             borderRadius: 'var(--radius-2xl)',
             boxShadow: 'var(--shadow-lg)',
             display: 'flex',
             flexWrap: 'wrap',
             alignItems: 'center',
             justifyContent: 'space-between',
-            gap: '1rem'
+            gap: '1rem',
+            color: '#ffffff'
           }}
         >
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', fontWeight: 700, color: '#d8b4fe', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              <ShieldCheck style={{ width: '1rem', height: '1rem', color: 'var(--color-purple)' }} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', fontWeight: 800, color: '#b8d9ff', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <ShieldCheck style={{ width: '1rem', height: '1rem', color: '#67e8f9' }} />
               <span>Infraestructura Master • PostgreSQL Activa (asm_db)</span>
             </div>
-            <h1 style={{ fontSize: '1.5rem', fontWeight: 900, color: 'var(--color-text-main)' }}>
+            <h1 style={{ fontSize: '1.625rem', fontWeight: 900, color: '#ffffff' }}>
               Tablero de Gestión de Ecosistema Escolar
             </h1>
-            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.75rem', maxWidth: '42rem' }}>
+            <p style={{ color: 'rgba(255, 255, 255, 0.88)', fontSize: '0.8125rem', maxWidth: '44rem', lineHeight: 1.5 }}>
               Monitoreo centralizado de todas las instituciones educativas privadas y públicas alojadas en el SaaS. Administra el estado de las escuelas, modifica suscripciones y gestiona la depuración de datos.
             </p>
           </div>
 
           <button
             onClick={() => onNavigate('register')}
-            className="btn btn-purple btn-sm"
+            className="btn btn-outline btn-sm"
+            style={{ background: '#ffffff', color: 'var(--color-primary)', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
           >
             <Building2 style={{ width: '1rem', height: '1rem' }} />
             <span>Dar de Alta Escuela</span>
@@ -695,15 +697,15 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
             >
               <div>
                 <span style={{ color: 'var(--color-text-faint)', fontWeight: 700, display: 'block' }}>Colegio:</span>
-                <span style={{ color: '#ffffff', fontWeight: 800, fontSize: '0.875rem' }}>{schoolToDelete.name}</span>
+                <span style={{ color: 'var(--color-text-main)', fontWeight: 800, fontSize: '0.875rem' }}>{schoolToDelete.name}</span>
               </div>
               <div>
                 <span style={{ color: 'var(--color-text-faint)', fontWeight: 700, display: 'block' }}>Subdominio:</span>
-                <span style={{ color: 'var(--color-primary-hover)', fontFamily: 'var(--font-mono)' }}>
+                <span style={{ color: 'var(--color-primary)', fontFamily: 'var(--font-mono)' }}>
                   {schoolToDelete.subdomain}.avanteschoolmanagement.local
                 </span>
               </div>
-              <div style={{ color: '#fecdd3', fontSize: '0.6875rem', paddingTop: '0.5rem', borderTop: '1px solid var(--color-border-subtle)' }}>
+              <div style={{ color: 'var(--color-danger)', fontSize: '0.6875rem', paddingTop: '0.5rem', borderTop: '1px solid var(--color-border-subtle)' }}>
                 ⚠️ Se eliminarán en cascada todos sus campus, usuarios registrados, expedientes de {schoolToDelete.studentCount} alumnos, calificaciones y transacciones asociadas.
               </div>
             </div>

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Auth Pages Styles (LoginPage, SuperAdminLoginPage, RegisterPage)
+   Auth Pages Styles (Tema Claro - Azul #0079ff)
    ========================================================================== */
 
 .auth-page {
@@ -16,6 +16,8 @@
 .auth-header {
   border-bottom: 1px solid var(--color-border-subtle);
   padding-block: 1rem;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 121, 255, 0.04);
 }
 
 .auth-header-inner {
@@ -39,8 +41,8 @@
   background: var(--color-bg-surface);
   border: 1px solid var(--color-border-subtle);
   border-radius: var(--radius-2xl);
-  padding: 2rem;
-  box-shadow: var(--shadow-xl);
+  padding: 2.25rem;
+  box-shadow: 0 10px 25px rgba(0, 121, 255, 0.08), 0 4px 6px rgba(15, 23, 42, 0.04);
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -51,8 +53,8 @@
   }
 
   &.auth-card-purple {
-    border-color: rgba(147, 51, 234, 0.3);
-    box-shadow: 0 20px 25px -5px rgba(88, 28, 135, 0.25);
+    border-color: var(--color-purple-border);
+    box-shadow: 0 10px 25px rgba(79, 70, 229, 0.1);
   }
 }
 
@@ -82,11 +84,13 @@
 
   .presets-title {
     font-size: 0.6875rem;
-    font-weight: 700;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--color-text-faint);
+    color: var(--color-text-muted);
     margin-bottom: 0.5rem;
+    display: block;
+    text-align: center;
   }
 
   .presets-grid {
@@ -97,15 +101,16 @@
 
   .preset-btn {
     text-align: left;
-    padding: 0.5rem 0.75rem;
-    background: var(--color-bg-base);
+    padding: 0.625rem 0.75rem;
+    background: #f8fafc;
     border: 1px solid var(--color-border-subtle);
     border-radius: var(--radius-md);
     transition: all var(--transition-fast);
+    cursor: pointer;
 
     &:hover {
       border-color: var(--color-primary);
-      background: var(--color-bg-card);
+      background: var(--color-primary-bg);
     }
 
     .preset-role {
@@ -117,8 +122,9 @@
 
     .preset-email {
       font-size: 0.625rem;
-      color: var(--color-text-faint);
+      color: var(--color-primary);
       font-family: var(--font-mono);
+      font-weight: 600;
     }
   }
 }
@@ -126,20 +132,21 @@
 .auth-footer {
   border-top: 1px solid var(--color-border-subtle);
   padding-block: 1rem;
+  background-color: #ffffff;
   font-size: 0.75rem;
-  color: var(--color-text-faint);
+  color: var(--color-text-muted);
 }
 
-/* Background ambient glows */
+/* Background ambient glows (light blue tints) */
 .auth-glow-top-left {
   position: absolute;
   top: -10rem;
   left: -10rem;
-  width: 25rem;
-  height: 25rem;
+  width: 28rem;
+  height: 28rem;
   border-radius: var(--radius-full);
-  background: var(--color-purple-glow);
-  filter: blur(80px);
+  background: rgba(0, 121, 255, 0.08);
+  filter: blur(90px);
   pointer-events: none;
 }
 
@@ -147,10 +154,10 @@
   position: absolute;
   bottom: -10rem;
   right: -10rem;
-  width: 25rem;
-  height: 25rem;
+  width: 28rem;
+  height: 28rem;
   border-radius: var(--radius-full);
-  background: rgba(99, 102, 241, 0.15);
-  filter: blur(80px);
+  background: rgba(79, 70, 229, 0.08);
+  filter: blur(90px);
   pointer-events: none;
 }

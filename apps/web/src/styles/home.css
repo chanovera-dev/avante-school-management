@@ -1,14 +1,21 @@
 /* ==========================================================================
-   HomePage Styles (Modern Vanilla CSS)
+   HomePage Styles (Tema Claro - Azul #0079ff)
    ========================================================================== */
+
+.home-page {
+  background-color: var(--color-bg-base);
+  color: var(--color-text-main);
+  min-height: 100vh;
+}
 
 .home-navbar {
   border-bottom: 1px solid var(--color-border-subtle);
-  background: rgba(15, 23, 42, 0.85);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
   z-index: 50;
+  box-shadow: 0 1px 3px rgba(0, 121, 255, 0.04);
 }
 
 .home-nav-content {
@@ -27,7 +34,7 @@
 }
 
 .brand-icon {
-  background: linear-gradient(135deg, #0284c7, #06b6d4);
+  background: linear-gradient(135deg, var(--color-primary), #0056d6);
   color: #ffffff;
   font-weight: 900;
   font-size: 1.25rem;
@@ -49,8 +56,9 @@
 
 .brand-subtitle {
   font-size: 0.6875rem;
-  color: var(--color-primary-hover);
+  color: var(--color-primary);
   font-family: var(--font-mono);
+  font-weight: 600;
   display: block;
 }
 
@@ -59,13 +67,13 @@
   align-items: center;
   gap: 2rem;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--color-text-secondary);
 
   a {
     transition: color var(--transition-fast);
     &:hover {
-      color: var(--color-text-main);
+      color: var(--color-primary);
     }
   }
 
@@ -94,9 +102,9 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 600px;
-  height: 320px;
-  background: radial-gradient(circle, var(--color-primary-glow) 0%, transparent 70%);
+  width: 700px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(0, 121, 255, 0.12) 0%, transparent 70%);
   border-radius: var(--radius-full);
   pointer-events: none;
   z-index: -1;
@@ -114,7 +122,7 @@
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, #38bdf8 0%, #67e8f9 50%, #34d399 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, #0056d6 50%, #059669 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -129,6 +137,7 @@
 
   strong {
     color: var(--color-text-main);
+    font-weight: 700;
   }
 }
 
@@ -152,8 +161,9 @@
   align-items: center;
   justify-content: center;
   gap: 2rem;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--color-text-muted);
+  font-weight: 500;
 
   .bullet-item {
     display: flex;
@@ -169,7 +179,7 @@
 /* Features Section */
 .features-section {
   padding-block: 5rem;
-  background-color: var(--color-bg-base);
+  background-color: #ffffff;
   border-top: 1px solid var(--color-border-subtle);
 }
 
@@ -185,7 +195,7 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--color-primary-hover);
+  color: var(--color-primary);
   margin-bottom: 0.75rem;
 }
 
@@ -211,11 +221,13 @@
   border: 1px solid var(--color-border-subtle);
   padding: 2rem;
   border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-card);
   transition: all var(--transition-normal);
 
   &:hover {
     border-color: var(--color-primary-border);
-    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
   }
 
   .feature-icon-wrapper {
@@ -229,28 +241,28 @@
 
     &.primary {
       background: var(--color-primary-bg);
-      color: var(--color-primary-hover);
+      color: var(--color-primary);
     }
     &.emerald {
       background: var(--color-success-bg);
       color: var(--color-success);
     }
     &.indigo {
-      background: rgba(99, 102, 241, 0.12);
-      color: #818cf8;
+      background: var(--color-purple-bg);
+      color: var(--color-purple);
     }
   }
 
   h3 {
     font-size: 1.25rem;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--color-text-main);
     margin-bottom: 0.75rem;
   }
 
   p {
     font-size: 0.875rem;
-    color: var(--color-text-muted);
+    color: var(--color-text-secondary);
     line-height: 1.6;
   }
 }
@@ -271,29 +283,37 @@
 }
 
 .level-card {
-  background: rgba(30, 41, 59, 0.6);
+  background: #ffffff;
   border: 1px solid var(--color-border-subtle);
-  padding: 1.25rem;
+  padding: 1.5rem 1rem;
   border-radius: var(--radius-lg);
   text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+
+  &:hover {
+    border-color: var(--color-primary-border);
+    box-shadow: var(--shadow-md);
+  }
 
   .level-name {
-    color: var(--color-primary-hover);
+    color: var(--color-primary);
     font-weight: 800;
-    font-size: 1rem;
-    margin-bottom: 0.25rem;
+    font-size: 1.05rem;
+    margin-bottom: 0.35rem;
   }
 
   .level-desc {
     font-size: 0.75rem;
     color: var(--color-text-muted);
+    line-height: 1.4;
   }
 }
 
 /* CTA Final */
 .cta-section {
   padding-block: 5rem;
-  background: linear-gradient(180deg, var(--color-bg-surface) 0%, var(--color-bg-base) 100%);
+  background: linear-gradient(180deg, #edf5ff 0%, var(--color-bg-base) 100%);
   border-top: 1px solid var(--color-border-subtle);
   text-align: center;
 }
@@ -310,7 +330,7 @@
   }
 
   p {
-    font-size: 1rem;
+    font-size: 1.05rem;
     color: var(--color-text-secondary);
     margin-bottom: 2rem;
     max-width: 36rem;
@@ -322,9 +342,9 @@
 .site-footer {
   border-top: 1px solid var(--color-border-subtle);
   padding-block: 2rem;
-  background-color: var(--color-bg-base);
+  background-color: #ffffff;
   font-size: 0.75rem;
-  color: var(--color-text-faint);
+  color: var(--color-text-muted);
 }
 
 .footer-content {
