@@ -76,21 +76,23 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, onLoginSuccess
   return (
     <div className="min-h-screen bg-slate-950 text-white flex flex-col justify-between selection:bg-sky-500 selection:text-white">
       {/* Header Institucional */}
-      <header className="border-b border-slate-800/80 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavigate('home')}>
-          <div className="bg-sky-600 text-white font-black text-xl w-9 h-9 rounded-xl flex items-center justify-center shadow-md shadow-sky-600/30">
-            ASM
+      <header className="border-b border-slate-800/80 py-4">
+        <div className="container-app flex items-center justify-between">
+          <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavigate('home')}>
+            <div className="bg-sky-600 text-white font-black text-xl w-9 h-9 rounded-xl flex items-center justify-center shadow-md shadow-sky-600/30">
+              ASM
+            </div>
+            <span className="font-extrabold text-lg text-white tracking-tight">Avante School Management</span>
           </div>
-          <span className="font-extrabold text-lg text-white tracking-tight">Avante School Management</span>
-        </div>
-        <div className="flex items-center gap-4 text-xs">
-          <span className="text-slate-400">¿No tienes escuela registrada?</span>
-          <button
-            onClick={() => onNavigate('register')}
-            className="text-sky-400 hover:text-sky-300 font-bold hover:underline cursor-pointer"
-          >
-            Registrar mi Escuela Gratis
-          </button>
+          <div className="flex items-center gap-4 text-xs">
+            <span className="text-slate-400">¿No tienes escuela registrada?</span>
+            <button
+              onClick={() => onNavigate('register')}
+              className="text-sky-400 hover:text-sky-300 font-bold hover:underline cursor-pointer"
+            >
+              Registrar mi Escuela Gratis
+            </button>
+          </div>
         </div>
       </header>
 
@@ -226,15 +228,17 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, onLoginSuccess
       </main>
 
       {/* Footer con enlace discreto a consola master */}
-      <footer className="border-t border-slate-800/80 py-4 px-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
-        <span>Avante School Management (ASM) • Plataforma Escolar Multi-Tenant</span>
-        <button
-          onClick={() => onNavigate('superadmin')}
-          className="text-slate-400 hover:text-purple-400 font-mono transition-colors text-[11px] flex items-center gap-1 cursor-pointer"
-        >
-          <span>Consola Global Operativa (SaaS Master)</span>
-          <span>&rarr;</span>
-        </button>
+      <footer className="border-t border-slate-800/80 py-4 text-xs text-slate-500">
+        <div className="container-app flex flex-col sm:flex-row items-center justify-between gap-2">
+          <span>Avante School Management (ASM) • Plataforma Escolar Multi-Tenant</span>
+          <button
+            onClick={() => onNavigate('superadmin')}
+            className="text-slate-400 hover:text-purple-400 font-mono transition-colors text-[11px] flex items-center gap-1 cursor-pointer"
+          >
+            <span>Consola Global Operativa (SaaS Master)</span>
+            <span>&rarr;</span>
+          </button>
+        </div>
       </footer>
     </div>
   );

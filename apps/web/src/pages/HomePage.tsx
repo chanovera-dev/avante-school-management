@@ -26,7 +26,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     <div className="min-h-screen bg-slate-900 text-white selection:bg-sky-500 selection:text-white">
       {/* 1. Header / Navbar de la Landing Page */}
       <nav className="border-b border-slate-800/80 backdrop-blur-md sticky top-0 z-50 bg-slate-900/90">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <div className="container-app h-20 flex items-center justify-between">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavigate('home')}>
             <div className="bg-gradient-to-tr from-sky-600 to-cyan-500 text-white font-black text-2xl w-11 h-11 rounded-xl flex items-center justify-center shadow-lg shadow-sky-500/20">
               ASM
@@ -65,7 +65,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       </nav>
 
       {/* 2. Hero Section */}
-      <section className="relative pt-20 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center overflow-hidden">
+      <section className="relative pt-20 pb-24 container-app text-center overflow-hidden">
         {/* Glow de fondo */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-sky-500/15 blur-[120px] rounded-full pointer-events-none -z-10" />
 
@@ -119,7 +119,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
       {/* 3. Pilares Diferenciales (Grid de 3 Columnas) */}
       <section id="caracteristicas" className="py-20 bg-slate-950 border-t border-slate-800/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container-app">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-xs uppercase tracking-widest text-sky-400 font-extrabold mb-3">Diseñado para la Realidad Escolar</h2>
             <p className="text-3xl sm:text-4xl font-black text-white">Todo lo que tu institución necesita en un solo lugar</p>
@@ -163,7 +163,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       </section>
 
       {/* 4. Niveles Educativos Cubiertos */}
-      <section id="niveles" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="niveles" className="py-20 container-app">
         <div className="text-center max-w-3xl mx-auto mb-12">
           <h2 className="text-xs uppercase tracking-widest text-sky-400 font-extrabold mb-3">Flexibilidad Total</h2>
           <p className="text-3xl font-black text-white">De Guardería a Preparatoria en una Sola Plataforma</p>
@@ -187,26 +187,28 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
       {/* 5. CTA Final */}
       <section className="py-20 bg-gradient-to-b from-slate-900 to-slate-950 border-t border-slate-800 text-center">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-3xl sm:text-5xl font-black text-white mb-6">
-            Comienza a digitalizar tu colegio hoy mismo
-          </h2>
-          <p className="text-slate-300 text-base mb-8 max-w-2xl mx-auto">
-            Únete a las instituciones educativas que ya gestionan sus cobranzas, grupos y alumnos con la velocidad de Avante School Management.
-          </p>
-          <button
-            onClick={() => onNavigate('register')}
-            className="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-lg px-9 py-4 rounded-2xl shadow-xl shadow-sky-500/25 transition-all inline-flex items-center gap-3"
-          >
-            <span>Registrar mi Colegio Gratis</span>
-            <ArrowRight className="w-5 h-5" />
-          </button>
+        <div className="container-app">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl sm:text-5xl font-black text-white mb-6">
+              Comienza a digitalizar tu colegio hoy mismo
+            </h2>
+            <p className="text-slate-300 text-base mb-8 max-w-2xl mx-auto">
+              Únete a las instituciones educativas que ya gestionan sus cobranzas, grupos y alumnos con la velocidad de Avante School Management.
+            </p>
+            <button
+              onClick={() => onNavigate('register')}
+              className="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-lg px-9 py-4 rounded-2xl shadow-xl shadow-sky-500/25 transition-all inline-flex items-center gap-3"
+            >
+              <span>Registrar mi Colegio Gratis</span>
+              <ArrowRight className="w-5 h-5" />
+            </button>
+          </div>
         </div>
       </section>
 
       {/* 6. Footer */}
       <footer className="border-t border-slate-800 py-8 bg-slate-950 text-center text-xs text-slate-500">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="container-app flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <span className="font-bold text-slate-300">Avante School Management (ASM)</span>
             <span>•</span>

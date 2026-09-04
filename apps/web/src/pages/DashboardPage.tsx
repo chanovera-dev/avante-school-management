@@ -10446,115 +10446,117 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       )}
 
       {/* TOPBAR PRINCIPAL */}
-      <header className="bg-slate-900 border-b border-slate-800 sticky top-0 z-40 px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-4">
-        {/* Identidad de la Escuela */}
-        <div className="flex items-center gap-3">
-          <div className="bg-gradient-to-tr from-sky-600 to-cyan-500 text-white font-black text-xl w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg shadow-sky-500/20">
-            ASM
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="font-extrabold text-base sm:text-lg text-white leading-tight">
-                {currentTenant.name || 'Instituto Logos'}
-              </h1>
-              <span className="bg-sky-500/15 text-sky-400 border border-sky-500/30 text-[10px] font-mono px-2 py-0.5 rounded-full font-bold">
-                Preescolar & Primaria
-              </span>
+      <header className="bg-slate-900 border-b border-slate-800 sticky top-0 z-40 py-3">
+        <div className="container-app flex flex-wrap items-center justify-between gap-4">
+          {/* Identidad de la Escuela */}
+          <div className="flex items-center gap-3">
+            <div className="bg-gradient-to-tr from-sky-600 to-cyan-500 text-white font-black text-xl w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg shadow-sky-500/20">
+              ASM
             </div>
-            <div className="text-[11px] text-slate-400 font-mono flex items-center gap-2">
-              <span>{currentTenant.subdomain || 'logos'}.avanteschoolmanagement.local</span>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="font-extrabold text-base sm:text-lg text-white leading-tight">
+                  {currentTenant.name || 'Instituto Logos'}
+                </h1>
+                <span className="bg-sky-500/15 text-sky-400 border border-sky-500/30 text-[10px] font-mono px-2 py-0.5 rounded-full font-bold">
+                  Preescolar & Primaria
+                </span>
+              </div>
+              <div className="text-[11px] text-slate-400 font-mono flex items-center gap-2">
+                <span>{currentTenant.subdomain || 'logos'}.avanteschoolmanagement.local</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Controles de Estado, Acceso al Portal y Rol */}
-        <div className="flex items-center gap-3">
-          {/* Botón para ir al Portal Público de la Escuela */}
-          <button
-            onClick={() => onNavigate('portal')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 transition-colors cursor-pointer"
-            title="Ver Portal Institucional de la Escuela con accesos para maestros, directores y padres"
-          >
-            <Globe2 className="w-3.5 h-3.5" />
-            <span>Ver Portal Institucional</span>
-          </button>
+          {/* Controles de Estado, Acceso al Portal y Rol */}
+          <div className="flex items-center gap-3">
+            {/* Botón para ir al Portal Público de la Escuela */}
+            <button
+              onClick={() => onNavigate('portal')}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 transition-colors cursor-pointer"
+              title="Ver Portal Institucional de la Escuela con accesos para maestros, directores y padres"
+            >
+              <Globe2 className="w-3.5 h-3.5" />
+              <span>Ver Portal Institucional</span>
+            </button>
 
-          {/* Selector Rápido de Nivel Escolar */}
-          <div className="flex items-center bg-slate-950 border border-slate-800 rounded-xl p-0.5 text-xs font-bold">
+            {/* Selector Rápido de Nivel Escolar */}
+            <div className="flex items-center bg-slate-950 border border-slate-800 rounded-xl p-0.5 text-xs font-bold">
+              <button
+                onClick={() => setSelectedLevelFilter('ALL')}
+                className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
+                  selectedLevelFilter === 'ALL' ? 'bg-sky-500 text-slate-950' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                Todos
+              </button>
+              <button
+                onClick={() => setSelectedLevelFilter('PREESCOLAR')}
+                className={`px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 cursor-pointer ${
+                  selectedLevelFilter === 'PREESCOLAR' ? 'bg-pink-500 text-slate-950' : 'text-slate-400 hover:text-pink-300'
+                }`}
+              >
+                <Palette className="w-3.5 h-3.5" />
+                <span>Preescolar</span>
+              </button>
+              <button
+                onClick={() => setSelectedLevelFilter('PRIMARIA')}
+                className={`px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 cursor-pointer ${
+                  selectedLevelFilter === 'PRIMARIA' ? 'bg-sky-500 text-slate-950' : 'text-slate-400 hover:text-sky-300'
+                }`}
+              >
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>Primaria</span>
+              </button>
+            </div>
+
+            {/* Switch Offline / Online */}
             <button
-              onClick={() => setSelectedLevelFilter('ALL')}
-              className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
-                selectedLevelFilter === 'ALL' ? 'bg-sky-500 text-slate-950' : 'text-slate-400 hover:text-white'
+              onClick={() => {
+                setIsOnline(!isOnline);
+                showToast(isOnline ? '📴 Modo Offline activado.' : '🌐 Modo Online restablecido.');
+              }}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
+                isOnline
+                  ? 'bg-emerald-950/60 text-emerald-400 border-emerald-800'
+                  : 'bg-amber-950/80 text-amber-300 border-amber-800'
               }`}
             >
-              Todos
+              {isOnline ? <Wifi className="w-3.5 h-3.5" /> : <WifiOff className="w-3.5 h-3.5 animate-pulse" />}
+              <span>{isOnline ? 'Online' : 'Offline'}</span>
             </button>
+
+            {/* Selector de Rol */}
+            <div className="flex items-center gap-2 bg-slate-950 border border-slate-800 px-3 py-1 rounded-xl">
+              <ShieldCheck className="w-4 h-4 text-sky-400" />
+              <select
+                value={activeRole}
+                onChange={(e) => setActiveRole(e.target.value as any)}
+                className="bg-transparent text-xs text-slate-300 font-semibold outline-none cursor-pointer"
+              >
+                <option value="DIRECTOR" className="bg-slate-900">Director General</option>
+                <option value="DOCENTE" className="bg-slate-900">👨‍🏫 Maestro(a) / Docente Titular</option>
+                <option value="CONTROL_ESCOLAR" className="bg-slate-900">Control Escolar</option>
+                <option value="FINANZAS" className="bg-slate-900">Finanzas y Caja</option>
+                <option value="TUTOR" className="bg-slate-900">Portal Familiar / Tutor</option>
+                <option value="SUPER_ADMIN" className="bg-slate-900">SuperAdmin (Dueño SaaS ASM)</option>
+              </select>
+            </div>
+
             <button
-              onClick={() => setSelectedLevelFilter('PREESCOLAR')}
-              className={`px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 cursor-pointer ${
-                selectedLevelFilter === 'PREESCOLAR' ? 'bg-pink-500 text-slate-950' : 'text-slate-400 hover:text-pink-300'
-              }`}
+              onClick={() => onNavigate('home')}
+              className="p-2 rounded-xl bg-slate-800 hover:bg-slate-750 text-slate-400 hover:text-white transition-colors cursor-pointer"
+              title="Cerrar sesión o ir al inicio"
             >
-              <Palette className="w-3.5 h-3.5" />
-              <span>Preescolar</span>
-            </button>
-            <button
-              onClick={() => setSelectedLevelFilter('PRIMARIA')}
-              className={`px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 cursor-pointer ${
-                selectedLevelFilter === 'PRIMARIA' ? 'bg-sky-500 text-slate-950' : 'text-slate-400 hover:text-sky-300'
-              }`}
-            >
-              <BookOpen className="w-3.5 h-3.5" />
-              <span>Primaria</span>
+              <LogOut className="w-4 h-4" />
             </button>
           </div>
-
-          {/* Switch Offline / Online */}
-          <button
-            onClick={() => {
-              setIsOnline(!isOnline);
-              showToast(isOnline ? '📴 Modo Offline activado.' : '🌐 Modo Online restablecido.');
-            }}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
-              isOnline
-                ? 'bg-emerald-950/60 text-emerald-400 border-emerald-800'
-                : 'bg-amber-950/80 text-amber-300 border-amber-800'
-            }`}
-          >
-            {isOnline ? <Wifi className="w-3.5 h-3.5" /> : <WifiOff className="w-3.5 h-3.5 animate-pulse" />}
-            <span>{isOnline ? 'Online' : 'Offline'}</span>
-          </button>
-
-          {/* Selector de Rol */}
-          <div className="flex items-center gap-2 bg-slate-950 border border-slate-800 px-3 py-1 rounded-xl">
-            <ShieldCheck className="w-4 h-4 text-sky-400" />
-            <select
-              value={activeRole}
-              onChange={(e) => setActiveRole(e.target.value as any)}
-              className="bg-transparent text-xs text-slate-300 font-semibold outline-none cursor-pointer"
-            >
-              <option value="DIRECTOR" className="bg-slate-900">Director General</option>
-              <option value="DOCENTE" className="bg-slate-900">👨‍🏫 Maestro(a) / Docente Titular</option>
-              <option value="CONTROL_ESCOLAR" className="bg-slate-900">Control Escolar</option>
-              <option value="FINANZAS" className="bg-slate-900">Finanzas y Caja</option>
-              <option value="TUTOR" className="bg-slate-900">Portal Familiar / Tutor</option>
-              <option value="SUPER_ADMIN" className="bg-slate-900">SuperAdmin (Dueño SaaS ASM)</option>
-            </select>
-          </div>
-
-          <button
-            onClick={() => onNavigate('home')}
-            className="p-2 rounded-xl bg-slate-800 hover:bg-slate-750 text-slate-400 hover:text-white transition-colors cursor-pointer"
-            title="Cerrar sesión o ir al inicio"
-          >
-            <LogOut className="w-4 h-4" />
-          </button>
         </div>
       </header>
 
       {/* TABS DE NAVEGACIÓN */}
-      <div className="bg-slate-900/60 border-b border-slate-800 px-4 sm:px-6">
-        <nav className="flex space-x-1 overflow-x-auto py-2">
+      <div className="bg-slate-900/60 border-b border-slate-800">
+        <nav className="container-app flex space-x-1 overflow-x-auto py-2">
           <button
             onClick={() => setActiveTab('levels')}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
@@ -10906,7 +10908,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       </div>
 
       {/* CONTENIDO PRINCIPAL */}
-      <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto space-y-6">
+      <main className="flex-1 container-app py-6 space-y-6">
 
         {/* 1. MÓDULO DE NIVELES ESCOLARES Y DIRECTORES DE NIVEL */}
         {activeTab === 'levels' && (
@@ -31212,7 +31214,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       )}
 
       <footer className="bg-slate-900 border-t border-slate-800 py-3 text-center text-xs text-slate-500">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <div className="container-app flex flex-col sm:flex-row items-center justify-between gap-2">
           <span>Avante School Management (ASM) • Sistema Escolar Multi-Tenant Offline-First</span>
           <span className="font-mono text-slate-400">{currentTenant.name} • Preescolar & Primaria</span>
         </div>

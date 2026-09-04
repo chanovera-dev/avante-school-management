@@ -239,56 +239,58 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
       )}
 
       {/* Header Superior Corporativo */}
-      <header className="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-xl px-6 py-4 sticky top-0 z-30 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="bg-gradient-to-tr from-purple-600 to-indigo-600 text-white w-10 h-10 rounded-2xl flex items-center justify-center font-black text-xl shadow-lg shadow-purple-600/30">
-            <Server className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-extrabold text-lg text-white tracking-tight">Avante Core Ops</span>
-              <span className="bg-purple-950 text-purple-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-purple-800 tracking-wider uppercase">
-                Consola SuperAdmin
-              </span>
+      <header className="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-xl py-4 sticky top-0 z-30">
+        <div className="container-app flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="bg-gradient-to-tr from-purple-600 to-indigo-600 text-white w-10 h-10 rounded-2xl flex items-center justify-center font-black text-xl shadow-lg shadow-purple-600/30">
+              <Server className="w-5 h-5" />
             </div>
-            <p className="text-xs text-slate-400">Padrón Maestro de Escuelas, Licenciamiento y Base de Datos PostgreSQL</p>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-extrabold text-lg text-white tracking-tight">Avante Core Ops</span>
+                <span className="bg-purple-950 text-purple-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-purple-800 tracking-wider uppercase">
+                  Consola SuperAdmin
+                </span>
+              </div>
+              <p className="text-xs text-slate-400">Padrón Maestro de Escuelas, Licenciamiento y Base de Datos PostgreSQL</p>
+            </div>
           </div>
-        </div>
 
-        <div className="flex items-center gap-3">
-          <button
-            onClick={fetchData}
-            disabled={loading}
-            className="flex items-center gap-1.5 bg-slate-800/80 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-700 transition-all cursor-pointer"
-            title="Refrescar datos en vivo"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
-            <span>Actualizar</span>
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={fetchData}
+              disabled={loading}
+              className="flex items-center gap-1.5 bg-slate-800/80 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-700 transition-all cursor-pointer"
+              title="Refrescar datos en vivo"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
+              <span>Actualizar</span>
+            </button>
 
-          <button
-            onClick={() => onNavigate('login')}
-            className="flex items-center gap-1.5 bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-semibold px-3 py-2 rounded-xl border border-slate-700 transition-all cursor-pointer"
-          >
-            <Building2 className="w-3.5 h-3.5 text-sky-400" />
-            <span>Login Escolar</span>
-          </button>
+            <button
+              onClick={() => onNavigate('login')}
+              className="flex items-center gap-1.5 bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-semibold px-3 py-2 rounded-xl border border-slate-700 transition-all cursor-pointer"
+            >
+              <Building2 className="w-3.5 h-3.5 text-sky-400" />
+              <span>Login Escolar</span>
+            </button>
 
-          <button
-            onClick={() => {
-              localStorage.removeItem('asm_token');
-              onNavigate('superadmin');
-            }}
-            className="flex items-center gap-1.5 bg-rose-950/50 hover:bg-rose-900/70 text-rose-300 text-xs font-semibold px-3 py-2 rounded-xl border border-rose-800/60 transition-all cursor-pointer"
-          >
-            <LogOut className="w-3.5 h-3.5" />
-            <span>Cerrar Sesión</span>
-          </button>
+            <button
+              onClick={() => {
+                localStorage.removeItem('asm_token');
+                onNavigate('superadmin');
+              }}
+              className="flex items-center gap-1.5 bg-rose-950/50 hover:bg-rose-900/70 text-rose-300 text-xs font-semibold px-3 py-2 rounded-xl border border-rose-800/60 transition-all cursor-pointer"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Cerrar Sesión</span>
+            </button>
+          </div>
         </div>
       </header>
 
       {/* Contenedor Central */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <main className="flex-1 container-app py-8 space-y-8">
         {/* BANNER DE BIENVENIDA Y ESTADO */}
         <div className="bg-gradient-to-r from-purple-950/70 via-indigo-950/50 to-slate-900 border border-purple-800/40 p-6 rounded-3xl shadow-xl flex flex-wrap items-center justify-between gap-4">
           <div className="space-y-1">

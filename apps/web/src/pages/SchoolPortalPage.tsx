@@ -71,45 +71,47 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-sky-500 selection:text-white flex flex-col justify-between">
       {/* HEADER INSTITUCIONAL */}
-      <header className="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="bg-gradient-to-tr from-sky-600 to-cyan-500 text-white font-black text-xl w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg shadow-sky-500/20">
-            ASM
-          </div>
-          <div>
-            <h1 className="font-extrabold text-lg text-white leading-tight">
-              {currentTenant.name || 'Instituto Logos'}
-            </h1>
-            <div className="text-[11px] text-slate-400 font-mono flex items-center gap-2">
-              <span>{currentTenant.subdomain || 'institutologos'}.avanteschoolmanagement.local</span>
-              <span>•</span>
-              <span className="text-sky-400 font-semibold">Portal Oficial</span>
+      <header className="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40">
+        <div className="container-app h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="bg-gradient-to-tr from-sky-600 to-cyan-500 text-white font-black text-xl w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg shadow-sky-500/20">
+              ASM
+            </div>
+            <div>
+              <h1 className="font-extrabold text-lg text-white leading-tight">
+                {currentTenant.name || 'Instituto Logos'}
+              </h1>
+              <div className="text-[11px] text-slate-400 font-mono flex items-center gap-2">
+                <span>{currentTenant.subdomain || 'institutologos'}.avanteschoolmanagement.local</span>
+                <span>•</span>
+                <span className="text-sky-400 font-semibold">Portal Oficial</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => onNavigate('home')}
-            className="text-xs text-slate-400 hover:text-white font-bold transition-colors cursor-pointer"
-          >
-            ← Volver al Inicio
-          </button>
-          <button
-            onClick={() => {
-              onSelectRoleAndLogin('DIRECTOR');
-              onNavigate('dashboard');
-            }}
-            className="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs px-4 py-2 rounded-xl shadow-lg shadow-sky-500/20 transition-all cursor-pointer flex items-center gap-1.5"
-          >
-            <span>Panel de Administración</span>
-            <ChevronRight className="w-3.5 h-3.5" />
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => onNavigate('home')}
+              className="text-xs text-slate-400 hover:text-white font-bold transition-colors cursor-pointer"
+            >
+              ← Volver al Inicio
+            </button>
+            <button
+              onClick={() => {
+                onSelectRoleAndLogin('DIRECTOR');
+                onNavigate('dashboard');
+              }}
+              className="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs px-4 py-2 rounded-xl shadow-lg shadow-sky-500/20 transition-all cursor-pointer flex items-center gap-1.5"
+            >
+              <span>Panel de Administración</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
       </header>
 
       {/* HERO INSTITUCIONAL */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-10 space-y-12">
+      <main className="flex-1 container-app py-10 space-y-12">
         <div className="text-center space-y-3 max-w-2xl mx-auto">
           <div className="inline-flex items-center gap-2 bg-sky-500/10 border border-sky-500/30 text-sky-400 text-xs font-bold px-3 py-1 rounded-full">
             <Sparkles className="w-3.5 h-3.5" />
@@ -386,7 +388,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
 
       {/* FOOTER */}
       <footer className="bg-slate-900 border-t border-slate-800 py-4 text-center text-xs text-slate-500">
-        <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <div className="container-app flex flex-col sm:flex-row items-center justify-between gap-2">
           <span>{currentTenant.name} • Portal Institucional Multi-Rol</span>
           <span className="font-mono text-slate-400">{currentTenant.subdomain}.avanteschoolmanagement.local</span>
         </div>

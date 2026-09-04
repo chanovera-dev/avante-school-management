@@ -7,6 +7,12 @@ body {
   min-height: 100vh;
 }
 
+/* Contenedor principal de diseño ASM: max 1366px, sin padding lateral, centrado con margin-inline auto */
+.container-app {
+  width: min(100% - 2rem, 1366px);
+  margin-inline: auto;
+}
+
 /* Scrollbar Moderno Personalizado */
 .custom-scrollbar::-webkit-scrollbar {
   width: 5px;

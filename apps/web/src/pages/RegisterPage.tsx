@@ -235,21 +235,23 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate, onSchool
   return (
     <div className="min-h-screen bg-slate-950 text-white flex flex-col justify-between selection:bg-sky-500 selection:text-white">
       {/* Header */}
-      <header className="border-b border-slate-800/80 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavigate('home')}>
-          <div className="bg-sky-600 text-white font-black text-xl w-9 h-9 rounded-xl flex items-center justify-center">
-            ASM
+      <header className="border-b border-slate-800/80 py-4">
+        <div className="container-app flex items-center justify-between">
+          <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavigate('home')}>
+            <div className="bg-sky-600 text-white font-black text-xl w-9 h-9 rounded-xl flex items-center justify-center">
+              ASM
+            </div>
+            <span className="font-extrabold text-lg text-white">Avante School Management</span>
           </div>
-          <span className="font-extrabold text-lg text-white">Avante School Management</span>
-        </div>
-        <div className="flex items-center gap-4 text-xs">
-          <span className="text-slate-400">¿Ya tienes cuenta de colegio?</span>
-          <button
-            onClick={() => onNavigate('login')}
-            className="text-sky-400 hover:text-sky-300 font-bold hover:underline"
-          >
-            Iniciar Sesión
-          </button>
+          <div className="flex items-center gap-4 text-xs">
+            <span className="text-slate-400">¿Ya tienes cuenta de colegio?</span>
+            <button
+              onClick={() => onNavigate('login')}
+              className="text-sky-400 hover:text-sky-300 font-bold hover:underline"
+            >
+              Iniciar Sesión
+            </button>
+          </div>
         </div>
       </header>
 
@@ -609,7 +611,9 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate, onSchool
 
       {/* Footer */}
       <footer className="border-t border-slate-800 py-4 text-center text-xs text-slate-500">
-        Avante School Management (ASM) • Dominio de desarrollo: avanteschoolmanagement.local
+        <div className="container-app">
+          Avante School Management (ASM) • Dominio de desarrollo: avanteschoolmanagement.local
+        </div>
       </footer>
     </div>
   );

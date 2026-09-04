@@ -79,29 +79,31 @@ export const SuperAdminLoginPage: React.FC<SuperAdminLoginPageProps> = ({
       <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
 
       {/* Header Corporativo SaaS */}
-      <header className="border-b border-slate-800/80 px-6 py-4 flex items-center justify-between backdrop-blur-md bg-slate-950/60 z-10">
-        <div className="flex items-center gap-3">
-          <div className="bg-gradient-to-br from-purple-600 to-indigo-700 text-white font-black text-lg w-9 h-9 rounded-xl flex items-center justify-center shadow-lg shadow-purple-600/30">
-            <Cpu className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-extrabold text-base text-white tracking-tight">Avante Core Ops</span>
-              <span className="bg-purple-900/60 text-purple-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-purple-700/60 tracking-wider uppercase">
-                Admin Console
-              </span>
+      <header className="border-b border-slate-800/80 py-4 backdrop-blur-md bg-slate-950/60 z-10">
+        <div className="container-app flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="bg-gradient-to-br from-purple-600 to-indigo-700 text-white font-black text-lg w-9 h-9 rounded-xl flex items-center justify-center shadow-lg shadow-purple-600/30">
+              <Cpu className="w-5 h-5" />
             </div>
-            <p className="text-[11px] text-slate-400">Consola Central de Gestión de Infraestructura & Multi-Tenant</p>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-extrabold text-base text-white tracking-tight">Avante Core Ops</span>
+                <span className="bg-purple-900/60 text-purple-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-purple-700/60 tracking-wider uppercase">
+                  Admin Console
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-400">Consola Central de Gestión de Infraestructura & Multi-Tenant</p>
+            </div>
           </div>
-        </div>
 
-        <button
-          onClick={() => onNavigate('login')}
-          className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 transition-colors border border-slate-800 hover:border-slate-700 px-3 py-1.5 rounded-lg"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Volver al Login Escolar</span>
-        </button>
+          <button
+            onClick={() => onNavigate('login')}
+            className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 transition-colors border border-slate-800 hover:border-slate-700 px-3 py-1.5 rounded-lg"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Volver al Login Escolar</span>
+          </button>
+        </div>
       </header>
 
       {/* Contenedor Principal */}
@@ -204,7 +206,9 @@ export const SuperAdminLoginPage: React.FC<SuperAdminLoginPageProps> = ({
 
       {/* Footer */}
       <footer className="border-t border-slate-900 py-4 text-center text-xs text-slate-500 z-10 font-mono">
-        Avante Global Infrastructure • TLS 1.3 Strict • PostgreSQL asm_db
+        <div className="container-app">
+          Avante Global Infrastructure • TLS 1.3 Strict • PostgreSQL asm_db
+        </div>
       </footer>
     </div>
   );
