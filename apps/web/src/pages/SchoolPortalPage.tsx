@@ -20,6 +20,7 @@ interface SchoolPortalPageProps {
     name: string;
     subdomain: string;
     adminEmail?: string;
+    levelsOffered?: string[];
   };
 }
 
@@ -33,7 +34,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
 
   const [studentForm, setStudentForm] = useState({
     studentName: '',
-    level: 'Primaria',
+    level: currentTenant.levelsOffered?.[0] || 'Primaria',
     grade: '1º Grado',
     parentName: '',
     parentEmail: '',
@@ -48,7 +49,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
       setShowStudentEnrollModal(false);
       setStudentForm({
         studentName: '',
-        level: 'Primaria',
+        level: currentTenant.levelsOffered?.[0] || 'Primaria',
         grade: '1º Grado',
         parentName: '',
         parentEmail: '',
@@ -66,10 +67,10 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
             <div className="brand-icon">ASM</div>
             <div>
               <h1 className="brand-title">
-                {currentTenant.name || 'Instituto Logos'}
+                {currentTenant.name || 'Colegio Institucional'}
               </h1>
               <div className="footer-brand-info">
-                <p>{currentTenant.subdomain || 'institutologos'}.avanteschoolmanagement.local</p>
+                <p>{currentTenant.subdomain ? `${currentTenant.subdomain}.avanteschoolmanagement.local` : 'avanteschoolmanagement.local'}</p>
                 <p>•</p>
                 <p className="footer-brand-name">Portal Oficial</p>
               </div>
@@ -109,12 +110,24 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
           <h2>
             Bienvenido al Portal de <br />
             <strong className="text-gradient">
-              {currentTenant.name || 'Instituto Logos'}
+              {currentTenant.name || 'Colegio Institucional'}
             </strong>
           </h2>
           <p>
-            Niveles Incorporados: <strong>🎨 Preescolar</strong> y{' '}
-            <strong>🎒 Primaria</strong>. Selecciona tu perfil institucional para ingresar o solicita la inscripción de un nuevo alumno.
+            {currentTenant.levelsOffered && currentTenant.levelsOffered.length > 0 ? (
+              <>
+                Niveles Incorporados:{' '}
+                {currentTenant.levelsOffered.map((lvl, idx) => (
+                  <strong key={lvl}>
+                    {idx > 0 ? ' • ' : ''}
+                    {lvl}
+                  </strong>
+                ))}
+                . Selecciona tu perfil institucional para ingresar o solicita la admisión de un nuevo alumno.
+              </>
+            ) : (
+              'Selecciona tu perfil institucional para ingresar o solicita la admisión de un nuevo alumno.'
+            )}
           </p>
         </div>
 
@@ -127,7 +140,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                 Inscripciones y Admisiones Abiertas
               </div>
             </div>
-            <h3>¿Deseas inscribir a tu hijo(a) en Kínder o Primaria?</h3>
+            <h3>¿Deseas inscribir a tu hijo(a) en nuestro colegio?</h3>
             <p>
               Completa la solicitud de admisión en línea en menos de 2 minutos. Recibirás tu folio de matrícula escolar y ficha de ingreso.
             </p>
@@ -305,8 +318,17 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                       onChange={(e) => setStudentForm({ ...studentForm, level: e.target.value })}
                       className="form-select"
                     >
-                      <option value="Preescolar">Preescolar / Kínder</option>
-                      <option value="Primaria">Primaria</option>
+                      {currentTenant.levelsOffered && currentTenant.levelsOffered.length > 0 ? (
+                        currentTenant.levelsOffered.map((lvl) => (
+                          <option key={lvl} value={lvl}>
+                            {lvl}
+                          </option>
+                        ))
+                      ) : (
+                        <>
+                          <option value="Primaria">Primaria</option>
+                        </>
+                      )}
                     </select>
                   </div>
                   <div className="form-group">

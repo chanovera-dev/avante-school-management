@@ -1,6 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { store } from '../store/memory.store.js';
+import { prisma } from '../lib/prisma.js';
 import { authenticate, requireRoles } from '../middleware/auth.middleware.js';
 import { UserRole, GatewayFeePolicy, TenantStatus, SubscriptionPlanTier, SubscriptionStatus } from '@asm/shared';
 
@@ -16,6 +17,52 @@ const createTenantSchema = z.object({
 });
 
 export async function tenantRoutes(fastify: FastifyInstance) {
+  // Obtener información pública de un colegio por su subdominio (para el portal escolar)
+  fastify.get('/by-subdomain/:subdomain', async (request, reply) => {
+    const { subdomain } = request.params as { subdomain: string };
+    const cleanSub = subdomain.toLowerCase().trim();
+
+    // 1. Buscar en store en memoria
+    let tenant = store.tenants.find(
+      (t) => t.subdomain.toLowerCase() === cleanSub && t.status === TenantStatus.ACTIVO
+    );
+
+    // 2. Si no está en memoria, buscar en Postgres/Prisma
+    if (!tenant) {
+      try {
+        const dbTenant = await prisma.tenant.findUnique({
+          where: { subdomain: cleanSub },
+        });
+        if (dbTenant && dbTenant.status === 'ACTIVO') {
+          tenant = dbTenant as any;
+        }
+      } catch (err) {
+        // Fallback seguro si base de datos no está activa
+      }
+    }
+
+    if (!tenant) {
+      return reply.status(404).send({
+        error: 'School Not Found',
+        message: `No se encontró ninguna institución educativa activa con el subdominio '${subdomain}'.`,
+      });
+    }
+
+    const campuses = store.campuses.filter((c) => c.tenantId === tenant!.id);
+    const levels = store.educationalLevels.filter((lvl) => lvl.tenantId === tenant!.id);
+
+    return reply.send({
+      id: tenant.id,
+      name: tenant.name,
+      subdomain: tenant.subdomain,
+      contactEmail: tenant.contactEmail,
+      contactPhone: tenant.contactPhone,
+      status: tenant.status,
+      levelsOffered: levels.map((l) => l.id),
+      campuses: campuses.map((c) => ({ id: c.id, name: c.name, code: c.code })),
+    });
+  });
+
   // Obtener información del tenant actual
   fastify.get('/current', async (request, reply) => {
     const tenant = request.tenant;

@@ -6,7 +6,7 @@ import { SuperAdminLoginPage } from './pages/SuperAdminLoginPage.js';
 import { SuperAdminDashboardPage } from './pages/SuperAdminDashboardPage.js';
 import { DashboardPage } from './pages/DashboardPage.js';
 import { SchoolPortalPage } from './pages/SchoolPortalPage.js';
-import { Globe, School, LayoutDashboard, Sparkles, ShieldCheck, LogIn } from 'lucide-react';
+import { Globe, School, LayoutDashboard, Sparkles, ShieldCheck, LogIn, AlertCircle } from 'lucide-react';
 
 export function App() {
   // Función para determinar si el usuario accedió a través de un subdominio institucional o admin
@@ -56,6 +56,9 @@ export function App() {
 
   const [activeRole, setActiveRole] = useState<'SUPER_ADMIN' | 'DIRECTOR' | 'DOCENTE' | 'CONTROL_ESCOLAR' | 'FINANZAS' | 'TUTOR'>('DIRECTOR');
   
+  const [isCheckingSubdomain, setIsCheckingSubdomain] = useState(detected.isSubdomain && !detected.isAdmin);
+  const [subdomainNotFound, setSubdomainNotFound] = useState(false);
+
   const [currentTenant, setCurrentTenant] = useState<{
     id: string;
     name: string;
@@ -82,18 +85,41 @@ export function App() {
         subdomain: 'admin',
         adminEmail: 'superadmin@avanteschoolmanagement.com',
       });
+      setIsCheckingSubdomain(false);
+      setSubdomainNotFound(false);
     } else if (isSubdomain) {
-      setCurrentRoute('portal');
-      setCurrentTenant((prev) => ({
-        ...prev,
-        subdomain,
-        name: prev.name || `Colegio ${subdomain}`,
-      }));
+      setIsCheckingSubdomain(true);
+      fetch(`/api/tenants/by-subdomain/${subdomain}`)
+        .then(async (res) => {
+          if (res.ok) {
+            const data = await res.json();
+            setCurrentTenant({
+              id: data.id,
+              name: data.name,
+              subdomain: data.subdomain,
+              adminEmail: data.contactEmail,
+              levelsOffered: data.levelsOffered || [],
+            });
+            setCurrentRoute('portal');
+            setSubdomainNotFound(false);
+          } else {
+            // El colegio fue eliminado o no existe en la base de datos
+            setSubdomainNotFound(true);
+          }
+        })
+        .catch(() => {
+          setSubdomainNotFound(true);
+        })
+        .finally(() => {
+          setIsCheckingSubdomain(false);
+        });
     } else {
       // Si está en localhost puro o avanteschoolmanagement.local puro, muestra home a menos que esté navegando
       if (currentRoute === 'portal' && !isSubdomain) {
         setCurrentRoute('home');
       }
+      setIsCheckingSubdomain(false);
+      setSubdomainNotFound(false);
     }
   }, []);
 
@@ -135,31 +161,78 @@ export function App() {
 
   return (
     <div className="relative min-h-screen flex flex-col">
-      {/* Vistas según ruta */}
-      {currentRoute === 'home' && <HomePage onNavigate={setCurrentRoute} />}
+      {/* 1. Comprobando validez del subdominio institucional */}
+      {isCheckingSubdomain && (
+        <div className="portal-page flex-col flex-1 flex-center" style={{ minHeight: '100vh', justifyContent: 'center', alignItems: 'center' }}>
+          <div className="flex-col flex-center gap-3">
+            <div className="brand-icon">ASM</div>
+            <p className="font-bold text-slate-700">Verificando institución educativa...</p>
+          </div>
+        </div>
+      )}
+
+      {/* 2. Subdominio no encontrado / Colegio eliminado (404) */}
+      {!isCheckingSubdomain && subdomainNotFound && (
+        <div className="portal-page flex-col flex-1 flex-center" style={{ minHeight: '100vh', justifyContent: 'center', alignItems: 'center' }}>
+          <main className="container-app empty-tenant-main">
+            <div className="empty-tenant-card">
+              <div className="empty-tenant-icon" style={{ backgroundColor: 'var(--color-danger-bg)', color: 'var(--color-danger)' }}>
+                <AlertCircle className="w-12 h-12" />
+              </div>
+              <h2 className="empty-tenant-title">Colegio No Encontrado (Error 404)</h2>
+              <p className="empty-tenant-desc">
+                La institución educativa asociada al subdominio <strong>"{detected.subdomain}"</strong> no está registrada en el sistema o fue eliminada definitivamente de la base de datos.
+              </p>
+              <div className="empty-tenant-actions">
+                <button
+                  onClick={() => {
+                    window.location.href = `${window.location.protocol}//localhost:${window.location.port || '3000'}/`;
+                  }}
+                  className="btn btn-primary btn-lg cursor-pointer"
+                >
+                  <Globe className="w-5 h-5" />
+                  Ir al Portal Principal (ASM)
+                </button>
+                <button
+                  onClick={() => {
+                    setSubdomainNotFound(false);
+                    setCurrentRoute('register');
+                  }}
+                  className="btn btn-secondary btn-lg cursor-pointer"
+                >
+                  Registrar una Escuela
+                </button>
+              </div>
+            </div>
+          </main>
+        </div>
+      )}
+
+      {/* Vistas según ruta si el subdominio es válido o no hay error */}
+      {!isCheckingSubdomain && !subdomainNotFound && currentRoute === 'home' && <HomePage onNavigate={setCurrentRoute} />}
       
-      {currentRoute === 'register' && (
+      {!isCheckingSubdomain && !subdomainNotFound && currentRoute === 'register' && (
         <RegisterPage
           onNavigate={setCurrentRoute}
           onSchoolRegistered={handleSchoolRegistered}
         />
       )}
 
-      {currentRoute === 'login' && (
+      {!isCheckingSubdomain && !subdomainNotFound && currentRoute === 'login' && (
         <LoginPage
           onNavigate={setCurrentRoute}
           onLoginSuccess={handleLoginSuccess}
         />
       )}
 
-      {currentRoute === 'superadmin' && (
+      {!isCheckingSubdomain && !subdomainNotFound && currentRoute === 'superadmin' && (
         <SuperAdminLoginPage
           onNavigate={setCurrentRoute}
           onLoginSuccess={handleLoginSuccess}
         />
       )}
 
-      {currentRoute === 'portal' && (
+      {!isCheckingSubdomain && !subdomainNotFound && currentRoute === 'portal' && (
         <SchoolPortalPage
           onNavigate={setCurrentRoute}
           onSelectRoleAndLogin={handleLoginSuccess}
@@ -167,7 +240,7 @@ export function App() {
         />
       )}
 
-      {currentRoute === 'dashboard' && (
+      {!isCheckingSubdomain && !subdomainNotFound && currentRoute === 'dashboard' && (
         activeRole === 'SUPER_ADMIN' ? (
           <SuperAdminDashboardPage
             onNavigate={setCurrentRoute}
