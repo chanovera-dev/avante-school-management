@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  ShieldAlert,
   Lock,
   Mail,
   ArrowRight,
@@ -73,95 +72,117 @@ export const SuperAdminLoginPage: React.FC<SuperAdminLoginPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-purple-500 selection:text-white relative overflow-hidden">
+    <div className="auth-page">
       {/* Background glow effects */}
-      <div className="absolute -top-40 -left-40 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="auth-glow-top-left" />
+      <div className="auth-glow-bottom-right" />
 
       {/* Header Corporativo SaaS */}
-      <header className="border-b border-slate-800/80 py-4 backdrop-blur-md bg-slate-950/60 z-10">
-        <div className="container-app flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-br from-purple-600 to-indigo-700 text-white font-black text-lg w-9 h-9 rounded-xl flex items-center justify-center shadow-lg shadow-purple-600/30">
-              <Cpu className="w-5 h-5" />
+      <header className="auth-header" style={{ backdropFilter: 'blur(12px)', background: 'rgba(2, 6, 23, 0.7)' }}>
+        <div className="container-app auth-header-inner">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div
+              style={{
+                background: 'linear-gradient(135deg, var(--color-purple), #4338ca)',
+                color: '#ffffff',
+                width: '2.25rem',
+                height: '2.25rem',
+                borderRadius: 'var(--radius-md)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 4px 14px var(--color-purple-glow)'
+              }}
+            >
+              <Cpu style={{ width: '1.25rem', height: '1.25rem' }} />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="font-extrabold text-base text-white tracking-tight">Avante Core Ops</span>
-                <span className="bg-purple-900/60 text-purple-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-purple-700/60 tracking-wider uppercase">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span style={{ fontWeight: 800, fontSize: '1rem', color: '#ffffff' }}>Avante Core Ops</span>
+                <span className="badge badge-purple" style={{ fontSize: '0.625rem' }}>
                   Admin Console
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400">Consola Central de Gestión de Infraestructura & Multi-Tenant</p>
+              <p style={{ fontSize: '0.6875rem', color: 'var(--color-text-muted)' }}>
+                Consola Central de Gestión de Infraestructura & Multi-Tenant
+              </p>
             </div>
           </div>
 
           <button
             onClick={() => onNavigate('login')}
-            className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 transition-colors border border-slate-800 hover:border-slate-700 px-3 py-1.5 rounded-lg"
+            className="btn btn-outline btn-sm"
           >
-            <ArrowLeft className="w-3.5 h-3.5" />
+            <ArrowLeft style={{ width: '0.875rem', height: '0.875rem' }} />
             <span>Volver al Login Escolar</span>
           </button>
         </div>
       </header>
 
       {/* Contenedor Principal */}
-      <main className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8 z-10">
-        <div className="max-w-md w-full bg-slate-900/90 border border-purple-900/40 p-8 rounded-3xl shadow-2xl shadow-purple-950/40 backdrop-blur-xl space-y-6">
-          <div className="flex items-start justify-between">
+      <main className="auth-main">
+        <div className="auth-card auth-card-purple">
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
             <div>
-              <div className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-purple-400 bg-purple-950/80 border border-purple-800/60 px-2.5 py-1 rounded-full mb-3">
-                <ShieldCheck className="w-3.5 h-3.5" />
+              <div className="badge badge-purple" style={{ marginBottom: '0.75rem' }}>
+                <ShieldCheck style={{ width: '0.875rem', height: '0.875rem' }} />
                 <span>Acceso Restringido • Nivel 0</span>
               </div>
-              <h1 className="text-2xl font-black text-white">Super Administrador</h1>
-              <p className="text-slate-400 text-xs mt-1">
+              <h1 style={{ fontSize: '1.5rem', fontWeight: 900, color: 'var(--color-text-main)' }}>
+                Super Administrador
+              </h1>
+              <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '0.25rem' }}>
                 Portal para operadores de la red de colegios Avante School Management.
               </p>
             </div>
-            <div className="p-2.5 bg-purple-900/30 border border-purple-800/50 rounded-2xl text-purple-400">
-              <Server className="w-6 h-6" />
+            <div
+              style={{
+                padding: '0.625rem',
+                background: 'var(--color-purple-bg)',
+                border: '1px solid var(--color-purple-border)',
+                borderRadius: 'var(--radius-lg)',
+                color: '#c084fc'
+              }}
+            >
+              <Server style={{ width: '1.5rem', height: '1.5rem' }} />
             </div>
           </div>
 
           {errorMessage && (
-            <div className="bg-rose-950/70 border border-rose-800/80 text-rose-200 text-xs p-3.5 rounded-xl flex items-start gap-2.5">
-              <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+            <div className="alert alert-danger">
+              <AlertCircle style={{ width: '1rem', height: '1rem', flexShrink: 0, marginTop: '0.125rem' }} />
               <span>{errorMessage}</span>
             </div>
           )}
 
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold uppercase text-slate-300 mb-1 tracking-wider">
-                Credencial de Operador (Email)
-              </label>
-              <div className="relative">
-                <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div className="form-group" style={{ marginBottom: 0 }}>
+              <label className="form-label">Credencial de Operador (Email)</label>
+              <div className="auth-input-wrapper">
+                <Mail className="input-icon" />
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-slate-950/90 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-all font-mono"
+                  className="form-input"
+                  style={{ fontFamily: 'var(--font-mono)' }}
                   placeholder="superadmin@avanteschoolmanagement.com"
                 />
               </div>
             </div>
 
-            <div>
-              <label className="block text-xs font-bold uppercase text-slate-300 mb-1 tracking-wider">
-                Contraseña Maestra
-              </label>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <div className="form-group" style={{ marginBottom: 0 }}>
+              <label className="form-label">Contraseña Maestra</label>
+              <div className="auth-input-wrapper">
+                <Lock className="input-icon" />
                 <input
                   type="password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-slate-950/90 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-all font-mono"
+                  className="form-input"
+                  style={{ fontFamily: 'var(--font-mono)' }}
                 />
               </div>
             </div>
@@ -169,25 +190,39 @@ export const SuperAdminLoginPage: React.FC<SuperAdminLoginPageProps> = ({
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black text-sm py-3 rounded-xl shadow-lg shadow-purple-600/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+              className="btn btn-purple btn-lg"
+              style={{ width: '100%', marginTop: '0.5rem' }}
             >
               {loading ? (
                 <span>Validando Credenciales...</span>
               ) : (
                 <>
                   <span>Ingresar a Consola Master</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight style={{ width: '1rem', height: '1rem' }} />
                 </>
               )}
             </button>
           </form>
 
           {/* Caja Informativa de Seguridad */}
-          <div className="pt-4 border-t border-slate-800/80">
-            <div className="bg-slate-950/60 border border-slate-800 p-3 rounded-xl flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2 text-slate-400">
-                <KeyRound className="w-4 h-4 text-purple-400" />
-                <span className="font-mono text-[11px]">Cuenta Demo: superadmin@...</span>
+          <div style={{ paddingTop: '1rem', borderTop: '1px solid var(--color-border-subtle)' }}>
+            <div
+              style={{
+                background: 'var(--color-bg-base)',
+                border: '1px solid var(--color-border-subtle)',
+                padding: '0.75rem',
+                borderRadius: 'var(--radius-md)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                fontSize: '0.75rem'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)' }}>
+                <KeyRound style={{ width: '1rem', height: '1rem', color: '#c084fc' }} />
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6875rem' }}>
+                  Cuenta Demo: superadmin@...
+                </span>
               </div>
               <button
                 type="button"
@@ -195,7 +230,7 @@ export const SuperAdminLoginPage: React.FC<SuperAdminLoginPageProps> = ({
                   setEmail('superadmin@avanteschoolmanagement.com');
                   setPassword('Admin123!');
                 }}
-                className="text-purple-400 hover:text-purple-300 font-bold text-[11px] hover:underline"
+                style={{ color: '#c084fc', fontWeight: 700, fontSize: '0.6875rem', textDecoration: 'underline' }}
               >
                 Rellenar
               </button>
@@ -205,7 +240,7 @@ export const SuperAdminLoginPage: React.FC<SuperAdminLoginPageProps> = ({
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-900 py-4 text-center text-xs text-slate-500 z-10 font-mono">
+      <footer className="auth-footer" style={{ textAlign: 'center', fontFamily: 'var(--font-mono)' }}>
         <div className="container-app">
           Avante Global Infrastructure • TLS 1.3 Strict • PostgreSQL asm_db
         </div>

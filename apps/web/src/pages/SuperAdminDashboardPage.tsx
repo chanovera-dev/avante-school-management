@@ -14,10 +14,8 @@ import {
   CheckCircle2,
   XCircle,
   Clock,
-  Sparkles,
   Server,
   Layers,
-  ArrowRight,
   TrendingUp,
   CreditCard,
   X
@@ -166,13 +164,13 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
       });
 
       if (res.ok) {
-        showToast(`Estatus de '${school.name}' cambiado a ${nextStatus}.`);
+        showToast(`Estado de '${school.name}' actualizado a ${nextStatus}.`);
         await fetchData();
       } else {
-        showToast('No se pudo actualizar el estatus de la escuela.', 'error');
+        showToast('Error al cambiar estatus de la escuela.', 'error');
       }
     } catch (err) {
-      showToast('Error al actualizar el estatus.', 'error');
+      showToast('Error de red al cambiar estatus.', 'error');
     }
   };
 
@@ -190,7 +188,10 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
       const res = await fetch(`/api/superadmin/schools/${schoolToEdit.id}/plan`, {
         method: 'PATCH',
         headers,
-        body: JSON.stringify({ planTier: editPlan, monthlyFeeMXN: editFee }),
+        body: JSON.stringify({
+          planTier: editPlan,
+          monthlyFeeMXN: editFee,
+        }),
       });
 
       if (res.ok) {
@@ -219,59 +220,86 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
   });
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-purple-500 selection:text-white pb-16">
+    <div className="sa-page">
       {/* Toast de Notificaciones */}
       {toastMessage && (
         <div
-          className={`fixed top-4 right-4 z-50 px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2.5 border text-xs font-semibold backdrop-blur-xl animate-fade-in ${
-            toastMessage.type === 'success'
-              ? 'bg-emerald-950/90 border-emerald-700 text-emerald-200'
-              : 'bg-rose-950/90 border-rose-700 text-rose-200'
-          }`}
+          style={{
+            position: 'fixed',
+            top: '1rem',
+            right: '1rem',
+            zIndex: 999,
+            padding: '0.75rem 1rem',
+            borderRadius: 'var(--radius-lg)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.625rem',
+            fontSize: '0.75rem',
+            fontWeight: 600,
+            backdropFilter: 'blur(12px)',
+            background: toastMessage.type === 'success' ? 'rgba(6, 78, 59, 0.9)' : 'rgba(136, 19, 55, 0.9)',
+            border: `1px solid ${toastMessage.type === 'success' ? 'var(--color-success-border)' : 'var(--color-danger-border)'}`,
+            color: '#ffffff',
+            boxShadow: 'var(--shadow-xl)'
+          }}
         >
           {toastMessage.type === 'success' ? (
-            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+            <CheckCircle2 style={{ width: '1rem', height: '1rem', color: 'var(--color-success)' }} />
           ) : (
-            <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />
+            <AlertTriangle style={{ width: '1rem', height: '1rem', color: 'var(--color-danger)' }} />
           )}
           <span>{toastMessage.text}</span>
         </div>
       )}
 
       {/* Header Superior Corporativo */}
-      <header className="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-xl py-4 sticky top-0 z-30">
-        <div className="container-app flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-tr from-purple-600 to-indigo-600 text-white w-10 h-10 rounded-2xl flex items-center justify-center font-black text-xl shadow-lg shadow-purple-600/30">
-              <Server className="w-5 h-5" />
+      <header className="sa-header">
+        <div className="container-app sa-header-inner">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div
+              style={{
+                background: 'linear-gradient(135deg, var(--color-purple), #4338ca)',
+                color: '#ffffff',
+                width: '2.5rem',
+                height: '2.5rem',
+                borderRadius: 'var(--radius-md)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 4px 14px var(--color-purple-glow)'
+              }}
+            >
+              <Server style={{ width: '1.25rem', height: '1.25rem' }} />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="font-extrabold text-lg text-white tracking-tight">Avante Core Ops</span>
-                <span className="bg-purple-950 text-purple-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-purple-800 tracking-wider uppercase">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span style={{ fontWeight: 800, fontSize: '1.125rem', color: '#ffffff' }}>Avante Core Ops</span>
+                <span className="badge badge-purple" style={{ fontSize: '0.625rem' }}>
                   Consola SuperAdmin
                 </span>
               </div>
-              <p className="text-xs text-slate-400">Padrón Maestro de Escuelas, Licenciamiento y Base de Datos PostgreSQL</p>
+              <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
+                Padrón Maestro de Escuelas, Licenciamiento y Base de Datos PostgreSQL
+              </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <button
               onClick={fetchData}
               disabled={loading}
-              className="flex items-center gap-1.5 bg-slate-800/80 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-700 transition-all cursor-pointer"
+              className="btn btn-secondary btn-sm"
               title="Refrescar datos en vivo"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
+              <RefreshCw className={loading ? 'animate-spin' : ''} style={{ width: '0.875rem', height: '0.875rem' }} />
               <span>Actualizar</span>
             </button>
 
             <button
               onClick={() => onNavigate('login')}
-              className="flex items-center gap-1.5 bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-semibold px-3 py-2 rounded-xl border border-slate-700 transition-all cursor-pointer"
+              className="btn btn-outline btn-sm"
             >
-              <Building2 className="w-3.5 h-3.5 text-sky-400" />
+              <Building2 style={{ width: '0.875rem', height: '0.875rem', color: 'var(--color-primary-hover)' }} />
               <span>Login Escolar</span>
             </button>
 
@@ -280,9 +308,9 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
                 localStorage.removeItem('asm_token');
                 onNavigate('superadmin');
               }}
-              className="flex items-center gap-1.5 bg-rose-950/50 hover:bg-rose-900/70 text-rose-300 text-xs font-semibold px-3 py-2 rounded-xl border border-rose-800/60 transition-all cursor-pointer"
+              className="btn btn-danger btn-sm"
             >
-              <LogOut className="w-3.5 h-3.5" />
+              <LogOut style={{ width: '0.875rem', height: '0.875rem' }} />
               <span>Cerrar Sesión</span>
             </button>
           </div>
@@ -290,99 +318,118 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
       </header>
 
       {/* Contenedor Central */}
-      <main className="flex-1 container-app py-8 space-y-8">
+      <main className="container-app sa-main">
         {/* BANNER DE BIENVENIDA Y ESTADO */}
-        <div className="bg-gradient-to-r from-purple-950/70 via-indigo-950/50 to-slate-900 border border-purple-800/40 p-6 rounded-3xl shadow-xl flex flex-wrap items-center justify-between gap-4">
-          <div className="space-y-1">
-            <div className="inline-flex items-center gap-2 text-xs font-bold text-purple-300 uppercase tracking-wider">
-              <ShieldCheck className="w-4 h-4 text-purple-400" />
+        <div
+          style={{
+            background: 'linear-gradient(135deg, rgba(88, 28, 135, 0.4) 0%, rgba(15, 23, 42, 0.9) 100%)',
+            border: '1px solid rgba(147, 51, 234, 0.3)',
+            padding: '1.5rem',
+            borderRadius: 'var(--radius-2xl)',
+            boxShadow: 'var(--shadow-lg)',
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '1rem'
+          }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', fontWeight: 700, color: '#d8b4fe', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <ShieldCheck style={{ width: '1rem', height: '1rem', color: 'var(--color-purple)' }} />
               <span>Infraestructura Master • PostgreSQL Activa (asm_db)</span>
             </div>
-            <h1 className="text-2xl font-black text-white">Tablero de Gestión de Ecosistema Escolar</h1>
-            <p className="text-slate-400 text-xs max-w-2xl">
+            <h1 style={{ fontSize: '1.5rem', fontWeight: 900, color: 'var(--color-text-main)' }}>
+              Tablero de Gestión de Ecosistema Escolar
+            </h1>
+            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.75rem', maxWidth: '42rem' }}>
               Monitoreo centralizado de todas las instituciones educativas privadas y públicas alojadas en el SaaS. Administra el estado de las escuelas, modifica suscripciones y gestiona la depuración de datos.
             </p>
           </div>
 
           <button
             onClick={() => onNavigate('register')}
-            className="bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-lg shadow-purple-600/30 transition-all flex items-center gap-2 cursor-pointer shrink-0"
+            className="btn btn-purple btn-sm"
           >
-            <Building2 className="w-4 h-4" />
+            <Building2 style={{ width: '1rem', height: '1rem' }} />
             <span>Dar de Alta Escuela</span>
           </button>
         </div>
 
         {/* 1. DASHBOARD DE ESTADÍSTICAS GLOBALES (KPIs) */}
         <div>
-          <h2 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
-            <TrendingUp className="w-4 h-4 text-purple-400" />
+          <h2 style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <TrendingUp style={{ width: '1rem', height: '1rem', color: 'var(--color-purple)' }} />
             <span>Métricas Globales de la Red Escolar</span>
           </h2>
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="sa-kpi-grid">
             {/* Card 1: Escuelas */}
-            <div className="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl space-y-2">
-              <div className="flex items-center justify-between text-slate-400">
-                <span className="text-xs font-bold uppercase tracking-wider">Colegios Registrados</span>
-                <div className="p-2 bg-purple-950/80 text-purple-400 rounded-xl border border-purple-800/60">
-                  <Building2 className="w-4 h-4" />
+            <div className="sa-kpi-card">
+              <div className="kpi-header">
+                <span className="kpi-label">Colegios Registrados</span>
+                <div className="kpi-icon" style={{ background: 'var(--color-purple-bg)', color: '#c084fc' }}>
+                  <Building2 style={{ width: '1rem', height: '1rem' }} />
                 </div>
               </div>
-              <div className="text-3xl font-black text-white">
+              <div className="kpi-value">
                 {metrics ? metrics.totalTenants : schools.length}
               </div>
-              <div className="flex items-center gap-2 text-[11px] text-slate-400">
-                <span className="text-emerald-400 font-semibold">{metrics ? metrics.activeTenants : schools.filter(s => s.status === 'ACTIVO').length} activos</span>
+              <div className="kpi-subtext">
+                <span style={{ color: 'var(--color-success)', fontWeight: 600 }}>
+                  {metrics ? metrics.activeTenants : schools.filter((s) => s.status === 'ACTIVO').length} activos
+                </span>
                 <span>•</span>
-                <span className="text-amber-400 font-semibold">{metrics ? metrics.pendingVerification : 0} pendientes</span>
+                <span style={{ color: 'var(--color-warning)', fontWeight: 600 }}>
+                  {metrics ? metrics.pendingVerification : 0} pendientes
+                </span>
               </div>
             </div>
 
             {/* Card 2: Alumnos */}
-            <div className="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl space-y-2">
-              <div className="flex items-center justify-between text-slate-400">
-                <span className="text-xs font-bold uppercase tracking-wider">Alumnos Matriculados</span>
-                <div className="p-2 bg-blue-950/80 text-blue-400 rounded-xl border border-blue-800/60">
-                  <GraduationCap className="w-4 h-4" />
+            <div className="sa-kpi-card">
+              <div className="kpi-header">
+                <span className="kpi-label">Alumnos Matriculados</span>
+                <div className="kpi-icon" style={{ background: 'var(--color-primary-bg)', color: 'var(--color-primary-hover)' }}>
+                  <GraduationCap style={{ width: '1rem', height: '1rem' }} />
                 </div>
               </div>
-              <div className="text-3xl font-black text-white">
+              <div className="kpi-value">
                 {metrics ? metrics.totalStudents : schools.reduce((acc, s) => acc + s.studentCount, 0)}
               </div>
-              <div className="text-[11px] text-slate-400">
+              <div className="kpi-subtext">
                 Expedientes digitales únicos vitalicios
               </div>
             </div>
 
             {/* Card 3: Usuarios Totales */}
-            <div className="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl space-y-2">
-              <div className="flex items-center justify-between text-slate-400">
-                <span className="text-xs font-bold uppercase tracking-wider">Usuarios & Personal</span>
-                <div className="p-2 bg-emerald-950/80 text-emerald-400 rounded-xl border border-emerald-800/60">
-                  <Users className="w-4 h-4" />
+            <div className="sa-kpi-card">
+              <div className="kpi-header">
+                <span className="kpi-label">Usuarios & Personal</span>
+                <div className="kpi-icon" style={{ background: 'var(--color-success-bg)', color: 'var(--color-success)' }}>
+                  <Users style={{ width: '1rem', height: '1rem' }} />
                 </div>
               </div>
-              <div className="text-3xl font-black text-white">
+              <div className="kpi-value">
                 {metrics ? metrics.totalUsers : schools.reduce((acc, s) => acc + s.userCount, 0)}
               </div>
-              <div className="text-[11px] text-slate-400">
+              <div className="kpi-subtext">
                 Directores, docentes, cajeros y tutores
               </div>
             </div>
 
             {/* Card 4: Ingresos Mensuales SaaS (MRR) */}
-            <div className="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl space-y-2">
-              <div className="flex items-center justify-between text-slate-400">
-                <span className="text-xs font-bold uppercase tracking-wider">MRR Proyectado</span>
-                <div className="p-2 bg-amber-950/80 text-amber-400 rounded-xl border border-amber-800/60">
-                  <DollarSign className="w-4 h-4" />
+            <div className="sa-kpi-card">
+              <div className="kpi-header">
+                <span className="kpi-label">MRR Proyectado</span>
+                <div className="kpi-icon" style={{ background: 'var(--color-warning-bg)', color: 'var(--color-warning)' }}>
+                  <DollarSign style={{ width: '1rem', height: '1rem' }} />
                 </div>
               </div>
-              <div className="text-3xl font-black text-emerald-400">
+              <div className="kpi-value" style={{ color: 'var(--color-success)' }}>
                 ${metrics ? metrics.totalProjectedMonthlyRevenue.toLocaleString('es-MX', { minimumFractionDigits: 2 }) : '0.00'}
               </div>
-              <div className="text-[11px] text-slate-400">
+              <div className="kpi-subtext">
                 Cuotas de suscripción SaaS en MXN
               </div>
             </div>
@@ -390,35 +437,37 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
         </div>
 
         {/* 2. PADRÓN MAESTRO DE ESCUELAS */}
-        <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="sa-table-card">
+          <div className="sa-table-header">
             <div>
-              <h2 className="text-lg font-black text-white flex items-center gap-2">
-                <Layers className="w-5 h-5 text-purple-400" />
+              <h2 style={{ fontSize: '1.125rem', fontWeight: 900, color: 'var(--color-text-main)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Layers style={{ width: '1.25rem', height: '1.25rem', color: 'var(--color-purple)' }} />
                 <span>Padrón de Colegios e Instituciones Registradas</span>
               </h2>
-              <p className="text-xs text-slate-400">
+              <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '0.25rem' }}>
                 Listado completo de escuelas en base de datos. Puedes acceder a su portal institucional, cambiar estatus o eliminarlas.
               </p>
             </div>
 
             {/* Barra de Filtros y Búsqueda */}
-            <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-              <div className="relative flex-1 sm:w-64">
-                <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.5rem' }}>
+              <div style={{ position: 'relative' }}>
+                <Search style={{ width: '1rem', height: '1rem', position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-faint)', pointerEvents: 'none' }} />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Buscar por nombre, subdominio..."
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:border-purple-500 outline-none"
+                  className="form-input"
+                  style={{ paddingLeft: '2.25rem', fontSize: '0.75rem', width: '16rem' }}
                 />
               </div>
 
               <select
                 value={statusFilter}
                 onChange={(e: any) => setStatusFilter(e.target.value)}
-                className="bg-slate-950 border border-slate-800 text-xs text-slate-300 rounded-xl px-3 py-1.5 focus:border-purple-500 outline-none"
+                className="form-select"
+                style={{ fontSize: '0.75rem', width: 'auto' }}
               >
                 <option value="ALL">Todos los estatus</option>
                 <option value="ACTIVO">Activos</option>
@@ -429,66 +478,82 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
           </div>
 
           {/* TABLA DE ESCUELAS */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
+          <div className="sa-table-responsive">
+            <table className="sa-table">
               <thead>
-                <tr className="border-b border-slate-800 text-[11px] uppercase tracking-wider text-slate-400 font-bold">
-                  <th className="py-3 px-4">Institución Escolar</th>
-                  <th className="py-3 px-4">Subdominio</th>
-                  <th className="py-3 px-4">Contacto / Director</th>
-                  <th className="py-3 px-4 text-center">Plan Licencia</th>
-                  <th className="py-3 px-4 text-center">Alumnos</th>
-                  <th className="py-3 px-4 text-center">Estatus</th>
-                  <th className="py-3 px-4 text-right">Acciones</th>
+                <tr>
+                  <th>Institución Escolar</th>
+                  <th>Subdominio</th>
+                  <th>Contacto / Director</th>
+                  <th style={{ textAlign: 'center' }}>Plan Licencia</th>
+                  <th style={{ textAlign: 'center' }}>Alumnos</th>
+                  <th style={{ textAlign: 'center' }}>Estatus</th>
+                  <th style={{ textAlign: 'right' }}>Acciones</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 font-medium text-slate-300">
+              <tbody>
                 {filteredSchools.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="text-center py-8 text-slate-500 text-xs">
+                    <td colSpan={7} style={{ textAlign: 'center', paddingBlock: '2.5rem', color: 'var(--color-text-muted)' }}>
                       {loading ? 'Cargando datos desde la base de datos...' : 'No se encontraron escuelas registradas con los filtros seleccionados.'}
                     </td>
                   </tr>
                 ) : (
                   filteredSchools.map((school) => (
-                    <tr key={school.id} className="hover:bg-slate-850/60 transition-colors">
+                    <tr key={school.id}>
                       {/* Nombre */}
-                      <td className="py-3.5 px-4 font-bold text-white">
-                        <div className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 bg-slate-800 rounded-xl flex items-center justify-center text-purple-400 font-bold text-xs border border-slate-700">
+                      <td style={{ fontWeight: 700, color: 'var(--color-text-main)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
+                          <div
+                            style={{
+                              width: '2rem',
+                              height: '2rem',
+                              background: 'var(--color-bg-card)',
+                              borderRadius: 'var(--radius-md)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              color: '#c084fc',
+                              fontWeight: 800,
+                              fontSize: '0.75rem',
+                              border: '1px solid var(--color-border-subtle)'
+                            }}
+                          >
                             {school.name.slice(0, 2).toUpperCase()}
                           </div>
                           <div>
                             <div>{school.name}</div>
-                            <div className="text-[10px] text-slate-500 font-normal">ID: {school.id}</div>
+                            <div style={{ fontSize: '0.625rem', color: 'var(--color-text-faint)', fontFamily: 'var(--font-mono)' }}>
+                              ID: {school.id}
+                            </div>
                           </div>
                         </div>
                       </td>
 
                       {/* Subdominio */}
-                      <td className="py-3.5 px-4 font-mono text-xs text-sky-400">
+                      <td style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-primary-hover)' }}>
                         {school.subdomain}.avanteschoolmanagement.local
                       </td>
 
                       {/* Contacto */}
-                      <td className="py-3.5 px-4 text-xs">
-                        <div className="text-slate-200">{school.contactEmail}</div>
+                      <td>
+                        <div style={{ color: 'var(--color-text-secondary)' }}>{school.contactEmail}</div>
                         {school.contactPhone && (
-                          <div className="text-[10px] text-slate-500">{school.contactPhone}</div>
+                          <div style={{ fontSize: '0.625rem', color: 'var(--color-text-faint)' }}>{school.contactPhone}</div>
                         )}
                       </td>
 
                       {/* Plan */}
-                      <td className="py-3.5 px-4 text-center">
+                      <td style={{ textAlign: 'center' }}>
                         <span
-                          className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                          className={`badge ${
                             school.planTier === 'ENTERPRISE'
-                              ? 'bg-purple-950 text-purple-300 border-purple-800'
+                              ? 'badge-purple'
                               : school.planTier === 'PRO_CAMPUS'
-                              ? 'bg-blue-950 text-blue-300 border-blue-800'
+                              ? 'badge-sky'
                               : school.planTier === 'STARTER'
-                              ? 'bg-emerald-950 text-emerald-300 border-emerald-800'
-                              : 'bg-slate-800 text-slate-300 border-slate-700'
+                              ? 'badge-emerald'
+                              : 'badge-sky'
                           }`}
                         >
                           {school.planTier === 'FREE_TIER_LAUNCH' ? 'LANZAMIENTO GRATIS' : school.planTier}
@@ -496,37 +561,38 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
                       </td>
 
                       {/* Alumnos */}
-                      <td className="py-3.5 px-4 text-center font-bold text-white">
+                      <td style={{ textAlign: 'center', fontWeight: 800, color: 'var(--color-text-main)' }}>
                         {school.studentCount}
                       </td>
 
                       {/* Estatus */}
-                      <td className="py-3.5 px-4 text-center">
+                      <td style={{ textAlign: 'center' }}>
                         <button
                           type="button"
                           onClick={() => handleToggleStatus(school)}
-                          className={`inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full border cursor-pointer transition-all ${
+                          className={`badge ${
                             school.status === 'ACTIVO'
-                              ? 'bg-emerald-950/80 text-emerald-300 border-emerald-800 hover:bg-emerald-900'
+                              ? 'badge-emerald'
                               : school.status === 'PENDIENTE_VERIFICACION'
-                              ? 'bg-amber-950/80 text-amber-300 border-amber-800 hover:bg-amber-900'
-                              : 'bg-rose-950/80 text-rose-300 border-rose-800 hover:bg-rose-900'
+                              ? 'badge-amber'
+                              : 'badge-rose'
                           }`}
+                          style={{ cursor: 'pointer' }}
                           title="Haz clic para alternar estatus"
                         >
                           {school.status === 'ACTIVO' ? (
                             <>
-                              <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                              <CheckCircle2 style={{ width: '0.75rem', height: '0.75rem' }} />
                               <span>ACTIVO</span>
                             </>
                           ) : school.status === 'PENDIENTE_VERIFICACION' ? (
                             <>
-                              <Clock className="w-3 h-3 text-amber-400" />
+                              <Clock style={{ width: '0.75rem', height: '0.75rem' }} />
                               <span>PENDIENTE</span>
                             </>
                           ) : (
                             <>
-                              <XCircle className="w-3 h-3 text-rose-400" />
+                              <XCircle style={{ width: '0.75rem', height: '0.75rem' }} />
                               <span>SUSPENDIDO</span>
                             </>
                           )}
@@ -534,8 +600,8 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
                       </td>
 
                       {/* Acciones */}
-                      <td className="py-3.5 px-4 text-right">
-                        <div className="inline-flex items-center gap-1.5">
+                      <td style={{ textAlign: 'right' }}>
+                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem' }}>
                           {/* Cambiar a Escuela */}
                           <button
                             type="button"
@@ -547,10 +613,11 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
                                 adminEmail: school.contactEmail,
                               })
                             }
-                            className="p-1.5 bg-slate-800 hover:bg-slate-700 text-sky-400 hover:text-sky-300 rounded-lg border border-slate-700 transition-colors cursor-pointer"
+                            className="btn btn-outline btn-sm"
+                            style={{ padding: '0.375rem', color: 'var(--color-primary-hover)' }}
                             title="Entrar al Dashboard de este colegio"
                           >
-                            <ExternalLink className="w-4 h-4" />
+                            <ExternalLink style={{ width: '1rem', height: '1rem' }} />
                           </button>
 
                           {/* Editar Plan */}
@@ -561,20 +628,22 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
                               setEditPlan(school.planTier);
                               setEditFee(school.monthlyFeeMXN);
                             }}
-                            className="p-1.5 bg-slate-800 hover:bg-slate-700 text-purple-400 hover:text-purple-300 rounded-lg border border-slate-700 transition-colors cursor-pointer"
+                            className="btn btn-outline btn-sm"
+                            style={{ padding: '0.375rem', color: '#c084fc' }}
                             title="Cambiar plan de suscripción"
                           >
-                            <CreditCard className="w-4 h-4" />
+                            <CreditCard style={{ width: '1rem', height: '1rem' }} />
                           </button>
 
                           {/* Eliminar Escuela */}
                           <button
                             type="button"
                             onClick={() => setSchoolToDelete(school)}
-                            className="p-1.5 bg-slate-800 hover:bg-rose-950 text-slate-400 hover:text-rose-400 rounded-lg border border-slate-700 hover:border-rose-800 transition-colors cursor-pointer"
+                            className="btn btn-outline btn-sm"
+                            style={{ padding: '0.375rem', color: 'var(--color-danger)' }}
                             title="Eliminar escuela de la base de datos"
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 style={{ width: '1rem', height: '1rem' }} />
                           </button>
                         </div>
                       </td>
@@ -589,40 +658,62 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
 
       {/* MODAL DE CONFIRMACIÓN DE ELIMINACIÓN DE ESCUELA */}
       {schoolToDelete && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="max-w-md w-full bg-slate-900 border border-rose-800/80 rounded-3xl p-6 shadow-2xl space-y-5">
-            <div className="flex items-start gap-3">
-              <div className="p-3 bg-rose-950 border border-rose-800 text-rose-400 rounded-2xl shrink-0">
-                <AlertTriangle className="w-6 h-6" />
+        <div className="modal-backdrop">
+          <div className="modal-card" style={{ borderColor: 'var(--color-danger-border)' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+              <div
+                style={{
+                  padding: '0.75rem',
+                  background: 'var(--color-danger-bg)',
+                  border: '1px solid var(--color-danger-border)',
+                  color: 'var(--color-danger)',
+                  borderRadius: 'var(--radius-lg)',
+                  flexShrink: 0
+                }}
+              >
+                <AlertTriangle style={{ width: '1.5rem', height: '1.5rem' }} />
               </div>
               <div>
-                <h3 className="text-lg font-black text-white">¿Eliminar escuela definitivamente?</h3>
-                <p className="text-xs text-slate-400 mt-1">
+                <h3 className="modal-title">¿Eliminar escuela definitivamente?</h3>
+                <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '0.25rem' }}>
                   Esta acción es irreversible y afectará la base de datos PostgreSQL de producción.
                 </p>
               </div>
             </div>
 
-            <div className="bg-slate-950 border border-slate-800 p-4 rounded-2xl space-y-2 text-xs">
+            <div
+              style={{
+                background: 'var(--color-bg-base)',
+                border: '1px solid var(--color-border-subtle)',
+                padding: '1rem',
+                borderRadius: 'var(--radius-md)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.5rem',
+                fontSize: '0.75rem'
+              }}
+            >
               <div>
-                <span className="text-slate-500 font-bold block">Colegio:</span>
-                <span className="text-white font-bold text-sm">{schoolToDelete.name}</span>
+                <span style={{ color: 'var(--color-text-faint)', fontWeight: 700, display: 'block' }}>Colegio:</span>
+                <span style={{ color: '#ffffff', fontWeight: 800, fontSize: '0.875rem' }}>{schoolToDelete.name}</span>
               </div>
               <div>
-                <span className="text-slate-500 font-bold block">Subdominio:</span>
-                <span className="text-sky-400 font-mono">{schoolToDelete.subdomain}.avanteschoolmanagement.local</span>
+                <span style={{ color: 'var(--color-text-faint)', fontWeight: 700, display: 'block' }}>Subdominio:</span>
+                <span style={{ color: 'var(--color-primary-hover)', fontFamily: 'var(--font-mono)' }}>
+                  {schoolToDelete.subdomain}.avanteschoolmanagement.local
+                </span>
               </div>
-              <div className="text-rose-300 text-[11px] pt-2 border-t border-slate-800">
+              <div style={{ color: '#fecdd3', fontSize: '0.6875rem', paddingTop: '0.5rem', borderTop: '1px solid var(--color-border-subtle)' }}>
                 ⚠️ Se eliminarán en cascada todos sus campus, usuarios registrados, expedientes de {schoolToDelete.studentCount} alumnos, calificaciones y transacciones asociadas.
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-3 pt-2">
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.75rem', paddingTop: '0.5rem' }}>
               <button
                 type="button"
                 disabled={isDeleting}
                 onClick={() => setSchoolToDelete(null)}
-                className="px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-750 rounded-xl transition-colors cursor-pointer"
+                className="btn btn-secondary btn-sm"
               >
                 Cancelar
               </button>
@@ -631,13 +722,13 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
                 type="button"
                 disabled={isDeleting}
                 onClick={handleDeleteSchool}
-                className="px-4 py-2 text-xs font-bold text-white bg-rose-600 hover:bg-rose-500 rounded-xl shadow-lg shadow-rose-600/30 transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                className="btn btn-danger btn-sm"
               >
                 {isDeleting ? (
                   <span>Eliminando de PostgreSQL...</span>
                 ) : (
                   <>
-                    <Trash2 className="w-3.5 h-3.5" />
+                    <Trash2 style={{ width: '0.875rem', height: '0.875rem' }} />
                     <span>Confirmar y Eliminar</span>
                   </>
                 )}
@@ -649,32 +740,38 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
 
       {/* MODAL PARA CAMBIAR PLAN DE SUSCRIPCIÓN */}
       {schoolToEdit && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="max-w-md w-full bg-slate-900 border border-purple-800/80 rounded-3xl p-6 shadow-2xl space-y-5">
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-purple-950 border border-purple-800 text-purple-400 rounded-2xl">
-                  <CreditCard className="w-6 h-6" />
+        <div className="modal-backdrop">
+          <div className="modal-card" style={{ borderColor: 'rgba(147, 51, 234, 0.4)' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <div
+                  style={{
+                    padding: '0.75rem',
+                    background: 'var(--color-purple-bg)',
+                    border: '1px solid var(--color-purple-border)',
+                    color: '#c084fc',
+                    borderRadius: 'var(--radius-lg)'
+                  }}
+                >
+                  <CreditCard style={{ width: '1.5rem', height: '1.5rem' }} />
                 </div>
                 <div>
-                  <h3 className="text-lg font-black text-white">Gestionar Licencia SaaS</h3>
-                  <p className="text-xs text-slate-400">{schoolToEdit.name}</p>
+                  <h3 className="modal-title">Gestionar Licencia SaaS</h3>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>{schoolToEdit.name}</p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setSchoolToEdit(null)}
-                className="text-slate-400 hover:text-white p-1"
+                className="modal-close"
               >
-                <X className="w-5 h-5" />
+                <X style={{ width: '1.25rem', height: '1.25rem' }} />
               </button>
             </div>
 
-            <div className="space-y-4 text-xs">
-              <div>
-                <label className="block text-slate-400 font-bold uppercase text-[10px] mb-1">
-                  Nivel de Plan
-                </label>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', fontSize: '0.75rem' }}>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Nivel de Plan</label>
                 <select
                   value={editPlan}
                   onChange={(e: any) => {
@@ -684,7 +781,7 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
                     if (e.target.value === 'PRO_CAMPUS') setEditFee(2499);
                     if (e.target.value === 'ENTERPRISE') setEditFee(4999);
                   }}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-purple-500 outline-none"
+                  className="form-select"
                 >
                   <option value="FREE_TIER_LAUNCH">Lanzamiento Gratuito (0.00 MXN)</option>
                   <option value="STARTER">Starter ($999.00 MXN / mes)</option>
@@ -693,25 +790,24 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
                 </select>
               </div>
 
-              <div>
-                <label className="block text-slate-400 font-bold uppercase text-[10px] mb-1">
-                  Cuota Mensual (MXN)
-                </label>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Cuota Mensual (MXN)</label>
                 <input
                   type="number"
                   min="0"
                   value={editFee}
                   onChange={(e) => setEditFee(parseFloat(e.target.value) || 0)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-purple-500 outline-none font-mono"
+                  className="form-input"
+                  style={{ fontFamily: 'var(--font-mono)' }}
                 />
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-3 pt-2">
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.75rem', paddingTop: '0.5rem' }}>
               <button
                 type="button"
                 onClick={() => setSchoolToEdit(null)}
-                className="px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 rounded-xl"
+                className="btn btn-secondary btn-sm"
               >
                 Cancelar
               </button>
@@ -720,7 +816,7 @@ export const SuperAdminDashboardPage: React.FC<SuperAdminDashboardPageProps> = (
                 type="button"
                 disabled={isUpdatingPlan}
                 onClick={handleUpdatePlan}
-                className="px-4 py-2 text-xs font-bold text-white bg-purple-600 hover:bg-purple-500 rounded-xl shadow-lg shadow-purple-600/30 transition-all cursor-pointer disabled:opacity-50"
+                className="btn btn-purple btn-sm"
               >
                 {isUpdatingPlan ? 'Actualizando...' : 'Guardar Plan'}
               </button>

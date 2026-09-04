@@ -1,0 +1,155 @@
+/* ==========================================================================
+   SuperAdmin Dashboard Page Styles (Modern Vanilla CSS)
+   ========================================================================== */
+
+.sa-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--color-bg-base);
+  color: var(--color-text-main);
+}
+
+.sa-header {
+  border-bottom: 1px solid var(--color-border-subtle);
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.sa-header-inner {
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sa-main {
+  flex: 1;
+  padding-block: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* KPI Cards Grid */
+.sa-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.sa-kpi-card {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  .kpi-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .kpi-label {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-text-muted);
+    }
+
+    .kpi-icon {
+      padding: 0.5rem;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .kpi-value {
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: var(--color-text-main);
+  }
+
+  .kpi-subtext {
+    font-size: 0.6875rem;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+}
+
+/* Table Section */
+.sa-table-card {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.sa-table-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--color-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sa-table-responsive {
+  overflow-x: auto;
+}
+
+.sa-table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+
+  thead {
+    background: var(--color-bg-base);
+    color: var(--color-text-muted);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+
+    th {
+      padding: 0.875rem 1.25rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid var(--color-border-subtle);
+      transition: background-color var(--transition-fast);
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.02);
+      }
+
+      td {
+        padding: 1rem 1.25rem;
+        vertical-align: middle;
+      }
+    }
+  }
+}

@@ -4,9 +4,6 @@ import {
   Lock,
   Mail,
   ArrowRight,
-  ArrowLeft,
-  KeyRound,
-  UserCheck,
   AlertCircle
 } from 'lucide-react';
 
@@ -74,21 +71,20 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, onLoginSuccess
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white flex flex-col justify-between selection:bg-sky-500 selection:text-white">
+    <div className="auth-page">
       {/* Header Institucional */}
-      <header className="border-b border-slate-800/80 py-4">
-        <div className="container-app flex items-center justify-between">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavigate('home')}>
-            <div className="bg-sky-600 text-white font-black text-xl w-9 h-9 rounded-xl flex items-center justify-center shadow-md shadow-sky-600/30">
-              ASM
-            </div>
-            <span className="font-extrabold text-lg text-white tracking-tight">Avante School Management</span>
+      <header className="auth-header">
+        <div className="container-app auth-header-inner">
+          <div className="brand-logo" onClick={() => onNavigate('home')}>
+            <div className="brand-icon">ASM</div>
+            <span className="brand-title">Avante School Management</span>
           </div>
-          <div className="flex items-center gap-4 text-xs">
-            <span className="text-slate-400">¿No tienes escuela registrada?</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '0.75rem' }}>
+            <span style={{ color: 'var(--color-text-muted)' }}>¿No tienes escuela registrada?</span>
             <button
               onClick={() => onNavigate('register')}
-              className="text-sky-400 hover:text-sky-300 font-bold hover:underline cursor-pointer"
+              className="btn btn-ghost"
+              style={{ color: 'var(--color-primary-hover)', fontWeight: 700 }}
             >
               Registrar mi Escuela Gratis
             </button>
@@ -97,30 +93,32 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, onLoginSuccess
       </header>
 
       {/* Contenedor Central */}
-      <main className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8">
-        <div className="max-w-md w-full bg-slate-900 border border-slate-800 p-8 rounded-3xl shadow-2xl space-y-6">
+      <main className="auth-main">
+        <div className="auth-card">
           <div>
-            <div className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-sky-400 bg-sky-950/80 border border-sky-800/60 px-2.5 py-1 rounded-full mb-3">
-              <Building2 className="w-3.5 h-3.5" />
+            <div className="badge badge-sky" style={{ marginBottom: '0.75rem' }}>
+              <Building2 style={{ width: '0.875rem', height: '0.875rem' }} />
               <span>Portal Institucional Escolar</span>
             </div>
-            <h1 className="text-2xl font-black text-white">Iniciar Sesión</h1>
-            <p className="text-slate-400 text-xs mt-1">
+            <h1 style={{ fontSize: '1.5rem', fontWeight: 900, color: 'var(--color-text-main)' }}>
+              Iniciar Sesión
+            </h1>
+            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.75rem', marginTop: '0.25rem' }}>
               Ingresa al sistema con la cuenta asignada por tu institución educativa.
             </p>
           </div>
 
           {errorMessage && (
-            <div className="bg-rose-950/70 border border-rose-800/80 text-rose-200 text-xs p-3.5 rounded-xl flex items-start gap-2.5">
-              <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
-              <div className="space-y-1.5">
+            <div className="alert alert-danger">
+              <AlertCircle style={{ width: '1rem', height: '1rem', flexShrink: 0, marginTop: '0.125rem' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
                 <span>{errorMessage}</span>
                 {errorMessage.includes('Super Administrador') && (
                   <div>
                     <button
                       type="button"
                       onClick={() => onNavigate('superadmin')}
-                      className="text-purple-300 font-bold underline hover:text-white"
+                      style={{ color: '#d8b4fe', fontWeight: 700, textDecoration: 'underline' }}
                     >
                       Ir a la Consola Super Admin &rarr;
                     </button>
@@ -130,36 +128,33 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, onLoginSuccess
             </div>
           )}
 
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold uppercase text-slate-300 mb-1">
-                Correo Electrónico Institucional
-              </label>
-              <div className="relative">
-                <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div className="form-group" style={{ marginBottom: 0 }}>
+              <label className="form-label">Correo Electrónico Institucional</label>
+              <div className="auth-input-wrapper">
+                <Mail className="input-icon" />
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:border-sky-500 outline-none transition-all"
+                  className="form-input"
                   placeholder="ejemplo@colegio.edu.mx"
                 />
               </div>
             </div>
 
-            <div>
-              <label className="block text-xs font-bold uppercase text-slate-300 mb-1">
-                Contraseña
-              </label>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <div className="form-group" style={{ marginBottom: 0 }}>
+              <label className="form-label">Contraseña</label>
+              <div className="auth-input-wrapper">
+                <Lock className="input-icon" />
                 <input
                   type="password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:border-sky-500 outline-none font-mono transition-all"
+                  className="form-input"
+                  style={{ fontFamily: 'var(--font-mono)' }}
                 />
               </div>
             </div>
@@ -167,60 +162,66 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, onLoginSuccess
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-sm py-3 rounded-xl shadow-lg shadow-sky-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+              className="btn btn-primary btn-lg"
+              style={{ width: '100%', marginTop: '0.5rem' }}
             >
               {loading ? (
                 <span>Comprobando acceso...</span>
               ) : (
                 <>
                   <span>Acceder al Sistema</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight style={{ width: '1rem', height: '1rem' }} />
                 </>
               )}
             </button>
           </form>
 
           {/* Cuentas Institucionales de Demostración */}
-          <div className="pt-4 border-t border-slate-800 space-y-2">
-            <span className="text-[11px] font-bold text-slate-400 uppercase block text-center">
-              Cuentas Escolares de Demostración
-            </span>
-            <div className="grid grid-cols-2 gap-2">
+          <div className="auth-presets">
+            <span className="presets-title">Cuentas Escolares de Demostración</span>
+            <div className="presets-grid">
               <button
                 type="button"
                 onClick={() => handleQuickFill('contacto@chanovera.com')}
-                className="bg-slate-800 hover:bg-slate-750 text-slate-200 text-xs py-2 px-3 rounded-lg font-medium text-left border border-slate-700 transition-colors"
+                className="preset-btn"
               >
-                🏫 Director Logos
+                <span className="preset-role">🏫 Director Logos</span>
+                <span className="preset-email">contacto@chanovera.com</span>
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickFill('caja@colegiohidalgo.edu.mx')}
-                className="bg-slate-800 hover:bg-slate-750 text-slate-200 text-xs py-2 px-3 rounded-lg font-medium text-left border border-slate-700 transition-colors"
+                className="preset-btn"
               >
-                💵 Finanzas / Caja
+                <span className="preset-role">💵 Finanzas / Caja</span>
+                <span className="preset-email">caja@colegiohidalgo.edu.mx</span>
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickFill('control@colegiohidalgo.edu.mx')}
-                className="bg-slate-800 hover:bg-slate-750 text-slate-200 text-xs py-2 px-3 rounded-lg font-medium text-left border border-slate-700 transition-colors"
+                className="preset-btn"
               >
-                🎓 Control Escolar
+                <span className="preset-role">🎓 Control Escolar</span>
+                <span className="preset-email">control@colegiohidalgo.edu.mx</span>
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickFill('docente@colegiohidalgo.edu.mx')}
-                className="bg-slate-800 hover:bg-slate-750 text-slate-200 text-xs py-2 px-3 rounded-lg font-medium text-left border border-slate-700 transition-colors"
+                className="preset-btn"
               >
-                👨‍🏫 Docente Titular
+                <span className="preset-role">👨‍🏫 Docente Titular</span>
+                <span className="preset-email">docente@colegiohidalgo.edu.mx</span>
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickFill('padre@familia.com')}
-                className="col-span-2 bg-slate-800 hover:bg-slate-750 text-slate-200 text-xs py-2 px-3 rounded-lg font-medium text-left border border-slate-700 transition-colors flex items-center justify-between"
+                className="preset-btn"
+                style={{ gridColumn: 'span 2' }}
               >
-                <span>👨‍👩‍👧 Portal Familiar (Tutor Titular)</span>
-                <span className="text-[10px] text-slate-400">padre@familia.com</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span className="preset-role">👨‍👩‍👧 Portal Familiar (Tutor Titular)</span>
+                  <span className="preset-email">padre@familia.com</span>
+                </div>
               </button>
             </div>
           </div>
@@ -228,12 +229,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate, onLoginSuccess
       </main>
 
       {/* Footer con enlace discreto a consola master */}
-      <footer className="border-t border-slate-800/80 py-4 text-xs text-slate-500">
-        <div className="container-app flex flex-col sm:flex-row items-center justify-between gap-2">
+      <footer className="auth-footer">
+        <div className="container-app" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
           <span>Avante School Management (ASM) • Plataforma Escolar Multi-Tenant</span>
           <button
             onClick={() => onNavigate('superadmin')}
-            className="text-slate-400 hover:text-purple-400 font-mono transition-colors text-[11px] flex items-center gap-1 cursor-pointer"
+            style={{ color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)', fontSize: '0.6875rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
           >
             <span>Consola Global Operativa (SaaS Master)</span>
             <span>&rarr;</span>

@@ -1,0 +1,293 @@
+/* ==========================================================================
+   Componentes Reutilizables ASM (Vanilla CSS)
+   ========================================================================== */
+
+/* Botones */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.875rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.btn-sm {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  border-radius: var(--radius-sm);
+}
+
+.btn-lg {
+  padding: 0.875rem 1.75rem;
+  font-size: 1rem;
+  border-radius: var(--radius-lg);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-primary), #06b6d4);
+  color: #020617;
+  box-shadow: 0 4px 14px var(--color-primary-glow);
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--color-primary-hover), #22d3ee);
+    box-shadow: 0 6px 20px var(--color-primary-glow);
+    transform: translateY(-1px);
+  }
+}
+
+.btn-secondary {
+  background: var(--color-bg-card);
+  color: var(--color-text-main);
+  border-color: var(--color-border-medium);
+
+  &:hover:not(:disabled) {
+    background: var(--color-bg-subtle);
+    border-color: var(--color-border-hover);
+  }
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border-color: var(--color-border-medium);
+
+  &:hover:not(:disabled) {
+    background: var(--color-bg-surface);
+    color: var(--color-text-main);
+    border-color: var(--color-border-hover);
+  }
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-muted);
+
+  &:hover:not(:disabled) {
+    color: var(--color-text-main);
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.btn-success {
+  background: linear-gradient(135deg, var(--color-success), #34d399);
+  color: #020617;
+  box-shadow: 0 4px 14px var(--color-success-glow);
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--color-success-hover), #6ee7b7);
+    transform: translateY(-1px);
+  }
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, var(--color-danger), #fb7185);
+  color: #ffffff;
+
+  &:hover:not(:disabled) {
+    background: var(--color-danger-hover);
+  }
+}
+
+.btn-purple {
+  background: linear-gradient(135deg, var(--color-purple), #a855f7);
+  color: #ffffff;
+  box-shadow: 0 4px 14px var(--color-purple-glow);
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--color-purple-hover), #c084fc);
+    transform: translateY(-1px);
+  }
+}
+
+/* Badges / Etiquetas */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  border: 1px solid transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.badge-sky {
+  background: var(--color-primary-bg);
+  color: var(--color-primary);
+  border-color: var(--color-primary-border);
+}
+
+.badge-emerald {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+  border-color: var(--color-success-border);
+}
+
+.badge-amber {
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+  border-color: var(--color-warning-border);
+}
+
+.badge-rose {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+  border-color: var(--color-danger-border);
+}
+
+.badge-purple {
+  background: var(--color-purple-bg);
+  color: #c084fc;
+  border-color: var(--color-purple-border);
+}
+
+/* Tarjetas (Cards) */
+.card {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-lg);
+  transition: border-color var(--transition-normal);
+}
+
+.card-interactive {
+  &:hover {
+    border-color: var(--color-primary-border);
+  }
+}
+
+/* Formularios */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-secondary);
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  background: var(--color-bg-base);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-md);
+  color: var(--color-text-main);
+  font-family: inherit;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+
+  &:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 1px var(--color-primary);
+  }
+
+  &::placeholder {
+    color: var(--color-text-faint);
+  }
+}
+
+/* Alertas */
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  border: 1px solid transparent;
+}
+
+.alert-danger {
+  background: var(--color-danger-bg);
+  color: #fecdd3;
+  border-color: var(--color-danger-border);
+}
+
+.alert-success {
+  background: var(--color-success-bg);
+  color: #a7f3d0;
+  border-color: var(--color-success-border);
+}
+
+/* Modales */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 100;
+  animation: modalFadeIn 0.2s ease-out;
+}
+
+.modal-card {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-2xl);
+  padding: 1.75rem;
+  width: 100%;
+  max-width: 32rem;
+  box-shadow: var(--shadow-xl);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-border-subtle);
+  padding-bottom: 0.75rem;
+}
+
+.modal-title {
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: var(--color-text-main);
+}
+
+.modal-close {
+  color: var(--color-text-muted);
+  font-size: 1.25rem;
+  padding: 0.25rem;
+
+  &:hover {
+    color: var(--color-text-main);
+  }
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}

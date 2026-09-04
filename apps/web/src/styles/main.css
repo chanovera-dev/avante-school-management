@@ -1,0 +1,12 @@
+/* ==========================================================================
+   Avante School Management - Master Modern Vanilla CSS Entry Point
+   ========================================================================== */
+
+@import './variables.css';
+@import './reset.css';
+@import './layout.css';
+@import './components.css';
+@import './home.css';
+@import './auth.css';
+@import './portal.css';
+@import './superadmin.css';
