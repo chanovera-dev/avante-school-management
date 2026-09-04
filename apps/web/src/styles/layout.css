@@ -50,7 +50,14 @@
 
 /* Utilidades básicas */
 .w-full { width: 100%; }
-.text-center { text-align: center; }
+.text-center {
+  text-align: center;
+
+  .btn,
+  .badge {
+    margin-inline: auto;
+  }
+}
 .text-right { text-align: right; }
 .font-mono { font-family: var(--font-mono); }
 .font-bold { font-weight: 700; }

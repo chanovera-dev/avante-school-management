@@ -101,6 +101,10 @@
   padding-bottom: 6rem;
   text-align: center;
   overflow: hidden;
+
+  .badge {
+    margin-inline: auto;
+  }
 }
 
 .hero-glow {
@@ -365,6 +369,10 @@
 .cta-content {
   max-width: 48rem;
   margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 
   h2 {
     font-size: clamp(1.875rem, 4vw, 2.75rem);
@@ -378,6 +386,10 @@
     color: var(--color-text-secondary);
     margin-bottom: 2rem;
     max-width: 36rem;
+    margin-inline: auto;
+  }
+
+  .btn {
     margin-inline: auto;
   }
 }
