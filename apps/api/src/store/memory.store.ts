@@ -287,13 +287,13 @@ class MemoryStore {
   public verificationTokens: EmailVerificationToken[] = [];
 
   constructor() {
-    this.seedInitialData();
+    // Almacén limpio sin precarga: los datos provienen exclusivamente de PostgreSQL
   }
 
   public async loadFromDatabase() {
     try {
       const dbTenants = await prisma.tenant.findMany({ include: { subscription: true } });
-      if (dbTenants && dbTenants.length > 0) {
+      
         this.tenants = dbTenants.map((t) => ({
           id: t.id,
           name: t.name,
@@ -327,7 +327,7 @@ class MemoryStore {
         }));
 
         const dbCampuses = await prisma.campus.findMany();
-        if (dbCampuses && dbCampuses.length > 0) {
+        
           this.campuses = dbCampuses.map((c) => ({
             id: c.id,
             tenantId: c.tenantId,
@@ -340,10 +340,9 @@ class MemoryStore {
             createdAt: c.createdAt,
             updatedAt: c.updatedAt,
           }));
-        }
 
         const dbUsers = await prisma.user.findMany();
-        if (dbUsers && dbUsers.length > 0) {
+        
           this.users = dbUsers.map((u) => ({
             id: u.id,
             tenantId: u.tenantId,
@@ -359,10 +358,9 @@ class MemoryStore {
             createdAt: u.createdAt,
             updatedAt: u.updatedAt,
           }));
-        }
 
         const dbLevels = await prisma.educationalLevel.findMany();
-        if (dbLevels && dbLevels.length > 0) {
+        
           this.educationalLevels = dbLevels.map((l) => ({
             id: l.id,
             tenantId: l.tenantId,
@@ -376,10 +374,9 @@ class MemoryStore {
             createdAt: l.createdAt,
             updatedAt: l.updatedAt,
           }));
-        }
 
         const dbCycles = await prisma.academicCycle.findMany();
-        if (dbCycles && dbCycles.length > 0) {
+        
           this.cycles = dbCycles.map((c) => ({
             id: c.id,
             tenantId: c.tenantId,
@@ -389,10 +386,9 @@ class MemoryStore {
             endDate: c.endDate,
             status: c.status as any,
           }));
-        }
 
         const dbGroups = await prisma.academicGroup.findMany();
-        if (dbGroups && dbGroups.length > 0) {
+        
           this.groups = dbGroups.map((g) => ({
             id: g.id,
             tenantId: g.tenantId,
@@ -406,10 +402,9 @@ class MemoryStore {
             type: g.type as any,
             tutorTeacherId: g.tutorTeacherId || undefined,
           }));
-        }
 
         const dbTeachers = await prisma.teacher.findMany();
-        if (dbTeachers && dbTeachers.length > 0) {
+        
           this.teachers = dbTeachers.map((t) => ({
             id: t.id,
             tenantId: t.tenantId,
@@ -424,10 +419,9 @@ class MemoryStore {
             createdAt: t.createdAt,
             updatedAt: t.updatedAt,
           }));
-        }
 
         const dbSubjects = await prisma.subject.findMany();
-        if (dbSubjects && dbSubjects.length > 0) {
+        
           this.subjects = dbSubjects.map((s, idx) => ({
             id: s.id,
             tenantId: s.tenantId,
@@ -437,10 +431,9 @@ class MemoryStore {
             isQualitative: false,
             orderIndex: idx + 1,
           }));
-        }
 
         const dbStudents = await prisma.student.findMany();
-        if (dbStudents && dbStudents.length > 0) {
+        
           this.students = dbStudents.map((s) => ({
             id: s.id,
             tenantId: s.tenantId,
@@ -461,10 +454,9 @@ class MemoryStore {
             createdAt: s.createdAt,
             updatedAt: s.updatedAt,
           }));
-        }
 
         const dbCharges = await prisma.charge.findMany();
-        if (dbCharges && dbCharges.length > 0) {
+        
           this.charges = dbCharges.map((ch) => ({
             id: ch.id,
             tenantId: ch.tenantId,
@@ -482,10 +474,9 @@ class MemoryStore {
             createdAt: ch.createdAt,
             updatedAt: ch.updatedAt,
           }));
-        }
 
         const dbPayments = await prisma.paymentTransaction.findMany();
-        if (dbPayments && dbPayments.length > 0) {
+        
           this.payments = dbPayments.map((p) => ({
             id: p.id,
             tenantId: p.tenantId,
@@ -501,10 +492,8 @@ class MemoryStore {
             paidAt: p.paidAt,
             syncedAt: p.syncedAt || undefined,
           }));
-        }
 
         console.log(`📦 asm_db sincronizado: ${dbTenants.length} tenants, ${dbUsers.length} usuarios, ${dbStudents.length} alumnos.`);
-      }
     } catch (err) {
       console.warn('⚠️ No se pudo cargar datos desde PostgreSQL asm_db:', err);
     }

@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
-import { store } from '../store/memory.store.js';
+import { prisma } from '../lib/prisma.js';
 import { authenticate } from '../middleware/auth.middleware.js';
 
 const loginSchema = z.object({
@@ -11,7 +11,7 @@ const loginSchema = z.object({
 });
 
 export async function authRoutes(fastify: FastifyInstance) {
-  // Login
+  // Login directo contra PostgreSQL vía Prisma
   fastify.post('/login', async (request, reply) => {
     const parseResult = loginSchema.safeParse(request.body);
     if (!parseResult.success) {
@@ -22,7 +22,15 @@ export async function authRoutes(fastify: FastifyInstance) {
     }
 
     const { email, password } = parseResult.data;
-    const user = store.users.find((u) => u.email.toLowerCase() === email.toLowerCase() && u.isActive);
+    const user = await prisma.user.findFirst({
+      where: {
+        email: email.toLowerCase().trim(),
+        isActive: true,
+      },
+      include: {
+        tenant: true,
+      },
+    });
 
     if (!user) {
       return reply.status(401).send({
@@ -38,8 +46,6 @@ export async function authRoutes(fastify: FastifyInstance) {
         message: 'Correo electrónico o contraseña incorrectos',
       });
     }
-
-    const tenant = store.tenants.find((t) => t.id === user.tenantId);
 
     const token = fastify.jwt.sign({
       id: user.id,
@@ -58,15 +64,19 @@ export async function authRoutes(fastify: FastifyInstance) {
         tenantId: user.tenantId,
         campusId: user.campusId,
       },
-      tenant: tenant || { id: user.tenantId, name: 'Plataforma Global' },
+      tenant: user.tenant || { id: user.tenantId, name: 'Plataforma Global' },
     });
   });
 
-  // Current User (Me)
+  // Current User (Me) directo contra PostgreSQL
   fastify.get('/me', { preHandler: [authenticate] }, async (request, reply) => {
     const userPayload = request.userPayload!;
-    const user = store.users.find((u) => u.id === userPayload.id);
-    const tenant = store.tenants.find((t) => t.id === userPayload.tenantId);
+    const user = await prisma.user.findUnique({
+      where: { id: userPayload.id },
+      include: {
+        tenant: true,
+      },
+    });
 
     if (!user) {
       return reply.status(404).send({ error: 'User Not Found' });
@@ -81,19 +91,7 @@ export async function authRoutes(fastify: FastifyInstance) {
         tenantId: user.tenantId,
         campusId: user.campusId,
       },
-      tenant: tenant || { id: user.tenantId, name: 'Plataforma Global' },
-    });
-  });
-
-  // Demo credentials for testing
-  fastify.get('/demo-accounts', async (request, reply) => {
-    return reply.send({
-      password: 'Admin123!',
-      accounts: store.users.map((u) => ({
-        role: u.role,
-        email: u.email,
-        name: u.fullName,
-      })),
+      tenant: user.tenant || { id: user.tenantId, name: 'Plataforma Global' },
     });
   });
 }
