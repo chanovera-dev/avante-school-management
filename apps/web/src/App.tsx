@@ -11,7 +11,7 @@ import { Globe, School, LayoutDashboard, Sparkles, ShieldCheck, LogIn } from 'lu
 export function App() {
   // Función para determinar si el usuario accedió a través de un subdominio institucional o admin
   const detectSubdomain = () => {
-    if (typeof window === 'undefined') return { isSubdomain: false, subdomain: 'institutologos', isAdmin: false };
+    if (typeof window === 'undefined') return { isSubdomain: false, subdomain: '', isAdmin: false };
 
     const hostname = window.location.hostname.toLowerCase();
 
@@ -22,7 +22,7 @@ export function App() {
       hostname === 'avanteschoolmanagement.local' ||
       hostname === 'www.avanteschoolmanagement.local'
     ) {
-      return { isSubdomain: false, subdomain: 'institutologos', isAdmin: false };
+      return { isSubdomain: false, subdomain: '', isAdmin: false };
     }
 
     // 2. Subdominio dedicado para operadores globales de la plataforma
@@ -30,7 +30,7 @@ export function App() {
       return { isSubdomain: true, subdomain: 'admin', isAdmin: true };
     }
 
-    // 3. Subdominios de escuelas (ej. institutologos.localhost o logos.avanteschoolmanagement.local)
+    // 3. Subdominios de escuelas (ej. colhidalgo.localhost o mi-colegio.avanteschoolmanagement.local)
     const parts = hostname.split('.');
     if (parts.length > 1) {
       const sub = parts[0];
@@ -42,7 +42,7 @@ export function App() {
       }
     }
 
-    return { isSubdomain: false, subdomain: 'institutologos', isAdmin: false };
+    return { isSubdomain: false, subdomain: '', isAdmin: false };
   };
 
   const detected = detectSubdomain();
@@ -63,11 +63,11 @@ export function App() {
     adminEmail?: string;
     levelsOffered?: string[];
   }>({
-    id: 'tenant-logos-01',
-    name: detected.subdomain === 'institutologos' || detected.subdomain === 'logos' ? 'Instituto Logos' : `Colegio ${detected.subdomain}`,
-    subdomain: detected.subdomain,
-    adminEmail: 'contacto@chanovera.com',
-    levelsOffered: ['PREESCOLAR', 'PRIMARIA'],
+    id: '',
+    name: detected.subdomain ? `Colegio ${detected.subdomain}` : '',
+    subdomain: detected.subdomain || '',
+    adminEmail: '',
+    levelsOffered: [],
   });
 
   // Si cambia el hostname o se detecta subdominio
@@ -87,7 +87,7 @@ export function App() {
       setCurrentTenant((prev) => ({
         ...prev,
         subdomain,
-        name: subdomain === 'institutologos' || subdomain === 'logos' ? 'Instituto Logos' : `Colegio ${subdomain}`,
+        name: prev.name || `Colegio ${subdomain}`,
       }));
     } else {
       // Si está en localhost puro o avanteschoolmanagement.local puro, muestra home a menos que esté navegando
@@ -207,10 +207,10 @@ export function App() {
         <button
           onClick={() => setCurrentRoute('portal')}
           className={`dev-btn ${currentRoute === 'portal' ? 'active-portal' : ''}`}
-          title="Portal Escolar de Instituto Logos"
+          title="Portal Institucional Escolar"
         >
           <School />
-          Portal Logos
+          Portal Escolar
         </button>
 
         <button

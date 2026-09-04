@@ -17,6 +17,7 @@ import {
   ShieldCheck,
   ArrowRight,
   LogOut,
+  LogIn,
   Home,
   Trash2,
   Search,
@@ -1160,8 +1161,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [isOnline, setIsOnline] = useState(true);
   const [notification, setNotification] = useState<string | null>(null);
 
-  const isDemoTenant = currentTenant.id === 'tenant-logos-01';
-
+  
   const LEVEL_CONFIG_MAP: Record<string, {
     name: string;
     levelCategory: 'GUARDERIA' | 'PREESCOLAR' | 'PRIMARIA' | 'SECUNDARIA' | 'PREPARATORIA';
@@ -1222,7 +1222,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
   // Director General del Colegio
   const generalDirector = {
-    name: isDemoTenant ? 'Director General Institucional' : (currentTenant.adminFullName || 'Director(a) General'),
+    name: currentTenant.adminFullName || 'Director(a) General',
     title: 'Dirección General de la Escuela',
     email: currentTenant.adminEmail || '',
     phone: currentTenant.adminPhone || '',
@@ -1230,41 +1230,6 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
   // Niveles Escolares
   const [educationalLevels, setEducationalLevels] = useState<EducationalLevel[]>(() => {
-    if (isDemoTenant) {
-      return [
-        {
-          id: 'PREESCOLAR',
-          name: 'Preescolar / Jardín de Niños',
-          levelCategory: 'PREESCOLAR',
-          cctCode: '30PJN0145X',
-          directorName: 'Mtra. Sofía Valenzuela',
-          directorTitle: 'Directora Técnica de Preescolar',
-          directorEmail: 'preescolar@logos.edu.mx',
-          directorPhone: '+52 55 1234 5679',
-          academicCoordinator: 'Profra. Laura Méndez',
-          isEmailVerified: true,
-          grades: ['1º Kínder', '2º Kínder', '3º Kínder'],
-          color: 'border-pink-500/40 bg-pink-950/20 text-pink-300',
-          icon: Palette,
-        },
-        {
-          id: 'PRIMARIA',
-          name: 'Primaria',
-          levelCategory: 'PRIMARIA',
-          cctCode: '30PPR0289Z',
-          directorName: 'Lic. Armando Paredes',
-          directorTitle: 'Director Técnico de Primaria',
-          directorEmail: 'primaria@logos.edu.mx',
-          directorPhone: '+52 55 1234 5680',
-          academicCoordinator: 'Prof. Mario Casas',
-          isEmailVerified: true,
-          grades: ['1º Primaria', '2º Primaria', '3º Primaria', '4º Primaria', '5º Primaria', '6º Primaria'],
-          color: 'border-sky-500/40 bg-sky-950/20 text-sky-300',
-          icon: BookOpen,
-        },
-      ];
-    }
-
     const offered = currentTenant.levelsOffered || [];
     return offered.map((lvl) => {
       const config = LEVEL_CONFIG_MAP[lvl] || {
@@ -1295,52 +1260,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // DOCENTES / MAESTROS TITULARES
-  const [teachers, setTeachers] = useState<Teacher[]>(isDemoTenant ? [
-    {
-      id: 'teacher-01',
-      fullName: 'Prof. Roberto Salazar',
-      email: 'docente@logos.edu.mx',
-      phone: '+52 55 2233 4455',
-      levelId: 'PRIMARIA',
-      specialty: 'Licenciatura en Educación Primaria',
-      assignedGroup: 'Primaria 1º "A"',
-      assignedSubject: 'Lenguajes (Español)',
-      isEmailVerified: true,
-    },
-    {
-      id: 'teacher-02',
-      fullName: 'Profra. Carmen Morales',
-      email: 'cmorales@logos.edu.mx',
-      phone: '+52 55 3344 5566',
-      levelId: 'PRIMARIA',
-      specialty: 'Licenciatura en Pedagogía / Matemáticas',
-      assignedGroup: 'Primaria 1º "A"',
-      assignedSubject: 'Saberes y Pensamiento Científico (Matemáticas)',
-      isEmailVerified: true,
-    },
-    {
-      id: 'teacher-03',
-      fullName: 'Prof. Alejandro Rivas',
-      email: 'arivas@logos.edu.mx',
-      phone: '+52 55 4455 6677',
-      levelId: 'PRIMARIA',
-      specialty: 'Lic. en Biología y Ciencias Naturales',
-      assignedGroup: 'Primaria 1º "A"',
-      assignedSubject: 'Ciencias Naturales y Tecnología',
-      isEmailVerified: true,
-    },
-    {
-      id: 'teacher-04',
-      fullName: 'Profra. Mariana Trejo',
-      email: 'mtrejo@logos.edu.mx',
-      phone: '+52 55 5566 7788',
-      levelId: 'PREESCOLAR',
-      specialty: 'Lic. en Educación Preescolar',
-      assignedGroup: 'Kínder 3º "A"',
-      assignedSubject: 'Campos Formativos Integrados',
-      isEmailVerified: true,
-    },
-  ] : []);
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
 
   // Catálogo Oficial SEP
   const [sepSubjects] = useState<SepSubject[]>([
@@ -1359,9 +1279,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   ]);
 
   // Selección en la vista de Calificaciones SEP
-  const [selectedTeacherId, setSelectedTeacherId] = useState<string>(isDemoTenant ? 'teacher-01' : '');
-  const [selectedGradeGroup, setSelectedGradeGroup] = useState<string>(isDemoTenant ? 'Primaria 1º "A"' : '');
-  const [selectedSubjectId, setSelectedSubjectId] = useState<string>(isDemoTenant ? 'sub-prim-leng' : '');
+  const [selectedTeacherId, setSelectedTeacherId] = useState<string>('');
+  const [selectedGradeGroup, setSelectedGradeGroup] = useState<string>('');
+  const [selectedSubjectId, setSelectedSubjectId] = useState<string>('');
   const [activeGradePeriod, setActiveGradePeriod] = useState<'ALL' | 'P1' | 'P2' | 'P3'>('ALL');
 
   // Modal Boleta Oficial SEP
@@ -1370,63 +1290,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
   // Registros y Selección del Pase de Lista Diario
   const [attendanceDate, setAttendanceDate] = useState<string>(new Date().toISOString().split('T')[0]);
-  const [attendanceGroup, setAttendanceGroup] = useState<string>(isDemoTenant ? 'Primaria 1º "A"' : '');
-  const [attendanceTeacherId, setAttendanceTeacherId] = useState<string>(isDemoTenant ? 'teacher-01' : '');
+  const [attendanceGroup, setAttendanceGroup] = useState<string>('');
+  const [attendanceTeacherId, setAttendanceTeacherId] = useState<string>('');
   const [attendanceSubjectId, setAttendanceSubjectId] = useState<string>('ALL');
-  const [attendanceRecords, setAttendanceRecords] = useState<AttendanceItem[]>(isDemoTenant ? [
-    {
-      id: 'att-01',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      groupId: 'Primaria 1º "A"',
-      date: new Date().toISOString().split('T')[0],
-      status: 'PRESENTE',
-      notes: 'Puntual (07:55 hrs)',
-    },
-    {
-      id: 'att-02',
-      studentId: 'student-02',
-      studentName: 'Valentina Herrera Castro',
-      studentCode: '2026-PRI-002',
-      groupId: 'Primaria 1º "A"',
-      date: new Date().toISOString().split('T')[0],
-      status: 'PRESENTE',
-      notes: 'Puntual (08:00 hrs)',
-    },
-    {
-      id: 'att-03',
-      studentId: 'student-03',
-      studentName: 'Mateo Gómez Díaz',
-      studentCode: '2026-KIN-001',
-      groupId: 'Kínder 3º "A"',
-      date: new Date().toISOString().split('T')[0],
-      status: 'PRESENTE',
-      notes: 'Puntual (08:30 hrs)',
-    },
-  ] : []);
+  const [attendanceRecords, setAttendanceRecords] = useState<AttendanceItem[]>([]);
 
   // Justificantes Oficiales de Inasistencia
-  const [justifications, setJustifications] = useState<JustificationItem[]>(isDemoTenant ? [
-    {
-      id: 'just-01',
-      folio: 'JUST-2026-001',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      groupId: 'Primaria 1º "A"',
-      groupName: 'Primaria 1º "A"',
-      startDate: '2026-09-01',
-      endDate: '2026-09-01',
-      reasonCategory: 'MEDICA',
-      reasonDescription: 'Cuadro de faringitis aguda. Se autoriza reposo médico oficial de 24 horas.',
-      documentFolio: 'REC-IMSS-884920',
-      authorizedBy: 'Lic. Armando Paredes (Director Técnico de Primaria)',
-      allowAssignmentMakeup: true,
-      status: 'APROBADO',
-      createdAt: '01/Sep/2026',
-    },
-  ] : []);
+  const [justifications, setJustifications] = useState<JustificationItem[]>([]);
 
   // Modales de Justificante
   const [showJustifyModal, setShowJustifyModal] = useState<boolean>(false);
@@ -1444,66 +1314,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Circulares, Citatorios y Comunicados Institucionales
-  const [notices, setNotices] = useState<SchoolNoticeItem[]>(isDemoTenant ? [
-    {
-      id: 'not-01',
-      folio: 'CIR-2026-001',
-      title: 'Celebración Cívica del 15 de Septiembre & Kermés Tradicional Mexicana',
-      content: 'Estimada comunidad de familias Avante: Los invitamos a conmemorar el CCXVI Aniversario del inicio de la Independencia de México el próximo 15 de septiembre a las 10:00 hrs en el domo central. Los educandos podrán asistir ataviados con vestimenta típica regional mexicana. Habrá bailables folclóricos y antojitos tradicionales.',
-      type: 'CIRCULAR_GENERAL',
-      priority: 'NORMAL',
-      targetAudience: 'TODOS',
-      publishedBy: 'Dirección General Institucional',
-      publishDate: '02/Sep/2026',
-      requiresAcknowledgment: true,
-      acknowledgmentDeadline: '12/Sep/2026',
-      totalRecipients: 24,
-      acknowledgedCount: 18,
-      status: 'PUBLICADO',
-      isAcknowledgedByCurrentTutor: true,
-      acknowledgedToken: 'ACK-SEP-88912',
-    },
-    {
-      id: 'not-02',
-      folio: 'CIT-2026-001',
-      title: 'Citatorio Presencial: Seguimiento de Rendimiento y Recepción de Justificante',
-      content: 'Se convoca de manera atenta y urgente al tutor legal del alumno Carlos Mendoza Ruiz a una reunión presencial en la Dirección Técnica de Primaria. El objetivo es coordinar el calendario de prórroga para la entrega extemporánea de proyectos y aplicación de exámenes pendientes correspondientes a su reposo médico autorizado.',
-      type: 'CITATORIO_PADRES',
-      priority: 'URGENTE',
-      targetAudience: 'INDIVIDUAL',
-      targetStudentId: 'student-01',
-      targetStudentName: 'Carlos Mendoza Ruiz',
-      targetGroupId: 'group-prim-1a',
-      targetGroupName: 'Primaria 1º "A"',
-      appointmentDateTime: 'Viernes 04 de Septiembre de 2026 a las 08:30 hrs',
-      appointmentLocation: 'Dirección Técnica de Primaria (Edificio A, Planta Baja)',
-      publishedBy: 'Lic. Armando Paredes (Director Técnico)',
-      publishDate: '02/Sep/2026',
-      requiresAcknowledgment: true,
-      acknowledgmentDeadline: '03/Sep/2026',
-      totalRecipients: 1,
-      acknowledgedCount: 0,
-      status: 'PUBLICADO',
-      isAcknowledgedByCurrentTutor: false,
-    },
-    {
-      id: 'not-03',
-      folio: 'AVI-2026-001',
-      title: 'Jornada Preventiva de Salud y Vacunación Infantil en Plantel',
-      content: 'Personal de la Secretaría de Salud y Jurisdicción Sanitaria acudirá al plantel escolar este viernes para revisar cartillas y aplicar dosis de refuerzo (triple viral e influenza). Se solicita enviar la Cartilla Nacional de Salud en la mochila del estudiante dentro de un sobre rotulado.',
-      type: 'AVISO_URGENTE',
-      priority: 'ALTA',
-      targetAudience: 'TODOS',
-      publishedBy: 'Coordinación Médica y de Bienestar Escolar',
-      publishDate: '02/Sep/2026',
-      requiresAcknowledgment: false,
-      totalRecipients: 24,
-      acknowledgedCount: 14,
-      status: 'PUBLICADO',
-      isAcknowledgedByCurrentTutor: true,
-      acknowledgedToken: 'ACK-MED-77124',
-    },
-  ] : []);
+  const [notices, setNotices] = useState<SchoolNoticeItem[]>([]);
 
   const [noticeFilter, setNoticeFilter] = useState<'ALL' | 'CIRCULAR_GENERAL' | 'CITATORIO_PADRES' | 'AVISO_URGENTE'>('ALL');
   const [showCreateNoticeModal, setShowCreateNoticeModal] = useState<boolean>(false);
@@ -1526,113 +1337,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Credenciales Escolares Digitales con Código QR
-  const [credentials, setCredentials] = useState<SchoolCredentialItem[]>(isDemoTenant ? [
-    {
-      id: 'crd-std-01',
-      credentialCode: 'CRD-2026-PRI-001',
-      personType: 'STUDENT',
-      personId: 'student-01',
-      fullName: 'Carlos Mendoza Ruiz',
-      curp: 'MERU180512HDFZRR03',
-      matriculaOrCode: '2026-PRI-001',
-      roleOrGrade: 'Primaria 1º "A"',
-      levelName: 'Primaria',
-      cct: '30PPR0289Z',
-      bloodType: 'O+',
-      allergies: 'Ninguna conocida',
-      emergencyContactName: 'Ing. Carlos Mendoza (Padre)',
-      emergencyContactPhone: '921 123 4567',
-      validThrough: 'Ciclo Escolar 2026-2027',
-      qrPayload: 'ASM|TENANT-01|student-01|2026-PRI-001|2026-2027',
-      status: 'ACTIVA',
-      issueDate: '02/Sep/2026',
-    },
-    {
-      id: 'crd-std-02',
-      credentialCode: 'CRD-2026-PRI-002',
-      personType: 'STUDENT',
-      personId: 'student-02',
-      fullName: 'Valentina Herrera Castro',
-      curp: 'HECV180914MDFRR05',
-      matriculaOrCode: '2026-PRI-002',
-      roleOrGrade: 'Primaria 1º "A"',
-      levelName: 'Primaria',
-      cct: '30PPR0289Z',
-      bloodType: 'A+',
-      allergies: 'Ninguna',
-      emergencyContactName: 'Dra. Patricia Castro (Madre)',
-      emergencyContactPhone: '921 987 6543',
-      validThrough: 'Ciclo Escolar 2026-2027',
-      qrPayload: 'ASM|TENANT-01|student-02|2026-PRI-002|2026-2027',
-      status: 'ACTIVA',
-      issueDate: '02/Sep/2026',
-    },
-    {
-      id: 'crd-tch-01',
-      credentialCode: 'CRD-2026-DOC-001',
-      personType: 'TEACHER',
-      personId: 'teacher-01',
-      fullName: 'Prof. Roberto Salazar',
-      curp: 'SARB850314HDFRL02',
-      matriculaOrCode: 'DOC-PRI-001',
-      roleOrGrade: 'Docente Titular de Lenguajes',
-      levelName: 'Primaria',
-      cct: '30PPR0289Z',
-      bloodType: 'O+',
-      allergies: 'Ninguna',
-      emergencyContactName: 'Sra. Elena Gómez (Esposa)',
-      emergencyContactPhone: '921 555 4321',
-      validThrough: 'Ciclo Escolar 2026-2027',
-      qrPayload: 'ASM|TENANT-01|teacher-01|DOC-PRI-001|2026-2027',
-      status: 'ACTIVA',
-      issueDate: '02/Sep/2026',
-    },
-  ] : []);
+  const [credentials, setCredentials] = useState<SchoolCredentialItem[]>([]);
 
-  const [accessLogs, setAccessLogs] = useState<AccessLogItem[]>(isDemoTenant ? [
-    {
-      id: 'log-01',
-      personId: 'teacher-01',
-      personName: 'Prof. Roberto Salazar',
-      personType: 'TEACHER',
-      credentialCode: 'CRD-2026-DOC-001',
-      roleOrGrade: 'Docente Titular de Lenguajes',
-      scanPoint: 'PUERTA_PRINCIPAL',
-      direction: 'ENTRADA',
-      timestamp: '07:30:14 hrs',
-      accessGranted: true,
-      notes: 'Puntual • Ingreso docente',
-    },
-    {
-      id: 'log-02',
-      personId: 'student-01',
-      personName: 'Carlos Mendoza Ruiz',
-      personType: 'STUDENT',
-      credentialCode: 'CRD-2026-PRI-001',
-      roleOrGrade: 'Primaria 1º "A"',
-      scanPoint: 'PUERTA_PRINCIPAL',
-      direction: 'ENTRADA',
-      timestamp: '07:55:02 hrs',
-      accessGranted: true,
-      notes: 'Puntual • Torniquete 01',
-    },
-    {
-      id: 'log-03',
-      personId: 'student-02',
-      personName: 'Valentina Herrera Castro',
-      personType: 'STUDENT',
-      credentialCode: 'CRD-2026-PRI-002',
-      roleOrGrade: 'Primaria 1º "A"',
-      scanPoint: 'PUERTA_PRINCIPAL',
-      direction: 'ENTRADA',
-      timestamp: '07:58:45 hrs',
-      accessGranted: true,
-      notes: 'Puntual • Torniquete 02',
-    },
-  ] : []);
+  const [accessLogs, setAccessLogs] = useState<AccessLogItem[]>([]);
 
   const [credentialFilter, setCredentialFilter] = useState<'STUDENT' | 'TEACHER'>('STUDENT');
-  const [selectedGroupForCreds, setSelectedGroupForCreds] = useState<string>(isDemoTenant ? 'Primaria 1º "A"' : '');
+  const [selectedGroupForCreds, setSelectedGroupForCreds] = useState<string>('');
   const [showPrintBadgeModal, setShowPrintBadgeModal] = useState<boolean>(false);
   const [activeCredentialForPrint, setActiveCredentialForPrint] = useState<SchoolCredentialItem | null>(null);
   const [showScannerModal, setShowScannerModal] = useState<boolean>(false);
@@ -1641,120 +1351,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [scannerResult, setScannerResult] = useState<{ success: boolean; message: string; personName?: string } | null>(null);
 
   // Cuaderno Digital de Tareas y Entregas Extemporáneas
-  const [assignments, setAssignments] = useState<SchoolAssignmentItem[]>(isDemoTenant ? [
-    {
-      id: 'tar-01',
-      folio: 'TAR-2026-001',
-      title: 'Resumen y Análisis de la Leyenda de los Volcanes (Popocatépetl e Iztaccíhuatl)',
-      description: 'Leer las páginas 14 a 18 del libro de texto Lenguajes SEP. Redactar en la libreta un resumen de una cuartilla identificando a los personajes principales y realizar un dibujo alusivo a lápiz de color.',
-      type: 'TAREA',
-      subjectId: 'sub-prim-leng',
-      subjectName: 'Lenguajes (Español)',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      assignedDate: '01/Sep/2026',
-      dueDate: '03/Sep/2026',
-      allowExtempWithJustification: true,
-      extempExtendedDueDate: '07/Sep/2026',
-      totalStudents: 2,
-      submittedCount: 1,
-      status: 'ACTIVA',
-      maxScore: 10,
-    },
-    {
-      id: 'tar-02',
-      folio: 'TAR-2026-002',
-      title: 'Resolución de Problemas con Operaciones Básicas y Figuras Geométricas',
-      description: 'Resolver los 5 ejercicios de suma y resta con reagrupación y clasificar las figuras geométricas de la página 22 según su número de lados y vértices.',
-      type: 'TAREA',
-      subjectId: 'sub-prim-mat',
-      subjectName: 'Saberes y Pensamiento Científico (Matemáticas)',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      assignedDate: '02/Sep/2026',
-      dueDate: '05/Sep/2026',
-      allowExtempWithJustification: true,
-      extempExtendedDueDate: '08/Sep/2026',
-      totalStudents: 2,
-      submittedCount: 0,
-      status: 'ACTIVA',
-      maxScore: 10,
-    },
-    {
-      id: 'tar-03',
-      folio: 'PRO-2026-001',
-      title: 'Proyecto Científico: Maqueta de Ecosistema Local y Cadena Trófica',
-      description: 'Elaborar en equipo o individual una maqueta con materiales reciclados (cartón, plastilina, hojas secas) que represente la flora, fauna y cadena alimentaria de la región.',
-      type: 'PROYECTO',
-      subjectId: 'sub-prim-nat',
-      subjectName: 'Ética, Naturaleza y Sociedades',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      assignedDate: '02/Sep/2026',
-      dueDate: '12/Sep/2026',
-      allowExtempWithJustification: true,
-      extempExtendedDueDate: '15/Sep/2026',
-      totalStudents: 2,
-      submittedCount: 0,
-      status: 'ACTIVA',
-      maxScore: 10,
-    },
-  ] : []);
+  const [assignments, setAssignments] = useState<SchoolAssignmentItem[]>([]);
 
-  const [assignmentSubmissions, setAssignmentSubmissions] = useState<StudentSubmissionItem[]>(isDemoTenant ? [
-    {
-      id: 'subm-01',
-      assignmentId: 'tar-01',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      status: 'EXTEMPORANEO_JUSTIFICADO',
-      hasMedicalJustification: true,
-      justificationFolio: 'JUST-2026-001',
-      submissionNotes: 'Alumno con reposo médico oficial (faringitis aguda). Prórroga concedida sin penalización hasta el 07/Sep/2026.',
-      isExtemporaneous: true,
-    },
-    {
-      id: 'subm-02',
-      assignmentId: 'tar-01',
-      studentId: 'student-02',
-      studentName: 'Valentina Herrera Castro',
-      studentCode: '2026-PRI-002',
-      status: 'CALIFICADO',
-      hasMedicalJustification: false,
-      submissionDate: '02/Sep/2026',
-      submissionNotes: 'Entrega física en cuaderno con dibujo a color.',
-      score: 10,
-      feedback: '¡Excelente resumen! Muy buena ortografía y dibujo ilustrativo.',
-      isExtemporaneous: false,
-    },
-    {
-      id: 'subm-03',
-      assignmentId: 'tar-02',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      status: 'PENDIENTE',
-      hasMedicalJustification: false,
-      isExtemporaneous: false,
-    },
-    {
-      id: 'subm-04',
-      assignmentId: 'tar-02',
-      studentId: 'student-02',
-      studentName: 'Valentina Herrera Castro',
-      studentCode: '2026-PRI-002',
-      status: 'PENDIENTE',
-      hasMedicalJustification: false,
-      isExtemporaneous: false,
-    },
-  ] : []);
+  const [assignmentSubmissions, setAssignmentSubmissions] = useState<StudentSubmissionItem[]>([]);
 
   const [taskFilter, setTaskFilter] = useState<'ALL' | 'TAREA' | 'PROYECTO'>('ALL');
   const [showCreateTaskModal, setShowCreateTaskModal] = useState<boolean>(false);
@@ -1779,549 +1378,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   }>({});
 
   // Horarios Escolares y Distribución Semanal de Aulas
-  const [scheduleSlots, setScheduleSlots] = useState<ClassScheduleSlotItem[]>(isDemoTenant ? [
-    // LUNES
-    {
-      id: 'sch-01',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'LUNES',
-      startTime: '08:00',
-      endTime: '08:50',
-      subjectId: 'sub-prim-soc',
-      subjectName: 'Ceremonia Cívica y Honores a la Bandera',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Patio Cívico Principal',
-      facility: 'PATIO_CIVICO',
-      colorHex: '#3b82f6',
-    },
-    {
-      id: 'sch-02',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'LUNES',
-      startTime: '08:50',
-      endTime: '09:40',
-      subjectId: 'sub-prim-leng',
-      subjectName: 'Lenguajes (Español - Lectura)',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Aula 101 - Edificio A',
-      facility: 'AULA_REGULAR',
-      colorHex: '#06b6d4',
-    },
-    {
-      id: 'sch-03',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'LUNES',
-      startTime: '09:40',
-      endTime: '10:30',
-      subjectId: 'sub-prim-mat',
-      subjectName: 'Saberes y Pensamiento Científico (Matemáticas)',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Aula 101 - Edificio A',
-      facility: 'AULA_REGULAR',
-      colorHex: '#10b981',
-    },
-    {
-      id: 'sch-rec-lun',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'LUNES',
-      startTime: '10:30',
-      endTime: '11:00',
-      subjectId: 'rec-01',
-      subjectName: 'RECESO ESCOLAR MATUTINO',
-      teacherId: 'staff-01',
-      teacherName: 'Guardia Docente',
-      classroom: 'Patio y Cafetería',
-      facility: 'PATIO_CIVICO',
-      colorHex: '#f59e0b',
-      isBreak: true,
-    },
-    {
-      id: 'sch-04',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'LUNES',
-      startTime: '11:00',
-      endTime: '11:50',
-      subjectId: 'sub-prim-nat',
-      subjectName: 'Ética, Naturaleza y Sociedades',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Aula 101 - Edificio A',
-      facility: 'AULA_REGULAR',
-      colorHex: '#8b5cf6',
-    },
-    {
-      id: 'sch-05',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'LUNES',
-      startTime: '11:50',
-      endTime: '12:40',
-      subjectId: 'sub-prim-edufis',
-      subjectName: 'Educación Física y Deporte',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Cancha Polideportiva Techada',
-      facility: 'CANCHA_DEPORTIVA',
-      colorHex: '#ec4899',
-    },
-    {
-      id: 'sch-06',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'LUNES',
-      startTime: '12:40',
-      endTime: '13:30',
-      subjectId: 'sub-prim-leng',
-      subjectName: 'Taller de Caligrafía y Redacción',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Aula 101 - Edificio A',
-      facility: 'AULA_REGULAR',
-      colorHex: '#06b6d4',
-    },
+  const [scheduleSlots, setScheduleSlots] = useState<ClassScheduleSlotItem[]>([]);
 
-    // MARTES
-    {
-      id: 'sch-07',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'MARTES',
-      startTime: '08:00',
-      endTime: '08:50',
-      subjectId: 'sub-prim-mat',
-      subjectName: 'Saberes y Pensamiento Científico (Cálculo)',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Aula 101 - Edificio A',
-      facility: 'AULA_REGULAR',
-      colorHex: '#10b981',
-    },
-    {
-      id: 'sch-08',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'MARTES',
-      startTime: '08:50',
-      endTime: '09:40',
-      subjectId: 'sub-prim-leng',
-      subjectName: 'Lenguajes (Gramática y Ortografía)',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Aula 101 - Edificio A',
-      facility: 'AULA_REGULAR',
-      colorHex: '#06b6d4',
-    },
-    {
-      id: 'sch-09',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'MARTES',
-      startTime: '09:40',
-      endTime: '10:30',
-      subjectId: 'sub-prim-ing',
-      subjectName: 'Inglés Básico y Fonética',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Laboratorio de Idiomas',
-      facility: 'LABORATORIO_COMPUTO',
-      colorHex: '#6366f1',
-    },
-    {
-      id: 'sch-rec-mar',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'MARTES',
-      startTime: '10:30',
-      endTime: '11:00',
-      subjectId: 'rec-02',
-      subjectName: 'RECESO ESCOLAR MATUTINO',
-      teacherId: 'staff-01',
-      teacherName: 'Guardia Docente',
-      classroom: 'Patio y Cafetería',
-      facility: 'PATIO_CIVICO',
-      colorHex: '#f59e0b',
-      isBreak: true,
-    },
-    {
-      id: 'sch-10',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'MARTES',
-      startTime: '11:00',
-      endTime: '11:50',
-      subjectId: 'sub-prim-nat',
-      subjectName: 'Ética, Naturaleza y Sociedades (Civismo)',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Aula 101 - Edificio A',
-      facility: 'AULA_REGULAR',
-      colorHex: '#8b5cf6',
-    },
-    {
-      id: 'sch-11',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'MARTES',
-      startTime: '11:50',
-      endTime: '12:40',
-      subjectId: 'sub-prim-art',
-      subjectName: 'Expresión y Apreciación Artística',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Taller de Artes Plásticas',
-      facility: 'AULA_ARTES',
-      colorHex: '#f43f5e',
-    },
-    {
-      id: 'sch-12',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'MARTES',
-      startTime: '12:40',
-      endTime: '13:30',
-      subjectId: 'sub-prim-rob',
-      subjectName: 'Robótica y Pensamiento Lógico',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Laboratorio de Cómputo',
-      facility: 'LABORATORIO_COMPUTO',
-      colorHex: '#3b82f6',
-    },
-
-    // MIÉRCOLES
-    {
-      id: 'sch-13',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'MIERCOLES',
-      startTime: '08:00',
-      endTime: '08:50',
-      subjectId: 'sub-prim-leng',
-      subjectName: 'Lenguajes (Comprensión Lectora)',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Aula 101 - Edificio A',
-      facility: 'AULA_REGULAR',
-      colorHex: '#06b6d4',
-    },
-    {
-      id: 'sch-14',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'MIERCOLES',
-      startTime: '08:50',
-      endTime: '09:40',
-      subjectId: 'sub-prim-mat',
-      subjectName: 'Saberes y Pensamiento Científico (Geometría)',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Aula 101 - Edificio A',
-      facility: 'AULA_REGULAR',
-      colorHex: '#10b981',
-    },
-    {
-      id: 'sch-15',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'MIERCOLES',
-      startTime: '09:40',
-      endTime: '10:30',
-      subjectId: 'sub-prim-soc',
-      subjectName: 'Educación Socioemocional',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Aula 101 - Edificio A',
-      facility: 'AULA_REGULAR',
-      colorHex: '#eab308',
-    },
-    {
-      id: 'sch-rec-mie',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'MIERCOLES',
-      startTime: '10:30',
-      endTime: '11:00',
-      subjectId: 'rec-03',
-      subjectName: 'RECESO ESCOLAR MATUTINO',
-      teacherId: 'staff-01',
-      teacherName: 'Guardia Docente',
-      classroom: 'Patio y Cafetería',
-      facility: 'PATIO_CIVICO',
-      colorHex: '#f59e0b',
-      isBreak: true,
-    },
-    {
-      id: 'sch-16',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'MIERCOLES',
-      startTime: '11:00',
-      endTime: '11:50',
-      subjectId: 'sub-prim-edufis',
-      subjectName: 'Educación Física y Recreación',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Cancha Polideportiva Techada',
-      facility: 'CANCHA_DEPORTIVA',
-      colorHex: '#ec4899',
-    },
-    {
-      id: 'sch-17',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'MIERCOLES',
-      startTime: '11:50',
-      endTime: '12:40',
-      subjectId: 'sub-prim-nat',
-      subjectName: 'Ética, Naturaleza y Sociedades',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Aula 101 - Edificio A',
-      facility: 'AULA_REGULAR',
-      colorHex: '#8b5cf6',
-    },
-    {
-      id: 'sch-18',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'MIERCOLES',
-      startTime: '12:40',
-      endTime: '13:30',
-      subjectId: 'sub-prim-mus',
-      subjectName: 'Taller de Música y Ritmos',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Aula de Artes y Música',
-      facility: 'AULA_ARTES',
-      colorHex: '#a855f7',
-    },
-
-    // JUEVES
-    {
-      id: 'sch-19',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'JUEVES',
-      startTime: '08:00',
-      endTime: '08:50',
-      subjectId: 'sub-prim-mat',
-      subjectName: 'Saberes y Pensamiento Científico (Problemas)',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Aula 101 - Edificio A',
-      facility: 'AULA_REGULAR',
-      colorHex: '#10b981',
-    },
-    {
-      id: 'sch-20',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'JUEVES',
-      startTime: '08:50',
-      endTime: '09:40',
-      subjectId: 'sub-prim-leng',
-      subjectName: 'Lenguajes (Escritura Creativa)',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Aula 101 - Edificio A',
-      facility: 'AULA_REGULAR',
-      colorHex: '#06b6d4',
-    },
-    {
-      id: 'sch-21',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'JUEVES',
-      startTime: '09:40',
-      endTime: '10:30',
-      subjectId: 'sub-prim-comp',
-      subjectName: 'Computación y Alfabetización Digital',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Laboratorio de Cómputo',
-      facility: 'LABORATORIO_COMPUTO',
-      colorHex: '#3b82f6',
-    },
-    {
-      id: 'sch-rec-jue',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'JUEVES',
-      startTime: '10:30',
-      endTime: '11:00',
-      subjectId: 'rec-04',
-      subjectName: 'RECESO ESCOLAR MATUTINO',
-      teacherId: 'staff-01',
-      teacherName: 'Guardia Docente',
-      classroom: 'Patio y Cafetería',
-      facility: 'PATIO_CIVICO',
-      colorHex: '#f59e0b',
-      isBreak: true,
-    },
-    {
-      id: 'sch-22',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'JUEVES',
-      startTime: '11:00',
-      endTime: '11:50',
-      subjectId: 'sub-prim-nat',
-      subjectName: 'Ética, Naturaleza y Sociedades (Ecosistemas)',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Aula 101 - Edificio A',
-      facility: 'AULA_REGULAR',
-      colorHex: '#8b5cf6',
-    },
-    {
-      id: 'sch-23',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'JUEVES',
-      startTime: '11:50',
-      endTime: '12:40',
-      subjectId: 'sub-prim-ing',
-      subjectName: 'Inglés Práctico',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Aula 101 - Edificio A',
-      facility: 'AULA_REGULAR',
-      colorHex: '#6366f1',
-    },
-    {
-      id: 'sch-24',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'JUEVES',
-      startTime: '12:40',
-      endTime: '13:30',
-      subjectId: 'sub-prim-bib',
-      subjectName: 'Círculo de Lectura y Préstamo de Libros',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Biblioteca Escolar',
-      facility: 'BIBLIOTECA',
-      colorHex: '#14b8a6',
-    },
-
-    // VIERNES
-    {
-      id: 'sch-25',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'VIERNES',
-      startTime: '08:00',
-      endTime: '08:50',
-      subjectId: 'sub-prim-leng',
-      subjectName: 'Lenguajes (Evaluación Formativa Semanal)',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Aula 101 - Edificio A',
-      facility: 'AULA_REGULAR',
-      colorHex: '#06b6d4',
-    },
-    {
-      id: 'sch-26',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'VIERNES',
-      startTime: '08:50',
-      endTime: '09:40',
-      subjectId: 'sub-prim-mat',
-      subjectName: 'Saberes y Pensamiento Científico',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Aula 101 - Edificio A',
-      facility: 'AULA_REGULAR',
-      colorHex: '#10b981',
-    },
-    {
-      id: 'sch-27',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'VIERNES',
-      startTime: '09:40',
-      endTime: '10:30',
-      subjectId: 'sub-prim-edufis',
-      subjectName: 'Juegos Cooperativos y Activación Física',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Cancha Polideportiva Techada',
-      facility: 'CANCHA_DEPORTIVA',
-      colorHex: '#ec4899',
-    },
-    {
-      id: 'sch-rec-vie',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'VIERNES',
-      startTime: '10:30',
-      endTime: '11:00',
-      subjectId: 'rec-05',
-      subjectName: 'RECESO ESCOLAR MATUTINO',
-      teacherId: 'staff-01',
-      teacherName: 'Guardia Docente',
-      classroom: 'Patio y Cafetería',
-      facility: 'PATIO_CIVICO',
-      colorHex: '#f59e0b',
-      isBreak: true,
-    },
-    {
-      id: 'sch-28',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'VIERNES',
-      startTime: '11:00',
-      endTime: '11:50',
-      subjectId: 'sub-prim-proj',
-      subjectName: 'Proyecto Integrador Comunitario (NEM)',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Aula 101 - Edificio A',
-      facility: 'AULA_REGULAR',
-      colorHex: '#8b5cf6',
-    },
-    {
-      id: 'sch-29',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'VIERNES',
-      startTime: '11:50',
-      endTime: '12:40',
-      subjectId: 'sub-prim-ref',
-      subjectName: 'Asesoría y Refuerzo Académico Individualizado',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Aula 101 - Edificio A',
-      facility: 'AULA_REGULAR',
-      colorHex: '#0284c7',
-    },
-    {
-      id: 'sch-30',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      dayOfWeek: 'VIERNES',
-      startTime: '12:40',
-      endTime: '13:30',
-      subjectId: 'sub-prim-soc',
-      subjectName: 'Cierre Semanal y Organización de Materiales',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      classroom: 'Aula 101 - Edificio A',
-      facility: 'AULA_REGULAR',
-      colorHex: '#64748b',
-    },
-  ] : []);
-
-  const [selectedGroupForSchedule, setSelectedGroupForSchedule] = useState<string>(isDemoTenant ? 'Primaria 1º "A"' : '');
+  const [selectedGroupForSchedule, setSelectedGroupForSchedule] = useState<string>('');
   const [selectedDayForSchedule, setSelectedDayForSchedule] = useState<'ALL' | 'LUNES' | 'MARTES' | 'MIERCOLES' | 'JUEVES' | 'VIERNES'>('ALL');
   const [showCreateSlotModal, setShowCreateSlotModal] = useState<boolean>(false);
   const [slotConflictError, setSlotConflictError] = useState<string | null>(null);
@@ -2339,160 +1398,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Admisiones y Preinscripciones en Línea
-  const [applicants, setApplicants] = useState<AdmissionApplicantItem[]>(isDemoTenant ? [
-    {
-      id: 'app-01',
-      folio: 'ADM-2026-001',
-      applicantFirstName: 'Sofía',
-      applicantLastName: 'Morales Viveros',
-      curp: 'MOVS190415MDFRRN01',
-      birthDate: '2019-04-15',
-      gender: 'F',
-      targetLevelId: 'PRIMARIA',
-      targetLevelName: 'Primaria',
-      targetGrade: '1º de Primaria',
-      parentName: 'Lic. Fernando Morales Ochoa',
-      parentPhone: '+52 55 4433 2211',
-      parentEmail: 'fernando.morales@gmail.com',
-      status: 'DOCUMENTACION_EN_REVISION',
-      documents: [
-        {
-          id: 'doc-01-1',
-          documentType: 'ACTA_NACIMIENTO',
-          documentName: 'Acta de Nacimiento (Copia Certificada)',
-          status: 'VALIDADO',
-          uploadedAt: '2026-09-01T10:00:00Z',
-        },
-        {
-          id: 'doc-01-2',
-          documentType: 'CURP',
-          documentName: 'CURP Certificada RENAPO',
-          status: 'VALIDADO',
-          uploadedAt: '2026-09-01T10:05:00Z',
-        },
-        {
-          id: 'doc-01-3',
-          documentType: 'CARTILLA_VACUNACION',
-          documentName: 'Cartilla Nacional de Salud',
-          status: 'CARGADO',
-          uploadedAt: '2026-09-01T10:10:00Z',
-        },
-        {
-          id: 'doc-01-4',
-          documentType: 'COMPROBANTE_DOMICILIO',
-          documentName: 'Comprobante de Domicilio Vigente',
-          status: 'CARGADO',
-          uploadedAt: '2026-09-01T10:15:00Z',
-        },
-      ],
-      appliedAt: '2026-09-01',
-      notes: 'Hermana de egresado del colegio. Alta recomendación familiar.',
-    },
-    {
-      id: 'app-02',
-      folio: 'ADM-2026-002',
-      applicantFirstName: 'Mateo',
-      applicantLastName: 'Fernández Ríos',
-      curp: 'FERM210820HDFRNN02',
-      birthDate: '2021-08-20',
-      gender: 'M',
-      targetLevelId: 'PREESCOLAR',
-      targetLevelName: 'Preescolar',
-      targetGrade: '2º de Kínder',
-      parentName: 'Dra. Gabriela Ríos Méndez',
-      parentPhone: '+52 55 9988 7766',
-      parentEmail: 'gabriela.rios@hospitalgeneral.mx',
-      status: 'EVALUACION_AGENDADA',
-      evaluationDate: '2026-09-08 10:00',
-      evaluationNotes: 'Evaluación diagnóstica psicopedagógica y desarrollo motriz fino con Profra. Laura Méndez.',
-      interviewDate: '2026-09-08 11:00',
-      interviewNotes: 'Entrevista familiar de ingreso con Dirección Técnica de Preescolar.',
-      documents: [
-        {
-          id: 'doc-02-1',
-          documentType: 'ACTA_NACIMIENTO',
-          documentName: 'Acta de Nacimiento (Copia Certificada)',
-          status: 'VALIDADO',
-          uploadedAt: '2026-09-01T14:20:00Z',
-        },
-        {
-          id: 'doc-02-2',
-          documentType: 'CURP',
-          documentName: 'CURP Certificada RENAPO',
-          status: 'VALIDADO',
-          uploadedAt: '2026-09-01T14:25:00Z',
-        },
-        {
-          id: 'doc-02-3',
-          documentType: 'CARTILLA_VACUNACION',
-          documentName: 'Cartilla Nacional de Salud',
-          status: 'VALIDADO',
-          uploadedAt: '2026-09-01T14:30:00Z',
-        },
-        {
-          id: 'doc-02-4',
-          documentType: 'COMPROBANTE_DOMICILIO',
-          documentName: 'Comprobante de Domicilio Vigente',
-          status: 'PENDIENTE',
-        },
-      ],
-      appliedAt: '2026-09-01',
-      notes: 'Aspirante para segundo grado de preescolar, bilingüe incipiente.',
-    },
-    {
-      id: 'app-03',
-      folio: 'ADM-2026-003',
-      applicantFirstName: 'Regina',
-      applicantLastName: 'Salazar Pérez',
-      curp: 'SAPR191105MDFRRN04',
-      birthDate: '2019-11-05',
-      gender: 'F',
-      targetLevelId: 'PRIMARIA',
-      targetLevelName: 'Primaria',
-      targetGrade: '1º de Primaria',
-      parentName: 'Ing. Rodrigo Salazar Valdés',
-      parentPhone: '+52 55 6677 8899',
-      parentEmail: 'rodrigo.salazar@techcorp.com',
-      status: 'ACEPTADO',
-      evaluationDate: '2026-08-28 09:30',
-      evaluationScore: 9.8,
-      evaluationNotes: 'Excelente madurez lectoescritora y habilidades matemáticas tempranas.',
-      interviewDate: '2026-08-28 10:30',
-      interviewNotes: 'Familia comprometida con el proyecto educativo del colegio. Dictamen: Aceptada 100%.',
-      documents: [
-        {
-          id: 'doc-03-1',
-          documentType: 'ACTA_NACIMIENTO',
-          documentName: 'Acta de Nacimiento (Copia Certificada)',
-          status: 'VALIDADO',
-          uploadedAt: '2026-08-25T09:00:00Z',
-        },
-        {
-          id: 'doc-03-2',
-          documentType: 'CURP',
-          documentName: 'CURP Certificada RENAPO',
-          status: 'VALIDADO',
-          uploadedAt: '2026-08-25T09:05:00Z',
-        },
-        {
-          id: 'doc-03-3',
-          documentType: 'CARTILLA_VACUNACION',
-          documentName: 'Cartilla Nacional de Salud',
-          status: 'VALIDADO',
-          uploadedAt: '2026-08-25T09:10:00Z',
-        },
-        {
-          id: 'doc-03-4',
-          documentType: 'CONSTANCIA_ESTUDIOS_PREVIOS',
-          documentName: 'Constancia de Estudios de Kínder',
-          status: 'VALIDADO',
-          uploadedAt: '2026-08-25T09:15:00Z',
-        },
-      ],
-      appliedAt: '2026-08-25',
-      notes: 'Dictamen de aceptación emitido. Listo para formalizar inscripción y generar matrícula.',
-    },
-  ] : []);
+  const [applicants, setApplicants] = useState<AdmissionApplicantItem[]>([]);
 
   const [selectedApplicantStatusFilter, setSelectedApplicantStatusFilter] = useState<string>('ALL');
   const [selectedApplicantLevelFilter, setSelectedApplicantLevelFilter] = useState<string>('ALL');
@@ -2529,114 +1435,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [publicSearchResult, setPublicSearchResult] = useState<AdmissionApplicantItem | null>(null);
 
   // Biblioteca Escolar y Préstamos
-  const [books, setBooks] = useState<SchoolBookItem[]>(isDemoTenant ? [
-    {
-      id: 'book-01',
-      isbn: '978-607-07-2879-2',
-      title: 'El Principito',
-      author: 'Antoine de Saint-Exupéry',
-      publisher: 'Editorial Planeta',
-      yearPublished: 2021,
-      category: 'LITERATURA_INFANTIL',
-      targetLevel: 'PRIMARIA',
-      shelfLocation: 'Estante A-1 (Literatura Infantil)',
-      totalCopies: 5,
-      availableCopies: 4,
-      summary: 'Una obra cumbre sobre la amistad, el amor y el sentido de la vida vista con ojos de niño.',
-    },
-    {
-      id: 'book-02',
-      isbn: '978-607-551-923-4',
-      title: 'Múltiples Lenguajes 1º Primaria (Libro SEP)',
-      author: 'Secretaría de Educación Pública (SEP)',
-      publisher: 'CONALITEG',
-      yearPublished: 2026,
-      category: 'LIBRO_SEP',
-      targetLevel: 'PRIMARIA',
-      shelfLocation: 'Estante SEP-1 (Colección NEM)',
-      totalCopies: 10,
-      availableCopies: 9,
-      summary: 'Libro oficial del Campo Formativo Lenguajes con lecturas y actividades ilustradas.',
-    },
-    {
-      id: 'book-03',
-      isbn: '978-84-18008-54-2',
-      title: 'Atlas del Mundo Ilustrado para Niños',
-      author: 'National Geographic Kids',
-      publisher: 'RBA Molino',
-      yearPublished: 2023,
-      category: 'HISTORIA_GEOGRAFIA',
-      targetLevel: 'TODOS',
-      shelfLocation: 'Estante B-3 (Geografía y Enciclopedias)',
-      totalCopies: 3,
-      availableCopies: 2,
-      summary: 'Mapas a todo color, fauna, ecosistemas y culturas de los cinco continentes.',
-    },
-    {
-      id: 'book-04',
-      isbn: '978-950-07-0012-3',
-      title: 'Cuentos y Rimas Ilustradas de Kínder',
-      author: 'María Elena Walsh',
-      publisher: 'Alfaguara Infantil',
-      yearPublished: 2022,
-      category: 'LITERATURA_INFANTIL',
-      targetLevel: 'PREESCOLAR',
-      shelfLocation: 'Estante K-1 (Rincón de Lectura)',
-      totalCopies: 4,
-      availableCopies: 4,
-      summary: 'Poemas, canciones y rimas para estimulación temprana de lenguaje oral en edad preescolar.',
-    },
-    {
-      id: 'book-05',
-      isbn: '978-607-16-5501-1',
-      title: 'Dinosaurios y Fósiles Asombrosos',
-      author: 'Dr. Michael Benton',
-      publisher: 'Fondo de Cultura Económica (FCE)',
-      yearPublished: 2024,
-      category: 'CIENCIAS',
-      targetLevel: 'PRIMARIA',
-      shelfLocation: 'Estante C-2 (Ciencias y Naturaleza)',
-      totalCopies: 4,
-      availableCopies: 4,
-      summary: 'Descubrimientos paleontológicos e infografías del período Jurásico y Cretácico.',
-    },
-  ] : []);
+  const [books, setBooks] = useState<SchoolBookItem[]>([]);
 
-  const [bookLoans, setBookLoans] = useState<BookLoanItem[]>(isDemoTenant ? [
-    {
-      id: 'prest-01',
-      folio: 'PREST-2026-001',
-      bookId: 'book-01',
-      bookTitle: 'El Principito',
-      bookIsbn: '978-607-07-2879-2',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      groupName: 'Primaria 1º "A"',
-      loanDate: '2026-09-01',
-      dueDate: '2026-09-08',
-      status: 'ACTIVO',
-      loanType: 'DOMICILIO',
-      librarianNotes: 'Préstamo semanal a domicilio para reporte de lectura en libreta de Lenguajes.',
-    },
-    {
-      id: 'prest-02',
-      folio: 'PREST-2026-002',
-      bookId: 'book-02',
-      bookTitle: 'Múltiples Lenguajes 1º Primaria (Libro SEP)',
-      bookIsbn: '978-607-551-923-4',
-      studentId: 'student-02',
-      studentName: 'Valentina Herrera Castro',
-      studentCode: '2026-PRI-002',
-      groupName: 'Primaria 1º "A"',
-      loanDate: '2026-09-01',
-      dueDate: '2026-09-05',
-      returnDate: '2026-09-02',
-      status: 'DEVUELTO',
-      loanType: 'SALA',
-      librarianNotes: 'Devuelto en excelente estado de conservación.',
-    },
-  ] : []);
+  const [bookLoans, setBookLoans] = useState<BookLoanItem[]>([]);
 
   const [librarySubTab, setLibrarySubTab] = useState<'catalog' | 'loans' | 'clearance'>('catalog');
   const [selectedBookCategoryFilter, setSelectedBookCategoryFilter] = useState<string>('ALL');
@@ -2646,7 +1447,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [showNewBookModal, setShowNewBookModal] = useState<boolean>(false);
   const [showNewLoanModal, setShowNewLoanModal] = useState<boolean>(false);
   const [selectedBookForLoan, setSelectedBookForLoan] = useState<SchoolBookItem | null>(null);
-  const [clearanceSearchStudentId, setClearanceSearchStudentId] = useState<string>('student-01');
+  const [clearanceSearchStudentId, setClearanceSearchStudentId] = useState<string>('');
   const [showClearanceCertificateModal, setShowClearanceCertificateModal] = useState<boolean>(false);
 
   const [newBookForm, setNewBookForm] = useState({
@@ -2671,160 +1472,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Transporte Escolar y Rutas Seguras
-  const [transportRoutes, setTransportRoutes] = useState<TransportRouteItem[]>(isDemoTenant ? [
-    {
-      id: 'route-01',
-      code: 'RUTA-NORTE-01',
-      name: 'Ruta Norte - Lindavista / Vallejo / Torres Lindavista',
-      vehiclePlate: '84-RB-29',
-      vehicleModel: 'Mercedes-Benz Sprinter 2024',
-      driverName: 'Sr. Juan Carlos Pérez',
-      driverPhone: '+52 55 3344 5566',
-      monitorName: 'Profra. Martha Morales',
-      shift: 'AMBOS',
-      enrolledStudentsCount: 8,
-      active: true,
-      stops: [
-        {
-          id: 'stop-01-1',
-          name: 'Parada 1: Torres Lindavista - Av. Othón de Mendizábal',
-          scheduledTimeMorning: '06:50',
-          scheduledTimeAfternoon: '14:30',
-          address: 'Av. Juan de Dios Bátiz #45, Torres Lindavista',
-          orderIndex: 1,
-        },
-        {
-          id: 'stop-01-2',
-          name: 'Parada 2: Residencial Lindavista - Eje 5 Nte #204',
-          scheduledTimeMorning: '07:05',
-          scheduledTimeAfternoon: '14:45',
-          address: 'Calle Montevideo esq. Eje 5 Nte, Lindavista',
-          orderIndex: 2,
-        },
-        {
-          id: 'stop-01-3',
-          name: 'Parada 3: Vallejo Poniente - Av. Cuitláhuac',
-          scheduledTimeMorning: '07:20',
-          scheduledTimeAfternoon: '15:00',
-          address: 'Calz. Vallejo #1120, Col. Defensores',
-          orderIndex: 3,
-        },
-        {
-          id: 'stop-01-4',
-          name: 'Llegada al Plantel Escolar Avante Coyoacán / Lindavista',
-          scheduledTimeMorning: '07:45',
-          scheduledTimeAfternoon: '14:15',
-          address: 'Puerta 2 - Bahía de Descenso Escolar Seguro',
-          orderIndex: 4,
-        },
-      ],
-    },
-    {
-      id: 'route-02',
-      code: 'RUTA-SUR-02',
-      name: 'Ruta Sur - Del Valle / Coyoacán / Chimalistac',
-      vehiclePlate: '92-RB-14',
-      vehicleModel: 'Volkswagen Crafter 2023',
-      driverName: 'Sr. Gilberto Hernández Solís',
-      driverPhone: '+52 55 7788 9900',
-      monitorName: 'Sra. Rosa Isela Cruz',
-      shift: 'AMBOS',
-      enrolledStudentsCount: 6,
-      active: true,
-      stops: [
-        {
-          id: 'stop-02-1',
-          name: 'Parada 1: Parque Hundido - Porfirio Díaz',
-          scheduledTimeMorning: '06:55',
-          scheduledTimeAfternoon: '14:35',
-          address: 'Insurgentes Sur #1400 esq. Porfirio Díaz',
-          orderIndex: 1,
-        },
-        {
-          id: 'stop-02-2',
-          name: 'Parada 2: Centro de Coyoacán - Plaza Hidalgo',
-          scheduledTimeMorning: '07:15',
-          scheduledTimeAfternoon: '14:55',
-          address: 'Calle Caballocalco #22, Coyoacán',
-          orderIndex: 2,
-        },
-        {
-          id: 'stop-02-3',
-          name: 'Llegada al Plantel Escolar',
-          scheduledTimeMorning: '07:45',
-          scheduledTimeAfternoon: '14:15',
-          address: 'Puerta 1 - Bahía de Descenso',
-          orderIndex: 3,
-        },
-      ],
-    },
-  ] : []);
+  const [transportRoutes, setTransportRoutes] = useState<TransportRouteItem[]>([]);
 
-  const [transportEnrollments, setTransportEnrollments] = useState<StudentTransportEnrollmentItem[]>(isDemoTenant ? [
-    {
-      id: 'enr-01',
-      routeId: 'route-01',
-      routeName: 'Ruta Norte - Lindavista / Vallejo',
-      stopId: 'stop-01-2',
-      stopName: 'Parada 2: Residencial Lindavista - Eje 5 Nte #204',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      groupName: 'Primaria 1º "A"',
-      tutorName: 'Ing. Carlos Mendoza',
-      tutorPhone: '+52 55 1234 5678',
-      shift: 'AMBOS',
-      emergencyNotes: 'Asiento delantero asignado por recomendación pediátrica (fácil acceso).',
-    },
-    {
-      id: 'enr-02',
-      routeId: 'route-01',
-      routeName: 'Ruta Norte - Lindavista / Vallejo',
-      stopId: 'stop-01-3',
-      stopName: 'Parada 3: Vallejo Poniente - Av. Cuitláhuac',
-      studentId: 'student-02',
-      studentName: 'Valentina Herrera Castro',
-      studentCode: '2026-PRI-002',
-      groupName: 'Primaria 1º "A"',
-      tutorName: 'Dra. Patricia Castro',
-      tutorPhone: '+52 55 9876 5432',
-      shift: 'AMBOS',
-    },
-  ] : []);
+  const [transportEnrollments, setTransportEnrollments] = useState<StudentTransportEnrollmentItem[]>([]);
 
-  const [transportBoardingLogs, setTransportBoardingLogs] = useState<DailyTransportBoardingLogItem[]>(isDemoTenant ? [
-    {
-      id: 'log-01',
-      routeId: 'route-01',
-      date: new Date().toISOString().split('T')[0],
-      shift: 'MATUTINO_RECOGIDA',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      stopName: 'Parada 2: Residencial Lindavista - Eje 5 Nte #204',
-      status: 'ENTREGADO_ESCUELA',
-      checkInTime: '07:08',
-      checkOutTime: '07:45',
-      notes: 'Abordó con credencial QR validada por la monitora. Entregado en puerta escolar.',
-    },
-    {
-      id: 'log-02',
-      routeId: 'route-01',
-      date: new Date().toISOString().split('T')[0],
-      shift: 'MATUTINO_RECOGIDA',
-      studentId: 'student-02',
-      studentName: 'Valentina Herrera Castro',
-      studentCode: '2026-PRI-002',
-      stopName: 'Parada 3: Vallejo Poniente - Av. Cuitláhuac',
-      status: 'ENTREGADO_ESCUELA',
-      checkInTime: '07:22',
-      checkOutTime: '07:45',
-      notes: 'Entrega en tiempo y forma en bahía escolar.',
-    },
-  ] : []);
+  const [transportBoardingLogs, setTransportBoardingLogs] = useState<DailyTransportBoardingLogItem[]>([]);
 
   const [transportSubTab, setTransportSubTab] = useState<'routes' | 'boarding' | 'enrollment'>('routes');
-  const [selectedTransportRouteId, setSelectedTransportRouteId] = useState<string>('route-01');
+  const [selectedTransportRouteId, setSelectedTransportRouteId] = useState<string>('');
   const [boardingShiftFilter, setBoardingShiftFilter] = useState<'MATUTINO_RECOGIDA' | 'VESPERTINO_ENTREGA'>('MATUTINO_RECOGIDA');
 
   const [showNewRouteModal, setShowNewRouteModal] = useState<boolean>(false);
@@ -2855,169 +1510,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Cafetería Escolar y Monedero Digital
-  const [cafeteriaProducts, setCafeteriaProducts] = useState<CafeteriaProductItem[]>(isDemoTenant ? [
-    {
-      id: 'prod-01',
-      name: 'Sándwich Integral de Pavo y Panela',
-      category: 'DESAYUNOS_SALUDABLES',
-      priceMXN: 38,
-      caloriesKcal: 240,
-      ingredients: ['Pan integral de trigo', 'Pechuga de pavo baja en sodio', 'Queso panela', 'Jitomate', 'Lechuga'],
-      allergens: ['GLUTEN', 'LACTEOS'],
-      isHealthySepApproved: true,
-      stockQuantity: 35,
-      available: true,
-    },
-    {
-      id: 'prod-02',
-      name: 'Vaso de Fruta Fresca de Temporada con Limón',
-      category: 'FRUTAS_VERDURAS',
-      priceMXN: 25,
-      caloriesKcal: 85,
-      ingredients: ['Sandía', 'Melón', 'Piña', 'Pepino', 'Limón'],
-      allergens: [],
-      isHealthySepApproved: true,
-      stockQuantity: 40,
-      available: true,
-    },
-    {
-      id: 'prod-03',
-      name: 'Barrita Artesanal de Avena y Semillas',
-      category: 'SNACKS_NUTRITIVOS',
-      priceMXN: 18,
-      caloriesKcal: 140,
-      ingredients: ['Hojuelas de avena', 'Semillas de girasol', 'Miel pura de abeja', 'Arándanos'],
-      allergens: ['GLUTEN'],
-      isHealthySepApproved: true,
-      stockQuantity: 50,
-      available: true,
-    },
-    {
-      id: 'prod-04',
-      name: 'Licuado Natural de Fresa con Leche Deslactosada',
-      category: 'BEBIDAS_NATURALES',
-      priceMXN: 28,
-      caloriesKcal: 160,
-      ingredients: ['Fresas naturales', 'Leche deslactosada light', 'Canela'],
-      allergens: ['LACTEOS'],
-      isHealthySepApproved: true,
-      stockQuantity: 30,
-      available: true,
-    },
-    {
-      id: 'prod-05',
-      name: 'Galleta Horneada de Cacahuate y Chía',
-      category: 'SNACKS_NUTRITIVOS',
-      priceMXN: 22,
-      caloriesKcal: 210,
-      ingredients: ['Pasta pura de cacahuate', 'Harina integral', 'Semillas de chía', 'Piloncillo'],
-      allergens: ['CACAHUATE', 'GLUTEN'],
-      isHealthySepApproved: false,
-      stockQuantity: 25,
-      available: true,
-    },
-    {
-      id: 'prod-06',
-      name: 'Mollete Tradicional con Frijol y Queso Gratinado',
-      category: 'COMIDAS_CALIENTES',
-      priceMXN: 32,
-      caloriesKcal: 280,
-      ingredients: ['Bolillo integral', 'Frijoles bayos refritos', 'Queso manchego artesanal', 'Pico de gallo'],
-      allergens: ['GLUTEN', 'LACTEOS'],
-      isHealthySepApproved: true,
-      stockQuantity: 30,
-      available: true,
-    },
-  ] : []);
+  const [cafeteriaProducts, setCafeteriaProducts] = useState<CafeteriaProductItem[]>([]);
 
-  const [studentWallets, setStudentWallets] = useState<StudentWalletItem[]>(isDemoTenant ? [
-    {
-      id: 'wallet-01',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      groupName: 'Primaria 1º "A"',
-      currentBalanceMXN: 162,
-      dailySpendingLimitMXN: 60,
-      spentTodayMXN: 38,
-      allergies: ['CACAHUATE', 'MARISCOS'],
-      status: 'ACTIVO',
-      updatedAt: '2026-09-02',
-    },
-    {
-      id: 'wallet-02',
-      studentId: 'student-02',
-      studentName: 'Valentina Herrera Castro',
-      studentCode: '2026-PRI-002',
-      groupName: 'Primaria 1º "A"',
-      currentBalanceMXN: 210,
-      dailySpendingLimitMXN: 70,
-      spentTodayMXN: 0,
-      allergies: [],
-      status: 'ACTIVO',
-      updatedAt: '2026-09-02',
-    },
-    {
-      id: 'wallet-03',
-      studentId: 'student-03',
-      studentName: 'Sofía Hernández Ramos',
-      studentCode: '2026-PREP-045',
-      groupName: 'Preparatoria 1º "A"',
-      currentBalanceMXN: 150,
-      dailySpendingLimitMXN: 50,
-      spentTodayMXN: 0,
-      allergies: ['LACTEOS'],
-      status: 'ACTIVO',
-      updatedAt: '2026-09-02',
-    },
-  ] : []);
+  const [studentWallets, setStudentWallets] = useState<StudentWalletItem[]>([]);
 
-  const [cafeteriaTransactions, setCafeteriaTransactions] = useState<CafeteriaTransactionItem[]>(isDemoTenant ? [
-    {
-      id: 'tx-01',
-      folio: 'CAF-2026-001',
-      walletId: 'wallet-01',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      type: 'RECARGA_SALDO',
-      amountMXN: 200,
-      previousBalanceMXN: 0,
-      newBalanceMXN: 200,
-      date: '2026-09-01',
-      time: '08:15',
-      paymentMethod: 'EFECTIVO',
-      cashierNotes: 'Apertura de monedero realizada por tutor Ing. Carlos Mendoza',
-    },
-    {
-      id: 'tx-02',
-      folio: 'CAF-2026-002',
-      walletId: 'wallet-01',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      type: 'CONSUMO',
-      amountMXN: 38,
-      previousBalanceMXN: 200,
-      newBalanceMXN: 162,
-      items: [
-        {
-          productId: 'prod-01',
-          productName: 'Sándwich Integral de Pavo y Panela',
-          quantity: 1,
-          unitPriceMXN: 38,
-          subtotalMXN: 38,
-        },
-      ],
-      date: '2026-09-02',
-      time: '10:45',
-      cashierNotes: 'Cobro en receso escolar con credencial digital QR',
-    },
-  ] : []);
+  const [cafeteriaTransactions, setCafeteriaTransactions] = useState<CafeteriaTransactionItem[]>([]);
 
   const [cafeteriaSubTab, setCafeteriaSubTab] = useState<'menu' | 'pos' | 'wallets' | 'history'>('menu');
   const [cafeteriaCategoryFilter, setCafeteriaCategoryFilter] = useState<string>('TODOS');
-  const [posStudentId, setPosStudentId] = useState<string>('student-01');
+  const [posStudentId, setPosStudentId] = useState<string>('');
   const [posCart, setPosCart] = useState<Array<{ product: CafeteriaProductItem; quantity: number }>>([]);
   const [selectedWalletForAction, setSelectedWalletForAction] = useState<StudentWalletItem | null>(null);
   const [activeTransactionForReceipt, setActiveTransactionForReceipt] = useState<CafeteriaTransactionItem | null>(null);
@@ -3049,171 +1550,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Enfermería Escolar y Expediente Clínico de Salud
-  const [medicalConsultations, setMedicalConsultations] = useState<MedicalConsultationItem[]>(isDemoTenant ? [
-    {
-      id: 'enf-01',
-      folio: 'ENF-2026-001',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      groupName: 'Primaria 1º "A"',
-      date: '2026-09-02',
-      time: '11:15',
-      reason: 'HERIDA_RASPON',
-      severity: 'LEVE',
-      symptomsDescription: 'Raspón superficial en rodilla izquierda al tropezar en cancha deportiva durante receso.',
-      vitalSigns: {
-        temperatureCelsius: 36.5,
-        heartRateBpm: 78,
-        bloodPressure: '105/68',
-      },
-      treatmentGiven: 'Lavado profuso con solución antiséptica Microdacyn, aplicación de apósito estéril adhesivo y crema regeneradora.',
-      nurseNotes: 'El alumno cooperó adecuadamente. No hay signos de esguince o compromiso óseo.',
-      nurseInCharge: 'Enfra. Rosaura Morales (Céd. 748291)',
-      parentNotified: true,
-      parentNotifiedAt: '2026-09-02 11:20',
-      requiresPickupByParent: false,
-      status: 'ALTA_A_CLASES',
-    },
-    {
-      id: 'enf-02',
-      folio: 'ENF-2026-002',
-      studentId: 'student-03',
-      studentName: 'Sofía Hernández Ramos',
-      studentCode: '2026-PREP-045',
-      groupName: 'Preparatoria 1º "A"',
-      date: '2026-09-01',
-      time: '09:40',
-      reason: 'CEFALEA_FIEBRE',
-      severity: 'MODERADA',
-      symptomsDescription: 'Cefalea intensa frontotemporal y sensación febril con decaimiento.',
-      vitalSigns: {
-        temperatureCelsius: 37.8,
-        heartRateBpm: 88,
-        bloodPressure: '110/70',
-      },
-      treatmentGiven: 'Reposo en camilla clínica con compresas frías en frente y nuca. Hidratación oral con electrolitos.',
-      nurseNotes: 'Se contactó a la madre para solicitar pase de salida para valoración pediátrica externa.',
-      nurseInCharge: 'Enfra. Rosaura Morales (Céd. 748291)',
-      parentNotified: true,
-      parentNotifiedAt: '2026-09-01 09:50',
-      requiresPickupByParent: true,
-      status: 'RETIRADO_CON_TUTOR',
-    },
-  ] : []);
+  const [medicalConsultations, setMedicalConsultations] = useState<MedicalConsultationItem[]>([]);
 
-  const [scheduledMedications, setScheduledMedications] = useState<ScheduledMedicationItem[]>(isDemoTenant ? [
-    {
-      id: 'med-01',
-      studentId: 'student-02',
-      studentName: 'Valentina Herrera Castro',
-      studentCode: '2026-PRI-002',
-      groupName: 'Primaria 1º "A"',
-      medicationName: 'Loratadina Jarabe 5mg/5ml',
-      dosage: '5 ml cada 24 hrs a mediodía',
-      scheduledTime: '12:00',
-      startDate: '2026-09-01',
-      endDate: '2026-09-07',
-      prescriptionDoctorName: 'Dra. Marcela Peña Cruz - Alergóloga Pediatra',
-      doctorLicense: 'Céd. Prof. 8492019',
-      parentAuthorizationSigned: true,
-      parentName: 'Lic. Mariana Castro',
-      administeredToday: false,
-      status: 'ACTIVO',
-    },
-    {
-      id: 'med-02',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      groupName: 'Primaria 1º "A"',
-      medicationName: 'Salbutamol Inhalador 100mcg',
-      dosage: '2 disparos con aerocámara previo a Educación Física',
-      scheduledTime: '08:00',
-      startDate: '2026-08-25',
-      endDate: '2026-12-15',
-      prescriptionDoctorName: 'Dr. Roberto Garza - Neumólogo Pediatra',
-      doctorLicense: 'Céd. Prof. 6712344',
-      parentAuthorizationSigned: true,
-      parentName: 'Ing. Carlos Mendoza',
-      administeredToday: true,
-      lastAdministeredAt: '2026-09-02 07:55',
-      status: 'ACTIVO',
-    },
-  ] : []);
+  const [scheduledMedications, setScheduledMedications] = useState<ScheduledMedicationItem[]>([]);
 
-  const [firstAidSupplies, setFirstAidSupplies] = useState<FirstAidSupplyItem[]>(isDemoTenant ? [
-    {
-      id: 'sup-01',
-      name: 'Solución Antiséptica Microdacyn 250ml',
-      category: 'CURACION',
-      stockQuantity: 6,
-      unit: 'Frascos',
-      minStockAlert: 2,
-      expiryDate: '2027-10-30',
-    },
-    {
-      id: 'sup-02',
-      name: 'Gasas Estériles en Sobres 10x10cm',
-      category: 'CURACION',
-      stockQuantity: 45,
-      unit: 'Sobres',
-      minStockAlert: 15,
-      expiryDate: '2028-05-15',
-    },
-    {
-      id: 'sup-03',
-      name: 'Vendas Elásticas de Compresión 5cm',
-      category: 'CURACION',
-      stockQuantity: 18,
-      unit: 'Rollos',
-      minStockAlert: 5,
-      expiryDate: '2028-12-01',
-    },
-    {
-      id: 'sup-04',
-      name: 'Termómetro Infrarrojo Clínico Digital',
-      category: 'EQUIPO_MEDICO',
-      stockQuantity: 3,
-      unit: 'Piezas',
-      minStockAlert: 1,
-    },
-    {
-      id: 'sup-05',
-      name: 'Apósitos Adhesivos Hipoalergénicos (Curitas)',
-      category: 'CURACION',
-      stockQuantity: 120,
-      unit: 'Piezas',
-      minStockAlert: 30,
-      expiryDate: '2028-01-01',
-    },
-    {
-      id: 'sup-06',
-      name: 'Hielo Químico Instantáneo para Contusiones',
-      category: 'CURACION',
-      stockQuantity: 14,
-      unit: 'Bolsas',
-      minStockAlert: 5,
-      expiryDate: '2027-08-01',
-    },
-    {
-      id: 'sup-07',
-      name: 'Paracetamol Infantil Jarabe 100mg/ml (Con Receta)',
-      category: 'MEDICAMENTO_BASICO_AUTORIZADO',
-      stockQuantity: 4,
-      unit: 'Frascos',
-      minStockAlert: 2,
-      expiryDate: '2027-04-10',
-    },
-    {
-      id: 'sup-08',
-      name: 'Baumanómetro Pediátrico Digital',
-      category: 'EQUIPO_MEDICO',
-      stockQuantity: 2,
-      unit: 'Equipos',
-      minStockAlert: 1,
-    },
-  ] : []);
+  const [firstAidSupplies, setFirstAidSupplies] = useState<FirstAidSupplyItem[]>([]);
 
   const [infirmarySubTab, setInfirmarySubTab] = useState<'consultations' | 'medications' | 'supplies'>('consultations');
   const [selectedConsultationForReport, setSelectedConsultationForReport] = useState<MedicalConsultationItem | null>(null);
@@ -3249,176 +1590,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Talleres Extracurriculares y Academias Vespertinas
-  const [extracurricularWorkshops, setExtracurricularWorkshops] = useState<ExtracurricularWorkshopItem[]>(isDemoTenant ? [
-    {
-      id: 'work-01',
-      code: 'TAL-ROB-01',
-      name: 'Robótica Educativa LEGO SPIKE Prime',
-      category: 'CIENCIA_TECNOLOGIA',
-      description: 'Construcción y programación de robots inteligentes con sensores y motores para retos STEAM.',
-      instructorName: 'Ing. Fernando Salgado Ruiz',
-      instructorPhone: '+52 55 4433 2211',
-      classroom: 'Laboratorio de Cómputo y Robótica',
-      scheduleDays: ['MARTES', 'JUEVES'],
-      scheduleTime: '14:45 - 16:15 hrs',
-      monthlyFeeMXN: 480,
-      maxCapacity: 18,
-      enrolledCount: 14,
-      targetLevels: ['PRIMARIA'],
-      status: 'ACTIVO',
-    },
-    {
-      id: 'work-02',
-      code: 'TAL-FUT-02',
-      name: 'Fútbol Infantil Formativo y Torneos',
-      category: 'DEPORTIVO',
-      description: 'Entrenamiento técnico, táctico y formativo de fútbol con participación en Liga Intercolegial.',
-      instructorName: 'Prof. Javier Morales Cruz',
-      instructorPhone: '+52 55 9988 7766',
-      classroom: 'Cancha de Pasto Sintético',
-      scheduleDays: ['LUNES', 'MIERCOLES'],
-      scheduleTime: '14:45 - 16:15 hrs',
-      monthlyFeeMXN: 420,
-      maxCapacity: 25,
-      enrolledCount: 20,
-      targetLevels: ['PRIMARIA'],
-      status: 'ACTIVO',
-    },
-    {
-      id: 'work-03',
-      code: 'TAL-BAL-03',
-      name: 'Ballet Clásico y Expresión Corporal',
-      category: 'ARTES_CULTURA',
-      description: 'Desarrollo de postura, flexibilidad, musicalidad y disciplina artística con barra y centro.',
-      instructorName: 'Mtra. Lucía Domínguez Trejo',
-      instructorPhone: '+52 55 3322 1100',
-      classroom: 'Salón de Danza con Duela y Espejos',
-      scheduleDays: ['MARTES', 'JUEVES'],
-      scheduleTime: '14:30 - 16:00 hrs',
-      monthlyFeeMXN: 450,
-      maxCapacity: 16,
-      enrolledCount: 12,
-      targetLevels: ['PREESCOLAR', 'PRIMARIA'],
-      status: 'ACTIVO',
-    },
-    {
-      id: 'work-04',
-      code: 'TAL-AJE-04',
-      name: 'Ajedrez Estratégico y Agilidad Mental',
-      category: 'DESARROLLO_HABILIDADES',
-      description: 'Tácticas de apertura, medio juego, cálculo de variantes y torneos rápidos del deporte ciencia.',
-      instructorName: 'Maestro FIDE Ricardo Alarcón',
-      instructorPhone: '+52 55 6677 8899',
-      classroom: 'Biblioteca Escolar',
-      scheduleDays: ['VIERNES'],
-      scheduleTime: '14:30 - 16:30 hrs',
-      monthlyFeeMXN: 350,
-      maxCapacity: 20,
-      enrolledCount: 15,
-      targetLevels: ['PRIMARIA', 'PREPARATORIA'],
-      status: 'ACTIVO',
-    },
-    {
-      id: 'work-05',
-      code: 'TAL-MAT-05',
-      name: 'Taller de Regularización de Matemáticas NEM',
-      category: 'ACADEMICO_REGULARIZACION',
-      description: 'Refuerzo personalizado en resolución de problemas, fracciones, álgebra y razonamiento lógico.',
-      instructorName: 'Profra. Laura Gómez Gómez',
-      instructorPhone: '+52 55 5544 3322',
-      classroom: 'Aula 102 - Primaria',
-      scheduleDays: ['LUNES', 'MIERCOLES'],
-      scheduleTime: '14:30 - 16:00 hrs',
-      monthlyFeeMXN: 380,
-      maxCapacity: 12,
-      enrolledCount: 8,
-      targetLevels: ['PRIMARIA'],
-      status: 'ACTIVO',
-    },
-  ] : []);
+  const [extracurricularWorkshops, setExtracurricularWorkshops] = useState<ExtracurricularWorkshopItem[]>([]);
 
-  const [workshopEnrollments, setWorkshopEnrollments] = useState<WorkshopEnrollmentItem[]>(isDemoTenant ? [
-    {
-      id: 'wenr-01',
-      workshopId: 'work-01',
-      workshopName: 'Robótica Educativa LEGO SPIKE Prime',
-      workshopCode: 'TAL-ROB-01',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      groupName: 'Primaria 1º "A"',
-      enrollmentDate: '2026-08-28',
-      monthlyFeeMXN: 480,
-      parentAuthorization: true,
-      status: 'ACTIVO',
-    },
-    {
-      id: 'wenr-02',
-      workshopId: 'work-02',
-      workshopName: 'Fútbol Infantil Formativo y Torneos',
-      workshopCode: 'TAL-FUT-02',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      groupName: 'Primaria 1º "A"',
-      enrollmentDate: '2026-08-28',
-      monthlyFeeMXN: 420,
-      parentAuthorization: true,
-      status: 'ACTIVO',
-    },
-    {
-      id: 'wenr-03',
-      workshopId: 'work-03',
-      workshopName: 'Ballet Clásico y Expresión Corporal',
-      workshopCode: 'TAL-BAL-03',
-      studentId: 'student-02',
-      studentName: 'Valentina Herrera Castro',
-      studentCode: '2026-PRI-002',
-      groupName: 'Primaria 1º "A"',
-      enrollmentDate: '2026-08-29',
-      monthlyFeeMXN: 450,
-      parentAuthorization: true,
-      status: 'ACTIVO',
-    },
-    {
-      id: 'wenr-04',
-      workshopId: 'work-04',
-      workshopName: 'Ajedrez Estratégico y Agilidad Mental',
-      workshopCode: 'TAL-AJE-04',
-      studentId: 'student-03',
-      studentName: 'Sofía Hernández Ramos',
-      studentCode: '2026-PREP-045',
-      groupName: 'Preparatoria 1º "A"',
-      enrollmentDate: '2026-08-30',
-      monthlyFeeMXN: 350,
-      parentAuthorization: true,
-      status: 'ACTIVO',
-    },
-  ] : []);
+  const [workshopEnrollments, setWorkshopEnrollments] = useState<WorkshopEnrollmentItem[]>([]);
 
-  const [workshopAttendanceLogs, setWorkshopAttendanceLogs] = useState<WorkshopAttendanceLogItem[]>(isDemoTenant ? [
-    {
-      id: 'watt-01',
-      workshopId: 'work-01',
-      date: '2026-09-01',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      status: 'PRESENTE',
-      notes: 'Construyó con éxito el mecanismo de engranajes del robot móvil.',
-    },
-    {
-      id: 'watt-02',
-      workshopId: 'work-02',
-      date: '2026-09-02',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      status: 'PRESENTE',
-      notes: 'Participó activamente en la práctica de pases y tiro a gol.',
-    },
-  ] : []);
+  const [workshopAttendanceLogs, setWorkshopAttendanceLogs] = useState<WorkshopAttendanceLogItem[]>([]);
 
   const [workshopsSubTab, setWorkshopsSubTab] = useState<'catalog' | 'attendance' | 'enrollments'>('catalog');
-  const [selectedWorkshopForAttendance, setSelectedWorkshopForAttendance] = useState<string>('work-01');
+  const [selectedWorkshopForAttendance, setSelectedWorkshopForAttendance] = useState<string>('');
   const [selectedWorkshopCategoryFilter, setSelectedWorkshopCategoryFilter] = useState<string>('ALL');
 
   const [showNewWorkshopModal, setShowNewWorkshopModal] = useState<boolean>(false);
@@ -3445,370 +1624,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Inventario Escolar y Control de Activos Fijos
-  const [schoolAssets, setSchoolAssets] = useState<SchoolAssetItem[]>(isDemoTenant ? [
-    {
-      id: 'ast-01',
-      assetTag: 'ACT-TEC-001',
-      name: 'Chromebook Lenovo 300e Touch Gen 3',
-      category: 'TECNOLOGIA_COMPUTO',
-      serialNumber: 'LR093821-MX',
-      brandModel: 'Lenovo 300e Touch (4GB RAM, 32GB eMMC)',
-      assignedLocation: 'Laboratorio de Cómputo Torre A',
-      responsiblePerson: 'Ing. Fernando Salgado Ruiz',
-      acquisitionDate: '2025-08-15',
-      purchaseValueMXN: 8500,
-      condition: 'EXCELENTE',
-      warrantyExpiry: '2027-12-31',
-      notes: 'Uso en taller de robótica y proyectos STEAM.',
-    },
-    {
-      id: 'ast-02',
-      assetTag: 'ACT-TEC-002',
-      name: 'Proyector Láser Interactivo Epson BrightLink 735Fi',
-      category: 'TECNOLOGIA_COMPUTO',
-      serialNumber: 'EP-998822-L',
-      brandModel: 'Epson BrightLink 735Fi Ultra Corto',
-      assignedLocation: 'Aula 101 Primaria 1º "A"',
-      responsiblePerson: 'Profra. Laura Gómez Gómez',
-      acquisitionDate: '2025-07-20',
-      purchaseValueMXN: 24800,
-      condition: 'BUENO',
-      warrantyExpiry: '2027-06-15',
-      notes: 'Montado en muro con pizarrón interactivo.',
-    },
-    {
-      id: 'ast-03',
-      assetTag: 'ACT-TEC-003',
-      name: 'Pantalla Interactiva SMART Board 75" 4K',
-      category: 'TECNOLOGIA_COMPUTO',
-      serialNumber: 'SB-754K-1092',
-      brandModel: 'SMART Board serie GX 75 pulgadas',
-      assignedLocation: 'Sala de Juntas y Dirección General',
-      responsiblePerson: 'Mtro. Roberto Mendoza',
-      acquisitionDate: '2025-06-10',
-      purchaseValueMXN: 42000,
-      condition: 'EXCELENTE',
-      warrantyExpiry: '2028-08-30',
-      notes: 'Para sesiones de Consejo Técnico Escolar (CTE).',
-    },
-    {
-      id: 'ast-04',
-      assetTag: 'ACT-LAB-004',
-      name: 'Microscopio Binocular Biológico Velab VE-B3',
-      category: 'LABORATORIO_CIENCIAS',
-      serialNumber: 'MB-VEL-4821',
-      brandModel: 'Velab VE-B3 Óptica Acromática',
-      assignedLocation: 'Laboratorio de Ciencias Naturales',
-      responsiblePerson: 'Dra. Claudia Zavala',
-      acquisitionDate: '2024-11-12',
-      purchaseValueMXN: 11200,
-      condition: 'BUENO',
-      warrantyExpiry: '2026-11-20',
-      notes: 'Revisión óptica semestral vigente.',
-    },
-    {
-      id: 'ast-05',
-      assetTag: 'ACT-MOB-005',
-      name: 'Módulo de 25 Pupitres Ergonómicos Regulables',
-      category: 'MOBILIARIO_AULAS',
-      brandModel: 'Industrias DM Mobiliario Escolar Polipropileno',
-      assignedLocation: 'Aula 101 Primaria 1º "A"',
-      responsiblePerson: 'Profra. Laura Gómez Gómez',
-      acquisitionDate: '2025-08-01',
-      purchaseValueMXN: 22500,
-      condition: 'BUENO',
-      notes: 'Mobiliario para alumnos de primer grado de primaria.',
-    },
-    {
-      id: 'ast-06',
-      assetTag: 'ACT-INF-006',
-      name: 'Sistema de Audio Portátil Yamaha StagePas 600BT',
-      category: 'INFRAESTRUCTURA_GENERAL',
-      serialNumber: 'YM-600BT-884',
-      brandModel: 'Yamaha StagePas 600BT 680W',
-      assignedLocation: 'Patio Cívico y Auditorio',
-      responsiblePerson: 'Lic. Héctor Morales',
-      acquisitionDate: '2025-03-15',
-      purchaseValueMXN: 28900,
-      condition: 'BUENO',
-      warrantyExpiry: '2027-03-10',
-      notes: 'Usado en actos cívicos de honores a la bandera y festivales.',
-    },
-    {
-      id: 'ast-07',
-      assetTag: 'ACT-DEP-007',
-      name: 'Porterías Metálicas de Fútbol 7 Reglamentarias',
-      category: 'EQUIPO_DEPORTIVO',
-      brandModel: 'Estructura tubular cédula 40 con pintura horneada',
-      assignedLocation: 'Cancha de Pasto Sintético',
-      responsiblePerson: 'Prof. Javier Morales Cruz',
-      acquisitionDate: '2024-09-01',
-      purchaseValueMXN: 18000,
-      condition: 'REGULAR_REQUIERE_SERVICIO',
-      notes: 'Requiere pintura anticorrosiva y ajuste de red tensora.',
-    },
-  ] : []);
+  const [schoolAssets, setSchoolAssets] = useState<SchoolAssetItem[]>([]);
 
-  const [assetMaintenanceTickets, setAssetMaintenanceTickets] = useState<AssetMaintenanceTicketItem[]>(isDemoTenant ? [
-    {
-      id: 'tkt-01',
-      ticketNumber: 'MNT-2026-001',
-      assetId: 'ast-07',
-      assetName: 'Porterías Metálicas de Fútbol 7 Reglamentarias',
-      assetTag: 'ACT-DEP-007',
-      location: 'Cancha de Pasto Sintético',
-      title: 'Mantenimiento anticorrosivo y ajuste de red',
-      description: 'La portería sur presenta desajuste en los tirantes de red y desgaste de pintura en los postes por lluvia.',
-      priority: 'MEDIA',
-      reportedBy: 'Prof. Javier Morales Cruz',
-      assignedTo: 'Mantenimiento General (Don Pedro)',
-      reportedAt: '2026-09-01 10:30',
-      costMXN: 650,
-      status: 'EN_REPARACION',
-    },
-    {
-      id: 'tkt-02',
-      ticketNumber: 'MNT-2026-002',
-      assetId: 'ast-02',
-      assetName: 'Proyector Láser Interactivo Epson BrightLink 735Fi',
-      assetTag: 'ACT-TEC-002',
-      location: 'Aula 101 Primaria 1º "A"',
-      title: 'Calibración de pluma interactiva y limpieza de filtros',
-      description: 'Desfase de 3 cm al escribir en el pizarrón digital y advertencia preventiva de filtro de aire en pantalla.',
-      priority: 'BAJA',
-      reportedBy: 'Profra. Laura Gómez Gómez',
-      assignedTo: 'Ing. Fernando Salgado Ruiz',
-      reportedAt: '2026-08-28 15:20',
-      resolvedAt: '2026-08-29 11:00',
-      costMXN: 0,
-      resolutionNotes: 'Se limpiaron los filtros electrostáticos y se recalibró la matriz óptica con software Epson. Funcionando al 100%.',
-      status: 'RESUELTO',
-    },
-  ] : []);
+  const [assetMaintenanceTickets, setAssetMaintenanceTickets] = useState<AssetMaintenanceTicketItem[]>([]);
 
   const [inventorySubTab, setInventorySubTab] = useState<'assets' | 'conaliteg' | 'uniforms' | 'tickets' | 'audit'>('assets');
 
   // CONALITEG y Almacén de Uniformes
-  const [conalitegPackages, setConalitegPackages] = useState<ConalitegPackageItem[]>(isDemoTenant ? [
-    {
-      id: 'con-01',
-      remesaFolio: 'REM-CONALITEG-2026-018',
-      level: 'PRIMARIA',
-      grade: '1º Primaria',
-      includedBooks: [
-        { code: 'BK-101', title: 'Múltiples Lenguajes 1º', field: 'MULTIPLES_LENGUAJES', editionYear: 2026 },
-        { code: 'BK-102', title: 'Proyectos de Aula 1º', field: 'LENGUAJES', editionYear: 2026 },
-        { code: 'BK-103', title: 'Proyectos Escolares 1º', field: 'DE_LO_HUMANO_COMUNITARIO', editionYear: 2026 },
-        { code: 'BK-104', title: 'Proyectos Comunitarios 1º', field: 'ETICA_NATURALEZA_SOCIEDADES', editionYear: 2026 },
-        { code: 'BK-105', title: 'Nuestros Saberes 1º', field: 'SABERES_PENSAMIENTO_CIENTIFICO', editionYear: 2026 },
-        { code: 'BK-106', title: 'Trazos y Palabras 1º', field: 'LENGUAJES', editionYear: 2026 },
-      ],
-      receivedPackagesCount: 25,
-      enrolledStudentsCount: 22,
-      deliveredPackagesCount: 20,
-      warehouseReserveCount: 5,
-      status: 'EXCEDENTE_EN_RESGUARDO',
-      receptionDate: '2026-08-15',
-      zoneSupervisorOffice: 'Supervisión Escolar Sector 05 - Zona 14',
-      createdAt: '2026-08-15T09:00:00.000Z',
-    },
-    {
-      id: 'con-02',
-      remesaFolio: 'REM-CONALITEG-2026-022',
-      level: 'PRIMARIA',
-      grade: '3º Primaria',
-      includedBooks: [
-        { code: 'BK-301', title: 'Múltiples Lenguajes 3º', field: 'MULTIPLES_LENGUAJES', editionYear: 2026 },
-        { code: 'BK-302', title: 'Proyectos de Aula 3º', field: 'LENGUAJES', editionYear: 2026 },
-        { code: 'BK-303', title: 'Proyectos Escolares 3º', field: 'DE_LO_HUMANO_COMUNITARIO', editionYear: 2026 },
-        { code: 'BK-304', title: 'Proyectos Comunitarios 3º', field: 'ETICA_NATURALEZA_SOCIEDADES', editionYear: 2026 },
-        { code: 'BK-305', title: 'Nuestros Saberes 3º', field: 'SABERES_PENSAMIENTO_CIENTIFICO', editionYear: 2026 },
-      ],
-      receivedPackagesCount: 20,
-      enrolledStudentsCount: 20,
-      deliveredPackagesCount: 19,
-      warehouseReserveCount: 1,
-      status: 'COMPLETA',
-      receptionDate: '2026-08-15',
-      zoneSupervisorOffice: 'Supervisión Escolar Sector 05 - Zona 14',
-      createdAt: '2026-08-15T09:30:00.000Z',
-    },
-    {
-      id: 'con-03',
-      remesaFolio: 'REM-CONALITEG-2026-009',
-      level: 'PREESCOLAR',
-      grade: '2º Kínder',
-      includedBooks: [
-        { code: 'BK-K01', title: 'Juegos y Aprendizajes 2º Kínder', field: 'PREESCOLAR_DIDACTICO', editionYear: 2026 },
-        { code: 'BK-K02', title: 'Láminas Didácticas de Diálogo', field: 'PREESCOLAR_DIDACTICO', editionYear: 2026 },
-        { code: 'BK-K03', title: 'Libro de la Educadora Preescolar', field: 'PREESCOLAR_DIDACTICO', editionYear: 2026 },
-      ],
-      receivedPackagesCount: 15,
-      enrolledStudentsCount: 14,
-      deliveredPackagesCount: 14,
-      warehouseReserveCount: 1,
-      status: 'COMPLETA',
-      receptionDate: '2026-08-12',
-      zoneSupervisorOffice: 'Supervisión Escolar Preescolar Zona 08',
-      createdAt: '2026-08-12T10:00:00.000Z',
-    },
-  ] : []);
+  const [conalitegPackages, setConalitegPackages] = useState<ConalitegPackageItem[]>([]);
 
-  const [conalitegReceipts, setConalitegReceipts] = useState<ConalitegReceiptItem[]>(isDemoTenant ? [
-    {
-      id: 'rec-01',
-      folio: 'ACU-2026-001',
-      packageId: 'con-01',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      level: 'PRIMARIA',
-      grade: '1º Primaria "A"',
-      parentName: 'Ing. Roberto Mendoza (Tutor APF)',
-      parentPhone: '55 4321 8765',
-      deliveryDate: '2026-08-26',
-      titlesDelivered: [
-        'Múltiples Lenguajes 1º',
-        'Proyectos de Aula 1º',
-        'Proyectos Escolares 1º',
-        'Proyectos Comunitarios 1º',
-        'Nuestros Saberes 1º',
-        'Trazos y Palabras 1º',
-      ],
-      status: 'ENTREGADO_FIRMADO',
-      notes: 'Acuse original con firma autógrafa resguardado en archivo de Control Escolar.',
-      deliveredByStaff: 'Prof. Carlos Méndez - Docente Titular',
-      createdAt: '2026-08-26T11:00:00.000Z',
-    },
-    {
-      id: 'rec-02',
-      folio: 'ACU-2026-002',
-      packageId: 'con-02',
-      studentId: 'student-sof-01',
-      studentName: 'Sofía Morales Rivas',
-      studentCode: '2026-PRI-014',
-      level: 'PRIMARIA',
-      grade: '5º Primaria "A"',
-      parentName: 'Lic. Patricia Rivas',
-      parentPhone: '55 9876 1122',
-      deliveryDate: '2026-08-26',
-      titlesDelivered: [
-        'Múltiples Lenguajes 5º',
-        'Proyectos de Aula 5º',
-        'Proyectos Escolares 5º',
-        'Proyectos Comunitarios 5º',
-        'Nuestros Saberes 5º',
-      ],
-      status: 'ENTREGADO_FIRMADO',
-      notes: 'Dotación completa recibida en buen estado.',
-      deliveredByStaff: 'Dirección Técnica Primaria',
-      createdAt: '2026-08-26T12:15:00.000Z',
-    },
-    {
-      id: 'rec-03',
-      folio: 'ACU-2026-003',
-      packageId: 'con-03',
-      studentId: 'student-emi-01',
-      studentName: 'Emiliano Estrada Gómez',
-      studentCode: '2026-KND-005',
-      level: 'PREESCOLAR',
-      grade: '2º Kínder "A"',
-      parentName: 'Sra. Laura Gómez Estrada',
-      parentPhone: '55 6677 8899',
-      deliveryDate: '2026-08-27',
-      titlesDelivered: [
-        'Juegos y Aprendizajes 2º Kínder',
-        'Láminas Didácticas de Diálogo',
-      ],
-      status: 'ENTREGADO_FIRMADO',
-      notes: 'Material didáctico verificado por educadora titular.',
-      deliveredByStaff: 'Mtra. Dulce María Santillán',
-      createdAt: '2026-08-27T09:40:00.000Z',
-    },
-  ] : []);
+  const [conalitegReceipts, setConalitegReceipts] = useState<ConalitegReceiptItem[]>([]);
 
-  const [schoolUniforms, setSchoolUniforms] = useState<SchoolUniformItem[]>(isDemoTenant ? [
-    {
-      id: 'uni-01',
-      sku: 'UNI-PRI-POLO-08',
-      name: 'Playera Polo Institucional con Escudo Bordado',
-      category: 'UNIFORME_DIARIO',
-      level: 'PRIMARIA',
-      size: 'TALLA_8',
-      stockQuantity: 45,
-      minStockAlert: 10,
-      unitCostMXN: 140,
-      salePriceMXN: 230,
-      warehouseShelf: 'Estante A-1',
-      supplierName: 'Confecciones Escolares de México S.A.',
-      lastRestockDate: '2026-08-10',
-      createdAt: '2026-08-10T10:00:00.000Z',
-    },
-    {
-      id: 'uni-02',
-      sku: 'UNI-PRI-PANT-08',
-      name: 'Pantalón Escolar Marino Gabardina Alta Resistencia',
-      category: 'UNIFORME_DIARIO',
-      level: 'PRIMARIA',
-      size: 'TALLA_8',
-      stockQuantity: 32,
-      minStockAlert: 8,
-      unitCostMXN: 190,
-      salePriceMXN: 310,
-      warehouseShelf: 'Estante A-2',
-      supplierName: 'Confecciones Escolares de México S.A.',
-      lastRestockDate: '2026-08-10',
-      createdAt: '2026-08-10T10:00:00.000Z',
-    },
-    {
-      id: 'uni-03',
-      sku: 'UNI-DEP-PANT-06',
-      name: 'Pants Deportivo Escolar Completo con Chamarra Térmica',
-      category: 'UNIFORME_DEPORTIVO',
-      level: 'AMBOS',
-      size: 'TALLA_6',
-      stockQuantity: 28,
-      minStockAlert: 10,
-      unitCostMXN: 320,
-      salePriceMXN: 480,
-      warehouseShelf: 'Estante B-1',
-      supplierName: 'Textiles Deportivos Hidalgo',
-      lastRestockDate: '2026-08-12',
-      createdAt: '2026-08-12T11:00:00.000Z',
-    },
-    {
-      id: 'uni-04',
-      sku: 'UNI-BAT-STEAM-10',
-      name: 'Bata Blanca Algodón para Laboratorio STEAM y Arte',
-      category: 'BATA_LABORATORIO_ARTE',
-      level: 'PRIMARIA',
-      size: 'TALLA_10',
-      stockQuantity: 18,
-      minStockAlert: 5,
-      unitCostMXN: 120,
-      salePriceMXN: 190,
-      warehouseShelf: 'Estante C-1',
-      supplierName: 'Uniformes Clínicos e Industriales',
-      lastRestockDate: '2026-08-14',
-      createdAt: '2026-08-14T12:00:00.000Z',
-    },
-    {
-      id: 'uni-05',
-      sku: 'MAT-DID-MOCH-U',
-      name: 'Mochila Institucional Ergonómica con Refuerzo Lumbar',
-      category: 'MATERIAL_DIDACTICO',
-      level: 'AMBOS',
-      size: 'UNITALLA',
-      stockQuantity: 25,
-      minStockAlert: 6,
-      unitCostMXN: 260,
-      salePriceMXN: 390,
-      warehouseShelf: 'Estante D-3',
-      supplierName: 'Mochilas & Accesorios Escolares',
-      lastRestockDate: '2026-08-15',
-      createdAt: '2026-08-15T13:00:00.000Z',
-    },
-  ] : []);
+  const [schoolUniforms, setSchoolUniforms] = useState<SchoolUniformItem[]>([]);
 
   const [showNewConalitegPackageModal, setShowNewConalitegPackageModal] = useState<boolean>(false);
   const [showNewConalitegReceiptModal, setShowNewConalitegReceiptModal] = useState<boolean>(false);
@@ -3862,152 +1689,26 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   // --- CERTIFICACIÓN DIGITAL & KÁRDEX OFICIAL ---
   const [certificatesSubTab, setCertificatesSubTab] = useState<'certificates' | 'kardex' | 'validator'>('certificates');
   const [selectedCertTypeFilter, setSelectedCertTypeFilter] = useState<string>('ALL');
-  const [selectedStudentForKardex, setSelectedStudentForKardex] = useState<string>(isDemoTenant ? 'student-01' : '');
+  const [selectedStudentForKardex, setSelectedStudentForKardex] = useState<string>('');
   const [selectedCertForDetail, setSelectedCertForDetail] = useState<OfficialCertificateItem | null>(null);
 
-  const [officialCertificates, setOfficialCertificates] = useState<OfficialCertificateItem[]>(isDemoTenant ? [
-    {
-      id: 'cert-01',
-      folio: 'CE-2026-PRI-001',
-      verificationToken: 'tok-ce-7f9a1b2c3d4e',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      curp: 'MER0150312HDFNR01',
-      level: 'PRIMARIA',
-      grade: '1º Primaria',
-      groupName: '1º "A" Primaria',
-      academicCycle: 'Ciclo Escolar 2026-2027',
-      type: 'CONSTANCIA_ESTUDIOS_SIMPLE',
-      issueDate: '2026-08-28',
-      validUntil: '2026-11-26',
-      status: 'EMITIDA',
-      averageGrade: 9.3,
-      issuedByDirector: 'Dra. Elena Vázquez Morales',
-      directorCedula: 'CED-PROF-8923411',
-      digitalSeal: '8f4a1c7b9e2d3f5a6b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a',
-      notes: 'Constancia oficial de estudios emitida para trámites de seguridad social y seguro médico familiar.',
-      downloadCount: 3,
-      qrValidationUrl: '/verify/doc/tok-ce-7f9a1b2c3d4e',
-      createdAt: '2026-08-28T10:00:00.000Z',
-    },
-    {
-      id: 'cert-02',
-      folio: 'CI-2026-PRI-014',
-      verificationToken: 'tok-ci-8a1b2c3d4e5f',
-      studentId: 'student-sof-01',
-      studentName: 'Sofía Morales Rivas',
-      studentCode: '2026-PRI-014',
-      curp: 'MORS150720MDFRL02',
-      level: 'PRIMARIA',
-      grade: '5º Primaria',
-      groupName: '5º "A" Primaria',
-      academicCycle: 'Ciclo Escolar 2026-2027',
-      type: 'CONSTANCIA_INSCRIPCION',
-      issueDate: '2026-08-25',
-      validUntil: '2026-11-23',
-      status: 'EMITIDA',
-      averageGrade: 9.8,
-      issuedByDirector: 'Dra. Elena Vázquez Morales',
-      directorCedula: 'CED-PROF-8923411',
-      digitalSeal: '9b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c',
-      notes: 'Acreditación oficial de inscripción con promedio general para postulación a Beca de Excelencia.',
-      downloadCount: 1,
-      qrValidationUrl: '/verify/doc/tok-ci-8a1b2c3d4e5f',
-      createdAt: '2026-08-25T11:30:00.000Z',
-    },
-    {
-      id: 'cert-03',
-      folio: 'CC-2026-KND-005',
-      verificationToken: 'tok-cc-9b2c3d4e5f6a',
-      studentId: 'student-emi-01',
-      studentName: 'Emiliano Estrada Gómez',
-      studentCode: '2026-KND-005',
-      curp: 'ESGE180410HDFRN09',
-      level: 'PREESCOLAR',
-      grade: '2º Kínder',
-      groupName: '2º "A" Preescolar',
-      academicCycle: 'Ciclo Escolar 2026-2027',
-      type: 'CONSTANCIA_BUENA_CONDUCTA',
-      issueDate: '2026-08-26',
-      validUntil: '2026-11-24',
-      status: 'EMITIDA',
-      issuedByDirector: 'Mtra. Dulce María Santillán',
-      directorCedula: 'CED-PROF-9412085',
-      digitalSeal: '1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b',
-      notes: 'Constancia de buena conducta, integración social armónica y participación en dinámicas pedagógicas.',
-      downloadCount: 2,
-      qrValidationUrl: '/verify/doc/tok-cc-9b2c3d4e5f6a',
-      createdAt: '2026-08-26T14:15:00.000Z',
-    },
-    {
-      id: 'cert-04',
-      folio: 'KD-2026-PRI-001',
-      verificationToken: 'tok-kd-4d5e6f7a8b9c',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      curp: 'MER0150312HDFNR01',
-      level: 'PRIMARIA',
-      grade: '1º Primaria',
-      groupName: '1º "A" Primaria',
-      academicCycle: 'Ciclo Escolar 2026-2027',
-      type: 'KARDEX_HISTORICO',
-      issueDate: '2026-08-30',
-      validUntil: '2027-08-30',
-      status: 'EMITIDA',
-      averageGrade: 9.3,
-      issuedByDirector: 'Dra. Elena Vázquez Morales',
-      directorCedula: 'CED-PROF-8923411',
-      digitalSeal: '7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d',
-      notes: 'Kárdex y trayectoria de calificaciones para cotejo y transferencias interinstitucionales.',
-      downloadCount: 4,
-      qrValidationUrl: '/verify/doc/tok-kd-4d5e6f7a8b9c',
-      createdAt: '2026-08-30T16:00:00.000Z',
-    },
-  ] : []);
+  const [officialCertificates, setOfficialCertificates] = useState<OfficialCertificateItem[]>([]);
 
   const [kardexRecord, setKardexRecord] = useState<StudentKardexData>({
-    studentId: 'student-01',
-    studentName: 'Carlos Mendoza Ruiz',
-    studentCode: '2026-PRI-001',
-    curp: 'MER0150312HDFNR01',
+    studentId: '',
+    studentName: 'Sin Alumno Seleccionado',
+    studentCode: '-',
+    curp: '-',
     level: 'PRIMARIA',
-    currentGrade: '1º Primaria',
-    admissionDate: '2026-08-15',
-    cumulativeAverage: 9.3,
-    cyclesHistory: [
-      {
-        cycleName: 'Ciclo Escolar 2025-2026',
-        gradeLevel: '3º Kínder Preescolar',
-        finalAverage: 9.6,
-        status: 'PROMOVIDO',
-        subjects: [
-          { name: 'Lenguajes y Comunicación', field: 'LENGUAJES', finalGrade: 9.8 },
-          { name: 'Pensamiento Matemático', field: 'SABERES_PENSAMIENTO_CIENTIFICO', finalGrade: 9.5 },
-          { name: 'Exploración del Entorno', field: 'ETICA_NATURALEZA_SOCIEDADES', finalGrade: 9.6 },
-          { name: 'Desarrollo Socioemocional', field: 'DE_LO_HUMANO_COMUNITARIO', finalGrade: 9.7 },
-        ],
-      },
-      {
-        cycleName: 'Ciclo Escolar 2026-2027',
-        gradeLevel: '1º Primaria',
-        finalAverage: 9.3,
-        status: 'EN_CURSO',
-        subjects: [
-          { name: 'Lenguajes (Español y Artes)', field: 'LENGUAJES', finalGrade: 9.2 },
-          { name: 'Saberes y Pensamiento Científico', field: 'SABERES_PENSAMIENTO_CIENTIFICO', finalGrade: 9.4 },
-          { name: 'Ética, Naturaleza y Sociedades', field: 'ETICA_NATURALEZA_SOCIEDADES', finalGrade: 9.3 },
-          { name: 'De lo Humano y lo Comunitario', field: 'DE_LO_HUMANO_COMUNITARIO', finalGrade: 9.5 },
-          { name: 'Inglés Curricular Certificado', field: 'LENGUAJES', finalGrade: 9.1 },
-        ],
-      },
-    ],
-    officialRvoe: 'RVOE-SEP-2022-0498',
-    cctSchoolCode: 'CCT: 09PPR1849X',
-    digitalSeal: '4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b',
-    verificationToken: 'tok-kdx-2026-pri-001',
-    lastUpdated: '2026-08-30T16:00:00.000Z',
+    currentGrade: '-',
+    admissionDate: '',
+    cumulativeAverage: 0,
+    cyclesHistory: [],
+    officialRvoe: '',
+    cctSchoolCode: '',
+    digitalSeal: '',
+    verificationToken: '',
+    lastUpdated: new Date().toISOString(),
   });
 
   const [showNewCertificateModal, setShowNewCertificateModal] = useState<boolean>(false);
@@ -4045,146 +1746,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [showNewSupervisionModal, setShowNewSupervisionModal] = useState<boolean>(false);
   const [showAuditDetailModal, setShowAuditDetailModal] = useState<boolean>(false);
 
-  const [auditLogs, setAuditLogs] = useState<AuditLogItem[]>(isDemoTenant ? [
-    {
-      id: 'aud-01',
-      folio: 'AUD-2026-SEP-001',
-      timestamp: '2026-08-28T14:30:00.000Z',
-      category: 'RECTIFICACION_CALIFICACIONES',
-      severity: 'CRITICO',
-      actionName: 'Rectificación Extemporánea de Calificación Bimestral',
-      entityType: 'CALIFICACION_EVALUACION',
-      entityId: 'grade-carlos-01',
-      entityIdentifier: '2026-PRI-001',
-      studentName: 'Carlos Mendoza Ruiz',
-      performedByUserId: 'user-control-01',
-      performedByName: 'Lic. Fernando Gómez',
-      performedByRole: 'CONTROL_ESCOLAR',
-      ipAddress: '192.168.1.45',
-      previousValue: 'Evaluación Trimestral 1: 8.8 (Saberes y Pensamiento Científico)',
-      newValue: 'Evaluación Trimestral 1: 9.4 (Saberes y Pensamiento Científico)',
-      justificationReason: 'Revisión técnica de instrumento de evaluación colegiada acordada en Consejo Técnico Escolar.',
-      officialAgreementRef: 'Acuerdo CTE Ordinario Sesión 2 - Punto 4.1',
-      integrityHash: 'a1b2c3d4e5f67890123456789abcdef0123456789abcdef0123456789abcdef0',
-      verifiedTamperFree: true,
-    },
-    {
-      id: 'aud-02',
-      folio: 'AUD-2026-SEP-002',
-      timestamp: '2026-08-25T11:15:00.000Z',
-      category: 'MOVIMIENTO_MATRICULA',
-      severity: 'INFO',
-      actionName: 'Alta Formal de Alumno y Validación de CURP en RENAPO',
-      entityType: 'EXPEDIENTE_ALUMNO',
-      entityId: 'student-sof-01',
-      entityIdentifier: 'MORS150720MDFRL02',
-      studentName: 'Sofía Morales Rivas',
-      performedByUserId: 'user-director-01',
-      performedByName: 'Dra. María Elena Ramos',
-      performedByRole: 'DIRECTOR',
-      ipAddress: '192.168.1.10',
-      previousValue: 'Aspirante en Proceso de Admisión',
-      newValue: 'Inscripción Activa en 5º Primaria Grupo "A"',
-      justificationReason: 'Presentación de expediente escolar completo, certificado de preescolar/primaria y traslado oficial.',
-      officialAgreementRef: 'Oficio de Traslado Interinstitucional No. 09-TR-2026-44',
-      integrityHash: 'b2c3d4e5f67890123456789abcdef0123456789abcdef0123456789abcdef01a',
-      verifiedTamperFree: true,
-    },
-    {
-      id: 'aud-03',
-      folio: 'AUD-2026-SEP-003',
-      timestamp: '2026-08-26T16:00:00.000Z',
-      category: 'APLICACION_BECA_SEP',
-      severity: 'AVISO',
-      actionName: 'Otorgamiento de Beca SEP del 50% por Mandato Art. 149 LGE',
-      entityType: 'EXPEDIENTE_BECA',
-      entityId: 'sch-01',
-      entityIdentifier: 'FOL-BECA-2026-001',
-      studentName: 'Carlos Mendoza Ruiz',
-      performedByUserId: 'user-director-01',
-      performedByName: 'Dra. María Elena Ramos',
-      performedByRole: 'DIRECTOR',
-      ipAddress: '192.168.1.10',
-      previousValue: 'Cuota Regular de Colegiatura: $4,500 MXN',
-      newValue: 'Exención del 50%: Cuota Subsidiada $2,250 MXN (Beca SEP)',
-      justificationReason: 'Dictamen favorable de Comité de Becas SEP según convocatoria pública obligatoria.',
-      officialAgreementRef: 'Acta de Comité de Becas e Inclusiones SEP No. CBS-01-2026',
-      integrityHash: 'c3d4e5f67890123456789abcdef0123456789abcdef0123456789abcdef01a2b',
-      verifiedTamperFree: true,
-    },
-    {
-      id: 'aud-04',
-      folio: 'AUD-2026-SEP-004',
-      timestamp: '2026-08-28T10:05:00.000Z',
-      category: 'EMISION_DOCUMENTO_OFICIAL',
-      severity: 'INFO',
-      actionName: 'Generación y Sellado Criptográfico de Constancia de Estudios',
-      entityType: 'CONSTANCIA_DIGITAL',
-      entityId: 'cert-01',
-      entityIdentifier: 'CE-2026-PRI-001',
-      studentName: 'Carlos Mendoza Ruiz',
-      performedByUserId: 'user-control-01',
-      performedByName: 'Lic. Fernando Gómez',
-      performedByRole: 'CONTROL_ESCOLAR',
-      ipAddress: '192.168.1.45',
-      previousValue: 'Sin Documento Emitido',
-      newValue: 'Folio CE-2026-PRI-001 con QR de Verificación Activo',
-      justificationReason: 'Solicitud expresa de tutor legal para trámites de seguridad social IMSS.',
-      officialAgreementRef: 'Reglamento de Control Escolar SEP - Art. 38',
-      integrityHash: 'd4e5f67890123456789abcdef0123456789abcdef0123456789abcdef01a2b3c',
-      verifiedTamperFree: true,
-    },
-    {
-      id: 'aud-05',
-      folio: 'AUD-2026-SEP-005',
-      timestamp: '2026-08-27T09:20:00.000Z',
-      category: 'CORRECCION_ASISTENCIA',
-      severity: 'AVISO',
-      actionName: 'Justificación Médica Oficial de Inasistencias Consecutivas',
-      entityType: 'ASISTENCIA_DIARIA',
-      entityId: 'att-emi-01',
-      entityIdentifier: '2026-KND-005',
-      studentName: 'Emiliano Estrada Gómez',
-      performedByUserId: 'user-control-01',
-      performedByName: 'Lic. Fernando Gómez',
-      performedByRole: 'CONTROL_ESCOLAR',
-      ipAddress: '192.168.1.45',
-      previousValue: 'Faltas Injustificadas: 3 días continuos',
-      newValue: 'Inasistencias Justificadas por Certificado Médico SSA',
-      justificationReason: 'Cuadro respiratorio viral agudo con reposo prescrito de 72 hrs.',
-      officialAgreementRef: 'Constancia Médica SSA-SSA-2026-9912 con Cédula No. 7812903',
-      integrityHash: 'e5f67890123456789abcdef0123456789abcdef0123456789abcdef01a2b3c4d',
-      verifiedTamperFree: true,
-    },
-  ] : []);
+  const [auditLogs, setAuditLogs] = useState<AuditLogItem[]>([]);
 
-  const [supervisionInspections, setSupervisionInspections] = useState<SupervisionInspectionItem[]>(isDemoTenant ? [
-    {
-      id: 'insp-sep-01',
-      officialNoticeNumber: 'OFICIO-SZ05-2026-089',
-      supervisionZone: 'Sector 05 - Zona Escolar 14 (Primarias)',
-      inspectorName: 'Profra. Martha Patricia Domínguez Serrano',
-      inspectionDate: '2026-08-20',
-      purpose: 'Visita de Inspección y Verificación Técnico-Administrativa de Apertura del Ciclo Escolar 2026-2027.',
-      sampleAuditedCount: 45,
-      complianceScorePercent: 98.7,
-      status: 'CONFORME',
-      findings: [
-        'Matrícula total y expedientes físicos con CURP validada en RENAPO al 100%.',
-        'Padrón de becas del 5% obligatorio asignado conforme a convocatoria pública.',
-        'Paquetes de libros gratuitos CONALITEG entregados con acuse firmado de los tutores.',
-        'Bitácora inmutable de calificaciones y expedientes clínicos resguardada digitalmente.',
-      ],
-      agreedActions: [
-        'Mantener actualizado el registro forense digital ante cualquier rectificación extemporánea de evaluación trimestral.',
-        'Presentar informe semestral del Consejo de Participación Escolar (CEPS) en noviembre 2026.',
-      ],
-      closureMinutesUrl: '/minutes/acta-sep-sz05-2026-089.pdf',
-      closedAt: '2026-08-20T17:00:00.000Z',
-      signedByInspector: true,
-      signedByDirector: true,
-    },
-  ] : []);
+  const [supervisionInspections, setSupervisionInspections] = useState<SupervisionInspectionItem[]>([]);
 
   const [newSupervisionInspectionForm, setNewSupervisionInspectionForm] = useState({
     officialNoticeNumber: 'OFICIO-SZ05-2026-104',
@@ -4230,129 +1794,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Encuestas Institucionales y Clima Escolar
-  const [institutionalSurveys, setInstitutionalSurveys] = useState<InstitutionalSurveyItem[]>(isDemoTenant ? [
-    {
-      id: 'srv-01',
-      code: 'ENC-2026-T1',
-      title: 'Evaluación Trimestral de Calidad Educativa y Servicios 2026-1',
-      description: 'Medición oficial de satisfacción familiar, modelo pedagógico NEM, cafetería y transporte escolar.',
-      targetAudience: 'PADRES_FAMILIA',
-      category: 'SATISFACCION_GENERAL_NPS',
-      startDate: '2026-08-25',
-      endDate: '2026-09-30',
-      questions: [
-        {
-          id: 'q-01',
-          prompt: '¿Qué tan probable es que recomiende nuestro Instituto a familiares y conocidos?',
-          type: 'NPS_0_10',
-          categoryDimension: 'LEALTAD_NPS',
-        },
-        {
-          id: 'q-02',
-          prompt: '¿Cómo califica el desempeño, trato humano y claridad pedagógica del docente titular?',
-          type: 'RATING_1_5',
-          categoryDimension: 'DOCENCIA',
-        },
-        {
-          id: 'q-03',
-          prompt: '¿La cafetería escolar ofrece alternativas nutricionales saludables y balanceadas?',
-          type: 'RATING_1_5',
-          categoryDimension: 'CAFETERIA',
-        },
-        {
-          id: 'q-04',
-          prompt: '¿El servicio de transporte escolar cumple puntualmente con los horarios y entrega segura?',
-          type: 'RATING_1_5',
-          categoryDimension: 'TRANSPORTE',
-        },
-        {
-          id: 'q-05',
-          prompt: '¿Qué sugerencias o comentarios desea compartir con la Dirección General?',
-          type: 'TEXT',
-          categoryDimension: 'RETROALIMENTACION_GENERAL',
-        },
-      ],
-      responsesCount: 28,
-      npsScore: 82,
-      averageRating: 4.8,
-      status: 'ACTIVA',
-    },
-    {
-      id: 'srv-02',
-      code: 'ENC-DOC-2026',
-      title: 'Encuesta de Clima Laboral y Bienestar Docente NEM 2026',
-      description: 'Diagnóstico de clima organizacional, recursos en aula, planeación didáctica y respaldo directivo.',
-      targetAudience: 'DOCENTES',
-      category: 'CLIMA_ESCOLAR',
-      startDate: '2026-08-20',
-      endDate: '2026-09-15',
-      questions: [
-        {
-          id: 'qd-01',
-          prompt: '¿Cuenta con los materiales e infraestructura tecnológica necesarios para sus proyectos formativos?',
-          type: 'RATING_1_5',
-          categoryDimension: 'RECURSOS_AULA',
-        },
-        {
-          id: 'qd-02',
-          prompt: '¿Se siente respaldado por el equipo directivo ante situaciones complejas con alumnos o tutores?',
-          type: 'RATING_1_5',
-          categoryDimension: 'LIDERAZGO_DIRECTIVO',
-        },
-      ],
-      responsesCount: 14,
-      averageRating: 4.6,
-      status: 'ACTIVA',
-    },
-  ] : []);
+  const [institutionalSurveys, setInstitutionalSurveys] = useState<InstitutionalSurveyItem[]>([]);
 
-  const [surveyResponses, setSurveyResponses] = useState<SurveyResponseItem[]>(isDemoTenant ? [
-    {
-      id: 'resp-01',
-      surveyId: 'srv-01',
-      respondentId: 'tutor-01',
-      respondentRole: 'TUTOR',
-      isAnonymous: false,
-      npsRating: 10,
-      answers: [
-        { questionId: 'q-01', prompt: 'Recomendación NPS', value: 10 },
-        { questionId: 'q-02', prompt: 'Docencia', value: 5 },
-        { questionId: 'q-03', prompt: 'Cafetería', value: 4 },
-        { questionId: 'q-04', prompt: 'Transporte', value: 5 },
-        { questionId: 'q-05', prompt: 'Comentarios', value: 'Excelente atención de la maestra Laura y muy buena organización en los talleres vespertinos.' },
-      ],
-      comments: 'Estamos muy satisfechos con el avance de Carlos.',
-      submittedAt: '2026-08-28 16:40',
-    },
-  ] : []);
+  const [surveyResponses, setSurveyResponses] = useState<SurveyResponseItem[]>([]);
 
-  const [confidentialSuggestions, setConfidentialSuggestions] = useState<ConfidentialSuggestionItem[]>(isDemoTenant ? [
-    {
-      id: 'sug-01',
-      folio: 'BUZ-2026-001',
-      category: 'INSTALACIONES',
-      subject: 'Instalación de techumbre con filtro UV en patio cívico',
-      message: 'Solicitamos considerar la colocación de malla sombra en el patio principal para proteger a los alumnos durante las ceremonias y clase de educación física.',
-      senderRole: 'TUTOR',
-      senderName: 'Mtro. Fernando Mendoza (Comité de Padres)',
-      senderEmail: 'fernando.mendoza@email.com',
-      submittedAt: '2026-08-26 11:15',
-      reviewedBy: 'Dirección General (Mtro. Roberto Mendoza)',
-      status: 'EN_ACCION',
-      directorResolutionNotes: 'Proyecto presentado ante el patronato escolar; se instalará estructura tensada durante el receso de octubre.',
-      resolvedAt: '2026-09-01 14:00',
-    },
-    {
-      id: 'sug-02',
-      folio: 'BUZ-2026-002',
-      category: 'CAFETERIA',
-      subject: 'Ampliación de opciones de refrigerios veganos y libres de gluten',
-      message: 'Sería excelente incorporar más vasos de fruta de temporada y barras de avena sin gluten para los recreos de primaria.',
-      senderRole: 'ANONIMO',
-      submittedAt: '2026-08-30 09:45',
-      status: 'RECIBIDO',
-    },
-  ] : []);
+  const [confidentialSuggestions, setConfidentialSuggestions] = useState<ConfidentialSuggestionItem[]>([]);
 
   const [surveysSubTab, setSurveysSubTab] = useState<'catalog' | 'nps' | 'suggestions'>('catalog');
   const [selectedSurveyForRespond, setSelectedSurveyForRespond] = useState<InstitutionalSurveyItem | null>(null);
@@ -4398,142 +1844,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Calendario Cívico SEP, Sesiones CTE y Organización de Eventos
-  const [schoolEvents, setSchoolEvents] = useState<SchoolEventItem[]>(isDemoTenant ? [
-    {
-      id: 'evt-01',
-      code: 'EVT-2026-001',
-      title: 'Ceremonia Cívica del Grito de Independencia y Kermesse Mexicana',
-      description: 'Acto cívico con honores solemnes a la bandera, representación histórica y verbena mexicana con antojitos y juegos tradicionales.',
-      type: 'FESTIVAL_INSTITUCIONAL',
-      date: '2026-09-15',
-      time: '09:00 - 13:30 hrs',
-      location: 'Patio Cívico Central y Áreas Deportivas',
-      classesSuspended: false,
-      audience: 'TODA_LA_COMUNIDAD',
-      commissions: [
-        {
-          id: 'com-01',
-          teacherId: 'teacher-01',
-          teacherName: 'Profra. Laura Gómez Gómez',
-          role: 'Coordinadora de Escenografía Mexicana y Pódium Cívico',
-          status: 'EN_PROCESO',
-          notes: 'Decoración con motivos patrios y montaje del altar cívico.',
-        },
-        {
-          id: 'com-02',
-          teacherId: 'teacher-02',
-          teacherName: 'Prof. Roberto Salazar',
-          role: 'Maestro de Ceremonias y Protocolo de Bandera',
-          status: 'EN_PROCESO',
-          notes: 'Coordinación con la escolta oficial de 6º grado.',
-        },
-        {
-          id: 'com-03',
-          teacherId: 'teacher-03',
-          teacherName: 'Ing. Fernando Salgado Ruiz',
-          role: 'Operación de Audio, Sonido e Himno Nacional',
-          status: 'EN_PROCESO',
-          notes: 'Prueba de sonido el 14 de septiembre a las 14:00 hrs.',
-        },
-        {
-          id: 'com-04',
-          teacherId: 'teacher-04',
-          teacherName: 'Prof. Javier Morales Cruz',
-          role: 'Coordinación de Juegos Tradicionales y Kermesse',
-          status: 'EN_PROCESO',
-          notes: 'Stands de lotería, tiro al blanco y carreras de costales.',
-        },
-        {
-          id: 'com-05',
-          teacherId: 'teacher-05',
-          teacherName: 'Dra. Claudia Zavala',
-          role: 'Puesto de Primeros Auxilios y Brigada de Salud',
-          status: 'EN_PROCESO',
-          notes: 'Enfermería en guardia permanente durante la verbena.',
-        },
-      ],
-      status: 'PROGRAMADO',
-    },
-    {
-      id: 'evt-02',
-      code: 'SEP-2026-001',
-      title: 'Aniversario del Inicio de la Independencia de México',
-      description: 'Día de suspensión oficial de labores docentes y estudiantiles conforme al calendario escolar emitido por la SEP.',
-      type: 'SUSPENSION_OFICIAL_SEP',
-      date: '2026-09-16',
-      classesSuspended: true,
-      audience: 'TODA_LA_COMUNIDAD',
-      commissions: [],
-      status: 'PROGRAMADO',
-    },
-    {
-      id: 'evt-03',
-      code: 'CTE-2026-001',
-      title: 'Primera Sesión Ordinaria de Consejo Técnico Escolar (CTE)',
-      description: 'Sesión mensual colegiada de análisis pedagógico, evaluación diagnóstica de grupos y vinculación con proyectos comunitarios NEM.',
-      type: 'CONSEJO_TECNICO_CTE',
-      date: '2026-09-25',
-      time: '08:00 - 14:00 hrs',
-      location: 'Sala de Juntas y Biblioteca Central',
-      classesSuspended: true,
-      audience: 'SOLO_DOCENTES',
-      cteAgenda: [
-        'Análisis de los resultados diagnósticos en Lenguajes y Saberes Científicos.',
-        'Diseño de proyectos integradores interdisciplinarios NEM por fase escolar.',
-        'Estrategias de inclusión para alumnos con necesidades educativas específicas.',
-        'Plan operativo para la muestra de robótica y tecnología de noviembre.',
-      ],
-      cteAgreements: [
-        'Acuerdo CTE 01: Dedicar 15 minutos diarios al club de lectura y redacción en el aula matutina.',
-        'Acuerdo CTE 02: Articular los proyectos de ciencias con las academias vespertinas de robótica.',
-      ],
-      commissions: [
-        {
-          id: 'com-06',
-          teacherId: 'teacher-01',
-          teacherName: 'Profra. Laura Gómez Gómez',
-          role: 'Relatora Oficial y Redacción de Minuta Colegiada',
-          status: 'EN_PROCESO',
-        },
-      ],
-      status: 'PROGRAMADO',
-    },
-    {
-      id: 'evt-04',
-      code: 'EVT-2026-002',
-      title: 'Muestra Anual STEAM de Robótica, Ciencias y Creatividad',
-      description: 'Exposición de proyectos tecnológicos de alumnos: robótica LEGO SPIKE, experimentos de ciencias y ajedrez en vivo.',
-      type: 'FESTIVAL_INSTITUCIONAL',
-      date: '2026-11-20',
-      time: '10:00 - 14:00 hrs',
-      location: 'Laboratorio STEAM y Auditorio',
-      classesSuspended: false,
-      audience: 'TODA_LA_COMUNIDAD',
-      commissions: [
-        {
-          id: 'com-07',
-          teacherId: 'teacher-03',
-          teacherName: 'Ing. Fernando Salgado Ruiz',
-          role: 'Coordinador General de la Exhibición Robótica',
-          status: 'EN_PROCESO',
-        },
-      ],
-      status: 'PROGRAMADO',
-    },
-    {
-      id: 'evt-05',
-      code: 'VAC-2026-001',
-      title: 'Periodo Vacacional de Invierno (Calendario Oficial SEP)',
-      description: 'Receso escolar decembrino oficial para alumnos y personal educativo.',
-      type: 'VACACIONES_OFICIALES',
-      date: '2026-12-18',
-      endDate: '2027-01-08',
-      classesSuspended: true,
-      audience: 'TODA_LA_COMUNIDAD',
-      commissions: [],
-      status: 'PROGRAMADO',
-    },
-  ] : []);
+  const [schoolEvents, setSchoolEvents] = useState<SchoolEventItem[]>([]);
 
   const [eventsSubTab, setEventsSubTab] = useState<'calendar' | 'cte' | 'festivals'>('calendar');
   const [selectedEventForDetail, setSelectedEventForDetail] = useState<SchoolEventItem | null>(null);
@@ -4564,136 +1875,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [cteNewAgreementInput, setCteNewAgreementInput] = useState<string>('');
 
   // --- RECLUTAMIENTO Y RECURSOS HUMANOS ESCOLARES ---
-  const [jobVacancies, setJobVacancies] = useState<JobVacancyItem[]>(isDemoTenant ? [
-    {
-      id: 'vac-01',
-      code: 'VAC-2026-001',
-      title: 'Profesor(a) Titular Bilingüe - Primaria Alta (4º a 6º)',
-      department: 'INGLES_BILINGUE',
-      type: 'TIEMPO_COMPLETO',
-      description: 'Impartición de asignaturas en inglés, proyectos integradores y acompañamiento pedagógico NEM para los grados de 4º a 6º de Primaria.',
-      requirements: [
-        'Licenciatura en Pedagogía, Educación Primaria o Lengua Inglesa con Cédula Profesional DGP.',
-        'Certificación Cambridge C1/C2 o TOEFL ITP superior a 580 puntos.',
-        'Experiencia mínima de 3 años en colegios particulares y modelo NEM.',
-      ],
-      salaryRangeMXN: '$18,500 - $22,000 MXN / mes',
-      applicationsCount: 2,
-      publishDate: '2026-08-15',
-      closingDate: '2026-09-30',
-      status: 'EN_ENTREVISTAS',
-    },
-    {
-      id: 'vac-02',
-      code: 'VAC-2026-002',
-      title: 'Educadora de Preescolar - Metodología Constructivista NEM',
-      department: 'DOCENCIA_PREESCOLAR',
-      type: 'TIEMPO_COMPLETO',
-      description: 'Titular de grupo para Preescolar 2º y 3º con enfoque en desarrollo socioemocional, estimulación temprana y lectoescritura constructivista.',
-      requirements: [
-        'Licenciatura en Educación Preescolar con Cédula Profesional registrada ante la SEP.',
-        'Conocimiento de campos formativos y fases 1 y 2 de la Nueva Escuela Mexicana.',
-        'Habilidades en mediación pacífica, disciplina positiva y talleres lúdicos.',
-      ],
-      salaryRangeMXN: '$16,000 - $19,000 MXN / mes',
-      applicationsCount: 1,
-      publishDate: '2026-08-20',
-      closingDate: '2026-10-15',
-      status: 'ABIERTA',
-    },
-    {
-      id: 'vac-03',
-      code: 'VAC-2026-003',
-      title: 'Entrenador(a) Formativo de Baloncesto Infantil y Turno Vespertino',
-      department: 'EXTRACURRICULAR_DEPORTES',
-      type: 'POR_HORAS_ASIGNATURA',
-      description: 'Responsable de la academia vespertina de basquetbol infantil para alumnos de 1º a 6º de Primaria los días martes y jueves de 14:30 a 16:00 hrs.',
-      requirements: [
-        'Licenciatura en Educación Física o Ciencias del Deporte con Cédula o Constancia de trámite.',
-        'Experiencia en iniciación deportiva escolar infantil y primeros auxilios.',
-      ],
-      salaryRangeMXN: '$450 MXN / sesión',
-      applicationsCount: 1,
-      publishDate: '2026-08-25',
-      closingDate: '2026-10-05',
-      status: 'ABIERTA',
-    },
-  ] : []);
+  const [jobVacancies, setJobVacancies] = useState<JobVacancyItem[]>([]);
 
-  const [teacherCandidates, setTeacherCandidates] = useState<TeacherCandidateItem[]>(isDemoTenant ? [
-    {
-      id: 'cand-01',
-      folio: 'CAND-2026-001',
-      vacancyId: 'vac-01',
-      vacancyTitle: 'Profesor(a) Titular Bilingüe - Primaria Alta (4º a 6º)',
-      fullName: 'Mtra. Valeria Quintana Ríos',
-      email: 'valeria.quintana@gmail.com',
-      phone: '55 4321 8765',
-      degree: 'Licenciatura en Enseñanza del Inglés y Pedagogía',
-      professionalLicense: '11894520',
-      sepAccreditation: 'VALIDADA_DGP',
-      yearsOfExperience: 6,
-      resumeSummary: '6 años en colegios bilingües IB/SEP en CDMX. Certificación Cambridge C2 Proficiency.',
-      status: 'CLASE_MUESTRA_PEDAGOGICA',
-      pedagogicalDemoScore: 94,
-      interviewNotes: 'Excelente desenvolvimiento en aula, planeación didáctica alineada al campo de Lenguajes. Se recomienda contratación.',
-      appliedDate: '2026-08-18',
-      lastUpdatedDate: '2026-08-29',
-    },
-    {
-      id: 'cand-02',
-      folio: 'CAND-2026-002',
-      vacancyId: 'vac-01',
-      vacancyTitle: 'Profesor(a) Titular Bilingüe - Primaria Alta (4º a 6º)',
-      fullName: 'Lic. Gabriel Aranda Montes',
-      email: 'gabriel.aranda@outlook.com',
-      phone: '55 8765 4321',
-      degree: 'Licenciatura en Lengua Inglesa',
-      professionalLicense: '12457891',
-      sepAccreditation: 'VALIDADA_DGP',
-      yearsOfExperience: 4,
-      resumeSummary: 'Docente titular en primaria particular, dominio de herramientas EdTech y gamificación.',
-      status: 'ENTREVISTA_INICIAL',
-      interviewNotes: 'Entrevista favorable; programar clase muestra para el 8 de septiembre.',
-      appliedDate: '2026-08-22',
-      lastUpdatedDate: '2026-08-26',
-    },
-    {
-      id: 'cand-03',
-      folio: 'CAND-2026-003',
-      vacancyId: 'vac-02',
-      vacancyTitle: 'Educadora de Preescolar - Metodología Constructivista NEM',
-      fullName: 'Lic. Pamela Rangel Cruz',
-      email: 'pamela.rangel@gmail.com',
-      phone: '55 1234 9876',
-      degree: 'Licenciatura en Educación Preescolar',
-      professionalLicense: '10984321',
-      sepAccreditation: 'VALIDADA_DGP',
-      yearsOfExperience: 5,
-      resumeSummary: 'Especialista en desarrollo socioemocional infantil y proyectos lúdicos de estimulación temprana.',
-      status: 'ENTREVISTA_INICIAL',
-      interviewNotes: 'Perfil muy empático y conocimiento profundo de fases 1 y 2 NEM.',
-      appliedDate: '2026-08-28',
-      lastUpdatedDate: '2026-08-31',
-    },
-    {
-      id: 'cand-04',
-      folio: 'CAND-2026-004',
-      vacancyId: 'vac-03',
-      vacancyTitle: 'Entrenador(a) Formativo de Baloncesto Infantil y Turno Vespertino',
-      fullName: 'Prof. Marco Antonio Solís Vega',
-      email: 'marco.solis@yahoo.com',
-      phone: '55 6543 2109',
-      degree: 'Licenciatura en Entrenamiento Deportivo',
-      professionalLicense: 'En trámite oficial ante DGP',
-      sepAccreditation: 'EN_TRAMITE',
-      yearsOfExperience: 3,
-      resumeSummary: 'Entrenador de liga infantil escolar y certificación en psicomotricidad deportiva.',
-      status: 'POSTULADO',
-      appliedDate: '2026-08-30',
-      lastUpdatedDate: '2026-08-30',
-    },
-  ] : []);
+  const [teacherCandidates, setTeacherCandidates] = useState<TeacherCandidateItem[]>([]);
 
   const [recruitmentSubTab, setRecruitmentSubTab] = useState<'vacancies' | 'pipeline' | 'credentials'>('vacancies');
   const [selectedCandidateForDetail, setSelectedCandidateForDetail] = useState<TeacherCandidateItem | null>(null);
@@ -4731,180 +1915,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // --- PROTECCIÓN CIVIL ESCOLAR Y SIMULACROS ---
-  const [civilProtectionDrills, setCivilProtectionDrills] = useState<CivilProtectionDrillItem[]>(isDemoTenant ? [
-    {
-      id: 'sim-01',
-      code: 'SIM-2026-001',
-      title: 'Segundo Simulacro Nacional 2026 - Conmemorativo 19-S',
-      drillType: 'SISMO',
-      date: '2026-09-19',
-      time: '11:00 hrs',
-      hypothesis: 'Sismo de magnitud 8.0 con epicentro en costas de Guerrero, percepción severa en Valle de México y activación de alerta sísmica SASMEX.',
-      evacuationTimeSeconds: 118,
-      participants: {
-        students: 280,
-        teachers: 24,
-        staff: 8,
-        visitors: 3,
-        total: 315,
-      },
-      assemblyPoint: 'Patio Cívico Central (Zona S-1) y Canchas Techadas (Zona S-2)',
-      incidentsReported: [
-        '2 crisis nerviosas en alumnos de 4º de primaria atendidas por la brigada de primeros auxilios.',
-        'Repliegue preventivo bajo mesabancos ejecutado en menos de 15 segundos.',
-        'Rutas de evacuación despejadas sin caídas ni tropiezos.',
-      ],
-      evaluation: 'EXCELENTE',
-      notes: 'Excelente coordinación del Comité de Protección Civil Escolar y apego total al protocolo oficial.',
-      createdAt: '2026-09-19T11:45:00.000Z',
-    },
-    {
-      id: 'sim-02',
-      code: 'SIM-2026-002',
-      title: 'Simulacro Mensual de Repliegue y Alerta Sísmica Temprana',
-      drillType: 'SISMO',
-      date: '2026-10-21',
-      time: '10:15 hrs',
-      hypothesis: 'Sismo de magnitud 6.5 con epicentro en Michoacán y percepción moderada.',
-      evacuationTimeSeconds: 132,
-      participants: {
-        students: 275,
-        teachers: 24,
-        staff: 7,
-        visitors: 0,
-        total: 306,
-      },
-      assemblyPoint: 'Patio Cívico Central (Zona S-1)',
-      incidentsReported: ['Desalojo ordenado sin incidentes mayores.'],
-      evaluation: 'BUENO',
-      notes: 'Se reforzó la indicación de no correr, no gritar y no empujar en escaleras del Edificio A.',
-      createdAt: '2026-10-21T10:45:00.000Z',
-    },
-    {
-      id: 'sim-03',
-      code: 'SIM-2026-003',
-      title: 'Simulacro Interno de Conato de Incendio en Laboratorio STEAM',
-      drillType: 'INCENDIO',
-      date: '2026-11-12',
-      time: '12:30 hrs',
-      hypothesis: 'Conato de incendio originado por sobrecarga en toma de corriente del laboratorio de ciencias y robótica.',
-      evacuationTimeSeconds: 96,
-      participants: {
-        students: 58,
-        teachers: 4,
-        staff: 3,
-        visitors: 0,
-        total: 65,
-      },
-      assemblyPoint: 'Explanada de Aulas de Ciencias (Zona S-3)',
-      incidentsReported: [
-        'Uso efectivo del extintor de PQS (Polvo Químico Seco tipo ABC) por el jefe de brigada.',
-        'Corte inmediato del suministro eléctrico en el interruptor principal del edificio.',
-      ],
-      evaluation: 'EXCELENTE',
-      notes: 'Verificación del funcionamiento de detectores de humo y alarma sonora local.',
-      createdAt: '2026-11-12T13:00:00.000Z',
-    },
-  ] : []);
+  const [civilProtectionDrills, setCivilProtectionDrills] = useState<CivilProtectionDrillItem[]>([]);
 
-  const [emergencyBrigades, setEmergencyBrigades] = useState<EmergencyBrigadeItem[]>(isDemoTenant ? [
-    {
-      id: 'brig-01',
-      code: 'BRIG-01',
-      type: 'EVACUACION_REPLIEGUE',
-      name: 'Brigada de Evacuación y Repliegue Escolar',
-      colorHex: '#10B981',
-      vestColor: 'Chaleco Verde Reflejante',
-      leaderName: 'Profra. Laura Gómez Gómez',
-      members: [
-        {
-          id: 'bm-01',
-          teacherId: 'teacher-01',
-          fullName: 'Profra. Laura Gómez Gómez',
-          role: 'Jefa de Brigada / Coordinadora General',
-          buildingZone: 'Edificio A - Primaria Planta Baja y Patio',
-          certified: true,
-        },
-        {
-          id: 'bm-02',
-          teacherId: 'teacher-02',
-          fullName: 'Profra. Carmen Morales Ortíz',
-          role: 'Brigadista de Guía y Repliegue',
-          buildingZone: 'Edificio B - Preescolar',
-          certified: true,
-        },
-      ],
-    },
-    {
-      id: 'brig-02',
-      code: 'BRIG-02',
-      type: 'PRIMEROS_AUXILIOS',
-      name: 'Brigada de Primeros Auxilios y Soporte Básico',
-      colorHex: '#EF4444',
-      vestColor: 'Chaleco Blanco con Cruz Roja',
-      leaderName: 'Dra. Patricia Silva Méndez',
-      members: [
-        {
-          id: 'bm-03',
-          fullName: 'Dra. Patricia Silva Méndez',
-          role: 'Jefa de Brigada / Médico Escolar Titular',
-          buildingZone: 'Consultorio de Enfermería y Patio Cívico',
-          certified: true,
-        },
-        {
-          id: 'bm-04',
-          teacherId: 'teacher-03',
-          fullName: 'Ing. Fernando Salgado Ruiz',
-          role: 'Operador de Camilla y Botiquín de Trauma',
-          buildingZone: 'Canchas Deportivas y Edificio A',
-          certified: true,
-        },
-      ],
-    },
-    {
-      id: 'brig-03',
-      code: 'BRIG-03',
-      type: 'COMBATE_INCENDIOS',
-      name: 'Brigada de Prevención y Combate de Incendios',
-      colorHex: '#F97316',
-      vestColor: 'Chaleco Rojo Fuego',
-      leaderName: 'Prof. Roberto Salazar Reyes',
-      members: [
-        {
-          id: 'bm-05',
-          fullName: 'Prof. Roberto Salazar Reyes',
-          role: 'Jefe de Brigada / Operador de Extintores de PQS y CO2',
-          buildingZone: 'Cafetería, Laboratorios y Cocina',
-          certified: true,
-        },
-        {
-          id: 'bm-06',
-          fullName: 'Sr. Don Tomás Cruz Mendoza',
-          role: 'Operador de Válvulas Maestras de Gas y Red Eléctrica',
-          buildingZone: 'Mantenimiento, Cisterna y Subestación',
-          certified: true,
-        },
-      ],
-    },
-    {
-      id: 'brig-04',
-      code: 'BRIG-04',
-      type: 'COMUNICACION_ENLACE',
-      name: 'Brigada de Comunicación y Enlace Institucional',
-      colorHex: '#3B82F6',
-      vestColor: 'Chaleco Azul Cobalto',
-      leaderName: 'Lic. Andrea Vargas Montes',
-      members: [
-        {
-          id: 'bm-07',
-          fullName: 'Lic. Andrea Vargas Montes',
-          role: 'Jefa de Brigada / Enlace 911 y Protección Civil Alcaldía',
-          buildingZone: 'Dirección General y Recepción Principal',
-          certified: true,
-        },
-      ],
-    },
-  ] : []);
+  const [emergencyBrigades, setEmergencyBrigades] = useState<EmergencyBrigadeItem[]>([]);
 
   const [safetySubTab, setSafetySubTab] = useState<'drills' | 'brigades' | 'zones'>('drills');
   const [selectedDrillForDetail, setSelectedDrillForDetail] = useState<CivilProtectionDrillItem | null>(null);
@@ -4947,183 +1960,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Estado para Consejo de Participación Escolar (CEPS) y Mesa Directiva APF
-  const [cepsCommittees, setCepsCommittees] = useState<CepsCommitteeItem[]>(isDemoTenant ? [
-    {
-      id: 'ceps-01',
-      name: 'Comité de Fomento a la Lectura y Mejora de los Aprendizajes',
-      type: 'LECTURA_APRENDIZAJES',
-      leaderTutorName: 'Sr. Roberto Mendoza Valdés',
-      leaderTeacherName: 'Prof. Roberto Salazar Reyes',
-      membersCount: 8,
-      objective: 'Promover la comprensión lectora diaria de 20 minutos, círculos de lectura infantil y enriquecimiento del acervo bibliotecario.',
-      activeProjects: [
-        'Maratón de Lectura Trimestral y Préstamo de Cuentos Clásicos a Casa',
-        'Taller de Cuentacuentos con Padres de Familia los Viernes Cívicos',
-      ],
-      status: 'ACTIVO',
-    },
-    {
-      id: 'ceps-02',
-      name: 'Comité de Infraestructura y Mantenimiento Escolar',
-      type: 'INFRAESTRUCTURA_ESCOLAR',
-      leaderTutorName: 'Ing. Arturo Domínguez Parra',
-      leaderTeacherName: 'Don Tomás Cruz Mendoza',
-      membersCount: 10,
-      objective: 'Supervisar el estado físico de aulas, baños, áreas deportivas y gestionar proyectos de mejora de techumbres e iluminación.',
-      activeProjects: [
-        'Instalación de malla sombra en patio de juegos de preescolar',
-        'Mantenimiento preventivo semestral de bebederos y filtros de agua',
-      ],
-      status: 'ACTIVO',
-    },
-    {
-      id: 'ceps-03',
-      name: 'Comité de Salud Escolar y Nutrición',
-      type: 'SALUD_NUTRICION',
-      leaderTutorName: 'Dra. Mónica Villarreal Soto',
-      leaderTeacherName: 'Dra. Patricia Silva Méndez',
-      membersCount: 7,
-      objective: 'Vigilar la oferta nutricional en cafetería escolar sin alimentos ultraprocesados y coordinar jornadas de vacunación y peso/talla.',
-      activeProjects: [
-        'Supervisión del decálogo de alimentación saludable escolar libre de sellos',
-        'Jornada de Salud Bucal y Fluoruración con el Centro de Salud local',
-      ],
-      status: 'ACTIVO',
-    },
-    {
-      id: 'ceps-04',
-      name: 'Comité de Convivencia Escolar y Cultura de Paz',
-      type: 'SANA_CONVIVENCIA',
-      leaderTutorName: 'Lic. Karla Benítez Orozco',
-      leaderTeacherName: 'Profra. Laura Gómez Gómez',
-      membersCount: 6,
-      objective: 'Fomentar la resolución pacífica de conflictos, prevención del acoso escolar (bullying) y vinculación socioemocional.',
-      activeProjects: [
-        'Programa de Alumnos Mediadores de Paz en Recreos',
-        'Conferencias para Padres: Crianza Positiva y Límites Respetuosos',
-      ],
-      status: 'ACTIVO',
-    },
-    {
-      id: 'ceps-05',
-      name: 'Comité de Contraloría Social y Transparencia Escolar',
-      type: 'CONTRALORIA_SOCIAL',
-      leaderTutorName: 'C.P. Mariana Estrada Gómez',
-      leaderTeacherName: 'Lic. Andrea Vargas Montes',
-      membersCount: 5,
-      objective: 'Rendir cuentas del destino de las aportaciones voluntarias de padres de familia y vigilar el uso ético y transparente de recursos.',
-      activeProjects: [
-        'Publicación trimestral del estado de ingresos y egresos de la APF',
-        'Bitácora pública de cotizaciones y compras de equipamiento escolar',
-      ],
-      status: 'ACTIVO',
-    },
-  ] : []);
+  const [cepsCommittees, setCepsCommittees] = useState<CepsCommitteeItem[]>([]);
 
-  const [apfBoardMembers, setApfBoardMembers] = useState<ApfBoardMemberItem[]>(isDemoTenant ? [
-    {
-      id: 'apf-01',
-      role: 'PRESIDENTE',
-      fullName: 'Ing. Roberto Mendoza Valdés',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentGrade: '1º Primaria "A"',
-      email: 'roberto.mendoza@gmail.com',
-      phone: '55 1234 5678',
-      appointedDate: '2026-09-08',
-    },
-    {
-      id: 'apf-02',
-      role: 'SECRETARIO',
-      fullName: 'Lic. Gabriela Herrera Solís',
-      studentName: 'Valentina Herrera',
-      studentGrade: '3º Primaria "B"',
-      email: 'gabriela.herrera@outlook.com',
-      phone: '55 8765 4321',
-      appointedDate: '2026-09-08',
-    },
-    {
-      id: 'apf-03',
-      role: 'TESORERO',
-      fullName: 'C.P. Mariana Estrada Gómez',
-      studentName: 'Emiliano Estrada',
-      studentGrade: '2º Preescolar "A"',
-      email: 'mariana.estrada@gmail.com',
-      phone: '55 3456 7890',
-      appointedDate: '2026-09-08',
-    },
-    {
-      id: 'apf-04',
-      role: 'VOCAL_PREESCOLAR',
-      fullName: 'Lic. Pamela Rangel Cruz',
-      studentName: 'Mateo Rangel',
-      studentGrade: '3º Preescolar',
-      email: 'pamela.rangel@yahoo.com',
-      phone: '55 2345 6789',
-      appointedDate: '2026-09-08',
-    },
-    {
-      id: 'apf-05',
-      role: 'VOCAL_PRIMARIA_BAJA',
-      fullName: 'Ing. Arturo Domínguez Parra',
-      studentName: 'Santiago Domínguez',
-      studentGrade: '2º Primaria "A"',
-      email: 'arturo.dominguez@gmail.com',
-      phone: '55 9876 1234',
-      appointedDate: '2026-09-08',
-    },
-    {
-      id: 'apf-06',
-      role: 'VOCAL_PRIMARIA_ALTA',
-      fullName: 'Dra. Mónica Villarreal Soto',
-      studentName: 'Renata Villarreal',
-      studentGrade: '5º Primaria "A"',
-      email: 'monica.villarreal@hospital.mx',
-      phone: '55 5432 9876',
-      appointedDate: '2026-09-08',
-    },
-  ] : []);
+  const [apfBoardMembers, setApfBoardMembers] = useState<ApfBoardMemberItem[]>([]);
 
-  const [schoolAssemblies, setSchoolAssemblies] = useState<SchoolAssemblyItem[]>(isDemoTenant ? [
-    {
-      id: 'asemb-01',
-      code: 'ACT-APF-2026-001',
-      title: 'Asamblea General Ordinaria de Instalación y Elección de Mesa Directiva APF 2026-2027',
-      type: 'ASAMBLEA_GENERAL_APF',
-      date: '2026-09-08',
-      time: '08:00 - 10:30 hrs',
-      location: 'Auditorio Escolar y Enlace Zoom Híbrido',
-      quorumCount: 115,
-      agreements: [
-        'Elección y toma de protesta de la nueva Mesa Directiva de la APF presidida por el Ing. Roberto Mendoza.',
-        'Aprobación unánime de la aportación voluntaria de mantenimiento anual de $1,200 MXN por familia.',
-        'Compromiso de entrega de informes financieros bimestrales en mural escolar y plataforma digital.',
-        'Aprobación de la instalación de malla sombra en patio de recreo infantil de preescolar.',
-      ],
-      status: 'REALIZADA_CON_ACTA',
-      signedByDirector: true,
-      signedByApfPresident: true,
-      createdAt: '2026-09-08T11:00:00.000Z',
-    },
-    {
-      id: 'asemb-02',
-      code: 'ACT-CEPS-2026-001',
-      title: 'Primera Sesión Ordinaria de Instalación del Consejo de Participación Escolar (CEPS)',
-      type: 'SESION_ORDINARIA_CEPS',
-      date: '2026-09-22',
-      time: '14:30 - 16:00 hrs',
-      location: 'Sala de Juntas de Dirección General',
-      quorumCount: 32,
-      agreements: [
-        'Constitución formal de los 5 comités de corresponsabilidad escolar conforme al Acuerdo Secretarial 716.',
-        'Validación del plan institucional de fomento a la lectura y clubes de ajedrez matutinos.',
-        'Revisión y aval del Programa Interno de Protección Civil y simulacro nacional 19-S.',
-      ],
-      status: 'REALIZADA_CON_ACTA',
-      signedByDirector: true,
-      signedByApfPresident: true,
-      createdAt: '2026-09-22T16:30:00.000Z',
-    },
-  ] : []);
+  const [schoolAssemblies, setSchoolAssemblies] = useState<SchoolAssemblyItem[]>([]);
 
   const [communitySubTab, setCommunitySubTab] = useState<'committees' | 'apf_board' | 'assemblies'>('committees');
   const [showNewAssemblyModal, setShowNewAssemblyModal] = useState<boolean>(false);
@@ -5155,200 +1996,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [newAgreementInput, setNewAgreementInput] = useState('');
 
   // 34. Infraestructura Escolar y Mantenimiento Preventivo
-  const [facilityInspections, setFacilityInspections] = useState<FacilityInspectionItem[]>(isDemoTenant ? [
-    {
-      id: 'insp-01',
-      code: 'INSP-2026-001',
-      title: 'Inspección Semestral de Cisternas, Tinacos y Red Hidráulica',
-      systemType: 'RED_HIDRAULICA_CISTERNAS',
-      frequency: 'SEMESTRAL',
-      inspectionDate: '2026-09-15',
-      inspectorName: 'Don Tomás Cruz Mendoza - Jefe de Mantenimiento',
-      verifiedItems: [
-        {
-          name: 'Lavado y desinfección con hipoclorito en Cisterna 1 (30,000L) y Cisterna 2 (20,000L)',
-          status: 'OPTIMO',
-          notes: 'Cumple protocolo COFEPRIS para planteles escolares.',
-        },
-        {
-          name: 'Revisión y alternancia de bombas sumergibles de 1.5 HP e hidroneumático',
-          status: 'OPTIMO',
-          notes: 'Presión constante a 42 PSI en red de sanitarios.',
-        },
-        {
-          name: 'Muestreo y titulación de cloro residual libre en tomas de agua (1.0 ppm)',
-          status: 'OPTIMO',
-          notes: 'Dentro de parámetros de la NOM-127-SSA1-2021.',
-        },
-        {
-          name: 'Bebederos escolares y módulos de filtración de carbón y luz ultravioleta',
-          status: 'OPTIMO',
-          notes: 'Filtros reemplazados con fecha límite de vigencia marzo 2027.',
-        },
-      ],
-      overallStatus: 'CONFORME',
-      nextScheduledDate: '2027-03-15',
-      evidenceNotes: 'Bitácora sellada por intendencia y disponible para inspección de salubridad.',
-      createdAt: '2026-09-15T12:00:00.000Z',
-    },
-    {
-      id: 'insp-02',
-      code: 'INSP-2026-002',
-      title: 'Revisión Mensual de Subestación, Tableros Eléctricos y Alumbrado',
-      systemType: 'SISTEMA_ELECTRICO',
-      frequency: 'MENSUAL',
-      inspectionDate: '2026-09-18',
-      inspectorName: 'Ing. Fernando Salgado Ruiz & Don Tomás Cruz',
-      verifiedItems: [
-        {
-          name: 'Termografía de interruptores termomagnéticos en tablero general Edificio A',
-          status: 'OPTIMO',
-          notes: 'Sin sobrecalentamiento ni desbalance de fases.',
-        },
-        {
-          name: 'Prueba de activación de luces de emergencia en pasillos y escaleras',
-          status: 'OPTIMO',
-          notes: 'Baterías de respaldo con autonomía probada de 90 minutos.',
-        },
-        {
-          name: 'Contactos con interruptor diferencial GFCI en laboratorios STEAM y cómputo',
-          status: 'REGULAR_OBSERVACIONES',
-          notes: 'Requiere ajuste de fijación en placa de contacto #3 en aula STEAM.',
-        },
-        {
-          name: 'Alumbrado exterior perimetral y reflectores de canchas deportivas',
-          status: 'OPTIMO',
-          notes: '100% de reflectores LED operativos con fotocelda automática.',
-        },
-      ],
-      overallStatus: 'CONFORME',
-      nextScheduledDate: '2026-10-18',
-      evidenceNotes: 'Dictamen de electricista certificado con verificación de carga.',
-      createdAt: '2026-09-18T14:30:00.000Z',
-    },
-    {
-      id: 'insp-03',
-      code: 'INSP-2026-003',
-      title: 'Inspección de Impermeabilización, Losas y Bajadas Pluviales',
-      systemType: 'ESTRUCTURA_IMPERMEABILIZACION',
-      frequency: 'BIMESTRAL',
-      inspectionDate: '2026-09-02',
-      inspectorName: 'Don Tomás Cruz Mendoza',
-      verifiedItems: [
-        {
-          name: 'Desazolve de coladeras y gárgolas de bajada pluvial en losa superior',
-          status: 'OPTIMO',
-          notes: 'Libres de hojas y sedimentos.',
-        },
-        {
-          name: 'Revisión de manto asfáltico e impermeabilizante acrílico en techos',
-          status: 'REGULAR_OBSERVACIONES',
-          notes: 'Se detecta ligero encharcamiento en esquina poniente de Edificio B.',
-        },
-        {
-          name: 'Tensión y anclaje de malla sombra en patio infantil de preescolar',
-          status: 'OPTIMO',
-          notes: 'Estructura tubular firme y cables tensores ajustados.',
-        },
-      ],
-      overallStatus: 'REQUIERE_MANTENIMIENTO',
-      nextScheduledDate: '2026-11-02',
-      evidenceNotes: 'Se genera orden de trabajo para nivelar pendiente pluvial antes de lluvias de octubre.',
-      createdAt: '2026-09-02T10:00:00.000Z',
-    },
-    {
-      id: 'insp-04',
-      code: 'INSP-2026-004',
-      title: 'Evaluación de Cerrajería, Salidas de Emergencia y Rampas Universales',
-      systemType: 'CERRAJERIA_ACCESIBILIDAD',
-      frequency: 'MENSUAL',
-      inspectionDate: '2026-08-28',
-      inspectorName: 'Lic. Andrea Vargas & Don Tomás Cruz',
-      verifiedItems: [
-        {
-          name: 'Barras antipánico en puertas dobles de auditorio y salida norte',
-          status: 'OPTIMO',
-          notes: 'Apertura inmediata sin atascos.',
-        },
-        {
-          name: 'Superficie antideslizante y pasamanos de rampa de acceso universal',
-          status: 'OPTIMO',
-          notes: 'Pendiente del 6% acorde a norma de accesibilidad para sillas de ruedas.',
-        },
-        {
-          name: 'Cerraduras y chapas en 18 aulas pedagógicas y dirección',
-          status: 'OPTIMO',
-          notes: 'Juegos de llaves maestras en vitrina de control de acceso.',
-        },
-      ],
-      overallStatus: 'CONFORME',
-      nextScheduledDate: '2026-09-28',
-      evidenceNotes: 'Validado conforme a norma de Protección Civil y accesibilidad SEP.',
-      createdAt: '2026-08-28T11:00:00.000Z',
-    },
-  ] : []);
+  const [facilityInspections, setFacilityInspections] = useState<FacilityInspectionItem[]>([]);
 
-  const [facilityWorkOrders, setFacilityWorkOrders] = useState<FacilityWorkOrderItem[]>(isDemoTenant ? [
-    {
-      id: 'ot-01',
-      folio: 'OT-MNT-2026-001',
-      systemType: 'RED_HIDRAULICA_CISTERNAS',
-      areaLocation: 'Cisterna Patio Posterior - Edificio B',
-      title: 'Sustitución de válvula de descarga y flotador de latón en cisterna 2',
-      description: 'Válvula anterior presentaba ligero goteo continuo. Se reemplazó por flotador de uso pesado de 1 pulgada.',
-      priority: 'ALTA',
-      assignedWorker: 'Don Tomás Cruz Mendoza',
-      materialsCostMXN: 850,
-      laborCostMXN: 600,
-      totalCostMXN: 1450,
-      reportedDate: '2026-09-05',
-      targetCompletionDate: '2026-09-06',
-      completedDate: '2026-09-06',
-      status: 'FINALIZADA_CON_VB',
-      completionNotes: 'Prueba de llenado y corte de bomba sumergible realizada exitosamente.',
-      approvedByDirector: true,
-      createdAt: '2026-09-05T09:00:00.000Z',
-    },
-    {
-      id: 'ot-02',
-      folio: 'OT-MNT-2026-002',
-      systemType: 'SISTEMA_ELECTRICO',
-      areaLocation: 'Edificio A - Aula 204 STEAM',
-      title: 'Sustitución de 6 luminarias LED tubulares en Laboratorio STEAM',
-      description: 'Reemplazo de tubos fluorescentes antiguos por tecnología LED 18W de alta eficiencia con encendido instantáneo.',
-      priority: 'MEDIA',
-      assignedWorker: 'Instalaciones Eléctricas Ruiz',
-      materialsCostMXN: 1500,
-      laborCostMXN: 600,
-      totalCostMXN: 2100,
-      reportedDate: '2026-09-10',
-      targetCompletionDate: '2026-09-12',
-      completedDate: '2026-09-11',
-      status: 'FINALIZADA_CON_VB',
-      completionNotes: 'Excelente iluminación uniforme sobre mesas de robótica y experimentos.',
-      approvedByDirector: true,
-      createdAt: '2026-09-10T14:00:00.000Z',
-    },
-    {
-      id: 'ot-03',
-      folio: 'OT-MNT-2026-003',
-      systemType: 'ESTRUCTURA_IMPERMEABILIZACION',
-      areaLocation: 'Pasillo Exterior - Salones 3º y 4º Primaria',
-      title: 'Resane de muros y aplicación de pintura vinílica lavable antibacterial',
-      description: 'Mantenimiento estético y preventivo contra humedad en muros exteriores del corredor poniente.',
-      priority: 'MEDIA',
-      assignedWorker: 'Don Tomás Cruz Mendoza',
-      materialsCostMXN: 2200,
-      laborCostMXN: 1600,
-      totalCostMXN: 3800,
-      reportedDate: '2026-09-18',
-      targetCompletionDate: '2026-09-25',
-      status: 'EN_EJECUCION',
-      completionNotes: 'Trabajo programado en horario vespertino para no interrumpir actividades académicas.',
-      approvedByDirector: true,
-      createdAt: '2026-09-18T16:00:00.000Z',
-    },
-  ] : []);
+  const [facilityWorkOrders, setFacilityWorkOrders] = useState<FacilityWorkOrderItem[]>([]);
 
   const [maintenanceSubTab, setMaintenanceSubTab] = useState<'work_orders' | 'inspections' | 'systems'>('work_orders');
   const [showNewWorkOrderModal, setShowNewWorkOrderModal] = useState<boolean>(false);
@@ -5389,99 +2039,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // 35. Becas Institucionales y Exenciones SEP (5% Obligatorio)
-  const [scholarshipApplications, setScholarshipApplications] = useState<ScholarshipApplicationItem[]>(isDemoTenant ? [
-    {
-      id: 'bec-01',
-      folio: 'BEC-2026-001',
-      studentId: 'student-val-01',
-      studentName: 'Valentina Herrera Solís',
-      studentCode: '2026-PRI-008',
-      level: 'PRIMARIA',
-      grade: '3º Primaria "B"',
-      type: 'BECA_EXCELENCIA_ACADEMICA',
-      previousGpa: 9.8,
-      monthlyFamilyIncomeMXN: 24000,
-      dependentsCount: 2,
-      requestedDiscountPercentage: 50,
-      approvedDiscountPercentage: 50,
-      standardTuitionMXN: 4200,
-      finalTuitionMXN: 2100,
-      status: 'APROBADA',
-      submissionDate: '2026-08-20',
-      resolutionDate: '2026-08-28',
-      resolutionNotes: 'Aprobada al 50% por el Comité de Becas. Alumna con promedio sobresaliente de 9.8 y primer lugar de aprovechamiento.',
-      reviewerName: 'Comité de Becas & Dirección Técnica',
-      documentsVerified: true,
-      createdAt: '2026-08-20T10:00:00.000Z',
-    },
-    {
-      id: 'bec-02',
-      folio: 'BEC-2026-002',
-      studentId: 'student-emi-01',
-      studentName: 'Emiliano Estrada Gómez',
-      studentCode: '2026-KND-005',
-      level: 'PREESCOLAR',
-      grade: '2º Kínder "A"',
-      type: 'BECA_HERMANOS_FAMILIA',
-      previousGpa: 9.2,
-      monthlyFamilyIncomeMXN: 32000,
-      dependentsCount: 3,
-      requestedDiscountPercentage: 25,
-      approvedDiscountPercentage: 25,
-      standardTuitionMXN: 3800,
-      finalTuitionMXN: 2850,
-      status: 'APROBADA',
-      submissionDate: '2026-08-22',
-      resolutionDate: '2026-08-29',
-      resolutionNotes: 'Descuento institucional del 25% por segundo hermano matriculado simultáneamente en el plantel.',
-      reviewerName: 'Dirección Administrativa',
-      documentsVerified: true,
-      createdAt: '2026-08-22T11:30:00.000Z',
-    },
-    {
-      id: 'bec-03',
-      folio: 'BEC-2026-003',
-      studentId: 'student-sof-01',
-      studentName: 'Sofía Morales Rivas',
-      studentCode: '2026-PRI-014',
-      level: 'PRIMARIA',
-      grade: '5º Primaria "A"',
-      type: 'BECA_SEP_OBLIGATORIA',
-      previousGpa: 9.4,
-      monthlyFamilyIncomeMXN: 16500,
-      dependentsCount: 3,
-      requestedDiscountPercentage: 75,
-      approvedDiscountPercentage: 75,
-      standardTuitionMXN: 4200,
-      finalTuitionMXN: 1050,
-      status: 'APROBADA',
-      submissionDate: '2026-08-24',
-      resolutionDate: '2026-08-30',
-      resolutionNotes: 'Beca oficial SEP otorgada conforme al Artículo 149 LGE. Estudio socioeconómico verificado por trabajadora social.',
-      reviewerName: 'Comisión Mixta SEP-Colegio',
-      documentsVerified: true,
-      createdAt: '2026-08-24T09:15:00.000Z',
-    },
-    {
-      id: 'bec-04',
-      folio: 'BEC-2026-004',
-      studentId: 'student-mat-01',
-      studentName: 'Mateo Domínguez Ríos',
-      studentCode: '2026-PRI-021',
-      level: 'PRIMARIA',
-      grade: '1º Primaria "A"',
-      type: 'BECA_SOCIOECONOMICA',
-      previousGpa: 8.9,
-      monthlyFamilyIncomeMXN: 18000,
-      dependentsCount: 2,
-      requestedDiscountPercentage: 50,
-      standardTuitionMXN: 4200,
-      status: 'EN_REVISION',
-      submissionDate: '2026-09-01',
-      documentsVerified: true,
-      createdAt: '2026-09-01T15:00:00.000Z',
-    },
-  ] : []);
+  const [scholarshipApplications, setScholarshipApplications] = useState<ScholarshipApplicationItem[]>([]);
 
   const [scholarshipSubTab, setScholarshipSubTab] = useState<'applications' | 'compliance' | 'criteria'>('applications');
   const [showNewScholarshipModal, setShowNewScholarshipModal] = useState<boolean>(false);
@@ -5511,218 +2069,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   // Evaluaciones de los Estudiantes
-  const [gradesData, setGradesData] = useState<StudentGradeItem[]>(isDemoTenant ? [
-    {
-      id: 'grd-01',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      curp: 'MERU180512HDFZRR03',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      subjectId: 'sub-prim-leng',
-      subjectName: 'Lenguajes (Español)',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      period1: 9.5,
-      period2: 9.0,
-      period3: null,
-      finalGrade: 9.3,
-      period1Absences: 1,
-      period2Absences: 0,
-      period3Absences: 0,
-      observations: 'Excelente comprensión lectora y expresión oral. Muy participativo en clase.',
-    },
-    {
-      id: 'grd-02',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      curp: 'MERU180512HDFZRR03',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      subjectId: 'sub-prim-mat',
-      subjectName: 'Saberes y Pensamiento Científico (Matemáticas)',
-      teacherId: 'teacher-02',
-      teacherName: 'Profra. Carmen Morales',
-      period1: 9.0,
-      period2: 9.5,
-      period3: null,
-      finalGrade: 9.3,
-      period1Absences: 0,
-      period2Absences: 0,
-      period3Absences: 0,
-      observations: 'Gran habilidad en cálculo mental y resolución de problemas.',
-    },
-    {
-      id: 'grd-03',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      curp: 'MERU180512HDFZRR03',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      subjectId: 'sub-prim-nat',
-      subjectName: 'Ciencias Naturales y Tecnología',
-      teacherId: 'teacher-03',
-      teacherName: 'Prof. Alejandro Rivas',
-      period1: 8.5,
-      period2: 9.0,
-      period3: null,
-      finalGrade: 8.8,
-      period1Absences: 2,
-      period2Absences: 0,
-      period3Absences: 0,
-      observations: 'Curioso y muy interesado en experimentos prácticos.',
-    },
-    {
-      id: 'grd-04',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      curp: 'MERU180512HDFZRR03',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      subjectId: 'sub-prim-soc',
-      subjectName: 'Ética, Naturaleza y Sociedades (Historia y Geografía)',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      period1: 10.0,
-      period2: 9.5,
-      period3: null,
-      finalGrade: 9.8,
-      period1Absences: 0,
-      period2Absences: 0,
-      period3Absences: 0,
-      observations: 'Comprende el sentido cívico y la historia nacional con claridad.',
-    },
-    {
-      id: 'grd-05',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      curp: 'MERU180512HDFZRR03',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      subjectId: 'sub-prim-civ',
-      subjectName: 'Formación Cívica y Ética',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      period1: 9.0,
-      period2: 9.0,
-      period3: null,
-      finalGrade: 9.0,
-      period1Absences: 0,
-      period2Absences: 0,
-      period3Absences: 0,
-      observations: 'Fomenta el compañerismo y la empatía en el aula.',
-    },
-    {
-      id: 'grd-06',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      curp: 'MERU180512HDFZRR03',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      subjectId: 'sub-prim-edufis',
-      subjectName: 'De lo Humano y lo Comunitario (Educación Física)',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      period1: 10.0,
-      period2: 10.0,
-      period3: null,
-      finalGrade: 10.0,
-      period1Absences: 0,
-      period2Absences: 0,
-      period3Absences: 0,
-      observations: 'Excelente destreza física y trabajo colaborativo.',
-    },
-    {
-      id: 'grd-07',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      curp: 'MERU180512HDFZRR03',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      subjectId: 'sub-prim-art',
-      subjectName: 'Artes y Creatividad',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      period1: 9.5,
-      period2: 9.5,
-      period3: null,
-      finalGrade: 9.5,
-      period1Absences: 0,
-      period2Absences: 0,
-      period3Absences: 0,
-      observations: 'Muy expresivo en técnicas plásticas y musicales.',
-    },
-    {
-      id: 'grd-08',
-      studentId: 'student-01',
-      studentName: 'Carlos Mendoza Ruiz',
-      studentCode: '2026-PRI-001',
-      curp: 'MERU180512HDFZRR03',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      subjectId: 'sub-prim-ing',
-      subjectName: 'Lengua Extranjera (Inglés)',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      period1: 8.5,
-      period2: 9.0,
-      period3: null,
-      finalGrade: 8.8,
-      period1Absences: 1,
-      period2Absences: 0,
-      period3Absences: 0,
-      observations: 'Progreso constante en vocabulario y conversación básica.',
-    },
-    {
-      id: 'grd-09',
-      studentId: 'student-02',
-      studentName: 'Valentina Herrera Castro',
-      studentCode: '2026-PRI-002',
-      curp: 'HECV180914MDFRR05',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      subjectId: 'sub-prim-leng',
-      subjectName: 'Lenguajes (Español)',
-      teacherId: 'teacher-01',
-      teacherName: 'Prof. Roberto Salazar',
-      period1: 9.0,
-      period2: 9.0,
-      period3: null,
-      finalGrade: 9.0,
-      period1Absences: 0,
-      period2Absences: 1,
-      period3Absences: 0,
-      observations: 'Muy buena lectura y comprensión. Ordenada en sus apuntes.',
-    },
-    {
-      id: 'grd-10',
-      studentId: 'student-02',
-      studentName: 'Valentina Herrera Castro',
-      studentCode: '2026-PRI-002',
-      curp: 'HECV180914MDFRR05',
-      groupId: 'grp-p1',
-      groupName: 'Primaria 1º "A"',
-      subjectId: 'sub-prim-mat',
-      subjectName: 'Saberes y Pensamiento Científico (Matemáticas)',
-      teacherId: 'teacher-02',
-      teacherName: 'Profra. Carmen Morales',
-      period1: 8.5,
-      period2: 9.0,
-      period3: null,
-      finalGrade: 8.8,
-      period1Absences: 0,
-      period2Absences: 0,
-      period3Absences: 0,
-      observations: 'Buena comprensión lógica y operaciones fundamentales.',
-    },
-  ] : []);
+  const [gradesData, setGradesData] = useState<StudentGradeItem[]>([]);
 
   // Modales Directores y Verificación
   const [showRegisterDirectorModal, setShowRegisterDirectorModal] = useState(false);
@@ -5821,146 +2168,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [cashPayAmount, setCashPayAmount] = useState<number>(0);
 
   // Escuelas
-  const [schools, setSchools] = useState<RegisteredSchool[]>(isDemoTenant ? [
-    {
-      id: currentTenant.id,
-      name: currentTenant.name,
-      subdomain: currentTenant.subdomain,
-      contactEmail: currentTenant.adminEmail || 'contacto@escuela.edu.mx',
-      status: 'ACTIVO',
-      isEmailVerified: true,
-      planTier: 'FREE_TIER_LAUNCH',
-      monthlyFeeMXN: 0,
-      studentCount: 0,
-      campusCount: 1,
-    },
-  ] : []);
+  const [schools, setSchools] = useState<RegisteredSchool[]>([]);
 
   // Alumnos y Grupos
-  const [students, setStudents] = useState<Student[]>(isDemoTenant ? [
-    {
-      id: 'student-01',
-      studentCode: '2026-PRI-001',
-      curp: 'MERU180512HDFZRR03',
-      firstName: 'Carlos',
-      lastName: 'Mendoza Ruiz',
-      gender: 'M',
-      birthDate: '12/05/2018',
-      groupName: 'Primaria 1º "A"',
-      levelId: 'PRIMARIA',
-      tutorName: 'Ing. Carlos Mendoza (Tutor Titular)',
-      tutorPhone: '+52 55 6543 2109',
-      bloodType: 'O+',
-      status: 'INSCRITO_ACTIVO',
-      isConditional: false,
-    },
-    {
-      id: 'student-02',
-      studentCode: '2026-PRI-002',
-      curp: 'HECV180914MDFRR05',
-      firstName: 'Valentina',
-      lastName: 'Herrera Castro',
-      gender: 'F',
-      birthDate: '14/09/2018',
-      groupName: 'Primaria 1º "A"',
-      levelId: 'PRIMARIA',
-      tutorName: 'Sra. Patricia Castro',
-      tutorPhone: '+52 55 7788 9900',
-      bloodType: 'A+',
-      status: 'INSCRITO_ACTIVO',
-      isConditional: false,
-    },
-    {
-      id: 'student-03',
-      studentCode: '2026-KIN-001',
-      curp: 'GODM200405HDFRRL01',
-      firstName: 'Mateo',
-      lastName: 'Gómez Díaz',
-      gender: 'M',
-      birthDate: '05/04/2020',
-      groupName: 'Kínder 3º "A"',
-      levelId: 'PREESCOLAR',
-      tutorName: 'Lic. Raúl Gómez',
-      tutorPhone: '+52 55 8899 0011',
-      bloodType: 'O+',
-      status: 'INSCRITO_ACTIVO',
-      isConditional: false,
-    },
-  ] : []);
-  const [groups, setGroups] = useState<AcademicGroup[]>(isDemoTenant ? [
-    {
-      id: 'grp-k1',
-      name: 'Kínder 1º "A"',
-      level: 'Preescolar',
-      levelId: 'PREESCOLAR',
-      grade: '1º',
-      groupLetter: 'A',
-      shift: 'Matutino (08:30 - 13:30)',
-      leadTeacher: 'Por Asignar',
-      type: 'REGULAR',
-      studentCount: 0,
-    },
-    {
-      id: 'grp-k2',
-      name: 'Kínder 2º "A"',
-      level: 'Preescolar',
-      levelId: 'PREESCOLAR',
-      grade: '2º',
-      groupLetter: 'A',
-      shift: 'Matutino (08:30 - 13:30)',
-      leadTeacher: 'Por Asignar',
-      type: 'REGULAR',
-      studentCount: 0,
-    },
-    {
-      id: 'grp-k3',
-      name: 'Kínder 3º "A"',
-      level: 'Preescolar',
-      levelId: 'PREESCOLAR',
-      grade: '3º',
-      groupLetter: 'A',
-      shift: 'Matutino (08:30 - 13:30)',
-      leadTeacher: 'Por Asignar',
-      type: 'REGULAR',
-      studentCount: 0,
-    },
-    {
-      id: 'grp-p1',
-      name: 'Primaria 1º "A"',
-      level: 'Primaria',
-      levelId: 'PRIMARIA',
-      grade: '1º',
-      groupLetter: 'A',
-      shift: 'Matutino (07:30 - 14:00)',
-      leadTeacher: 'Por Asignar',
-      type: 'REGULAR',
-      studentCount: 0,
-    },
-    {
-      id: 'grp-p2',
-      name: 'Primaria 2º "A"',
-      level: 'Primaria',
-      levelId: 'PRIMARIA',
-      grade: '2º',
-      groupLetter: 'A',
-      shift: 'Matutino (07:30 - 14:00)',
-      leadTeacher: 'Por Asignar',
-      type: 'REGULAR',
-      studentCount: 0,
-    },
-    {
-      id: 'grp-p3',
-      name: 'Primaria 3º "A"',
-      level: 'Primaria',
-      levelId: 'PRIMARIA',
-      grade: '3º',
-      groupLetter: 'A',
-      shift: 'Matutino (07:30 - 14:00)',
-      leadTeacher: 'Por Asignar',
-      type: 'REGULAR',
-      studentCount: 0,
-    },
-  ] : []);
+  const [students, setStudents] = useState<Student[]>([]);
+  const [groups, setGroups] = useState<AcademicGroup[]>([]);
 
   const [charges, setCharges] = useState<Charge[]>([]);
   const [cashSummary, setCashSummary] = useState<CashSummary>({
@@ -10527,16 +6739,62 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   });
 
   const filteredTeachers = teachers.filter((t) => selectedLevelFilter === 'ALL' || t.levelId === selectedLevelFilter);
+    if (!currentTenant.id) {
+    return (
+      <div className="dashboard-page flex flex-col min-h-screen">
+        <header className="dashboard-header">
+          <div className="container-app header-inner">
+            <div className="brand-logo" onClick={() => onNavigate('home')} style={{ cursor: 'pointer' }}>
+              <div className="brand-icon">ASM</div>
+              <div className="brand-title">Avante School Management</div>
+            </div>
+            <div className="header-actions flex items-center gap-3">
+              <button onClick={() => onNavigate('login')} className="btn btn-secondary btn-sm cursor-pointer">
+                Iniciar Sesión
+              </button>
+              <button onClick={() => onNavigate('register')} className="btn btn-primary btn-sm cursor-pointer">
+                Registrar Colegio
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <main className="container-app empty-tenant-main">
+          <div className="empty-tenant-card">
+            <div className="empty-tenant-icon">
+              <School className="w-12 h-12" />
+            </div>
+            <h2 className="empty-tenant-title">Ningún Colegio Activo o Seleccionado</h2>
+            <p className="empty-tenant-desc">
+              Para ingresar al panel institucional y comenzar a gestionar niveles escolares,
+              alumnos, docentes, calificaciones SEP y finanzas, registra tu escuela o inicia sesión con tu cuenta.
+            </p>
+            <div className="empty-tenant-actions">
+              <button onClick={() => onNavigate('register')} className="btn btn-primary btn-lg cursor-pointer">
+                <School className="w-5 h-5" />
+                Registrar Nuevo Colegio Gratis
+              </button>
+              <button onClick={() => onNavigate('login')} className="btn btn-secondary btn-lg cursor-pointer">
+                <LogIn className="w-5 h-5" />
+                Iniciar Sesión Institucional
+              </button>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   const filteredGroups = groups.filter((g) => selectedLevelFilter === 'ALL' || g.levelId === selectedLevelFilter);
   const filteredCharges = charges.filter((c) => selectedLevelFilter === 'ALL' || c.levelId === selectedLevelFilter);
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-sans selection:bg-sky-500 selection:text-white">
+    <div className="dashboard-page min-h-screen flex flex-col bg-slate-950 text-slate-100 font-sans selection:bg-sky-500 selection:text-white">
       {/* Toast Notificación */}
       {notification && (
         <div className="fixed top-5 right-5 z-50 bg-sky-500 text-slate-950 font-bold px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-2 text-xs border border-sky-400 animate-bounce">
           <Sparkles className="w-4 h-4" />
-          <span>{notification}</span>
+          <div>{notification}</div>
         </div>
       )}
 
@@ -10624,7 +6882,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               }`}
             >
               {isOnline ? <Wifi className="w-3.5 h-3.5" /> : <WifiOff className="w-3.5 h-3.5 animate-pulse" />}
-              <span>{isOnline ? 'Online' : 'Offline'}</span>
+              <div>{isOnline ? 'Online' : 'Offline'}</div>
             </button>
 
             {/* Selector de Rol */}
@@ -10667,7 +6925,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <School className="w-4 h-4" />
-            <span>Niveles & Directores ({educationalLevels.length})</span>
+            <div>Niveles & Directores ({educationalLevels.length})</div>
           </button>
 
           <button
@@ -10679,7 +6937,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <UserCheck className="w-4 h-4" />
-            <span>Docentes & Maestros ({filteredTeachers.length})</span>
+            <div>Docentes & Maestros ({filteredTeachers.length})</div>
           </button>
 
           <button
@@ -10691,7 +6949,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <CalendarCheck className="w-4 h-4" />
-            <span>Pase de Lista Diario</span>
+            <div>Pase de Lista Diario</div>
           </button>
 
           <button
@@ -10703,7 +6961,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <Award className="w-4 h-4" />
-            <span>Calificaciones & Boletas SEP</span>
+            <div>Calificaciones & Boletas SEP</div>
           </button>
 
           <button
@@ -10715,7 +6973,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <Megaphone className="w-4 h-4" />
-            <span>Circulares & Citatorios ({notices.length})</span>
+            <div>Circulares & Citatorios ({notices.length})</div>
           </button>
 
           <button
@@ -10727,7 +6985,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <QrCode className="w-4 h-4" />
-            <span>Credenciales & Accesos ({credentials.length})</span>
+            <div>Credenciales & Accesos ({credentials.length})</div>
           </button>
 
           <button
@@ -10739,7 +6997,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <ClipboardList className="w-4 h-4" />
-            <span>Cuaderno de Tareas ({assignments.length})</span>
+            <div>Cuaderno de Tareas ({assignments.length})</div>
           </button>
 
           <button
@@ -10751,7 +7009,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <CalendarDays className="w-4 h-4" />
-            <span>Horarios Semanales</span>
+            <div>Horarios Semanales</div>
           </button>
 
           <button
@@ -10763,7 +7021,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <UserPlus className="w-4 h-4" />
-            <span>Admisiones & Aspirantes ({applicants.length})</span>
+            <div>Admisiones & Aspirantes ({applicants.length})</div>
           </button>
 
           <button
@@ -10775,7 +7033,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <BookOpen className="w-4 h-4" />
-            <span>Biblioteca Escolar ({books.length})</span>
+            <div>Biblioteca Escolar ({books.length})</div>
           </button>
 
           <button
@@ -10787,7 +7045,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <Bus className="w-4 h-4" />
-            <span>Transporte Escolar ({transportRoutes.length})</span>
+            <div>Transporte Escolar ({transportRoutes.length})</div>
           </button>
 
           <button
@@ -10799,7 +7057,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <Utensils className="w-4 h-4" />
-            <span>Cafetería & Monedero ({cafeteriaProducts.length})</span>
+            <div>Cafetería & Monedero ({cafeteriaProducts.length})</div>
           </button>
 
           <button
@@ -10811,7 +7069,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <Stethoscope className="w-4 h-4" />
-            <span>Enfermería Escolar ({medicalConsultations.length})</span>
+            <div>Enfermería Escolar ({medicalConsultations.length})</div>
           </button>
 
           <button
@@ -10823,7 +7081,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <Trophy className="w-4 h-4" />
-            <span>Talleres & Academias ({extracurricularWorkshops.length})</span>
+            <div>Talleres & Academias ({extracurricularWorkshops.length})</div>
           </button>
 
           <button
@@ -10835,7 +7093,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <Box className="w-4 h-4" />
-            <span>Almacén, CONALITEG & Activos ({schoolAssets.length + conalitegPackages.length + schoolUniforms.length})</span>
+            <div>Almacén, CONALITEG & Activos ({schoolAssets.length + conalitegPackages.length + schoolUniforms.length})</div>
           </button>
 
           <button
@@ -10847,7 +7105,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <MessageSquareQuote className="w-4 h-4" />
-            <span>Encuestas & Clima ({institutionalSurveys.length})</span>
+            <div>Encuestas & Clima ({institutionalSurveys.length})</div>
           </button>
 
           <button
@@ -10859,7 +7117,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <PartyPopper className="w-4 h-4" />
-            <span>Eventos & CTE ({schoolEvents.length})</span>
+            <div>Eventos & CTE ({schoolEvents.length})</div>
           </button>
 
           <button
@@ -10871,7 +7129,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <Briefcase className="w-4 h-4" />
-            <span>Reclutamiento & RH ({jobVacancies.length})</span>
+            <div>Reclutamiento & RH ({jobVacancies.length})</div>
           </button>
 
           <button
@@ -10883,7 +7141,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <ShieldAlert className="w-4 h-4" />
-            <span>Protección Civil ({civilProtectionDrills.length})</span>
+            <div>Protección Civil ({civilProtectionDrills.length})</div>
           </button>
 
           <button
@@ -10895,7 +7153,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <HeartHandshake className="w-4 h-4" />
-            <span>CEPS & Familias ({cepsCommittees.length + schoolAssemblies.length})</span>
+            <div>CEPS & Familias ({cepsCommittees.length + schoolAssemblies.length})</div>
           </button>
 
           <button
@@ -10907,7 +7165,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <Hammer className="w-4 h-4" />
-            <span>Infraestructura & Mantenimiento ({facilityWorkOrders.length + facilityInspections.length})</span>
+            <div>Infraestructura & Mantenimiento ({facilityWorkOrders.length + facilityInspections.length})</div>
           </button>
 
           <button
@@ -10919,7 +7177,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <Percent className="w-4 h-4" />
-            <span>Becas SEP & Finanzas ({scholarshipApplications.length})</span>
+            <div>Becas SEP & Finanzas ({scholarshipApplications.length})</div>
           </button>
 
           <button
@@ -10931,7 +7189,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <ScrollText className="w-4 h-4" />
-            <span>Certificación Digital & Kárdex ({officialCertificates.length})</span>
+            <div>Certificación Digital & Kárdex ({officialCertificates.length})</div>
           </button>
 
           <button
@@ -10943,7 +7201,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <ShieldCheck className="w-4 h-4" />
-            <span>Auditoría & Normativa SEP ({auditLogs.length})</span>
+            <div>Auditoría & Normativa SEP ({auditLogs.length})</div>
           </button>
 
           <button
@@ -10955,7 +7213,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <GraduationCap className="w-4 h-4" />
-            <span>Alumnos y Expedientes ({filteredStudents.length})</span>
+            <div>Alumnos y Expedientes ({filteredStudents.length})</div>
           </button>
 
           <button
@@ -10967,7 +7225,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <Layers className="w-4 h-4" />
-            <span>Grupos ({filteredGroups.length})</span>
+            <div>Grupos ({filteredGroups.length})</div>
           </button>
 
           <button
@@ -10979,7 +7237,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <DollarSign className="w-4 h-4" />
-            <span>Caja Escolar & Arqueo</span>
+            <div>Caja Escolar & Arqueo</div>
           </button>
 
           <button
@@ -10991,7 +7249,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <Users className="w-4 h-4" />
-            <span>Portal de Padres</span>
+            <div>Portal de Padres</div>
           </button>
 
           <button
@@ -11003,7 +7261,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <ShieldCheck className="w-4 h-4" />
-            <span>SuperAdmin SaaS ({schools.length})</span>
+            <div>SuperAdmin SaaS ({schools.length})</div>
           </button>
         </nav>
       </div>
@@ -11060,9 +7318,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             <Icon className="w-6 h-6" />
                           </div>
                           <div>
-                            <span className="text-[10px] font-mono font-bold bg-slate-950 px-2 py-0.5 rounded text-slate-300 border border-slate-800">
+                            <div className="text-[10px] font-mono font-bold bg-slate-950 px-2 py-0.5 rounded text-slate-300 border border-slate-800">
                               CCT SEP: {lvl.cctCode}
-                            </span>
+                            </div>
                             <h4 className="text-lg font-black text-white mt-1">{lvl.name}</h4>
                           </div>
                         </div>
@@ -11070,9 +7328,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {hasDirector ? (
                           <div className="flex items-center gap-2">
                             {lvl.isEmailVerified ? (
-                              <span className="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                              <div className="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
                                 <CheckCircle2 className="w-3 h-3" /> Verificado ✅
-                              </span>
+                              </div>
                             ) : (
                               <button
                                 onClick={() => {
@@ -11082,7 +7340,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 className="bg-amber-950/80 hover:bg-amber-900 text-amber-300 text-xs px-3 py-1.5 rounded-xl font-bold flex items-center gap-1.5 transition-colors cursor-pointer border border-amber-800 animate-pulse"
                               >
                                 <Key className="w-3.5 h-3.5" />
-                                <span>Verificar OTP</span>
+                                <div>Verificar OTP</div>
                               </button>
                             )}
                             <button
@@ -11099,7 +7357,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             className="bg-sky-500 hover:bg-sky-400 text-slate-950 text-xs px-3.5 py-2 rounded-xl font-black flex items-center gap-1.5 shadow-lg shadow-sky-500/20 transition-all cursor-pointer"
                           >
                             <UserPlus className="w-3.5 h-3.5" />
-                            <span>+ Asignar Director(a)</span>
+                            <div>+ Asignar Director(a)</div>
                           </button>
                         )}
                       </div>
@@ -11123,18 +7381,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             className="bg-slate-800 hover:bg-slate-700 text-sky-400 text-xs px-4 py-2 rounded-xl font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
                           >
                             <UserPlus className="w-3.5 h-3.5" />
-                            <span>Registrar Director(a)</span>
+                            <div>Registrar Director(a)</div>
                           </button>
                         </div>
                       )}
 
                       <div className="grid grid-cols-2 gap-3 mt-4 text-xs">
                         <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                          <span className="text-slate-500 block text-[11px]">Maestros Asignados:</span>
+                          <div className="text-slate-500 block text-[11px]">Maestros Asignados:</div>
                           <strong className="text-base font-mono font-black text-emerald-400">{levelTeachersCount} docentes</strong>
                         </div>
                         <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                          <span className="text-slate-500 block text-[11px]">Alumnos Inscritos:</span>
+                          <div className="text-slate-500 block text-[11px]">Alumnos Inscritos:</div>
                           <strong className="text-base font-mono font-black text-white">{levelStudentsCount} alumnos</strong>
                         </div>
                       </div>
@@ -11149,7 +7407,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         className="flex-1 bg-slate-800 hover:bg-slate-750 text-slate-200 py-2.5 rounded-xl font-bold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                       >
                         <UserCheck className="w-4 h-4 text-emerald-400" />
-                        <span>Ver Plantilla Docente ({levelTeachersCount})</span>
+                        <div>Ver Plantilla Docente ({levelTeachersCount})</div>
                       </button>
                     </div>
                   </div>
@@ -11179,7 +7437,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs px-4 py-3 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition-all cursor-pointer shrink-0"
               >
                 <UserPlus className="w-4 h-4" />
-                <span>+ Dar de Alta Nuevo Maestro</span>
+                <div>+ Dar de Alta Nuevo Maestro</div>
               </button>
             </div>
 
@@ -11200,7 +7458,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs px-6 py-3.5 rounded-2xl shadow-xl shadow-emerald-500/20 inline-flex items-center gap-2 transition-all cursor-pointer"
                   >
                     <UserPlus className="w-4 h-4" />
-                    <span>Dar de Alta Primer Maestro</span>
+                    <div>Dar de Alta Primer Maestro</div>
                   </button>
                 </div>
               </div>
@@ -11210,13 +7468,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div key={tch.id} className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4 flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-[10px] font-mono font-bold bg-slate-950 px-2.5 py-1 rounded-full text-sky-400 border border-slate-800">
+                        <div className="text-[10px] font-mono font-bold bg-slate-950 px-2.5 py-1 rounded-full text-sky-400 border border-slate-800">
                           {tch.levelId}
-                        </span>
+                        </div>
                         {tch.isEmailVerified ? (
-                          <span className="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                          <div className="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
                             <CheckCircle2 className="w-3 h-3" /> Verificado ✅
-                          </span>
+                          </div>
                         ) : (
                           <button
                             onClick={() => {
@@ -11252,7 +7510,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         className="w-full bg-slate-800 hover:bg-emerald-500 hover:text-slate-950 text-slate-200 py-2.5 rounded-xl font-bold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                       >
                         <CalendarCheck className="w-3.5 h-3.5" />
-                        <span>Pase de Lista</span>
+                        <div>Pase de Lista</div>
                       </button>
 
                       <button
@@ -11263,7 +7521,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         className="w-full bg-slate-800 hover:bg-amber-400 hover:text-slate-950 text-slate-200 py-2.5 rounded-xl font-bold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                       >
                         <Award className="w-3.5 h-3.5" />
-                        <span>Calificaciones SEP</span>
+                        <div>Calificaciones SEP</div>
                       </button>
                     </div>
                   </div>
@@ -11280,10 +7538,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                  <div className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
                     <CalendarCheck className="w-3 h-3" /> Control Diario de Asistencia Escolar
-                  </span>
-                  <span className="text-slate-400 text-xs">• Ciclo Escolar 2026-2027</span>
+                  </div>
+                  <div className="text-slate-400 text-xs">• Ciclo Escolar 2026-2027</div>
                 </div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <CalendarCheck className="w-6 h-6 text-emerald-400" />
@@ -11300,7 +7558,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-purple-600/20"
                 >
                   <FileText className="w-4 h-4" />
-                  <span>📄 Emitir Justificante</span>
+                  <div>📄 Emitir Justificante</div>
                 </button>
 
                 <button
@@ -11308,7 +7566,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-slate-800 hover:bg-slate-750 text-slate-200 border border-slate-700 px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-lg"
                 >
                   <Check className="w-4 h-4 text-emerald-400" />
-                  <span>⚡ Marcar Todos Presentes</span>
+                  <div>⚡ Marcar Todos Presentes</div>
                 </button>
 
                 <button
@@ -11316,7 +7574,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-5 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-emerald-500/20"
                 >
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>Guardar Asistencia del Día</span>
+                  <div>Guardar Asistencia del Día</div>
                 </button>
               </div>
             </div>
@@ -11329,7 +7587,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="flex items-center justify-between">
                     <label className="text-[11px] font-bold text-slate-400 flex items-center gap-1.5">
                       <Calendar className="w-3.5 h-3.5 text-sky-400" />
-                      <span>Fecha del Pase de Lista:</span>
+                      <div>Fecha del Pase de Lista:</div>
                     </label>
                     <button
                       onClick={() => setAttendanceDate(new Date().toISOString().split('T')[0])}
@@ -11350,7 +7608,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="space-y-1">
                   <label className="text-[11px] font-bold text-slate-400 flex items-center gap-1.5">
                     <Layers className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Grado y Grupo:</span>
+                    <div>Grado y Grupo:</div>
                   </label>
                   <select
                     value={attendanceGroup}
@@ -11369,7 +7627,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="space-y-1">
                   <label className="text-[11px] font-bold text-slate-400 flex items-center gap-1.5">
                     <UserCheck className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Maestro(a) Responsable:</span>
+                    <div>Maestro(a) Responsable:</div>
                   </label>
                   <select
                     value={attendanceTeacherId}
@@ -11388,7 +7646,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="space-y-1">
                   <label className="text-[11px] font-bold text-slate-400 flex items-center gap-1.5">
                     <Clock className="w-3.5 h-3.5 text-purple-400" />
-                    <span>Jornada / Asignatura:</span>
+                    <div>Jornada / Asignatura:</div>
                   </label>
                   <select
                     value={attendanceSubjectId}
@@ -11428,35 +7686,35 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               return (
                 <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
-                    <span className="text-[11px] font-bold text-slate-400 block">Total en Lista</span>
-                    <span className="text-2xl font-black text-white">{totalStudents}</span>
-                    <span className="text-[10px] text-slate-500 block mt-0.5">{attendanceGroup}</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">Total en Lista</div>
+                    <div className="text-2xl font-black text-white">{totalStudents}</div>
+                    <div className="text-[10px] text-slate-500 block mt-0.5">{attendanceGroup}</div>
                   </div>
 
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
-                    <span className="text-[11px] font-bold text-slate-400 block">Presentes</span>
-                    <span className="text-2xl font-black text-emerald-400">{presentCount}</span>
-                    <span className="text-[10px] text-slate-500 block mt-0.5">A tiempo en el aula</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">Presentes</div>
+                    <div className="text-2xl font-black text-emerald-400">{presentCount}</div>
+                    <div className="text-[10px] text-slate-500 block mt-0.5">A tiempo en el aula</div>
                   </div>
 
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
-                    <span className="text-[11px] font-bold text-slate-400 block">Retardos</span>
-                    <span className="text-2xl font-black text-amber-400">{lateCount}</span>
-                    <span className="text-[10px] text-slate-500 block mt-0.5">Tolerancia superada</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">Retardos</div>
+                    <div className="text-2xl font-black text-amber-400">{lateCount}</div>
+                    <div className="text-[10px] text-slate-500 block mt-0.5">Tolerancia superada</div>
                   </div>
 
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
-                    <span className="text-[11px] font-bold text-slate-400 block">Faltas (Total)</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">Faltas (Total)</div>
                     <div className="flex items-center gap-1.5 mt-0.5">
-                      <span className="text-2xl font-black text-rose-400">{unexcusedCount + excusedCount}</span>
-                      <span className="text-[10px] text-slate-400">({unexcusedCount} inj. / {excusedCount} just.)</span>
+                      <div className="text-2xl font-black text-rose-400">{unexcusedCount + excusedCount}</div>
+                      <div className="text-[10px] text-slate-400">({unexcusedCount} inj. / {excusedCount} just.)</div>
                     </div>
-                    <span className="text-[10px] text-slate-500 block">Impacto en Boleta SEP</span>
+                    <div className="text-[10px] text-slate-500 block">Impacto en Boleta SEP</div>
                   </div>
 
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl col-span-2 sm:col-span-1">
-                    <span className="text-[11px] font-bold text-slate-400 block">% de Asistencia</span>
-                    <span className="text-2xl font-black text-sky-400">{percentage}%</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">% de Asistencia</div>
+                    <div className="text-2xl font-black text-sky-400">{percentage}%</div>
                     <div className="w-full bg-slate-950 h-1.5 rounded-full overflow-hidden mt-1.5 border border-slate-800">
                       <div
                         className="bg-sky-400 h-full rounded-full transition-all"
@@ -11500,9 +7758,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <span className="text-[11px] font-mono text-slate-400 bg-slate-950 px-3 py-1 rounded-xl border border-slate-800">
+                      <div className="text-[11px] font-mono text-slate-400 bg-slate-950 px-3 py-1 rounded-xl border border-slate-800">
                         {studentsInGroup.length} Estudiantes
-                      </span>
+                      </div>
                     </div>
                   </div>
 
@@ -11530,16 +7788,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               <td className="py-3 px-4 font-mono text-slate-500">{idx + 1}</td>
                               <td className="py-3 px-4">
                                 <div className="font-bold text-white flex items-center gap-2">
-                                  <span>{std.firstName} {std.lastName}</span>
+                                  <div>{std.firstName} {std.lastName}</div>
                                   {currentStatus === 'FALTA_INJUSTIFICADA' && (
-                                    <span className="bg-rose-950 text-rose-300 text-[10px] px-2 py-0.5 rounded-full border border-rose-800 font-normal">
+                                    <div className="bg-rose-950 text-rose-300 text-[10px] px-2 py-0.5 rounded-full border border-rose-800 font-normal">
                                       Falta
-                                    </span>
+                                    </div>
                                   )}
                                   {currentStatus === 'RETARDO' && (
-                                    <span className="bg-amber-950 text-amber-300 text-[10px] px-2 py-0.5 rounded-full border border-amber-800 font-normal">
+                                    <div className="bg-amber-950 text-amber-300 text-[10px] px-2 py-0.5 rounded-full border border-amber-800 font-normal">
                                       Retardo
-                                    </span>
+                                    </div>
                                   )}
                                 </div>
                                 <div className="font-mono text-[10px] text-slate-400 mt-0.5">
@@ -11559,7 +7817,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                     }`}
                                   >
                                     <Check className="w-3.5 h-3.5" />
-                                    <span>Presente</span>
+                                    <div>Presente</div>
                                   </button>
 
                                   <button
@@ -11571,7 +7829,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                     }`}
                                   >
                                     <Clock className="w-3.5 h-3.5" />
-                                    <span>Retardo</span>
+                                    <div>Retardo</div>
                                   </button>
 
                                   <button
@@ -11583,7 +7841,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                     }`}
                                   >
                                     <XCircle className="w-3.5 h-3.5" />
-                                    <span>Falta</span>
+                                    <div>Falta</div>
                                   </button>
 
                                   <button
@@ -11595,7 +7853,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                     }`}
                                   >
                                     <FileText className="w-3.5 h-3.5" />
-                                    <span>Justificada</span>
+                                    <div>Justificada</div>
                                   </button>
                                 </div>
                               </td>
@@ -11617,7 +7875,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                         className="text-[10px] text-purple-400 hover:text-purple-300 font-bold flex items-center gap-1 cursor-pointer"
                                       >
                                         <FileText className="w-3 h-3" />
-                                        <span>+ Justificar Falta con Receta/Motivo</span>
+                                        <div>+ Justificar Falta con Receta/Motivo</div>
                                       </button>
                                     )}
                                     {currentStatus === 'FALTA_JUSTIFICADA' && (
@@ -11632,7 +7890,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                         className="text-[10px] text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-1 cursor-pointer"
                                       >
                                         <Printer className="w-3 h-3" />
-                                        <span>📄 Ver Volante de Justificante</span>
+                                        <div>📄 Ver Volante de Justificante</div>
                                       </button>
                                     )}
                                   </div>
@@ -11647,7 +7905,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   title={`Enviar notificación a ${std.tutorName || 'Tutor'}`}
                                 >
                                   <Send className="w-3.5 h-3.5" />
-                                  <span>Notificar</span>
+                                  <div>Notificar</div>
                                 </button>
                               </td>
                             </tr>
@@ -11659,17 +7917,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   {/* Barra al pie de la tabla */}
                   <div className="p-4 bg-slate-950/60 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-                    <span className="text-slate-400 flex items-center gap-2">
+                    <div className="text-slate-400 flex items-center gap-2">
                       <Check className="w-4 h-4 text-emerald-400" />
-                      <span>Las inasistencias y retardos se guardan de forma acumulativa y alimentan la Boleta Oficial SEP.</span>
-                    </span>
+                      <div>Las inasistencias y retardos se guardan de forma acumulativa y alimentan la Boleta Oficial SEP.</div>
+                    </div>
 
                     <button
                       onClick={handleSaveAttendance}
                       className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-6 py-2.5 rounded-2xl font-black text-xs shadow-lg shadow-emerald-500/25 transition-all cursor-pointer flex items-center gap-2"
                     >
                       <CheckCircle2 className="w-4 h-4" />
-                      <span>Guardar Asistencia de {attendanceGroup}</span>
+                      <div>Guardar Asistencia de {attendanceGroup}</div>
                     </button>
                   </div>
                 </div>
@@ -11685,10 +7943,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                  <div className="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
                     <Sparkles className="w-3 h-3" /> Sistema de Evaluación Oficial SEP
-                  </span>
-                  <span className="text-slate-400 text-xs">• Ciclo Escolar 2026-2027</span>
+                  </div>
+                  <div className="text-slate-400 text-xs">• Ciclo Escolar 2026-2027</div>
                 </div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <Award className="w-6 h-6 text-amber-400" />
@@ -11709,7 +7967,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-slate-800 hover:bg-slate-750 text-slate-200 border border-slate-700 px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-lg"
                 >
                   <FileText className="w-4 h-4 text-amber-400" />
-                  <span>Ver Boleta Oficial SEP del Alumno</span>
+                  <div>Ver Boleta Oficial SEP del Alumno</div>
                 </button>
 
                 <button
@@ -11717,7 +7975,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-amber-400 hover:bg-amber-300 text-slate-950 px-5 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-amber-400/20"
                 >
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>Guardar Calificaciones en SEP</span>
+                  <div>Guardar Calificaciones en SEP</div>
                 </button>
               </div>
             </div>
@@ -11729,7 +7987,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="space-y-1">
                   <label className="text-[11px] font-bold text-slate-400 flex items-center gap-1.5">
                     <UserCheck className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Maestro(a) Responsable:</span>
+                    <div>Maestro(a) Responsable:</div>
                   </label>
                   <select
                     value={selectedTeacherId}
@@ -11748,7 +8006,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="space-y-1">
                   <label className="text-[11px] font-bold text-slate-400 flex items-center gap-1.5">
                     <Layers className="w-3.5 h-3.5 text-sky-400" />
-                    <span>Grado y Grupo:</span>
+                    <div>Grado y Grupo:</div>
                   </label>
                   <select
                     value={selectedGradeGroup}
@@ -11767,7 +8025,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="space-y-1">
                   <label className="text-[11px] font-bold text-slate-400 flex items-center gap-1.5">
                     <BookOpen className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Materia Oficial SEP:</span>
+                    <div>Materia Oficial SEP:</div>
                   </label>
                   <select
                     value={selectedSubjectId}
@@ -11786,7 +8044,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="space-y-1">
                   <label className="text-[11px] font-bold text-slate-400 flex items-center gap-1.5">
                     <Calendar className="w-3.5 h-3.5 text-purple-400" />
-                    <span>Periodo de Evaluación:</span>
+                    <div>Periodo de Evaluación:</div>
                   </label>
                   <div className="flex bg-slate-950 p-1 rounded-xl border border-slate-800 text-[11px] font-bold">
                     <button
@@ -11837,22 +8095,22 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </div>
                       <div>
                         <div className="font-bold text-white flex items-center gap-1.5">
-                          <span>{currentTch?.fullName || 'Docente Seleccionado'}</span>
+                          <div>{currentTch?.fullName || 'Docente Seleccionado'}</div>
                           {currentTch?.isEmailVerified && (
-                            <span className="text-[10px] bg-emerald-950 text-emerald-400 px-2 py-0.2 rounded-full border border-emerald-800">
+                            <div className="text-[10px] bg-emerald-950 text-emerald-400 px-2 py-0.2 rounded-full border border-emerald-800">
                               Docente Verificado ✅
-                            </span>
+                            </div>
                           )}
                         </div>
-                        <span className="text-[11px] text-slate-400">{currentTch?.specialty} • {currentTch?.email}</span>
+                        <div className="text-[11px] text-slate-400">{currentTch?.specialty} • {currentTch?.email}</div>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <span className="text-[11px] text-slate-400">Campo Formativo SEP:</span>
-                      <span className="bg-slate-900 border border-slate-700 text-sky-300 font-bold px-3 py-1 rounded-xl text-xs">
+                      <div className="text-[11px] text-slate-400">Campo Formativo SEP:</div>
+                      <div className="bg-slate-900 border border-slate-700 text-sky-300 font-bold px-3 py-1 rounded-xl text-xs">
                         {currentSub?.campoFormativo || 'Lenguajes'}
-                      </span>
+                      </div>
                     </div>
                   </div>
                 );
@@ -11874,30 +8132,30 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               return (
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
-                    <span className="text-[11px] font-bold text-slate-400 block">Alumnos en Lista</span>
-                    <span className="text-2xl font-black text-white">{studentsInGroup.length}</span>
-                    <span className="text-[10px] text-slate-500 block mt-0.5">Grupo: {selectedGradeGroup}</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">Alumnos en Lista</div>
+                    <div className="text-2xl font-black text-white">{studentsInGroup.length}</div>
+                    <div className="text-[10px] text-slate-500 block mt-0.5">Grupo: {selectedGradeGroup}</div>
                   </div>
 
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
-                    <span className="text-[11px] font-bold text-slate-400 block">Promedio de la Asignatura</span>
-                    <span className="text-2xl font-black text-amber-400">{avg}</span>
-                    <span className="text-[10px] text-slate-500 block mt-0.5">Escala oficial SEP (5 a 10)</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">Promedio de la Asignatura</div>
+                    <div className="text-2xl font-black text-amber-400">{avg}</div>
+                    <div className="text-[10px] text-slate-500 block mt-0.5">Escala oficial SEP (5 a 10)</div>
                   </div>
 
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
-                    <span className="text-[11px] font-bold text-slate-400 block">Aprobados / Riesgo</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">Aprobados / Riesgo</div>
                     <div className="flex items-center gap-2 mt-1">
-                      <span className="text-lg font-black text-emerald-400">{approvedCount} Aprobados</span>
-                      {atRiskCount > 0 && <span className="text-xs font-bold text-rose-400">({atRiskCount} en riesgo)</span>}
+                      <div className="text-lg font-black text-emerald-400">{approvedCount} Aprobados</div>
+                      {atRiskCount > 0 && <div className="text-xs font-bold text-rose-400">({atRiskCount} en riesgo)</div>}
                     </div>
-                    <span className="text-[10px] text-slate-500 block mt-0.5">Mínimo aprobatorio: 6.0</span>
+                    <div className="text-[10px] text-slate-500 block mt-0.5">Mínimo aprobatorio: 6.0</div>
                   </div>
 
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
-                    <span className="text-[11px] font-bold text-slate-400 block">Inasistencias del Grupo</span>
-                    <span className="text-2xl font-black text-purple-400">{totalAbsences}</span>
-                    <span className="text-[10px] text-slate-500 block mt-0.5">Faltas acumuladas en la materia</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">Inasistencias del Grupo</div>
+                    <div className="text-2xl font-black text-purple-400">{totalAbsences}</div>
+                    <div className="text-[10px] text-slate-500 block mt-0.5">Faltas acumuladas en la materia</div>
                   </div>
                 </div>
               );
@@ -11940,9 +8198,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </p>
                     </div>
 
-                    <span className="text-[11px] font-mono text-slate-400 bg-slate-950 px-3 py-1 rounded-xl border border-slate-800">
+                    <div className="text-[11px] font-mono text-slate-400 bg-slate-950 px-3 py-1 rounded-xl border border-slate-800">
                       Escala SEP: 5.0 - 10.0
-                    </span>
+                    </div>
                   </div>
 
                   <div className="overflow-x-auto">
@@ -12066,7 +8324,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               {/* Promedio Final Automático */}
                               <td className="py-3 px-3 text-center">
                                 {finalG !== null && finalG !== undefined ? (
-                                  <span
+                                  <div
                                     className={`font-mono font-black px-2.5 py-1 rounded-xl border text-xs ${
                                       finalG >= 8.0
                                         ? 'bg-emerald-950 text-emerald-300 border-emerald-800'
@@ -12076,9 +8334,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                     }`}
                                   >
                                     {finalG.toFixed(1)}
-                                  </span>
+                                  </div>
                                 ) : (
-                                  <span className="font-mono text-slate-500 text-xs">--</span>
+                                  <div className="font-mono text-slate-500 text-xs">--</div>
                                 )}
                               </td>
 
@@ -12115,7 +8373,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   title="Ver Boleta de Evaluación Oficial SEP"
                                 >
                                   <FileText className="w-3.5 h-3.5" />
-                                  <span>Boleta SEP</span>
+                                  <div>Boleta SEP</div>
                                 </button>
                               </td>
                             </tr>
@@ -12127,17 +8385,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   {/* Barra al pie de la tabla */}
                   <div className="p-4 bg-slate-950/60 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-                    <span className="text-slate-400 flex items-center gap-2">
+                    <div className="text-slate-400 flex items-center gap-2">
                       <Check className="w-4 h-4 text-emerald-400" />
-                      <span>Todas las asignaturas y calificaciones cumplen la normativa y campos formativos oficiales de la SEP.</span>
-                    </span>
+                      <div>Todas las asignaturas y calificaciones cumplen la normativa y campos formativos oficiales de la SEP.</div>
+                    </div>
 
                     <button
                       onClick={handleSaveGrades}
                       className="bg-amber-400 hover:bg-amber-300 text-slate-950 px-6 py-2.5 rounded-2xl font-black text-xs shadow-lg shadow-amber-400/25 transition-all cursor-pointer flex items-center gap-2"
                     >
                       <CheckCircle2 className="w-4 h-4" />
-                      <span>Guardar y Confirmar Calificaciones</span>
+                      <div>Guardar y Confirmar Calificaciones</div>
                     </button>
                   </div>
                 </div>
@@ -12153,10 +8411,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                  <div className="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
                     <Megaphone className="w-3 h-3" /> Comunicación Escolar Oficial
-                  </span>
-                  <span className="text-slate-400 text-xs">• Ciclo Escolar 2026-2027</span>
+                  </div>
+                  <div className="text-slate-400 text-xs">• Ciclo Escolar 2026-2027</div>
                 </div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <Megaphone className="w-6 h-6 text-purple-400" />
@@ -12173,7 +8431,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-purple-600 hover:bg-purple-500 text-white px-5 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-purple-600/20"
                 >
                   <Megaphone className="w-4 h-4" />
-                  <span>+ Redactar Comunicado</span>
+                  <div>+ Redactar Comunicado</div>
                 </button>
               </div>
             </div>
@@ -12191,32 +8449,32 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               return (
                 <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
-                    <span className="text-[11px] font-bold text-slate-400 block">Total Publicados</span>
-                    <span className="text-2xl font-black text-white">{totalNotices}</span>
-                    <span className="text-[10px] text-slate-500 block mt-0.5">Comunicados activos</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">Total Publicados</div>
+                    <div className="text-2xl font-black text-white">{totalNotices}</div>
+                    <div className="text-[10px] text-slate-500 block mt-0.5">Comunicados activos</div>
                   </div>
 
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
-                    <span className="text-[11px] font-bold text-slate-400 block">Circulares Generales</span>
-                    <span className="text-2xl font-black text-sky-400">{circularesCount}</span>
-                    <span className="text-[10px] text-slate-500 block mt-0.5">Eventos y avisos</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">Circulares Generales</div>
+                    <div className="text-2xl font-black text-sky-400">{circularesCount}</div>
+                    <div className="text-[10px] text-slate-500 block mt-0.5">Eventos y avisos</div>
                   </div>
 
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
-                    <span className="text-[11px] font-bold text-slate-400 block">Citatorios a Padres</span>
-                    <span className="text-2xl font-black text-amber-400">{citatoriosCount}</span>
-                    <span className="text-[10px] text-slate-500 block mt-0.5">Citas presenciales</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">Citatorios a Padres</div>
+                    <div className="text-2xl font-black text-amber-400">{citatoriosCount}</div>
+                    <div className="text-[10px] text-slate-500 block mt-0.5">Citas presenciales</div>
                   </div>
 
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
-                    <span className="text-[11px] font-bold text-slate-400 block">Avisos Urgentes</span>
-                    <span className="text-2xl font-black text-rose-400">{avisosUrgentes}</span>
-                    <span className="text-[10px] text-slate-500 block mt-0.5">Alta prioridad</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">Avisos Urgentes</div>
+                    <div className="text-2xl font-black text-rose-400">{avisosUrgentes}</div>
+                    <div className="text-[10px] text-slate-500 block mt-0.5">Alta prioridad</div>
                   </div>
 
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl col-span-2 sm:col-span-1">
-                    <span className="text-[11px] font-bold text-slate-400 block">% Acuses de Enterado</span>
-                    <span className="text-2xl font-black text-emerald-400">{avgAckRate}%</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">% Acuses de Enterado</div>
+                    <div className="text-2xl font-black text-emerald-400">{avgAckRate}%</div>
                     <div className="w-full bg-slate-950 h-1.5 rounded-full overflow-hidden mt-1.5 border border-slate-800">
                       <div
                         className="bg-emerald-400 h-full rounded-full transition-all"
@@ -12230,9 +8488,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* Filtros de la Bandeja */}
             <div className="bg-slate-900 border border-slate-800 p-3 rounded-2xl flex items-center gap-2 overflow-x-auto">
-              <span className="text-xs font-bold text-slate-400 px-2 flex items-center gap-1">
+              <div className="text-xs font-bold text-slate-400 px-2 flex items-center gap-1">
                 <Filter className="w-3.5 h-3.5" /> Filtrar:
-              </span>
+              </div>
               <button
                 onClick={() => setNoticeFilter('ALL')}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
@@ -12296,11 +8554,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {/* Cabecera del Comunicado */}
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="font-mono text-xs font-black bg-purple-500/20 text-purple-300 border border-purple-500/30 px-2.5 py-0.5 rounded-lg">
+                          <div className="font-mono text-xs font-black bg-purple-500/20 text-purple-300 border border-purple-500/30 px-2.5 py-0.5 rounded-lg">
                             {notice.folio}
-                          </span>
+                          </div>
 
-                          <span
+                          <div
                             className={`text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full border ${
                               isCitatorio
                                 ? 'bg-amber-500/10 text-amber-400 border-amber-500/30'
@@ -12314,15 +8572,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               : notice.type === 'AVISO_URGENTE'
                               ? 'Aviso Urgente'
                               : 'Circular Oficial'}
-                          </span>
+                          </div>
 
                           {isUrgent && (
-                            <span className="bg-rose-600 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse">
+                            <div className="bg-rose-600 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse">
                               <AlertTriangle className="w-3 h-3" /> Urgente
-                            </span>
+                            </div>
                           )}
 
-                          <span className="text-[11px] text-slate-400">
+                          <div className="text-[11px] text-slate-400">
                             • Destinatarios:{' '}
                             <strong className="text-slate-200">
                               {notice.targetAudience === 'TODOS'
@@ -12331,7 +8589,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 ? notice.targetGroupName
                                 : `Alumno: ${notice.targetStudentName}`}
                             </strong>
-                          </span>
+                          </div>
                         </div>
 
                         <div className="text-right text-xs text-slate-400 font-mono">
@@ -12352,7 +8610,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <div className="bg-amber-950/40 border border-amber-700/60 rounded-2xl p-4 text-xs space-y-1 text-amber-200">
                           <div className="font-bold flex items-center gap-1.5 text-amber-300">
                             <Clock className="w-4 h-4" />
-                            <span>Fecha y Hora de la Cita:</span>
+                            <div>Fecha y Hora de la Cita:</div>
                             <strong className="text-white text-sm ml-1">{notice.appointmentDateTime}</strong>
                           </div>
                           <div className="text-[11px] text-amber-300/80">
@@ -12368,18 +8626,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {notice.requiresAcknowledgment && (
                         <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs">
-                            <span className="text-slate-400 flex items-center gap-1.5">
+                            <div className="text-slate-400 flex items-center gap-1.5">
                               <CheckCheck className="w-4 h-4 text-emerald-400" />
-                              <span>Control de Acuse de Enterado:</span>
+                              <div>Control de Acuse de Enterado:</div>
                               <strong className="text-emerald-400">
                                 {notice.acknowledgedCount} de {notice.totalRecipients} tutores confirmaron ({ackPercentage}%)
                               </strong>
-                            </span>
+                            </div>
 
                             {notice.acknowledgmentDeadline && (
-                              <span className="text-[11px] text-slate-500 font-mono">
+                              <div className="text-[11px] text-slate-500 font-mono">
                                 Límite de confirmación: {notice.acknowledgmentDeadline}
-                              </span>
+                              </div>
                             )}
                           </div>
 
@@ -12400,7 +8658,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             className="bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 cursor-pointer transition-all shadow-sm"
                           >
                             <Send className="w-3.5 h-3.5" />
-                            <span>Difundir por WhatsApp</span>
+                            <div>Difundir por WhatsApp</div>
                           </button>
 
                           <button
@@ -12408,13 +8666,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             className="bg-slate-800 hover:bg-slate-750 text-slate-200 border border-slate-700 font-bold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 cursor-pointer transition-all"
                           >
                             <Printer className="w-3.5 h-3.5 text-purple-400" />
-                            <span>Imprimir Formato Membretado</span>
+                            <div>Imprimir Formato Membretado</div>
                           </button>
                         </div>
 
-                        <span className="text-[11px] text-slate-500 font-mono">
+                        <div className="text-[11px] text-slate-500 font-mono">
                           Estatus: <strong className="text-emerald-400">Activo en Portal Familiar</strong>
-                        </span>
+                        </div>
                       </div>
                     </div>
                   );
@@ -12430,10 +8688,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                  <div className="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
                     <QrCode className="w-3 h-3" /> Control de Acceso & Identidad Escolar
-                  </span>
-                  <span className="text-slate-400 text-xs">• Ciclo Escolar 2026-2027</span>
+                  </div>
+                  <div className="text-slate-400 text-xs">• Ciclo Escolar 2026-2027</div>
                 </div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <CreditCard className="w-6 h-6 text-cyan-400" />
@@ -12450,7 +8708,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-4 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-emerald-500/20"
                 >
                   <Scan className="w-4 h-4" />
-                  <span>📷 Simulador de Torniquete QR</span>
+                  <div>📷 Simulador de Torniquete QR</div>
                 </button>
 
                 <button
@@ -12461,7 +8719,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-slate-800 hover:bg-slate-750 text-slate-200 border border-slate-700 px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer"
                 >
                   <Printer className="w-4 h-4 text-cyan-400" />
-                  <span>Imprimir Todas ({credentials.length})</span>
+                  <div>Imprimir Todas ({credentials.length})</div>
                 </button>
               </div>
             </div>
@@ -12475,36 +8733,36 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               return (
                 <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
-                    <span className="text-[11px] font-bold text-slate-400 block">Total Carnets Emitidos</span>
-                    <span className="text-2xl font-black text-white">{credentials.length}</span>
-                    <span className="text-[10px] text-slate-500 block mt-0.5">Credenciales activas</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">Total Carnets Emitidos</div>
+                    <div className="text-2xl font-black text-white">{credentials.length}</div>
+                    <div className="text-[10px] text-slate-500 block mt-0.5">Credenciales activas</div>
                   </div>
 
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
-                    <span className="text-[11px] font-bold text-slate-400 block">Carnets de Alumnos</span>
-                    <span className="text-2xl font-black text-cyan-400">{studentCreds}</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">Carnets de Alumnos</div>
+                    <div className="text-2xl font-black text-cyan-400">{studentCreds}</div>
                     <div className="text-[10px] text-slate-500 block mt-0.5">Carnets activos</div>
                   </div>
 
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
-                    <span className="text-[11px] font-bold text-slate-400 block">Docentes & Personal</span>
-                    <span className="text-2xl font-black text-purple-400">{teacherCreds}</span>
-                    <span className="text-[10px] text-slate-500 block mt-0.5">Gafetes institucionales</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">Docentes & Personal</div>
+                    <div className="text-2xl font-black text-purple-400">{teacherCreds}</div>
+                    <div className="text-[10px] text-slate-500 block mt-0.5">Gafetes institucionales</div>
                   </div>
 
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
-                    <span className="text-[11px] font-bold text-slate-400 block">Accesos Registrados Hoy</span>
-                    <span className="text-2xl font-black text-emerald-400">{totalScansToday}</span>
-                    <span className="text-[10px] text-slate-500 block mt-0.5">Pases por torniquete</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">Accesos Registrados Hoy</div>
+                    <div className="text-2xl font-black text-emerald-400">{totalScansToday}</div>
+                    <div className="text-[10px] text-slate-500 block mt-0.5">Pases por torniquete</div>
                   </div>
 
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl col-span-2 sm:col-span-1">
-                    <span className="text-[11px] font-bold text-slate-400 block">Torniquete & Puerta</span>
-                    <span className="text-xs font-black text-emerald-400 flex items-center gap-1.5 mt-1">
-                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <div className="text-[11px] font-bold text-slate-400 block">Torniquete & Puerta</div>
+                    <div className="text-xs font-black text-emerald-400 flex items-center gap-1.5 mt-1">
+                      <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></div>
                       EN LÍNEA (Sync)
-                    </span>
-                    <span className="text-[10px] text-slate-500 block mt-1">Puerta Principal Activa</span>
+                    </div>
+                    <div className="text-[10px] text-slate-500 block mt-1">Puerta Principal Activa</div>
                   </div>
                 </div>
               );
@@ -12537,7 +8795,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               {credentialFilter === 'STUDENT' && (
                 <div className="flex items-center gap-2 text-xs">
-                  <span className="text-slate-400 font-bold">Grupo:</span>
+                  <div className="text-slate-400 font-bold">Grupo:</div>
                   <select
                     value={selectedGroupForCreds}
                     onChange={(e) => setSelectedGroupForCreds(e.target.value)}
@@ -12575,17 +8833,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {/* Cabecera de la Tarjeta */}
                       <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                         <div className="flex items-center gap-2">
-                          <span className="font-mono text-xs font-black bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-2.5 py-0.5 rounded-lg">
+                          <div className="font-mono text-xs font-black bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-2.5 py-0.5 rounded-lg">
                             {cred.credentialCode}
-                          </span>
-                          <span className="bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
+                          </div>
+                          <div className="bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
                             {cred.status}
-                          </span>
+                          </div>
                         </div>
 
-                        <span className="text-xs text-slate-400 font-mono">
+                        <div className="text-xs text-slate-400 font-mono">
                           {cred.validThrough}
-                        </span>
+                        </div>
                       </div>
 
                       {/* VISTA PREVIA DEL GAFETE PVC (ANVERSO) */}
@@ -12606,9 +8864,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             </div>
                           </div>
 
-                          <span className="text-[9px] font-mono font-bold bg-slate-800 px-2 py-0.5 rounded text-cyan-300 border border-slate-700">
+                          <div className="text-[9px] font-mono font-bold bg-slate-800 px-2 py-0.5 rounded text-cyan-300 border border-slate-700">
                             CREDENCIAL OFICIAL
-                          </span>
+                          </div>
                         </div>
 
                         {/* Datos del Portador */}
@@ -12618,9 +8876,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-white font-bold text-sm">
                               {cred.fullName.charAt(0)}
                             </div>
-                            <span className="text-[8px] font-mono text-slate-400 mt-1 uppercase">
+                            <div className="text-[8px] font-mono text-slate-400 mt-1 uppercase">
                               {isStudent ? 'ALUMNO' : 'DOCENTE'}
-                            </span>
+                            </div>
                             <div className="absolute bottom-0 inset-x-0 bg-cyan-500/20 text-cyan-300 text-[7px] text-center font-bold py-0.5 uppercase">
                               SEP 2026
                             </div>
@@ -12659,11 +8917,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {/* Reverso Informativo (Ficha Médica y de Emergencia) */}
                         <div className="mt-3 pt-2.5 border-t border-slate-800 grid grid-cols-3 gap-2 text-[10px]">
                           <div className="bg-slate-950/70 p-1.5 rounded-lg border border-slate-800">
-                            <span className="text-slate-500 block">Tipo Sangre:</span>
+                            <div className="text-slate-500 block">Tipo Sangre:</div>
                             <strong className="text-rose-400 font-black">{cred.bloodType}</strong>
                           </div>
                           <div className="bg-slate-950/70 p-1.5 rounded-lg border border-slate-800 col-span-2 truncate">
-                            <span className="text-slate-500 block">Contacto de Emergencia:</span>
+                            <div className="text-slate-500 block">Contacto de Emergencia:</div>
                             <strong className="text-slate-200 truncate">{cred.emergencyContactName} ({cred.emergencyContactPhone})</strong>
                           </div>
                         </div>
@@ -12678,7 +8936,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             title="Simular escaneo de entrada matutina"
                           >
                             <Check className="w-3.5 h-3.5" />
-                            <span>Entrada</span>
+                            <div>Entrada</div>
                           </button>
 
                           <button
@@ -12687,7 +8945,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             title="Simular escaneo de salida de la jornada"
                           >
                             <LogOut className="w-3.5 h-3.5" />
-                            <span>Salida</span>
+                            <div>Salida</div>
                           </button>
 
                           <button
@@ -12708,7 +8966,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           className="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 cursor-pointer shadow-md shadow-cyan-500/20 transition-all"
                         >
                           <Printer className="w-3.5 h-3.5" />
-                          <span>Imprimir Gafete PVC</span>
+                          <div>Imprimir Gafete PVC</div>
                         </button>
                       </div>
                     </div>
@@ -12734,7 +8992,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="text-xs text-slate-400 hover:text-slate-200 flex items-center gap-1 cursor-pointer"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
-                  <span>Limpiar bitácora</span>
+                  <div>Limpiar bitácora</div>
                 </button>
               </div>
 
@@ -12764,41 +9022,41 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           </td>
                           <td className="py-2.5 px-3 font-bold text-white whitespace-nowrap">
                             {log.personName}
-                            <span className="block text-[10px] text-slate-500 font-normal">{log.roleOrGrade}</span>
+                            <div className="block text-[10px] text-slate-500 font-normal">{log.roleOrGrade}</div>
                           </td>
                           <td className="py-2.5 px-3">
-                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                            <div className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
                               log.personType === 'STUDENT'
                                 ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20'
                                 : 'bg-purple-500/10 text-purple-400 border-purple-500/20'
                             }`}>
                               {log.personType === 'STUDENT' ? 'Alumno' : 'Docente'}
-                            </span>
+                            </div>
                           </td>
                           <td className="py-2.5 px-3 font-mono text-[11px] text-slate-400">
                             {log.credentialCode}
                           </td>
                           <td className="py-2.5 px-3 whitespace-nowrap">
-                            <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-full ${
+                            <div className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-full ${
                               log.direction === 'ENTRADA'
                                 ? 'bg-emerald-950 text-emerald-400 border border-emerald-800'
                                 : 'bg-amber-950 text-amber-400 border border-amber-800'
                             }`}>
                               {log.direction}
-                            </span>
+                            </div>
                           </td>
                           <td className="py-2.5 px-3 font-mono text-slate-400">
                             {log.scanPoint.replace('_', ' ')}
                           </td>
                           <td className="py-2.5 px-3 whitespace-nowrap">
                             {log.accessGranted ? (
-                              <span className="text-emerald-400 font-bold flex items-center gap-1">
+                              <div className="text-emerald-400 font-bold flex items-center gap-1">
                                 <Check className="w-3.5 h-3.5" /> Concedido
-                              </span>
+                              </div>
                             ) : (
-                              <span className="text-rose-400 font-bold flex items-center gap-1">
+                              <div className="text-rose-400 font-bold flex items-center gap-1">
                                 <X className="w-3.5 h-3.5" /> Denegado
-                              </span>
+                              </div>
                             )}
                           </td>
                         </tr>
@@ -12818,10 +9076,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                  <div className="bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
                     <ClipboardList className="w-3 h-3" /> Agenda y Deberes Académicos
-                  </span>
-                  <span className="text-slate-400 text-xs">• Ciclo Escolar 2026-2027</span>
+                  </div>
+                  <div className="text-slate-400 text-xs">• Ciclo Escolar 2026-2027</div>
                 </div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <ClipboardList className="w-6 h-6 text-blue-400" />
@@ -12838,7 +9096,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-blue-600/20"
                 >
                   <ClipboardList className="w-4 h-4" />
-                  <span>+ Asignar Nueva Tarea o Proyecto</span>
+                  <div>+ Asignar Nueva Tarea o Proyecto</div>
                 </button>
               </div>
             </div>
@@ -12853,33 +9111,33 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               return (
                 <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
-                    <span className="text-[11px] font-bold text-slate-400 block">Total Asignaciones</span>
-                    <span className="text-2xl font-black text-white">{totalTasks}</span>
-                    <span className="text-[10px] text-slate-500 block mt-0.5">Actividades en curso</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">Total Asignaciones</div>
+                    <div className="text-2xl font-black text-white">{totalTasks}</div>
+                    <div className="text-[10px] text-slate-500 block mt-0.5">Actividades en curso</div>
                   </div>
 
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
-                    <span className="text-[11px] font-bold text-slate-400 block">Tareas Diarias</span>
-                    <span className="text-2xl font-black text-blue-400">{tareasCount}</span>
-                    <span className="text-[10px] text-slate-500 block mt-0.5">Ejercicios y lecturas</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">Tareas Diarias</div>
+                    <div className="text-2xl font-black text-blue-400">{tareasCount}</div>
+                    <div className="text-[10px] text-slate-500 block mt-0.5">Ejercicios y lecturas</div>
                   </div>
 
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
-                    <span className="text-[11px] font-bold text-slate-400 block">Proyectos en Curso</span>
-                    <span className="text-2xl font-black text-purple-400">{proyectosCount}</span>
-                    <span className="text-[10px] text-slate-500 block mt-0.5">Evaluación formativa</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">Proyectos en Curso</div>
+                    <div className="text-2xl font-black text-purple-400">{proyectosCount}</div>
+                    <div className="text-[10px] text-slate-500 block mt-0.5">Evaluación formativa</div>
                   </div>
 
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
-                    <span className="text-[11px] font-bold text-slate-400 block">Entregas Recibidas</span>
-                    <span className="text-2xl font-black text-emerald-400">{totalSubmissions}</span>
-                    <span className="text-[10px] text-slate-500 block mt-0.5">Revisadas o en proceso</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">Entregas Recibidas</div>
+                    <div className="text-2xl font-black text-emerald-400">{totalSubmissions}</div>
+                    <div className="text-[10px] text-slate-500 block mt-0.5">Revisadas o en proceso</div>
                   </div>
 
                   <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl col-span-2 sm:col-span-1">
-                    <span className="text-[11px] font-bold text-slate-400 block">Prórrogas Médicas</span>
-                    <span className="text-2xl font-black text-amber-400">1 Alumno</span>
-                    <span className="text-[10px] text-slate-400 block mt-0.5">Carlos Mendoza Ruiz</span>
+                    <div className="text-[11px] font-bold text-slate-400 block">Prórrogas Médicas</div>
+                    <div className="text-2xl font-black text-amber-400">1 Alumno</div>
+                    <div className="text-[10px] text-slate-400 block mt-0.5">Carlos Mendoza Ruiz</div>
                   </div>
                 </div>
               );
@@ -12887,9 +9145,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* Filtros de Tareas */}
             <div className="bg-slate-900 border border-slate-800 p-3 rounded-2xl flex items-center gap-2 overflow-x-auto">
-              <span className="text-xs font-bold text-slate-400 px-2 flex items-center gap-1">
+              <div className="text-xs font-bold text-slate-400 px-2 flex items-center gap-1">
                 <Filter className="w-3.5 h-3.5" /> Filtrar:
-              </span>
+              </div>
               <button
                 onClick={() => setTaskFilter('ALL')}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
@@ -12935,10 +9193,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {/* Cabecera de la Tarea */}
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="font-mono text-xs font-black bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2.5 py-0.5 rounded-lg">
+                          <div className="font-mono text-xs font-black bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2.5 py-0.5 rounded-lg">
                             {task.folio}
-                          </span>
-                          <span
+                          </div>
+                          <div
                             className={`text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full border ${
                               task.type === 'PROYECTO'
                                 ? 'bg-purple-500/10 text-purple-400 border-purple-500/20'
@@ -12946,13 +9204,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             }`}
                           >
                             {task.type}
-                          </span>
-                          <span className="bg-slate-800 text-slate-200 text-xs font-bold px-2.5 py-0.5 rounded-lg border border-slate-700">
+                          </div>
+                          <div className="bg-slate-800 text-slate-200 text-xs font-bold px-2.5 py-0.5 rounded-lg border border-slate-700">
                             {task.subjectName}
-                          </span>
-                          <span className="text-[11px] text-slate-400">
+                          </div>
+                          <div className="text-[11px] text-slate-400">
                             • Grupo: <strong className="text-slate-200">{task.groupName}</strong>
-                          </span>
+                          </div>
                         </div>
 
                         <div className="text-right text-xs text-slate-400 font-mono">
@@ -12971,12 +9229,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {/* Fechas y Plazos */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                         <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 flex items-center justify-between">
-                          <span className="text-slate-400">📅 Fecha Límite Oficial:</span>
+                          <div className="text-slate-400">📅 Fecha Límite Oficial:</div>
                           <strong className="text-rose-400 font-mono">{task.dueDate}</strong>
                         </div>
 
                         <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 flex items-center justify-between">
-                          <span className="text-slate-400">⭐ Escala Máxima:</span>
+                          <div className="text-slate-400">⭐ Escala Máxima:</div>
                           <strong className="text-amber-400 font-mono">{task.maxScore} pts</strong>
                         </div>
                       </div>
@@ -12986,7 +9244,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <div className="bg-amber-950/30 border border-amber-800/60 rounded-2xl p-3.5 text-xs text-amber-200 space-y-1">
                           <div className="font-bold flex items-center gap-1.5 text-amber-300">
                             <HeartPulse className="w-4 h-4 text-rose-400" />
-                            <span>Prórroga Extemporánea por Justificante Médico Habilitada:</span>
+                            <div>Prórroga Extemporánea por Justificante Médico Habilitada:</div>
                           </div>
                           <p className="text-[11px] text-amber-200/90 leading-relaxed">
                             Los alumnos con justificante médico oficial autorizado (como{' '}
@@ -13002,14 +9260,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {/* Barra de Progreso de Entregas */}
                       <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
                         <div className="flex items-center justify-between text-xs">
-                          <span className="text-slate-400 flex items-center gap-1.5">
+                          <div className="text-slate-400 flex items-center gap-1.5">
                             <FileCheck className="w-4 h-4 text-emerald-400" />
-                            <span>Entregas de los alumnos:</span>
+                            <div>Entregas de los alumnos:</div>
                             <strong className="text-emerald-400">
                               {task.submittedCount} de {task.totalStudents} entregaron ({submissionPercent}%)
                             </strong>
-                          </span>
-                          <span className="text-[11px] font-mono text-slate-500">Estatus: Activa</span>
+                          </div>
+                          <div className="text-[11px] font-mono text-slate-500">Estatus: Activa</div>
                         </div>
 
                         <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-slate-800">
@@ -13028,7 +9286,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             className="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 cursor-pointer shadow-md shadow-blue-600/20 transition-all"
                           >
                             <ClipboardList className="w-4 h-4" />
-                            <span>Revisar Entregas & Calificar</span>
+                            <div>Revisar Entregas & Calificar</div>
                           </button>
 
                           <button
@@ -13040,13 +9298,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             className="bg-slate-800 hover:bg-slate-750 text-slate-300 text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 cursor-pointer transition-colors"
                           >
                             <Send className="w-3.5 h-3.5 text-emerald-400" />
-                            <span>Recordatorio WhatsApp</span>
+                            <div>Recordatorio WhatsApp</div>
                           </button>
                         </div>
 
-                        <span className="text-[11px] text-slate-500 font-mono">
+                        <div className="text-[11px] text-slate-500 font-mono">
                           Visible en el Portal Familiar
-                        </span>
+                        </div>
                       </div>
                     </div>
                   );
@@ -13062,10 +9320,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                  <div className="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
                     <CalendarDays className="w-3 h-3" /> Parrilla Semanal SEP • 50 Minutos
-                  </span>
-                  <span className="text-slate-400 text-xs">• Ciclo Escolar 2026-2027</span>
+                  </div>
+                  <div className="text-slate-400 text-xs">• Ciclo Escolar 2026-2027</div>
                 </div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <CalendarDays className="w-6 h-6 text-indigo-400" />
@@ -13085,7 +9343,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-indigo-600/20"
                 >
                   <CalendarDays className="w-4 h-4" />
-                  <span>+ Asignar Bloque Horario</span>
+                  <div>+ Asignar Bloque Horario</div>
                 </button>
 
                 <button
@@ -13093,7 +9351,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-slate-800 hover:bg-slate-750 text-slate-200 border border-slate-700 px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer"
                 >
                   <Printer className="w-4 h-4 text-indigo-400" />
-                  <span>Imprimir Horario</span>
+                  <div>Imprimir Horario</div>
                 </button>
               </div>
             </div>
@@ -13102,7 +9360,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="flex items-center gap-3 flex-wrap">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-slate-400">Grupo:</span>
+                  <div className="text-xs font-bold text-slate-400">Grupo:</div>
                   <select
                     value={selectedGroupForSchedule}
                     onChange={(e) => setSelectedGroupForSchedule(e.target.value)}
@@ -13136,7 +9394,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Indicador Anticolisión */}
               <div className="flex items-center gap-2 text-xs font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-800/60 px-3 py-1.5 rounded-xl self-start md:self-auto">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span>0 Colisiones Detectadas • Matriz 100% Optimizada</span>
+                <div>0 Colisiones Detectadas • Matriz 100% Optimizada</div>
               </div>
             </div>
 
@@ -13203,7 +9461,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               {/* Columna Horario */}
                               <td className="py-3 px-3 font-mono font-bold text-[11px] text-slate-300 text-center bg-slate-950/60 border-r border-slate-800 whitespace-nowrap">
                                 <div>{block.start} - {block.end}</div>
-                                <span className="text-[9px] text-indigo-400 font-sans block">{block.label}</span>
+                                <div className="text-[9px] text-indigo-400 font-sans block">{block.label}</div>
                               </td>
 
                               {/* Columnas de Días */}
@@ -13243,19 +9501,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                                         <div className="text-[11px] text-slate-300 flex items-center gap-1 mb-1">
                                           <UserCheck className="w-3 h-3 text-indigo-400 shrink-0" />
-                                          <span className="truncate">{slot.teacherName}</span>
+                                          <div className="truncate">{slot.teacherName}</div>
                                         </div>
 
                                         <div className="flex items-center justify-between text-[10px] pt-1 border-t border-slate-800/60 text-slate-400">
-                                          <span className="flex items-center gap-1 font-mono">
+                                          <div className="flex items-center gap-1 font-mono">
                                             <MapPin className="w-3 h-3 text-cyan-400 shrink-0" />
                                             <strong className="text-slate-300">{slot.classroom}</strong>
-                                          </span>
+                                          </div>
                                         </div>
                                       </div>
                                     ) : (
                                       <div className="h-18 border-2 border-dashed border-slate-800/80 rounded-2xl flex items-center justify-center text-slate-600 text-[10px] hover:border-slate-700 transition-colors">
-                                        <span>Sin asignar</span>
+                                        <div>Sin asignar</div>
                                       </div>
                                     )}
                                   </td>
@@ -13273,28 +9531,28 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* Código de Colores y Leyenda Pedagógica */}
             <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl flex flex-wrap items-center justify-between gap-3 text-xs">
-              <span className="font-bold text-slate-300 flex items-center gap-1.5">
+              <div className="font-bold text-slate-300 flex items-center gap-1.5">
                 🎨 Campos Formativos y Espacios:
-              </span>
+              </div>
               <div className="flex items-center gap-3 flex-wrap text-[11px]">
-                <span className="flex items-center gap-1.5 text-cyan-300">
-                  <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 inline-block"></span> Lenguajes & Español
-                </span>
-                <span className="flex items-center gap-1.5 text-emerald-300">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span> Saberes & Matemáticas
-                </span>
-                <span className="flex items-center gap-1.5 text-purple-300">
-                  <span className="w-2.5 h-2.5 rounded-full bg-purple-400 inline-block"></span> Ética, Naturaleza & Soc.
-                </span>
-                <span className="flex items-center gap-1.5 text-pink-300">
-                  <span className="w-2.5 h-2.5 rounded-full bg-pink-400 inline-block"></span> Educación Física
-                </span>
-                <span className="flex items-center gap-1.5 text-blue-300">
-                  <span className="w-2.5 h-2.5 rounded-full bg-blue-400 inline-block"></span> Computación & Robótica
-                </span>
-                <span className="flex items-center gap-1.5 text-rose-300">
-                  <span className="w-2.5 h-2.5 rounded-full bg-rose-400 inline-block"></span> Artes & Música
-                </span>
+                <div className="flex items-center gap-1.5 text-cyan-300">
+                  <div className="w-2.5 h-2.5 rounded-full bg-cyan-400 inline-block"></div> Lenguajes & Español
+                </div>
+                <div className="flex items-center gap-1.5 text-emerald-300">
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></div> Saberes & Matemáticas
+                </div>
+                <div className="flex items-center gap-1.5 text-purple-300">
+                  <div className="w-2.5 h-2.5 rounded-full bg-purple-400 inline-block"></div> Ética, Naturaleza & Soc.
+                </div>
+                <div className="flex items-center gap-1.5 text-pink-300">
+                  <div className="w-2.5 h-2.5 rounded-full bg-pink-400 inline-block"></div> Educación Física
+                </div>
+                <div className="flex items-center gap-1.5 text-blue-300">
+                  <div className="w-2.5 h-2.5 rounded-full bg-blue-400 inline-block"></div> Computación & Robótica
+                </div>
+                <div className="flex items-center gap-1.5 text-rose-300">
+                  <div className="w-2.5 h-2.5 rounded-full bg-rose-400 inline-block"></div> Artes & Música
+                </div>
               </div>
             </div>
           </div>
@@ -13307,10 +9565,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                  <div className="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
                     <UserPlus className="w-3 h-3" /> Convocatoria de Admisión 2026-2027
-                  </span>
-                  <span className="text-slate-400 text-xs">• Control Escolar & Dirección</span>
+                  </div>
+                  <div className="text-slate-400 text-xs">• Control Escolar & Dirección</div>
                 </div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <UserPlus className="w-6 h-6 text-amber-400" />
@@ -13327,7 +9585,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-amber-500 hover:bg-amber-450 text-slate-950 px-5 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-amber-500/20"
                 >
                   <UserPlus className="w-4 h-4" />
-                  <span>+ Registrar Aspirante</span>
+                  <div>+ Registrar Aspirante</div>
                 </button>
 
                 <button
@@ -13338,7 +9596,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-slate-800 hover:bg-slate-750 text-slate-200 border border-slate-700 px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer"
                 >
                   <Search className="w-4 h-4 text-amber-400" />
-                  <span>🌐 Portal Público Web de Admisiones</span>
+                  <div>🌐 Portal Público Web de Admisiones</div>
                 </button>
               </div>
             </div>
@@ -13346,41 +9604,41 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* Tarjetas KPI de Admisiones */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
                   Total Aspirantes
-                </span>
+                </div>
                 <div className="text-2xl font-black text-white">{applicants.length}</div>
-                <span className="text-[11px] text-amber-400">Ciclo Escolar 2026-2027</span>
+                <div className="text-[11px] text-amber-400">Ciclo Escolar 2026-2027</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
                   Revisión Documental
-                </span>
+                </div>
                 <div className="text-2xl font-black text-cyan-400">
                   {applicants.filter((a) => a.status === 'DOCUMENTACION_EN_REVISION' || a.status === 'REGISTRADO').length}
                 </div>
-                <span className="text-[11px] text-slate-400">Expedientes por cotejar</span>
+                <div className="text-[11px] text-slate-400">Expedientes por cotejar</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
                   Citas Agendadas
-                </span>
+                </div>
                 <div className="text-2xl font-black text-purple-400">
                   {applicants.filter((a) => a.status === 'EVALUACION_AGENDADA').length}
                 </div>
-                <span className="text-[11px] text-slate-400">Evaluación / Entrevista</span>
+                <div className="text-[11px] text-slate-400">Evaluación / Entrevista</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
                   Aceptados / Inscritos
-                </span>
+                </div>
                 <div className="text-2xl font-black text-emerald-400">
                   {applicants.filter((a) => a.status === 'ACEPTADO' || a.status === 'INSCRITO').length}
                 </div>
-                <span className="text-[11px] text-emerald-400">Listos para matrícula</span>
+                <div className="text-[11px] text-emerald-400">Listos para matrícula</div>
               </div>
             </div>
 
@@ -13388,7 +9646,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="flex items-center gap-3 flex-wrap">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-slate-400">Nivel:</span>
+                  <div className="text-xs font-bold text-slate-400">Nivel:</div>
                   <select
                     value={selectedApplicantLevelFilter}
                     onChange={(e) => setSelectedApplicantLevelFilter(e.target.value)}
@@ -13403,7 +9661,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="h-4 w-px bg-slate-800 hidden sm:block"></div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-slate-400">Estatus:</span>
+                  <div className="text-xs font-bold text-slate-400">Estatus:</div>
                   <select
                     value={selectedApplicantStatusFilter}
                     onChange={(e) => setSelectedApplicantStatusFilter(e.target.value)}
@@ -13420,13 +9678,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <span className="text-xs text-slate-400 font-mono">
+              <div className="text-xs text-slate-400 font-mono">
                 Mostrando {applicants.filter((a) => {
                   if (selectedApplicantLevelFilter !== 'ALL' && a.targetLevelId !== selectedApplicantLevelFilter) return false;
                   if (selectedApplicantStatusFilter !== 'ALL' && a.status !== selectedApplicantStatusFilter) return false;
                   return true;
                 }).length} aspirantes
-              </span>
+              </div>
             </div>
 
             {/* Listado de Aspirantes */}
@@ -13448,48 +9706,48 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     >
                       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-800 pb-3">
                         <div className="flex items-center gap-2.5 flex-wrap">
-                          <span className="font-mono text-xs font-black text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-xl">
+                          <div className="font-mono text-xs font-black text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-xl">
                             {applicant.folio}
-                          </span>
-                          <span className="text-xs text-slate-400 font-mono">
+                          </div>
+                          <div className="text-xs text-slate-400 font-mono">
                             Registro: {applicant.appliedAt}
-                          </span>
-                          <span className="bg-slate-800 text-slate-200 text-xs px-2.5 py-0.5 rounded-full font-bold">
+                          </div>
+                          <div className="bg-slate-800 text-slate-200 text-xs px-2.5 py-0.5 rounded-full font-bold">
                             {applicant.targetGrade} ({applicant.targetLevelName})
-                          </span>
+                          </div>
                         </div>
 
                         {/* Estatus del Aspirante */}
                         <div>
                           {applicant.status === 'REGISTRADO' && (
-                            <span className="bg-slate-800 text-slate-300 text-xs font-bold px-3 py-1 rounded-xl border border-slate-700">
+                            <div className="bg-slate-800 text-slate-300 text-xs font-bold px-3 py-1 rounded-xl border border-slate-700">
                               📋 Registrado
-                            </span>
+                            </div>
                           )}
                           {applicant.status === 'DOCUMENTACION_EN_REVISION' && (
-                            <span className="bg-cyan-500/10 text-cyan-400 text-xs font-bold px-3 py-1 rounded-xl border border-cyan-500/20">
+                            <div className="bg-cyan-500/10 text-cyan-400 text-xs font-bold px-3 py-1 rounded-xl border border-cyan-500/20">
                               📑 Documentación en Revisión
-                            </span>
+                            </div>
                           )}
                           {applicant.status === 'EVALUACION_AGENDADA' && (
-                            <span className="bg-purple-500/10 text-purple-300 text-xs font-bold px-3 py-1 rounded-xl border border-purple-500/20">
+                            <div className="bg-purple-500/10 text-purple-300 text-xs font-bold px-3 py-1 rounded-xl border border-purple-500/20">
                               📅 Evaluación Agendada
-                            </span>
+                            </div>
                           )}
                           {applicant.status === 'ACEPTADO' && (
-                            <span className="bg-emerald-500/10 text-emerald-400 text-xs font-bold px-3 py-1 rounded-xl border border-emerald-500/20 flex items-center gap-1.5">
+                            <div className="bg-emerald-500/10 text-emerald-400 text-xs font-bold px-3 py-1 rounded-xl border border-emerald-500/20 flex items-center gap-1.5">
                               <CheckCircle2 className="w-3.5 h-3.5" /> Aceptado (Listo para Inscribir)
-                            </span>
+                            </div>
                           )}
                           {applicant.status === 'INSCRITO' && (
-                            <span className="bg-sky-500/10 text-sky-400 text-xs font-bold px-3 py-1 rounded-xl border border-sky-500/20 flex items-center gap-1.5">
+                            <div className="bg-sky-500/10 text-sky-400 text-xs font-bold px-3 py-1 rounded-xl border border-sky-500/20 flex items-center gap-1.5">
                               <GraduationCap className="w-3.5 h-3.5" /> Alumno Inscrito Oficial
-                            </span>
+                            </div>
                           )}
                           {applicant.status === 'RECHAZADO' && (
-                            <span className="bg-rose-500/10 text-rose-400 text-xs font-bold px-3 py-1 rounded-xl border border-rose-500/20">
+                            <div className="bg-rose-500/10 text-rose-400 text-xs font-bold px-3 py-1 rounded-xl border border-rose-500/20">
                               ❌ No Admitido
-                            </span>
+                            </div>
                           )}
                         </div>
                       </div>
@@ -13505,10 +9763,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             CURP: <strong className="text-slate-200">{applicant.curp}</strong>
                           </div>
                           <div className="text-xs text-slate-300">
-                            Tutor: <span className="text-slate-100 font-bold">{applicant.parentName}</span>
+                            Tutor: <div className="text-slate-100 font-bold">{applicant.parentName}</div>
                           </div>
                           <div className="text-xs text-slate-400">
-                            Tel: <span className="text-slate-300 font-mono">{applicant.parentPhone}</span> • Correo: <span className="text-slate-300 font-mono">{applicant.parentEmail}</span>
+                            Tel: <div className="text-slate-300 font-mono">{applicant.parentPhone}</div> • Correo: <div className="text-slate-300 font-mono">{applicant.parentEmail}</div>
                           </div>
                           {applicant.notes && (
                             <div className="text-[11px] text-slate-400 italic bg-slate-950 p-2 rounded-xl border border-slate-800 mt-2">
@@ -13520,10 +9778,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {/* Documentos y Requisitos */}
                         <div className="space-y-2 bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800">
                           <div className="flex items-center justify-between text-xs">
-                            <span className="font-bold text-slate-300">Expediente Documental:</span>
-                            <span className="font-mono text-amber-400 font-bold">
+                            <div className="font-bold text-slate-300">Expediente Documental:</div>
+                            <div className="font-mono text-amber-400 font-bold">
                               {validatedDocsCount} de {totalDocs} validados
-                            </span>
+                            </div>
                           </div>
 
                           <div className="space-y-1">
@@ -13534,13 +9792,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 title="Haz clic para cambiar estado (Pendiente -> Cargado -> Validado)"
                                 className="flex items-center justify-between text-[11px] p-1.5 rounded-xl hover:bg-slate-900 cursor-pointer transition-colors"
                               >
-                                <span className="text-slate-300 truncate max-w-[180px]">{doc.documentName}</span>
+                                <div className="text-slate-300 truncate max-w-[180px]">{doc.documentName}</div>
                                 {doc.status === 'VALIDADO' ? (
-                                  <span className="text-emerald-400 font-mono text-[10px] font-bold">✓ Validado</span>
+                                  <div className="text-emerald-400 font-mono text-[10px] font-bold">✓ Validado</div>
                                 ) : doc.status === 'CARGADO' ? (
-                                  <span className="text-cyan-400 font-mono text-[10px] font-bold">Cargado</span>
+                                  <div className="text-cyan-400 font-mono text-[10px] font-bold">Cargado</div>
                                 ) : (
-                                  <span className="text-slate-500 font-mono text-[10px]">Pendiente</span>
+                                  <div className="text-slate-500 font-mono text-[10px]">Pendiente</div>
                                 )}
                               </div>
                             ))}
@@ -13549,15 +9807,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                         {/* Citas y Evaluación */}
                         <div className="space-y-2 bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800">
-                          <span className="font-bold text-slate-300 text-xs block">
+                          <div className="font-bold text-slate-300 text-xs block">
                             Evaluación Diagnóstica:
-                          </span>
+                          </div>
 
                           {applicant.evaluationDate ? (
                             <div className="space-y-1.5 text-xs text-slate-300">
                               <div className="flex items-center gap-1.5 text-purple-300 font-mono">
                                 <CalendarClock className="w-3.5 h-3.5" />
-                                <span>{applicant.evaluationDate} hrs</span>
+                                <div>{applicant.evaluationDate} hrs</div>
                               </div>
                               {applicant.evaluationScore !== undefined && (
                                 <div className="text-emerald-400 font-bold">
@@ -13603,7 +9861,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             className="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold px-3 py-1.5 rounded-xl flex items-center gap-1.5 cursor-pointer transition-colors"
                           >
                             <Printer className="w-3.5 h-3.5 text-amber-400" />
-                            <span>Imprimir Ficha Oficial</span>
+                            <div>Imprimir Ficha Oficial</div>
                           </button>
 
                           {applicant.status !== 'INSCRITO' && (
@@ -13631,7 +9889,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-lg shadow-emerald-600/25 transition-all cursor-pointer"
                           >
                             <GraduationCap className="w-4 h-4" />
-                            <span>Formalizar Inscripción Oficial & Generar Matrícula</span>
+                            <div>Formalizar Inscripción Oficial & Generar Matrícula</div>
                           </button>
                         )}
                       </div>
@@ -13649,10 +9907,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                  <div className="bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
                     <BookOpen className="w-3 h-3" /> Fomento a la Lectura & Acervo Escolar
-                  </span>
-                  <span className="text-slate-400 text-xs">• Control de Inventario y Préstamos</span>
+                  </div>
+                  <div className="text-slate-400 text-xs">• Control de Inventario y Préstamos</div>
                 </div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <BookOpen className="w-6 h-6 text-rose-400" />
@@ -13669,7 +9927,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-rose-500 hover:bg-rose-450 text-white px-4 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-rose-500/20"
                 >
                   <PlusCircle className="w-4 h-4" />
-                  <span>+ Registrar Libro</span>
+                  <div>+ Registrar Libro</div>
                 </button>
 
                 <button
@@ -13680,7 +9938,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-amber-500 hover:bg-amber-450 text-slate-950 px-4 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-amber-500/20"
                 >
                   <BookmarkCheck className="w-4 h-4" />
-                  <span>+ Prestar Libro</span>
+                  <div>+ Prestar Libro</div>
                 </button>
 
                 <button
@@ -13691,7 +9949,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-slate-800 hover:bg-slate-750 text-slate-200 border border-slate-700 px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer"
                 >
                   <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                  <span>Validar No Adeudo</span>
+                  <div>Validar No Adeudo</div>
                 </button>
               </div>
             </div>
@@ -13699,41 +9957,41 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* Tarjetas KPI de Biblioteca */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
                   Títulos en Acervo
-                </span>
+                </div>
                 <div className="text-2xl font-black text-white">{books.length}</div>
-                <span className="text-[11px] text-rose-400">Libros registrados</span>
+                <div className="text-[11px] text-rose-400">Libros registrados</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
                   Ejemplares Disponibles
-                </span>
+                </div>
                 <div className="text-2xl font-black text-emerald-400">
                   {books.reduce((acc, b) => acc + b.availableCopies, 0)} / {books.reduce((acc, b) => acc + b.totalCopies, 0)}
                 </div>
-                <span className="text-[11px] text-slate-400">Listos para entrega</span>
+                <div className="text-[11px] text-slate-400">Listos para entrega</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
                   Préstamos Activos
-                </span>
+                </div>
                 <div className="text-2xl font-black text-amber-400">
                   {bookLoans.filter((l) => l.status === 'ACTIVO').length}
                 </div>
-                <span className="text-[11px] text-slate-400">En poder de alumnos</span>
+                <div className="text-[11px] text-slate-400">En poder de alumnos</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
                   Devoluciones Completadas
-                </span>
+                </div>
                 <div className="text-2xl font-black text-sky-400">
                   {bookLoans.filter((l) => l.status === 'DEVUELTO').length}
                 </div>
-                <span className="text-[11px] text-slate-400">En estantería</span>
+                <div className="text-[11px] text-slate-400">En estantería</div>
               </div>
             </div>
 
@@ -13748,7 +10006,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <BookOpen className="w-4 h-4" />
-                <span>Catálogo de Libros ({books.length})</span>
+                <div>Catálogo de Libros ({books.length})</div>
               </button>
 
               <button
@@ -13760,7 +10018,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <BookmarkCheck className="w-4 h-4" />
-                <span>Préstamos y Devoluciones ({bookLoans.length})</span>
+                <div>Préstamos y Devoluciones ({bookLoans.length})</div>
               </button>
 
               <button
@@ -13772,7 +10030,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <ShieldCheck className="w-4 h-4" />
-                <span>Solvencia y No Adeudo Bibliotecario</span>
+                <div>Solvencia y No Adeudo Bibliotecario</div>
               </button>
             </div>
 
@@ -13808,7 +10066,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </select>
                   </div>
 
-                  <span className="text-xs text-slate-400 font-mono">
+                  <div className="text-xs text-slate-400 font-mono">
                     {books.filter((b) => {
                       if (selectedBookCategoryFilter !== 'ALL' && b.category !== selectedBookCategoryFilter) return false;
                       if (bookSearchQuery.trim()) {
@@ -13817,7 +10075,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       }
                       return true;
                     }).length} libros encontrados
-                  </span>
+                  </div>
                 </div>
 
                 {/* Grid de Libros */}
@@ -13838,12 +10096,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       >
                         <div className="space-y-2.5">
                           <div className="flex items-center justify-between gap-2">
-                            <span className="bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-mono font-bold px-2 py-0.5 rounded-lg">
+                            <div className="bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-mono font-bold px-2 py-0.5 rounded-lg">
                               {book.category.replace('_', ' ')}
-                            </span>
-                            <span className="bg-slate-800 text-slate-300 text-[10px] px-2 py-0.5 rounded-md font-bold">
+                            </div>
+                            <div className="bg-slate-800 text-slate-300 text-[10px] px-2 py-0.5 rounded-md font-bold">
                               Nivel: {book.targetLevel}
-                            </span>
+                            </div>
                           </div>
 
                           <div>
@@ -13851,14 +10109,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             <p className="text-xs text-slate-300">
                               Por: <strong className="text-slate-100">{book.author}</strong>
                             </p>
-                            <span className="text-[11px] text-slate-400 font-mono block">
+                            <div className="text-[11px] text-slate-400 font-mono block">
                               {book.publisher} • Año {book.yearPublished} • ISBN: {book.isbn}
-                            </span>
+                            </div>
                           </div>
 
                           <div className="bg-slate-950 p-2.5 rounded-xl border border-slate-800 text-xs flex items-center justify-between">
-                            <span className="text-slate-400">Ubicación:</span>
-                            <span className="font-mono text-amber-300 font-bold">{book.shelfLocation}</span>
+                            <div className="text-slate-400">Ubicación:</div>
+                            <div className="font-mono text-amber-300 font-bold">{book.shelfLocation}</div>
                           </div>
 
                           {book.summary && (
@@ -13871,10 +10129,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {/* Disponibilidad y Acciones */}
                         <div className="space-y-3 pt-3 border-t border-slate-800">
                           <div className="flex items-center justify-between text-xs">
-                            <span className="text-slate-400">Disponibilidad en sala:</span>
-                            <span className={`font-mono font-black ${book.availableCopies > 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                            <div className="text-slate-400">Disponibilidad en sala:</div>
+                            <div className={`font-mono font-black ${book.availableCopies > 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                               {book.availableCopies} de {book.totalCopies} disponibles
-                            </span>
+                            </div>
                           </div>
 
                           {/* Barra de progreso de stock */}
@@ -13904,7 +10162,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             }`}
                           >
                             <BookmarkCheck className="w-3.5 h-3.5" />
-                            <span>{book.availableCopies > 0 ? 'Prestar este Libro' : 'Sin Ejemplares Disponibles'}</span>
+                            <div>{book.availableCopies > 0 ? 'Prestar este Libro' : 'Sin Ejemplares Disponibles'}</div>
                           </button>
                         </div>
                       </div>
@@ -13918,7 +10176,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="space-y-4">
                 <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl flex items-center justify-between gap-4">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-slate-400">Filtrar Estatus:</span>
+                    <div className="text-xs font-bold text-slate-400">Filtrar Estatus:</div>
                     <select
                       value={loanStatusFilter}
                       onChange={(e) => setLoanStatusFilter(e.target.value)}
@@ -13930,9 +10188,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </select>
                   </div>
 
-                  <span className="text-xs text-slate-400 font-mono">
+                  <div className="text-xs text-slate-400 font-mono">
                     Total: {bookLoans.filter((l) => loanStatusFilter === 'ALL' || l.status === loanStatusFilter).length} préstamos
-                  </span>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 gap-3">
@@ -13945,20 +10203,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       >
                         <div className="space-y-1.5 flex-1">
                           <div className="flex items-center gap-2.5 flex-wrap">
-                            <span className="font-mono text-xs font-black text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-0.5 rounded-lg">
+                            <div className="font-mono text-xs font-black text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-0.5 rounded-lg">
                               {loan.folio}
-                            </span>
-                            <span className="bg-slate-800 text-slate-200 text-xs px-2.5 py-0.5 rounded-full font-bold">
+                            </div>
+                            <div className="bg-slate-800 text-slate-200 text-xs px-2.5 py-0.5 rounded-full font-bold">
                               {loan.loanType === 'DOMICILIO' ? '🏠 Préstamo a Domicilio' : '🏫 Préstamo en Sala'}
-                            </span>
+                            </div>
                             {loan.status === 'ACTIVO' ? (
-                              <span className="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs px-2.5 py-0.5 rounded-full font-bold">
+                              <div className="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs px-2.5 py-0.5 rounded-full font-bold">
                                 ⏳ Activo (En lectura)
-                              </span>
+                              </div>
                             ) : (
-                              <span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-2.5 py-0.5 rounded-full font-bold flex items-center gap-1">
+                              <div className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-2.5 py-0.5 rounded-full font-bold flex items-center gap-1">
                                 <CheckCircle2 className="w-3 h-3" /> Devuelto
-                              </span>
+                              </div>
                             )}
                           </div>
 
@@ -13973,12 +10231,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           </div>
 
                           <div className="text-xs text-slate-400 font-mono flex items-center gap-3">
-                            <span>Préstamo: {loan.loanDate}</span>
-                            <span>•</span>
-                            <span className={loan.status === 'ACTIVO' ? 'text-amber-400 font-bold' : 'text-slate-400'}>
+                            <div>Préstamo: {loan.loanDate}</div>
+                            <div>•</div>
+                            <div className={loan.status === 'ACTIVO' ? 'text-amber-400 font-bold' : 'text-slate-400'}>
                               Fecha Límite: {loan.dueDate}
-                            </span>
-                            {loan.returnDate && <span>• Devuelto el: {loan.returnDate}</span>}
+                            </div>
+                            {loan.returnDate && <div>• Devuelto el: {loan.returnDate}</div>}
                           </div>
 
                           {loan.librarianNotes && (
@@ -13994,7 +10252,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2.5 rounded-2xl shadow-lg shadow-emerald-600/20 transition-all cursor-pointer flex items-center gap-1.5 self-start md:self-center shrink-0"
                           >
                             <CheckCircle2 className="w-4 h-4" />
-                            <span>Registrar Devolución</span>
+                            <div>Registrar Devolución</div>
                           </button>
                         )}
                       </div>
@@ -14043,23 +10301,23 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <div className="bg-slate-950 p-6 rounded-3xl border border-slate-800 space-y-4">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
                         <div>
-                          <span className="text-[10px] font-mono text-slate-400 block">Dictamen de Biblioteca:</span>
+                          <div className="text-[10px] font-mono text-slate-400 block">Dictamen de Biblioteca:</div>
                           <h4 className="text-lg font-black text-white">
                             {student.firstName} {student.lastName}
                           </h4>
-                          <span className="text-xs text-slate-400 font-mono">
+                          <div className="text-xs text-slate-400 font-mono">
                             Matrícula: {student.studentCode} • {student.groupName}
-                          </span>
+                          </div>
                         </div>
 
                         {isCleared ? (
-                          <span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-black px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 self-start sm:self-auto">
+                          <div className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-black px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 self-start sm:self-auto">
                             <ShieldCheck className="w-4 h-4" /> ALUMNO SOLVENTE (Sin Adeudos)
-                          </span>
+                          </div>
                         ) : (
-                          <span className="bg-rose-500/10 text-rose-400 border border-rose-500/20 text-xs font-black px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 self-start sm:self-auto">
+                          <div className="bg-rose-500/10 text-rose-400 border border-rose-500/20 text-xs font-black px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 self-start sm:self-auto">
                             <AlertCircle className="w-4 h-4" /> ADEUDO ACTIVO ({activeLoans.length} libro(s) pendiente(s))
-                          </span>
+                          </div>
                         )}
                       </div>
 
@@ -14073,14 +10331,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black px-4 py-2.5 rounded-2xl shadow-lg shadow-emerald-600/20 transition-all cursor-pointer flex items-center gap-2"
                           >
                             <Printer className="w-4 h-4" />
-                            <span>Emitir Constancia Oficial de No Adeudo</span>
+                            <div>Emitir Constancia Oficial de No Adeudo</div>
                           </button>
                         </div>
                       ) : (
                         <div className="space-y-3">
-                          <span className="text-xs font-bold text-rose-400 block">
+                          <div className="text-xs font-bold text-rose-400 block">
                             Libros que impiden la liberación de boleta:
-                          </span>
+                          </div>
                           <div className="space-y-2">
                             {activeLoans.map((l) => (
                               <div
@@ -14089,9 +10347,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               >
                                 <div>
                                   <strong className="text-white block">{l.bookTitle}</strong>
-                                  <span className="text-slate-400 font-mono text-[11px]">
+                                  <div className="text-slate-400 font-mono text-[11px]">
                                     Folio: {l.folio} • Fecha límite: {l.dueDate}
-                                  </span>
+                                  </div>
                                 </div>
                                 <button
                                   onClick={() => handleReturnBookLoan(l.id)}
@@ -14119,10 +10377,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="font-mono text-xs text-amber-400 font-bold bg-amber-500/10 px-2.5 py-0.5 rounded-lg border border-amber-500/20">
+                  <div className="font-mono text-xs text-amber-400 font-bold bg-amber-500/10 px-2.5 py-0.5 rounded-lg border border-amber-500/20">
                     CUIDADO & SEGURIDAD EN TRASLADOS
-                  </span>
-                  <span className="text-xs text-slate-400 font-bold">• Georutas y Check-in QR</span>
+                  </div>
+                  <div className="text-xs text-slate-400 font-bold">• Georutas y Check-in QR</div>
                 </div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <Bus className="w-6 h-6 text-amber-400" />
@@ -14139,14 +10397,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 border border-slate-700 transition-all cursor-pointer"
                 >
                   <UserPlus className="w-4 h-4 text-amber-400" />
-                  <span>Asignar Alumno a Ruta</span>
+                  <div>Asignar Alumno a Ruta</div>
                 </button>
                 <button
                   onClick={() => setShowNewRouteModal(true)}
                   className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 shadow-lg shadow-amber-500/20 transition-all cursor-pointer"
                 >
                   <Plus className="w-4 h-4" />
-                  <span>Nueva Ruta Escolar</span>
+                  <div>Nueva Ruta Escolar</div>
                 </button>
               </div>
             </div>
@@ -14154,29 +10412,29 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* KPI Cards de Transporte */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Rutas en Circulación</span>
+                <div className="text-[11px] text-slate-400 font-medium">Rutas en Circulación</div>
                 <div className="text-2xl font-black text-white mt-1">{transportRoutes.length}</div>
-                <span className="text-[10px] text-amber-400 font-bold">100% Cobertura Urbana</span>
+                <div className="text-[10px] text-amber-400 font-bold">100% Cobertura Urbana</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Unidades Vehiculares</span>
+                <div className="text-[11px] text-slate-400 font-medium">Unidades Vehiculares</div>
                 <div className="text-2xl font-black text-white mt-1">{transportRoutes.length} Vans</div>
-                <span className="text-[10px] text-emerald-400 font-bold">Pólizas GNP / Axa Vigentes</span>
+                <div className="text-[10px] text-emerald-400 font-bold">Pólizas GNP / Axa Vigentes</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Alumnos con Servicio</span>
+                <div className="text-[11px] text-slate-400 font-medium">Alumnos con Servicio</div>
                 <div className="text-2xl font-black text-white mt-1">{transportEnrollments.length}</div>
-                <span className="text-[10px] text-sky-400 font-bold">Paradas fijas geolocalizadas</span>
+                <div className="text-[10px] text-sky-400 font-bold">Paradas fijas geolocalizadas</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Abordajes y Entregas Hoy</span>
+                <div className="text-[11px] text-slate-400 font-medium">Abordajes y Entregas Hoy</div>
                 <div className="text-2xl font-black text-emerald-400 mt-1">
                   {transportBoardingLogs.filter((l) => l.status === 'ENTREGADO_ESCUELA' || l.status === 'A_BORDO').length}
                 </div>
-                <span className="text-[10px] text-emerald-400 font-bold">Sin incidencias de ruta</span>
+                <div className="text-[10px] text-emerald-400 font-bold">Sin incidencias de ruta</div>
               </div>
             </div>
 
@@ -14191,7 +10449,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <Bus className="w-4 h-4" />
-                <span>Rutas y Paradas Programadas ({transportRoutes.length})</span>
+                <div>Rutas y Paradas Programadas ({transportRoutes.length})</div>
               </button>
               <button
                 onClick={() => setTransportSubTab('boarding')}
@@ -14202,7 +10460,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <CheckCircle2 className="w-4 h-4" />
-                <span>Pase de Lista de Abordaje en Vivo (Check-in)</span>
+                <div>Pase de Lista de Abordaje en Vivo (Check-in)</div>
               </button>
               <button
                 onClick={() => setTransportSubTab('enrollment')}
@@ -14213,7 +10471,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <Users className="w-4 h-4" />
-                <span>Padrón de Alumnos Asignados ({transportEnrollments.length})</span>
+                <div>Padrón de Alumnos Asignados ({transportEnrollments.length})</div>
               </button>
             </div>
 
@@ -14229,48 +10487,48 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <div className="flex items-start justify-between gap-3">
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="font-mono text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-lg border border-amber-500/20">
+                            <div className="font-mono text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-lg border border-amber-500/20">
                               {route.code}
-                            </span>
-                            <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">
+                            </div>
+                            <div className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">
                               Activa • Turno {route.shift === 'AMBOS' ? 'Matutino & Vespertino' : route.shift}
-                            </span>
+                            </div>
                           </div>
                           <h3 className="font-black text-white text-base">{route.name}</h3>
                         </div>
 
-                        <span className="bg-slate-800 text-slate-300 font-mono text-xs px-3 py-1 rounded-xl font-bold">
+                        <div className="bg-slate-800 text-slate-300 font-mono text-xs px-3 py-1 rounded-xl font-bold">
                           {route.enrolledStudentsCount} alumnos
-                        </span>
+                        </div>
                       </div>
 
                       {/* Información de Unidad, Chofer y Monitora */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-950 p-4 rounded-2xl border border-slate-800/80 text-xs">
                         <div className="space-y-1">
-                          <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">
+                          <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">
                             Chofer Certificado:
-                          </span>
+                          </div>
                           <strong className="text-white block">{route.driverName}</strong>
-                          <span className="text-slate-400 font-mono text-[11px] block">{route.driverPhone}</span>
-                          <span className="text-[10px] text-emerald-400 block font-bold">Lic. Mercantil CDMX</span>
+                          <div className="text-slate-400 font-mono text-[11px] block">{route.driverPhone}</div>
+                          <div className="text-[10px] text-emerald-400 block font-bold">Lic. Mercantil CDMX</div>
                         </div>
 
                         <div className="space-y-1">
-                          <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">
+                          <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">
                             Monitora de Ruta:
-                          </span>
+                          </div>
                           <strong className="text-white block">{route.monitorName}</strong>
-                          <span className="text-slate-400 font-mono text-[11px] block">Unidad: {route.vehiclePlate}</span>
-                          <span className="text-[10px] text-slate-400 block">{route.vehicleModel}</span>
+                          <div className="text-slate-400 font-mono text-[11px] block">Unidad: {route.vehiclePlate}</div>
+                          <div className="text-[10px] text-slate-400 block">{route.vehicleModel}</div>
                         </div>
                       </div>
 
                       {/* Paradas Programadas (Itinerario) */}
                       <div className="space-y-2">
-                        <span className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                        <div className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
                           <Navigation className="w-3.5 h-3.5 text-amber-400" />
-                          <span>Itinerario y Paradas Programadas ({route.stops.length} Puntos)</span>
-                        </span>
+                          <div>Itinerario y Paradas Programadas ({route.stops.length} Puntos)</div>
+                        </div>
 
                         <div className="space-y-2 border-l-2 border-amber-500/30 pl-4 ml-1">
                           {route.stops.map((stop) => (
@@ -14278,9 +10536,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-400 border-2 border-slate-900" />
                               <div className="flex items-center justify-between gap-2">
                                 <strong className="text-white text-[12px]">{stop.name}</strong>
-                                <span className="font-mono text-[11px] font-bold text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                                <div className="font-mono text-[11px] font-bold text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
                                   🌅 {stop.scheduledTimeMorning} | 🌇 {stop.scheduledTimeAfternoon}
-                                </span>
+                                </div>
                               </div>
                               <p className="text-[11px] text-slate-400">{stop.address}</p>
                             </div>
@@ -14289,7 +10547,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </div>
 
                       <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
-                        <span className="text-[11px] text-slate-400">Póliza Escolar GNP vigente hasta 2027</span>
+                        <div className="text-[11px] text-slate-400">Póliza Escolar GNP vigente hasta 2027</div>
                         <button
                           onClick={() => {
                             setSelectedTransportRouteId(route.id);
@@ -14297,7 +10555,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           }}
                           className="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 cursor-pointer"
                         >
-                          <span>Ver Pase de Lista en Vivo</span>
+                          <div>Ver Pase de Lista en Vivo</div>
                           <ArrowRight className="w-3.5 h-3.5" />
                         </button>
                       </div>
@@ -14313,7 +10571,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 {/* Selector de Ruta y Filtro de Turno */}
                 <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="flex items-center gap-3 flex-wrap">
-                    <span className="text-xs text-slate-400 font-bold">Seleccionar Ruta:</span>
+                    <div className="text-xs text-slate-400 font-bold">Seleccionar Ruta:</div>
                     <select
                       value={selectedTransportRouteId}
                       onChange={(e) => setSelectedTransportRouteId(e.target.value)}
@@ -14350,9 +10608,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
                   </div>
 
-                  <span className="font-mono text-xs text-slate-400 bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800">
+                  <div className="font-mono text-xs text-slate-400 bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800">
                     Fecha: <strong>{new Date().toISOString().split('T')[0]}</strong>
-                  </span>
+                  </div>
                 </div>
 
                 {/* Lista de Alumnos en la Ruta con Check-in interactivo */}
@@ -14377,46 +10635,46 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         >
                           <div className="space-y-1.5">
                             <div className="flex items-center gap-2 flex-wrap">
-                              <span className="font-mono text-xs font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                              <div className="font-mono text-xs font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
                                 {enrollment.studentCode}
-                              </span>
-                              <span className="text-xs text-slate-400 font-bold">{enrollment.groupName}</span>
+                              </div>
+                              <div className="text-xs text-slate-400 font-bold">{enrollment.groupName}</div>
 
                               {/* Badge de Estatus de Abordaje */}
                               {currentStatus === 'ENTREGADO_ESCUELA' && (
-                                <span className="bg-emerald-500/10 text-emerald-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-500/30 flex items-center gap-1">
+                                <div className="bg-emerald-500/10 text-emerald-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-500/30 flex items-center gap-1">
                                   <CheckCircle2 className="w-3 h-3" /> Entregado en el Colegio ({log?.checkOutTime || '07:45'})
-                                </span>
+                                </div>
                               )}
                               {currentStatus === 'A_BORDO' && (
-                                <span className="bg-amber-500/10 text-amber-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-amber-500/30 flex items-center gap-1 animate-pulse">
+                                <div className="bg-amber-500/10 text-amber-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-amber-500/30 flex items-center gap-1 animate-pulse">
                                   <Bus className="w-3 h-3" /> A Bordo de la Unidad ({log?.checkInTime || 'En camino'})
-                                </span>
+                                </div>
                               )}
                               {currentStatus === 'ENTREGADO_CASA' && (
-                                <span className="bg-sky-500/10 text-sky-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-sky-500/30 flex items-center gap-1">
+                                <div className="bg-sky-500/10 text-sky-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-sky-500/30 flex items-center gap-1">
                                   <CheckCircle2 className="w-3 h-3" /> Entregado en Domicilio ({log?.checkOutTime})
-                                </span>
+                                </div>
                               )}
                               {currentStatus === 'AUSENTE' && (
-                                <span className="bg-rose-500/10 text-rose-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-rose-500/30">
+                                <div className="bg-rose-500/10 text-rose-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-rose-500/30">
                                   No Tomará Transporte Hoy
-                                </span>
+                                </div>
                               )}
                               {currentStatus === 'PENDIENTE' && (
-                                <span className="bg-slate-800 text-slate-400 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-slate-700">
+                                <div className="bg-slate-800 text-slate-400 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-slate-700">
                                   Esperando en Parada
-                                </span>
+                                </div>
                               )}
                             </div>
 
                             <h4 className="text-base font-black text-white">{enrollment.studentName}</h4>
                             <div className="text-xs text-slate-400 flex flex-wrap items-center gap-3">
-                              <span>
+                              <div>
                                 Parada:{' '}
                                 <strong className="text-amber-300">{enrollment.stopName}</strong>
-                              </span>
-                              <span>• Tutor: {enrollment.tutorName} ({enrollment.tutorPhone})</span>
+                              </div>
+                              <div>• Tutor: {enrollment.tutorName} ({enrollment.tutorPhone})</div>
                             </div>
 
                             {enrollment.emergencyNotes && (
@@ -14509,9 +10767,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {transportSubTab === 'enrollment' && (
               <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
                 <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-                  <span className="text-xs font-bold text-white">
+                  <div className="text-xs font-bold text-white">
                     Padrón General de Alumnos con Servicio de Transporte Escolar ({transportEnrollments.length})
-                  </span>
+                  </div>
                   <button
                     onClick={() => setShowEnrollStudentTransportModal(true)}
                     className="text-xs font-bold text-amber-400 hover:text-amber-300 cursor-pointer flex items-center gap-1"
@@ -14538,23 +10796,23 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <td className="py-3 px-4 font-mono font-bold text-amber-400">{enr.studentCode}</td>
                           <td className="py-3 px-4">
                             <strong className="text-white block">{enr.studentName}</strong>
-                            <span className="text-[10px] text-slate-400">{enr.groupName}</span>
+                            <div className="text-[10px] text-slate-400">{enr.groupName}</div>
                           </td>
                           <td className="py-3 px-4">
-                            <span className="font-bold text-white block">{enr.routeName}</span>
-                            <span className="text-[10px] text-slate-400 font-mono">Turno {enr.shift}</span>
+                            <div className="font-bold text-white block">{enr.routeName}</div>
+                            <div className="text-[10px] text-slate-400 font-mono">Turno {enr.shift}</div>
                           </td>
                           <td className="py-3 px-4">
-                            <span className="text-amber-300 font-bold block">{enr.stopName}</span>
+                            <div className="text-amber-300 font-bold block">{enr.stopName}</div>
                           </td>
                           <td className="py-3 px-4">
-                            <span className="text-white block">{enr.tutorName}</span>
-                            <span className="text-[11px] font-mono text-slate-400">{enr.tutorPhone}</span>
+                            <div className="text-white block">{enr.tutorName}</div>
+                            <div className="text-[11px] font-mono text-slate-400">{enr.tutorPhone}</div>
                           </td>
                           <td className="py-3 px-4">
-                            <span className="text-[11px] text-slate-400 italic">
+                            <div className="text-[11px] text-slate-400 italic">
                               {enr.emergencyNotes || 'Ninguna especificación'}
-                            </span>
+                            </div>
                           </td>
                         </tr>
                       ))}
@@ -14573,10 +10831,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="font-mono text-xs text-orange-400 font-bold bg-orange-500/10 px-2.5 py-0.5 rounded-lg border border-orange-500/20">
+                  <div className="font-mono text-xs text-orange-400 font-bold bg-orange-500/10 px-2.5 py-0.5 rounded-lg border border-orange-500/20">
                     NUTRICIÓN & SEGURIDAD ALIMENTARIA
-                  </span>
-                  <span className="text-xs text-slate-400 font-bold">• Tienditas Escolares SEP</span>
+                  </div>
+                  <div className="text-xs text-slate-400 font-bold">• Tienditas Escolares SEP</div>
                 </div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <Utensils className="w-6 h-6 text-orange-400" />
@@ -14596,14 +10854,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 border border-slate-700 transition-all cursor-pointer"
                 >
                   <CircleDollarSign className="w-4 h-4 text-emerald-400" />
-                  <span>Recargar Monedero</span>
+                  <div>Recargar Monedero</div>
                 </button>
                 <button
                   onClick={() => setShowNewProductModal(true)}
                   className="bg-orange-500 hover:bg-orange-400 text-slate-950 font-black text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 shadow-lg shadow-orange-500/20 transition-all cursor-pointer"
                 >
                   <Plus className="w-4 h-4" />
-                  <span>Nuevo Alimento / Bebida</span>
+                  <div>Nuevo Alimento / Bebida</div>
                 </button>
               </div>
             </div>
@@ -14611,33 +10869,33 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* KPI Cards de Cafetería */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Alimentos Saludables SEP</span>
+                <div className="text-[11px] text-slate-400 font-medium">Alimentos Saludables SEP</div>
                 <div className="text-2xl font-black text-white mt-1">
                   {cafeteriaProducts.filter((p) => p.isHealthySepApproved).length}/{cafeteriaProducts.length}
                 </div>
-                <span className="text-[10px] text-emerald-400 font-bold">Lineamientos de Nutrición SEP</span>
+                <div className="text-[10px] text-emerald-400 font-bold">Lineamientos de Nutrición SEP</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Monederos Activos</span>
+                <div className="text-[11px] text-slate-400 font-medium">Monederos Activos</div>
                 <div className="text-2xl font-black text-white mt-1">{studentWallets.length} Alumnos</div>
-                <span className="text-[10px] text-sky-400 font-bold">Cobro con credencial QR</span>
+                <div className="text-[10px] text-sky-400 font-bold">Cobro con credencial QR</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Saldo en Circulación</span>
+                <div className="text-[11px] text-slate-400 font-medium">Saldo en Circulación</div>
                 <div className="text-2xl font-black text-emerald-400 mt-1">
                   ${studentWallets.reduce((sum, w) => sum + w.currentBalanceMXN, 0)} MXN
                 </div>
-                <span className="text-[10px] text-slate-400 font-bold">Fondos prepagados seguros</span>
+                <div className="text-[10px] text-slate-400 font-bold">Fondos prepagados seguros</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Tickets de Consumo Hoy</span>
+                <div className="text-[11px] text-slate-400 font-medium">Tickets de Consumo Hoy</div>
                 <div className="text-2xl font-black text-orange-400 mt-1">
                   {cafeteriaTransactions.filter((t) => t.type === 'CONSUMO').length}
                 </div>
-                <span className="text-[10px] text-emerald-400 font-bold">Filtro anti-alergias 100% activo</span>
+                <div className="text-[10px] text-emerald-400 font-bold">Filtro anti-alergias 100% activo</div>
               </div>
             </div>
 
@@ -14652,7 +10910,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <Utensils className="w-4 h-4" />
-                <span>Menú y Catálogo Saludable ({cafeteriaProducts.length})</span>
+                <div>Menú y Catálogo Saludable ({cafeteriaProducts.length})</div>
               </button>
               <button
                 onClick={() => setCafeteriaSubTab('pos')}
@@ -14663,7 +10921,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <CreditCard className="w-4 h-4" />
-                <span>Punto de Venta POS (Filtro Alergias & Límite)</span>
+                <div>Punto de Venta POS (Filtro Alergias & Límite)</div>
               </button>
               <button
                 onClick={() => setCafeteriaSubTab('wallets')}
@@ -14674,7 +10932,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <CircleDollarSign className="w-4 h-4" />
-                <span>Monederos Escolares y Recargas ({studentWallets.length})</span>
+                <div>Monederos Escolares y Recargas ({studentWallets.length})</div>
               </button>
               <button
                 onClick={() => setCafeteriaSubTab('history')}
@@ -14685,7 +10943,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <Receipt className="w-4 h-4" />
-                <span>Historial de Tickets ({cafeteriaTransactions.length})</span>
+                <div>Historial de Tickets ({cafeteriaTransactions.length})</div>
               </button>
             </div>
 
@@ -14694,7 +10952,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="space-y-4">
                 {/* Filtros de Categoría */}
                 <div className="flex items-center gap-2 flex-wrap text-xs">
-                  <span className="text-slate-400 font-bold">Categoría:</span>
+                  <div className="text-slate-400 font-bold">Categoría:</div>
                   {[
                     { id: 'TODOS', label: 'Todos los Alimentos' },
                     { id: 'DESAYUNOS_SALUDABLES', label: '🥪 Desayunos' },
@@ -14729,36 +10987,36 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <div className="space-y-2">
                           <div className="flex items-start justify-between gap-2">
                             <div>
-                              <span className="text-[10px] font-mono text-orange-400 uppercase font-bold tracking-wider block">
+                              <div className="text-[10px] font-mono text-orange-400 uppercase font-bold tracking-wider block">
                                 {product.category.replace('_', ' ')}
-                              </span>
+                              </div>
                               <h3 className="font-black text-white text-base leading-tight mt-0.5">
                                 {product.name}
                               </h3>
                             </div>
-                            <span className="text-lg font-black text-emerald-400 font-mono">
-                              ${product.priceMXN} <span className="text-xs text-slate-400">MXN</span>
-                            </span>
+                            <div className="text-lg font-black text-emerald-400 font-mono">
+                              ${product.priceMXN} <div className="text-xs text-slate-400">MXN</div>
+                            </div>
                           </div>
 
                           <div className="flex items-center gap-2 flex-wrap">
                             {product.isHealthySepApproved ? (
-                              <span className="bg-emerald-500/10 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/30 flex items-center gap-1">
+                              <div className="bg-emerald-500/10 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/30 flex items-center gap-1">
                                 <ShieldCheck className="w-3 h-3" /> Aprobado SEP
-                              </span>
+                              </div>
                             ) : (
-                              <span className="bg-amber-500/10 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-500/30">
+                              <div className="bg-amber-500/10 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-500/30">
                                 Consumo Ocasional
-                              </span>
+                              </div>
                             )}
                             {product.caloriesKcal && (
-                              <span className="bg-slate-950 text-slate-300 text-[10px] font-mono font-bold px-2 py-0.5 rounded-lg border border-slate-800">
+                              <div className="bg-slate-950 text-slate-300 text-[10px] font-mono font-bold px-2 py-0.5 rounded-lg border border-slate-800">
                                 {product.caloriesKcal} kcal
-                              </span>
+                              </div>
                             )}
-                            <span className="bg-slate-950 text-slate-400 text-[10px] font-mono px-2 py-0.5 rounded-lg border border-slate-800">
+                            <div className="bg-slate-950 text-slate-400 text-[10px] font-mono px-2 py-0.5 rounded-lg border border-slate-800">
                               Stock: {product.stockQuantity} pzas
-                            </span>
+                            </div>
                           </div>
 
                           {/* Ingredientes */}
@@ -14769,18 +11027,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           {/* Alérgenos */}
                           {product.allergens.length > 0 && (
                             <div className="space-y-1">
-                              <span className="text-[10px] text-rose-400 font-bold uppercase tracking-wider block">
+                              <div className="text-[10px] text-rose-400 font-bold uppercase tracking-wider block">
                                 Alérgenos Detectados:
-                              </span>
+                              </div>
                               <div className="flex gap-1.5 flex-wrap">
                                 {product.allergens.map((alg) => (
-                                  <span
+                                  <div
                                     key={alg}
                                     className="bg-rose-950/40 text-rose-300 border border-rose-500/40 text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1"
                                   >
                                     <AlertTriangle className="w-3 h-3 text-rose-400" />
                                     {alg}
-                                  </span>
+                                  </div>
                                 ))}
                               </div>
                             </div>
@@ -14788,9 +11046,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
 
                         <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
-                          <span className="text-[11px] text-slate-400 font-mono">
+                          <div className="text-[11px] text-slate-400 font-mono">
                             {product.available ? '🟢 Disponible en Barra' : '🔴 Agotado'}
-                          </span>
+                          </div>
                           <button
                             onClick={() => {
                               setCafeteriaSubTab('pos');
@@ -14798,7 +11056,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             }}
                             className="text-xs font-bold text-orange-400 hover:text-orange-300 flex items-center gap-1 cursor-pointer"
                           >
-                            <span>Cobrar en POS</span>
+                            <div>Cobrar en POS</div>
                             <ArrowRight className="w-3.5 h-3.5" />
                           </button>
                         </div>
@@ -14817,9 +11075,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow-xl space-y-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div>
-                        <span className="text-[10px] font-mono text-orange-400 font-bold uppercase tracking-wider block">
+                        <div className="text-[10px] font-mono text-orange-400 font-bold uppercase tracking-wider block">
                           Identificación del Alumno
-                        </span>
+                        </div>
                         <h3 className="text-base font-black text-white flex items-center gap-2">
                           <Scan className="w-5 h-5 text-orange-400" />
                           Escanear Credencial QR / Buscar Alumno
@@ -14851,30 +11109,30 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-3">
                           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
                             <div className="bg-slate-900 p-3 rounded-xl border border-slate-800">
-                              <span className="text-[10px] text-slate-400 block">Saldo Disponible:</span>
+                              <div className="text-[10px] text-slate-400 block">Saldo Disponible:</div>
                               <strong className="text-base font-black text-emerald-400 font-mono">
-                                ${wallet.currentBalanceMXN} <span className="text-xs">MXN</span>
+                                ${wallet.currentBalanceMXN} <div className="text-xs">MXN</div>
                               </strong>
                             </div>
 
                             <div className="bg-slate-900 p-3 rounded-xl border border-slate-800">
-                              <span className="text-[10px] text-slate-400 block">Límite Diario:</span>
+                              <div className="text-[10px] text-slate-400 block">Límite Diario:</div>
                               <strong className="text-base font-black text-white font-mono">
-                                ${wallet.dailySpendingLimitMXN} <span className="text-xs">MXN</span>
+                                ${wallet.dailySpendingLimitMXN} <div className="text-xs">MXN</div>
                               </strong>
                             </div>
 
                             <div className="bg-slate-900 p-3 rounded-xl border border-slate-800">
-                              <span className="text-[10px] text-slate-400 block">Gastado Hoy:</span>
+                              <div className="text-[10px] text-slate-400 block">Gastado Hoy:</div>
                               <strong className="text-base font-black text-amber-400 font-mono">
-                                ${wallet.spentTodayMXN} <span className="text-xs">MXN</span>
+                                ${wallet.spentTodayMXN} <div className="text-xs">MXN</div>
                               </strong>
                             </div>
 
                             <div className="bg-slate-900 p-3 rounded-xl border border-slate-800">
-                              <span className="text-[10px] text-slate-400 block">Disponible Hoy:</span>
+                              <div className="text-[10px] text-slate-400 block">Disponible Hoy:</div>
                               <strong className="text-base font-black text-sky-400 font-mono">
-                                ${remainingDaily} <span className="text-xs">MXN</span>
+                                ${remainingDaily} <div className="text-xs">MXN</div>
                               </strong>
                             </div>
                           </div>
@@ -14888,18 +11146,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   <strong className="text-rose-200 block font-bold">
                                     🛡️ Filtro de Seguridad Alimentaria Activo
                                   </strong>
-                                  <span className="text-[11px] text-rose-300">
+                                  <div className="text-[11px] text-rose-300">
                                     Alergias médicas registradas:{' '}
                                     <strong className="text-white">{wallet.allergies.join(', ')}</strong>.
                                     Los alimentos con estos alérgenos están bloqueados automáticamente en caja.
-                                  </span>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           ) : (
                             <div className="p-2.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl text-emerald-300 text-xs flex items-center gap-2">
                               <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                              <span>Sin alergias alimentarias registradas en expediente médico.</span>
+                              <div>Sin alergias alimentarias registradas en expediente médico.</div>
                             </div>
                           )}
                         </div>
@@ -14909,7 +11167,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   {/* Grid de Productos para Agregar al Ticket */}
                   <div className="space-y-3">
-                    <span className="text-xs font-bold text-white block">Toca un producto para agregar al ticket:</span>
+                    <div className="text-xs font-bold text-white block">Toca un producto para agregar al ticket:</div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {cafeteriaProducts.map((product) => {
                         const wallet = studentWallets.find((w) => w.studentId === posStudentId);
@@ -14931,18 +11189,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             <div>
                               <div className="flex items-start justify-between gap-2">
                                 <h4 className="font-bold text-white text-xs leading-snug">{product.name}</h4>
-                                <span className="font-mono font-black text-emerald-400 text-xs whitespace-nowrap">
+                                <div className="font-mono font-black text-emerald-400 text-xs whitespace-nowrap">
                                   ${product.priceMXN} MXN
-                                </span>
+                                </div>
                               </div>
-                              <span className="text-[10px] text-slate-400 block mt-0.5">
+                              <div className="text-[10px] text-slate-400 block mt-0.5">
                                 {product.category.replace('_', ' ')} • {product.caloriesKcal || 150} kcal
-                              </span>
+                              </div>
 
                               {product.allergens.length > 0 && (
                                 <div className="flex gap-1 flex-wrap mt-1.5">
                                   {product.allergens.map((alg) => (
-                                    <span
+                                    <div
                                       key={alg}
                                       className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${
                                         wallet?.allergies.includes(alg)
@@ -14951,7 +11209,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                       }`}
                                     >
                                       {alg}
-                                    </span>
+                                    </div>
                                   ))}
                                 </div>
                               )}
@@ -14963,7 +11221,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 className="w-full py-1.5 px-3 rounded-xl bg-rose-950/40 text-rose-300 border border-rose-500/30 text-[11px] font-black cursor-not-allowed flex items-center justify-center gap-1 mt-1"
                               >
                                 <AlertTriangle className="w-3.5 h-3.5" />
-                                <span>Bloqueado por Alergia Médica</span>
+                                <div>Bloqueado por Alergia Médica</div>
                               </button>
                             ) : (
                               <button
@@ -14971,7 +11229,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 className="w-full py-1.5 px-3 rounded-xl bg-slate-800 hover:bg-orange-500 hover:text-slate-950 text-slate-200 text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1 mt-1"
                               >
                                 <Plus className="w-3.5 h-3.5" />
-                                <span>Agregar al Ticket</span>
+                                <div>Agregar al Ticket</div>
                               </button>
                             )}
                           </div>
@@ -14986,17 +11244,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="space-y-4">
                     <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                       <div>
-                        <span className="text-[10px] font-mono text-orange-400 font-bold uppercase tracking-wider block">
+                        <div className="text-[10px] font-mono text-orange-400 font-bold uppercase tracking-wider block">
                           Ticket de Consumo
-                        </span>
+                        </div>
                         <h3 className="font-black text-white text-base flex items-center gap-2">
                           <ShoppingBag className="w-5 h-5 text-orange-400" />
                           Orden de Receso
                         </h3>
                       </div>
-                      <span className="bg-slate-800 text-slate-300 font-mono text-xs px-2.5 py-1 rounded-xl font-bold">
+                      <div className="bg-slate-800 text-slate-300 font-mono text-xs px-2.5 py-1 rounded-xl font-bold">
                         {posCart.reduce((sum, item) => sum + item.quantity, 0)} items
-                      </span>
+                      </div>
                     </div>
 
                     {/* Lista de Items en Ticket */}
@@ -15009,10 +11267,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           >
                             <div className="space-y-0.5">
                               <strong className="text-white block text-[11px]">{product.name}</strong>
-                              <span className="text-slate-400 text-[10px] font-mono">
+                              <div className="text-slate-400 text-[10px] font-mono">
                                 ${product.priceMXN} x {quantity} ={' '}
                                 <strong className="text-emerald-400">${product.priceMXN * quantity} MXN</strong>
-                              </span>
+                              </div>
                             </div>
 
                             <div className="flex items-center gap-1.5">
@@ -15022,9 +11280,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               >
                                 -
                               </button>
-                              <span className="font-mono font-bold text-white text-xs w-4 text-center">
+                              <div className="font-mono font-bold text-white text-xs w-4 text-center">
                                 {quantity}
-                              </span>
+                              </div>
                               <button
                                 onClick={() => handleAddToCart(product)}
                                 className="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold flex items-center justify-center cursor-pointer text-xs"
@@ -15038,8 +11296,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     ) : (
                       <div className="py-8 text-center text-slate-500 space-y-1">
                         <ShoppingBag className="w-8 h-8 mx-auto text-slate-600 mb-1" />
-                        <span className="text-xs font-bold block text-slate-400">El ticket está vacío</span>
-                        <span className="text-[11px] block">Selecciona alimentos o bebidas del menú.</span>
+                        <div className="text-xs font-bold block text-slate-400">El ticket está vacío</div>
+                        <div className="text-[11px] block">Selecciona alimentos o bebidas del menú.</div>
                       </div>
                     )}
 
@@ -15059,22 +11317,22 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           return (
                             <>
                               <div className="flex justify-between text-slate-400">
-                                <span>Total a Cobrar:</span>
+                                <div>Total a Cobrar:</div>
                                 <strong className="text-white text-sm font-mono font-black">${total} MXN</strong>
                               </div>
                               <div className="flex justify-between text-slate-400">
-                                <span>Saldo Actual Alumno:</span>
-                                <span className="font-mono text-emerald-400 font-bold">${wallet?.currentBalanceMXN || 0} MXN</span>
+                                <div>Saldo Actual Alumno:</div>
+                                <div className="font-mono text-emerald-400 font-bold">${wallet?.currentBalanceMXN || 0} MXN</div>
                               </div>
                               <div className="flex justify-between text-slate-400 border-t border-slate-800 pt-1.5">
-                                <span>Saldo Restante:</span>
-                                <span
+                                <div>Saldo Restante:</div>
+                                <div
                                   className={`font-mono font-black ${
                                     newBalance < 0 ? 'text-rose-400' : 'text-emerald-300'
                                   }`}
                                 >
                                   ${newBalance} MXN
-                                </span>
+                                </div>
                               </div>
 
                               {exceedsLimit && (
@@ -15105,7 +11363,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     }`}
                   >
                     <CreditCard className="w-4 h-4" />
-                    <span>Cobrar con Monedero Digital</span>
+                    <div>Cobrar con Monedero Digital</div>
                   </button>
                 </div>
               </div>
@@ -15115,10 +11373,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {cafeteriaSubTab === 'wallets' && (
               <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
                 <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-                  <span className="text-xs font-bold text-white">
+                  <div className="text-xs font-bold text-white">
                     Padrón de Monederos Escolares y Control de Fondos ({studentWallets.length})
-                  </span>
-                  <span className="text-xs text-slate-400 font-mono">Actualizado en tiempo real</span>
+                  </div>
+                  <div className="text-xs text-slate-400 font-mono">Actualizado en tiempo real</div>
                 </div>
 
                 <div className="overflow-x-auto">
@@ -15140,12 +11398,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <td className="py-3 px-4 font-mono font-bold text-orange-400">{wallet.studentCode}</td>
                           <td className="py-3 px-4">
                             <strong className="text-white block">{wallet.studentName}</strong>
-                            <span className="text-[10px] text-slate-400">{wallet.groupName}</span>
+                            <div className="text-[10px] text-slate-400">{wallet.groupName}</div>
                           </td>
                           <td className="py-3 px-4">
-                            <span className="text-emerald-400 font-mono font-bold text-sm">
+                            <div className="text-emerald-400 font-mono font-bold text-sm">
                               ${wallet.currentBalanceMXN} MXN
-                            </span>
+                            </div>
                           </td>
                           <td className="py-3 px-4 font-mono text-slate-300">
                             ${wallet.dailySpendingLimitMXN} MXN
@@ -15157,16 +11415,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             {wallet.allergies.length > 0 ? (
                               <div className="flex gap-1 flex-wrap">
                                 {wallet.allergies.map((alg) => (
-                                  <span
+                                  <div
                                     key={alg}
                                     className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded"
                                   >
                                     {alg}
-                                  </span>
+                                  </div>
                                 ))}
                               </div>
                             ) : (
-                              <span className="text-[11px] text-slate-500">Ninguna</span>
+                              <div className="text-[11px] text-slate-500">Ninguna</div>
                             )}
                           </td>
                           <td className="py-3 px-4 text-right">
@@ -15204,10 +11462,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {cafeteriaSubTab === 'history' && (
               <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
                 <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-                  <span className="text-xs font-bold text-white">
+                  <div className="text-xs font-bold text-white">
                     Historial de Recargas y Tickets de Consumo ({cafeteriaTransactions.length})
-                  </span>
-                  <span className="text-xs text-slate-400 font-mono">Auditoría contable</span>
+                  </div>
+                  <div className="text-xs text-slate-400 font-mono">Auditoría contable</div>
                 </div>
 
                 <div className="overflow-x-auto">
@@ -15232,17 +11490,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           </td>
                           <td className="py-3 px-4">
                             <strong className="text-white block">{tx.studentName}</strong>
-                            <span className="text-[10px] font-mono text-slate-400">{tx.studentCode}</span>
+                            <div className="text-[10px] font-mono text-slate-400">{tx.studentCode}</div>
                           </td>
                           <td className="py-3 px-4">
                             {tx.type === 'RECARGA_SALDO' ? (
-                              <span className="bg-emerald-500/10 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/30">
+                              <div className="bg-emerald-500/10 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/30">
                                 💰 Recarga Saldo ({tx.paymentMethod || 'Efectivo'})
-                              </span>
+                              </div>
                             ) : (
-                              <span className="bg-orange-500/10 text-orange-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-orange-500/30">
+                              <div className="bg-orange-500/10 text-orange-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-orange-500/30">
                                 🥪 Consumo Escolar
-                              </span>
+                              </div>
                             )}
                           </td>
                           <td className="py-3 px-4 text-[11px] text-slate-300">
@@ -15251,9 +11509,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               : tx.cashierNotes || 'Operación en monedero'}
                           </td>
                           <td className="py-3 px-4 text-right font-mono font-bold">
-                            <span className={tx.type === 'RECARGA_SALDO' ? 'text-emerald-400' : 'text-white'}>
+                            <div className={tx.type === 'RECARGA_SALDO' ? 'text-emerald-400' : 'text-white'}>
                               {tx.type === 'RECARGA_SALDO' ? '+' : '-'}${tx.amountMXN} MXN
-                            </span>
+                            </div>
                           </td>
                           <td className="py-3 px-4 text-right">
                             <button
@@ -15264,7 +11522,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               className="text-xs font-bold text-orange-400 hover:text-orange-300 cursor-pointer flex items-center justify-end gap-1"
                             >
                               <Receipt className="w-3.5 h-3.5" />
-                              <span>Ver</span>
+                              <div>Ver</div>
                             </button>
                           </td>
                         </tr>
@@ -15284,10 +11542,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="font-mono text-xs text-rose-400 font-bold bg-rose-500/10 px-2.5 py-0.5 rounded-lg border border-rose-500/20">
+                  <div className="font-mono text-xs text-rose-400 font-bold bg-rose-500/10 px-2.5 py-0.5 rounded-lg border border-rose-500/20">
                     SALUD INTEGRAL Y PRIMEROS AUXILIOS
-                  </span>
-                  <span className="text-xs text-slate-400 font-bold">• Protocolo de Seguridad Médica</span>
+                  </div>
+                  <div className="text-xs text-slate-400 font-bold">• Protocolo de Seguridad Médica</div>
                 </div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <Stethoscope className="w-6 h-6 text-rose-400" />
@@ -15304,14 +11562,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 border border-slate-700 transition-all cursor-pointer"
                 >
                   <Pill className="w-4 h-4 text-sky-400" />
-                  <span>Programar Medicamento</span>
+                  <div>Programar Medicamento</div>
                 </button>
                 <button
                   onClick={() => setShowNewConsultationModal(true)}
                   className="bg-rose-600 hover:bg-rose-500 text-white font-black text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 shadow-lg shadow-rose-600/20 transition-all cursor-pointer"
                 >
                   <HeartPulse className="w-4 h-4" />
-                  <span>Nueva Atención Médica</span>
+                  <div>Nueva Atención Médica</div>
                 </button>
               </div>
             </div>
@@ -15319,31 +11577,31 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* KPI Cards de Enfermería */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Atenciones Registradas</span>
+                <div className="text-[11px] text-slate-400 font-medium">Atenciones Registradas</div>
                 <div className="text-2xl font-black text-white mt-1">{medicalConsultations.length} Consultas</div>
-                <span className="text-[10px] text-emerald-400 font-bold">Registro clínico escolar</span>
+                <div className="text-[10px] text-emerald-400 font-bold">Registro clínico escolar</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Medicamentos Programados</span>
+                <div className="text-[11px] text-slate-400 font-medium">Medicamentos Programados</div>
                 <div className="text-2xl font-black text-sky-400 mt-1">
                   {scheduledMedications.filter((m) => m.status === 'ACTIVO').length} Alumnos
                 </div>
-                <span className="text-[10px] text-slate-400 font-bold">Bajo prescripción médica</span>
+                <div className="text-[10px] text-slate-400 font-bold">Bajo prescripción médica</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Insumos en Botiquín</span>
+                <div className="text-[11px] text-slate-400 font-medium">Insumos en Botiquín</div>
                 <div className="text-2xl font-black text-white mt-1">{firstAidSupplies.length} Artículos</div>
-                <span className="text-[10px] text-emerald-400 font-bold">Stock de primeros auxilios</span>
+                <div className="text-[10px] text-emerald-400 font-bold">Stock de primeros auxilios</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Avisos a Padres Enviados</span>
+                <div className="text-[11px] text-slate-400 font-medium">Avisos a Padres Enviados</div>
                 <div className="text-2xl font-black text-rose-400 mt-1">
                   {medicalConsultations.filter((c) => c.parentNotified).length}
                 </div>
-                <span className="text-[10px] text-emerald-400 font-bold">100% de tutores notificados</span>
+                <div className="text-[10px] text-emerald-400 font-bold">100% de tutores notificados</div>
               </div>
             </div>
 
@@ -15358,7 +11616,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <Stethoscope className="w-4 h-4" />
-                <span>Consultas y Atenciones en Plantel ({medicalConsultations.length})</span>
+                <div>Consultas y Atenciones en Plantel ({medicalConsultations.length})</div>
               </button>
               <button
                 onClick={() => setInfirmarySubTab('medications')}
@@ -15369,7 +11627,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <Pill className="w-4 h-4" />
-                <span>Medicamentos con Receta ({scheduledMedications.length})</span>
+                <div>Medicamentos con Receta ({scheduledMedications.length})</div>
               </button>
               <button
                 onClick={() => setInfirmarySubTab('supplies')}
@@ -15380,7 +11638,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <Bandage className="w-4 h-4" />
-                <span>Botiquín e Insumos Médicos ({firstAidSupplies.length})</span>
+                <div>Botiquín e Insumos Médicos ({firstAidSupplies.length})</div>
               </button>
             </div>
 
@@ -15389,10 +11647,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="space-y-4">
                 <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
                   <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-                    <span className="text-xs font-bold text-white">
+                    <div className="text-xs font-bold text-white">
                       Bitácora de Atenciones Médicas Escolares ({medicalConsultations.length})
-                    </span>
-                    <span className="text-xs text-slate-400 font-mono">Enfermería General</span>
+                    </div>
+                    <div className="text-xs text-slate-400 font-mono">Enfermería General</div>
                   </div>
 
                   <div className="overflow-x-auto">
@@ -15418,69 +11676,69 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             </td>
                             <td className="py-3 px-4">
                               <strong className="text-white block">{consultation.studentName}</strong>
-                              <span className="text-[10px] text-slate-400 font-mono">{consultation.studentCode}</span>
+                              <div className="text-[10px] text-slate-400 font-mono">{consultation.studentCode}</div>
                             </td>
                             <td className="py-3 px-4">
                               <div className="space-y-1">
-                                <span className="bg-slate-800 text-slate-200 text-[10px] font-bold px-2 py-0.5 rounded-full border border-slate-700 inline-block">
+                                <div className="bg-slate-800 text-slate-200 text-[10px] font-bold px-2 py-0.5 rounded-full border border-slate-700 inline-block">
                                   {consultation.reason.replace('_', ' ')}
-                                </span>
+                                </div>
                                 <div>
                                   {consultation.severity === 'LEVE' && (
-                                    <span className="text-emerald-400 text-[10px] font-bold">🟢 Leve</span>
+                                    <div className="text-emerald-400 text-[10px] font-bold">🟢 Leve</div>
                                   )}
                                   {consultation.severity === 'MODERADA' && (
-                                    <span className="text-amber-400 text-[10px] font-bold">🟡 Moderada</span>
+                                    <div className="text-amber-400 text-[10px] font-bold">🟡 Moderada</div>
                                   )}
                                   {consultation.severity === 'URGENTE_REVISION_MEDICA' && (
-                                    <span className="text-rose-400 text-[10px] font-bold animate-pulse">🔴 Urgente</span>
+                                    <div className="text-rose-400 text-[10px] font-bold animate-pulse">🔴 Urgente</div>
                                   )}
                                 </div>
                               </div>
                             </td>
                             <td className="py-3 px-4 font-mono text-[11px]">
                               {consultation.vitalSigns.temperatureCelsius && (
-                                <span className="text-amber-300 block">
+                                <div className="text-amber-300 block">
                                   🌡️ {consultation.vitalSigns.temperatureCelsius}°C
-                                </span>
+                                </div>
                               )}
                               {consultation.vitalSigns.bloodPressure && (
-                                <span className="text-slate-400 block text-[10px]">
+                                <div className="text-slate-400 block text-[10px]">
                                   PA: {consultation.vitalSigns.bloodPressure}
-                                </span>
+                                </div>
                               )}
                               {consultation.vitalSigns.heartRateBpm && (
-                                <span className="text-slate-400 block text-[10px]">
+                                <div className="text-slate-400 block text-[10px]">
                                   FC: {consultation.vitalSigns.heartRateBpm} bpm
-                                </span>
+                                </div>
                               )}
                             </td>
                             <td className="py-3 px-4 max-w-xs text-[11px] text-slate-300">
                               <p className="line-clamp-2">{consultation.treatmentGiven}</p>
-                              <span className="text-[10px] text-slate-500 block mt-0.5">
+                              <div className="text-[10px] text-slate-500 block mt-0.5">
                                 {consultation.nurseInCharge}
-                              </span>
+                              </div>
                             </td>
                             <td className="py-3 px-4">
                               {consultation.status === 'ALTA_A_CLASES' && (
-                                <span className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
                                   ✓ En Clases
-                                </span>
+                                </div>
                               )}
                               {consultation.status === 'EN_OBSERVACION' && (
-                                <span className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse">
+                                <div className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse">
                                   En Observación
-                                </span>
+                                </div>
                               )}
                               {consultation.status === 'RETIRADO_CON_TUTOR' && (
-                                <span className="bg-orange-500/10 text-orange-300 border border-orange-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                <div className="bg-orange-500/10 text-orange-300 border border-orange-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
                                   Retirado con Tutor
-                                </span>
+                                </div>
                               )}
                               {consultation.status === 'DERIVADO_HOSPITAL' && (
-                                <span className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                <div className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
                                   Derivado Hospital
-                                </span>
+                                </div>
                               )}
                             </td>
                             <td className="py-3 px-4 text-right">
@@ -15501,7 +11759,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   className="text-xs font-bold text-rose-400 hover:text-rose-300 flex items-center gap-1 cursor-pointer"
                                 >
                                   <FileText className="w-3.5 h-3.5" />
-                                  <span>Reporte</span>
+                                  <div>Reporte</div>
                                 </button>
                               </div>
                             </td>
@@ -15526,15 +11784,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <div className="space-y-3">
                         <div className="flex items-start justify-between gap-2 border-b border-slate-800 pb-3">
                           <div>
-                            <span className="text-[10px] font-mono text-sky-400 uppercase font-bold tracking-wider block">
+                            <div className="text-[10px] font-mono text-sky-400 uppercase font-bold tracking-wider block">
                               HORARIO PROGRAMADO: {med.scheduledTime} HRS
-                            </span>
+                            </div>
                             <h3 className="font-black text-white text-base mt-0.5">{med.medicationName}</h3>
-                            <span className="text-xs text-slate-300 font-mono font-bold block mt-0.5">
+                            <div className="text-xs text-slate-300 font-mono font-bold block mt-0.5">
                               Dosis: {med.dosage}
-                            </span>
+                            </div>
                           </div>
-                          <span
+                          <div
                             className={`text-[10px] font-bold px-2.5 py-1 rounded-xl border font-mono ${
                               med.administeredToday
                                 ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30'
@@ -15542,18 +11800,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             }`}
                           >
                             {med.administeredToday ? '🟢 Suministrado Hoy' : '🟡 Dosis Pendiente'}
-                          </span>
+                          </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-2 text-xs">
                           <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800">
-                            <span className="text-[10px] text-slate-400 block font-bold">Alumno Asignado:</span>
+                            <div className="text-[10px] text-slate-400 block font-bold">Alumno Asignado:</div>
                             <strong className="text-white block mt-0.5">{med.studentName}</strong>
-                            <span className="text-[10px] font-mono text-slate-400">{med.groupName}</span>
+                            <div className="text-[10px] font-mono text-slate-400">{med.groupName}</div>
                           </div>
 
                           <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800">
-                            <span className="text-[10px] text-slate-400 block font-bold">Vigencia del Tratamiento:</span>
+                            <div className="text-[10px] text-slate-400 block font-bold">Vigencia del Tratamiento:</div>
                             <strong className="text-slate-200 block text-[11px] mt-0.5">
                               {med.startDate} al {med.endDate}
                             </strong>
@@ -15561,34 +11819,34 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
 
                         <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-1 text-xs">
-                          <span className="text-[10px] text-slate-400 font-mono block font-bold">
+                          <div className="text-[10px] text-slate-400 font-mono block font-bold">
                             PRESCRIPCIÓN MÉDICA OFICIAL:
-                          </span>
+                          </div>
                           <p className="text-white font-bold">{med.prescriptionDoctorName}</p>
                           <p className="text-slate-400 text-[11px] font-mono">{med.doctorLicense}</p>
                           <div className="flex items-center gap-1.5 text-emerald-400 text-[10px] font-bold pt-1">
                             <ShieldCheck className="w-3.5 h-3.5" />
-                            <span>Consentimiento firmado por: {med.parentName}</span>
+                            <div>Consentimiento firmado por: {med.parentName}</div>
                           </div>
                         </div>
                       </div>
 
                       <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
-                        <span className="text-[11px] text-slate-400 font-mono">
+                        <div className="text-[11px] text-slate-400 font-mono">
                           {med.lastAdministeredAt ? `Última toma: ${med.lastAdministeredAt}` : 'Sin toma hoy'}
-                        </span>
+                        </div>
                         {!med.administeredToday ? (
                           <button
                             onClick={() => handleAdministerMedication(med.id)}
                             className="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-md shadow-sky-500/20 transition-all cursor-pointer"
                           >
                             <Check className="w-3.5 h-3.5" />
-                            <span>Suministrar Dosis</span>
+                            <div>Suministrar Dosis</div>
                           </button>
                         ) : (
-                          <span className="text-xs font-bold text-emerald-400 flex items-center gap-1">
+                          <div className="text-xs font-bold text-emerald-400 flex items-center gap-1">
                             <CheckCheck className="w-4 h-4" /> Dosis completada
-                          </span>
+                          </div>
                         )}
                       </div>
                     </div>
@@ -15601,10 +11859,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {infirmarySubTab === 'supplies' && (
               <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
                 <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-                  <span className="text-xs font-bold text-white">
+                  <div className="text-xs font-bold text-white">
                     Inventario de Botiquín Escolar e Insumos Sanitarios ({firstAidSupplies.length})
-                  </span>
-                  <span className="text-xs text-slate-400 font-mono">Monitoreo de stock mínimo</span>
+                  </div>
+                  <div className="text-xs text-slate-400 font-mono">Monitoreo de stock mínimo</div>
                 </div>
 
                 <div className="overflow-x-auto">
@@ -15628,17 +11886,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <tr key={supply.id} className="hover:bg-slate-800/40 transition-colors">
                             <td className="py-3 px-4">
                               <strong className="text-white block">{supply.name}</strong>
-                              <span className="text-[10px] text-slate-500 font-mono">Unidad: {supply.unit}</span>
+                              <div className="text-[10px] text-slate-500 font-mono">Unidad: {supply.unit}</div>
                             </td>
                             <td className="py-3 px-4">
-                              <span className="bg-slate-950 text-slate-300 border border-slate-800 text-[10px] font-bold px-2 py-0.5 rounded-md">
+                              <div className="bg-slate-950 text-slate-300 border border-slate-800 text-[10px] font-bold px-2 py-0.5 rounded-md">
                                 {supply.category.replace(/_/g, ' ')}
-                              </span>
+                              </div>
                             </td>
                             <td className="py-3 px-4 font-mono font-bold text-sm">
-                              <span className={isLowStock ? 'text-rose-400' : 'text-emerald-400'}>
+                              <div className={isLowStock ? 'text-rose-400' : 'text-emerald-400'}>
                                 {supply.stockQuantity} {supply.unit}
-                              </span>
+                              </div>
                             </td>
                             <td className="py-3 px-4 font-mono text-slate-400">
                               {supply.minStockAlert} {supply.unit}
@@ -15648,13 +11906,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             </td>
                             <td className="py-3 px-4">
                               {isLowStock ? (
-                                <span className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 w-fit">
+                                <div className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 w-fit">
                                   <AlertTriangle className="w-3 h-3" /> Resurtir
-                                </span>
+                                </div>
                               ) : (
-                                <span className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full w-fit block">
+                                <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full w-fit block">
                                   Óptimo
-                                </span>
+                                </div>
                               )}
                             </td>
                             <td className="py-3 px-4 text-right">
@@ -15705,10 +11963,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="font-mono text-xs text-amber-400 font-bold bg-amber-500/10 px-2.5 py-0.5 rounded-lg border border-amber-500/20">
+                  <div className="font-mono text-xs text-amber-400 font-bold bg-amber-500/10 px-2.5 py-0.5 rounded-lg border border-amber-500/20">
                     OFERTA EDUCATIVA INTEGRAL • TURNO VESPERTINO
-                  </span>
-                  <span className="text-xs text-slate-400 font-bold">• 14:30 a 16:30 hrs</span>
+                  </div>
+                  <div className="text-xs text-slate-400 font-bold">• 14:30 a 16:30 hrs</div>
                 </div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <Trophy className="w-6 h-6 text-amber-400" />
@@ -15725,14 +11983,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 border border-slate-700 transition-all cursor-pointer"
                 >
                   <Users className="w-4 h-4 text-amber-400" />
-                  <span>Inscribir Alumno</span>
+                  <div>Inscribir Alumno</div>
                 </button>
                 <button
                   onClick={() => setShowNewWorkshopModal(true)}
                   className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 shadow-lg shadow-amber-500/20 transition-all cursor-pointer"
                 >
                   <Plus className="w-4 h-4" />
-                  <span>Nueva Academia / Taller</span>
+                  <div>Nueva Academia / Taller</div>
                 </button>
               </div>
             </div>
@@ -15740,29 +11998,29 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* KPI Cards de Talleres */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Academias Ofertadas</span>
+                <div className="text-[11px] text-slate-400 font-medium">Academias Ofertadas</div>
                 <div className="text-2xl font-black text-white mt-1">{extracurricularWorkshops.length} Talleres</div>
-                <span className="text-[10px] text-amber-400 font-bold">STEAM, Deportes & Arte</span>
+                <div className="text-[10px] text-amber-400 font-bold">STEAM, Deportes & Arte</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Alumnos en Turno Vespertino</span>
+                <div className="text-[11px] text-slate-400 font-medium">Alumnos en Turno Vespertino</div>
                 <div className="text-2xl font-black text-amber-400 mt-1">
                   {workshopEnrollments.filter((e) => e.status === 'ACTIVO').length} Inscritos
                 </div>
-                <span className="text-[10px] text-emerald-400 font-bold">Participación activa</span>
+                <div className="text-[10px] text-emerald-400 font-bold">Participación activa</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Capacidad Total Instalada</span>
+                <div className="text-[11px] text-slate-400 font-medium">Capacidad Total Instalada</div>
                 <div className="text-2xl font-black text-white mt-1">
                   {extracurricularWorkshops.reduce((acc, w) => acc + w.maxCapacity, 0)} Lugares
                 </div>
-                <span className="text-[10px] text-slate-400 font-bold">Distribuidos en 5 aulas</span>
+                <div className="text-[10px] text-slate-400 font-bold">Distribuidos en 5 aulas</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Ocupación Promedio</span>
+                <div className="text-[11px] text-slate-400 font-medium">Ocupación Promedio</div>
                 <div className="text-2xl font-black text-emerald-400 mt-1">
                   {Math.round(
                     (extracurricularWorkshops.reduce((acc, w) => acc + w.enrolledCount, 0) /
@@ -15771,7 +12029,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   )}
                   %
                 </div>
-                <span className="text-[10px] text-emerald-400 font-bold">Alta demanda extracurricular</span>
+                <div className="text-[10px] text-emerald-400 font-bold">Alta demanda extracurricular</div>
               </div>
             </div>
 
@@ -15786,7 +12044,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <Trophy className="w-4 h-4" />
-                <span>Catálogo de Academias y Horarios ({extracurricularWorkshops.length})</span>
+                <div>Catálogo de Academias y Horarios ({extracurricularWorkshops.length})</div>
               </button>
               <button
                 onClick={() => setWorkshopsSubTab('attendance')}
@@ -15797,7 +12055,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <ClipboardCheck className="w-4 h-4" />
-                <span>Pase de Lista Extracurricular en Vivo</span>
+                <div>Pase de Lista Extracurricular en Vivo</div>
               </button>
               <button
                 onClick={() => setWorkshopsSubTab('enrollments')}
@@ -15808,7 +12066,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <Users className="w-4 h-4" />
-                <span>Padrón de Alumnos Inscritos ({workshopEnrollments.length})</span>
+                <div>Padrón de Alumnos Inscritos ({workshopEnrollments.length})</div>
               </button>
             </div>
 
@@ -15856,10 +12114,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         >
                           <div className="space-y-3">
                             <div className="flex items-start justify-between gap-2">
-                              <span className="text-[10px] font-mono text-amber-400 uppercase font-bold bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/20">
+                              <div className="text-[10px] font-mono text-amber-400 uppercase font-bold bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/20">
                                 {workshop.category.replace(/_/g, ' ')}
-                              </span>
-                              <span
+                              </div>
+                              <div
                                 className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
                                   isFull
                                     ? 'bg-rose-500/10 text-rose-300 border-rose-500/30'
@@ -15867,32 +12125,32 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 }`}
                               >
                                 {isFull ? '🔴 Cupo Lleno' : '🟢 Disponible'}
-                              </span>
+                              </div>
                             </div>
 
                             <div>
-                              <span className="font-mono text-[10px] text-slate-400 block">{workshop.code}</span>
+                              <div className="font-mono text-[10px] text-slate-400 block">{workshop.code}</div>
                               <h3 className="font-black text-white text-base leading-snug mt-0.5">{workshop.name}</h3>
                               <p className="text-xs text-slate-400 mt-1 line-clamp-2">{workshop.description}</p>
                             </div>
 
                             <div className="space-y-1.5 text-xs bg-slate-950 p-3 rounded-2xl border border-slate-800">
                               <div className="flex items-center justify-between text-slate-300">
-                                <span className="text-slate-400">Instructor:</span>
+                                <div className="text-slate-400">Instructor:</div>
                                 <strong className="text-white">{workshop.instructorName}</strong>
                               </div>
                               <div className="flex items-center justify-between text-slate-300">
-                                <span className="text-slate-400">Instalación:</span>
-                                <span className="text-slate-200">{workshop.classroom}</span>
+                                <div className="text-slate-400">Instalación:</div>
+                                <div className="text-slate-200">{workshop.classroom}</div>
                               </div>
                               <div className="flex items-center justify-between text-slate-300">
-                                <span className="text-slate-400">Horario:</span>
+                                <div className="text-slate-400">Horario:</div>
                                 <strong className="text-amber-400 font-mono text-[11px]">
                                   {workshop.scheduleDays.join(', ')} • {workshop.scheduleTime}
                                 </strong>
                               </div>
                               <div className="flex items-center justify-between text-slate-300 pt-1 border-t border-slate-800">
-                                <span className="text-slate-400">Cuota Mensual:</span>
+                                <div className="text-slate-400">Cuota Mensual:</div>
                                 <strong className="text-emerald-400 text-sm font-mono font-black">
                                   ${workshop.monthlyFeeMXN}.00 MXN
                                 </strong>
@@ -15902,10 +12160,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             {/* Barra de Ocupación */}
                             <div className="space-y-1">
                               <div className="flex justify-between text-[11px]">
-                                <span className="text-slate-400">Cupo Ocupado:</span>
-                                <span className="text-slate-200 font-mono font-bold">
+                                <div className="text-slate-400">Cupo Ocupado:</div>
+                                <div className="text-slate-200 font-mono font-bold">
                                   {workshop.enrolledCount} / {workshop.maxCapacity} alumnos ({occupancyPercent}%)
-                                </span>
+                                </div>
                               </div>
                               <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
                                 <div
@@ -15927,7 +12185,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs py-2 rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer"
                             >
                               <ClipboardCheck className="w-3.5 h-3.5" />
-                              <span>Pase de Lista</span>
+                              <div>Pase de Lista</div>
                             </button>
                             <button
                               disabled={isFull}
@@ -15942,7 +12200,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               }`}
                             >
                               <Users className="w-3.5 h-3.5" />
-                              <span>{isFull ? 'Sin Cupo' : 'Inscribir'}</span>
+                              <div>{isFull ? 'Sin Cupo' : 'Inscribir'}</div>
                             </button>
                           </div>
                         </div>
@@ -15957,9 +12215,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
                   <div className="space-y-1">
-                    <span className="text-[10px] font-mono text-amber-400 uppercase font-bold">
+                    <div className="text-[10px] font-mono text-amber-400 uppercase font-bold">
                       SESIÓN VESPERTINA EN CURSO
-                    </span>
+                    </div>
                     <h3 className="text-lg font-black text-white flex items-center gap-2">
                       <ClipboardCheck className="w-5 h-5 text-amber-400" />
                       Pase de Lista de la Academia
@@ -15995,13 +12253,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <div className="flex items-center justify-between bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs">
                         <div>
                           <strong className="text-white text-sm block">{workshop?.name}</strong>
-                          <span className="text-slate-400 font-mono">
+                          <div className="text-slate-400 font-mono">
                             {workshop?.scheduleDays.join(', ')} • {workshop?.classroom} • {workshop?.instructorName}
-                          </span>
+                          </div>
                         </div>
                         <div className="text-right">
-                          <span className="text-amber-400 font-mono font-bold block">Fecha: {today}</span>
-                          <span className="text-slate-400">{enrolledInThis.length} Alumnos en Lista</span>
+                          <div className="text-amber-400 font-mono font-bold block">Fecha: {today}</div>
+                          <div className="text-slate-400">{enrolledInThis.length} Alumnos en Lista</div>
                         </div>
                       </div>
 
@@ -16033,24 +12291,24 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   <td className="py-3 px-4">{enr.groupName}</td>
                                   <td className="py-3 px-4">
                                     {status === 'PRESENTE' && (
-                                      <span className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                      <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
                                         🟢 Presente
-                                      </span>
+                                      </div>
                                     )}
                                     {status === 'RETARDO' && (
-                                      <span className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                      <div className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
                                         🟡 Retardo
-                                      </span>
+                                      </div>
                                     )}
                                     {status === 'FALTA' && (
-                                      <span className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                      <div className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
                                         🔴 Falta
-                                      </span>
+                                      </div>
                                     )}
                                     {status === 'JUSTIFICADA' && (
-                                      <span className="bg-sky-500/10 text-sky-300 border border-sky-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                      <div className="bg-sky-500/10 text-sky-300 border border-sky-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
                                         🔵 Justificada
-                                      </span>
+                                      </div>
                                     )}
                                   </td>
                                   <td className="py-3 px-4 text-right">
@@ -16124,10 +12382,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {workshopsSubTab === 'enrollments' && (
               <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
                 <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-                  <span className="text-xs font-bold text-white">
+                  <div className="text-xs font-bold text-white">
                     Padrón General de Inscripciones Extracurriculares ({workshopEnrollments.length})
-                  </span>
-                  <span className="text-xs text-slate-400 font-mono">Ciclo Escolar 2026-2027</span>
+                  </div>
+                  <div className="text-xs text-slate-400 font-mono">Ciclo Escolar 2026-2027</div>
                 </div>
 
                 <div className="overflow-x-auto">
@@ -16148,7 +12406,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <tr key={enr.id} className="hover:bg-slate-800/40 transition-colors">
                           <td className="py-3 px-4">
                             <strong className="text-white block">{enr.studentName}</strong>
-                            <span className="text-[10px] text-slate-400">{enr.groupName}</span>
+                            <div className="text-[10px] text-slate-400">{enr.groupName}</div>
                           </td>
                           <td className="py-3 px-4 font-mono text-slate-400">{enr.studentCode}</td>
                           <td className="py-3 px-4 font-bold text-amber-300">{enr.workshopName}</td>
@@ -16158,9 +12416,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             ${enr.monthlyFeeMXN}.00 MXN
                           </td>
                           <td className="py-3 px-4 text-right">
-                            <span className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                            <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
                               ✓ Activo
-                            </span>
+                            </div>
                           </td>
                         </tr>
                       ))}
@@ -16179,10 +12437,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="font-mono text-xs text-teal-400 font-bold bg-teal-500/10 px-2.5 py-0.5 rounded-lg border border-teal-500/20">
+                  <div className="font-mono text-xs text-teal-400 font-bold bg-teal-500/10 px-2.5 py-0.5 rounded-lg border border-teal-500/20">
                     CONTROL PATRIMONIAL, ALMACÉN & DOTACIONES SEP
-                  </span>
-                  <span className="text-xs text-slate-400 font-bold">• Libros CONALITEG, Uniformes y Activos</span>
+                  </div>
+                  <div className="text-xs text-slate-400 font-bold">• Libros CONALITEG, Uniformes y Activos</div>
                 </div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <Box className="w-6 h-6 text-teal-400" />
@@ -16199,35 +12457,35 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-lg shadow-amber-500/20 transition-all cursor-pointer"
                 >
                   <BookOpenCheck className="w-4 h-4" />
-                  <span>+ Remesa CONALITEG</span>
+                  <div>+ Remesa CONALITEG</div>
                 </button>
                 <button
                   onClick={() => setShowNewConalitegReceiptModal(true)}
                   className="bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold text-xs px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 border border-slate-700 transition-all cursor-pointer"
                 >
                   <FileBadge className="w-4 h-4" />
-                  <span>+ Acuse de Entrega</span>
+                  <div>+ Acuse de Entrega</div>
                 </button>
                 <button
                   onClick={() => setShowNewUniformItemModal(true)}
                   className="bg-slate-800 hover:bg-slate-700 text-teal-300 font-bold text-xs px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 border border-slate-700 transition-all cursor-pointer"
                 >
                   <Shirt className="w-4 h-4" />
-                  <span>+ Alta Prenda</span>
+                  <div>+ Alta Prenda</div>
                 </button>
                 <button
                   onClick={() => setShowNewAssetModal(true)}
                   className="bg-teal-600 hover:bg-teal-500 text-white font-black text-xs px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-lg shadow-teal-600/20 transition-all cursor-pointer"
                 >
                   <Plus className="w-4 h-4" />
-                  <span>+ Activo Fijo</span>
+                  <div>+ Activo Fijo</div>
                 </button>
                 <button
                   onClick={() => setShowNewTicketModal(true)}
                   className="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-3 py-2.5 rounded-2xl flex items-center gap-1.5 border border-slate-700 transition-all cursor-pointer"
                 >
                   <Wrench className="w-4 h-4 text-amber-400" />
-                  <span>Avería</span>
+                  <div>Avería</div>
                 </button>
               </div>
             </div>
@@ -16235,22 +12493,22 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* KPI Cards de Inventario y CONALITEG */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Libros CONALITEG SEP</span>
+                <div className="text-[11px] text-slate-400 font-medium">Libros CONALITEG SEP</div>
                 <div className="text-2xl font-black text-amber-400 mt-1">
                   {conalitegPackages.reduce((acc, p) => acc + p.receivedPackagesCount, 0)} Paquetes
                 </div>
-                <span className="text-[10px] text-slate-400 font-bold">
+                <div className="text-[10px] text-slate-400 font-bold">
                   {conalitegPackages.reduce((acc, p) => acc + p.deliveredPackagesCount, 0)} entregados •{' '}
                   <strong className="text-emerald-400">{conalitegReceipts.length} acuses firmados</strong>
-                </span>
+                </div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Almacén de Uniformes</span>
+                <div className="text-[11px] text-slate-400 font-medium">Almacén de Uniformes</div>
                 <div className="text-2xl font-black text-teal-400 mt-1">
                   {schoolUniforms.reduce((acc, u) => acc + u.stockQuantity, 0)} Prendas
                 </div>
-                <span className="text-[10px] text-slate-400 font-bold">
+                <div className="text-[10px] text-slate-400 font-bold">
                   {schoolUniforms.filter((u) => u.stockQuantity <= u.minStockAlert).length > 0 ? (
                     <strong className="text-rose-400">
                       ⚠️ {schoolUniforms.filter((u) => u.stockQuantity <= u.minStockAlert).length} prendas con stock bajo
@@ -16258,27 +12516,27 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   ) : (
                     <strong className="text-emerald-400">Stock en niveles óptimos</strong>
                   )}
-                </span>
+                </div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Valor Patrimonial Activos</span>
+                <div className="text-[11px] text-slate-400 font-medium">Valor Patrimonial Activos</div>
                 <div className="text-2xl font-black text-emerald-400 mt-1">
                   ${schoolAssets.reduce((acc, a) => acc + a.purchaseValueMXN, 0).toLocaleString()} MXN
                 </div>
-                <span className="text-[10px] text-slate-400 font-bold">
+                <div className="text-[10px] text-slate-400 font-bold">
                   {schoolAssets.length} activos inventariados
-                </span>
+                </div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Tickets de Mantenimiento</span>
+                <div className="text-[11px] text-slate-400 font-medium">Tickets de Mantenimiento</div>
                 <div className="text-2xl font-black text-amber-400 mt-1">
                   {assetMaintenanceTickets.filter((t) => t.status !== 'RESUELTO').length} Abiertos
                 </div>
-                <span className="text-[10px] text-slate-400 font-bold">
+                <div className="text-[10px] text-slate-400 font-bold">
                   {assetMaintenanceTickets.filter((t) => t.status === 'RESUELTO').length} resueltos
-                </span>
+                </div>
               </div>
             </div>
 
@@ -16293,7 +12551,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <BookOpenCheck className="w-4 h-4" />
-                <span>Libros de Texto CONALITEG SEP ({conalitegPackages.length})</span>
+                <div>Libros de Texto CONALITEG SEP ({conalitegPackages.length})</div>
               </button>
               <button
                 onClick={() => setInventorySubTab('uniforms')}
@@ -16304,7 +12562,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <Shirt className="w-4 h-4" />
-                <span>Almacén de Uniformes & Material ({schoolUniforms.length})</span>
+                <div>Almacén de Uniformes & Material ({schoolUniforms.length})</div>
               </button>
               <button
                 onClick={() => setInventorySubTab('assets')}
@@ -16315,7 +12573,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <Box className="w-4 h-4" />
-                <span>Padrón de Activos Fijos ({schoolAssets.length})</span>
+                <div>Padrón de Activos Fijos ({schoolAssets.length})</div>
               </button>
               <button
                 onClick={() => setInventorySubTab('tickets')}
@@ -16326,7 +12584,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <Wrench className="w-4 h-4" />
-                <span>Mesa de Mantenimiento ({assetMaintenanceTickets.length})</span>
+                <div>Mesa de Mantenimiento ({assetMaintenanceTickets.length})</div>
               </button>
               <button
                 onClick={() => setInventorySubTab('audit')}
@@ -16337,7 +12595,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <ShieldCheck className="w-4 h-4" />
-                <span>Auditoría de Valor y Garantías</span>
+                <div>Auditoría de Valor y Garantías</div>
               </button>
             </div>
 
@@ -16370,10 +12628,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
                   <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-                    <span className="text-xs font-bold text-white">
+                    <div className="text-xs font-bold text-white">
                       Listado Oficial de Activos y Equipamiento Institucional ({schoolAssets.length})
-                    </span>
-                    <span className="text-xs text-slate-400 font-mono">Control Patrimonial ASM</span>
+                    </div>
+                    <div className="text-xs text-slate-400 font-mono">Control Patrimonial ASM</div>
                   </div>
 
                   <div className="overflow-x-auto">
@@ -16401,47 +12659,47 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               <td className="py-3 px-4 font-mono font-bold text-teal-400">{asset.assetTag}</td>
                               <td className="py-3 px-4">
                                 <strong className="text-white block">{asset.name}</strong>
-                                <span className="text-[10px] text-slate-400 block font-mono">
+                                <div className="text-[10px] text-slate-400 block font-mono">
                                   {asset.serialNumber ? `Serie: ${asset.serialNumber}` : asset.brandModel || 'Genérico'}
-                                </span>
+                                </div>
                               </td>
                               <td className="py-3 px-4">
-                                <span className="bg-slate-950 border border-slate-800 text-[10px] font-bold px-2 py-0.5 rounded-md text-slate-300">
+                                <div className="bg-slate-950 border border-slate-800 text-[10px] font-bold px-2 py-0.5 rounded-md text-slate-300">
                                   {asset.category.replace(/_/g, ' ')}
-                                </span>
+                                </div>
                               </td>
                               <td className="py-3 px-4 text-[11px]">
-                                <span className="text-slate-200 block font-bold">{asset.assignedLocation}</span>
-                                <span className="text-[10px] text-slate-400 block">{asset.responsiblePerson}</span>
+                                <div className="text-slate-200 block font-bold">{asset.assignedLocation}</div>
+                                <div className="text-[10px] text-slate-400 block">{asset.responsiblePerson}</div>
                               </td>
                               <td className="py-3 px-4 font-mono font-bold text-emerald-400">
                                 ${asset.purchaseValueMXN.toLocaleString()}.00 MXN
                               </td>
                               <td className="py-3 px-4">
                                 {asset.condition === 'EXCELENTE' && (
-                                  <span className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                  <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
                                     🟢 Excelente
-                                  </span>
+                                  </div>
                                 )}
                                 {asset.condition === 'BUENO' && (
-                                  <span className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                  <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
                                     🟢 Bueno
-                                  </span>
+                                  </div>
                                 )}
                                 {asset.condition === 'REGULAR_REQUIERE_SERVICIO' && (
-                                  <span className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse">
+                                  <div className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse">
                                     🟡 Requiere Servicio
-                                  </span>
+                                  </div>
                                 )}
                                 {asset.condition === 'EN_REPARACION' && (
-                                  <span className="bg-orange-500/10 text-orange-300 border border-orange-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                  <div className="bg-orange-500/10 text-orange-300 border border-orange-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
                                     🟠 En Reparación
-                                  </span>
+                                  </div>
                                 )}
                                 {asset.condition === 'DADO_DE_BAJA' && (
-                                  <span className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                  <div className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
                                     🔴 Baja
-                                  </span>
+                                  </div>
                                 )}
                               </td>
                               <td className="py-3 px-4 text-right">
@@ -16458,7 +12716,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                     className="text-[10px] font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 cursor-pointer bg-slate-800 px-2 py-1 rounded-lg hover:bg-slate-700 transition-colors"
                                   >
                                     <Wrench className="w-3 h-3" />
-                                    <span>Ticket</span>
+                                    <div>Ticket</div>
                                   </button>
                                   <button
                                     onClick={() => {
@@ -16468,7 +12726,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                     className="text-[10px] font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 cursor-pointer bg-slate-800 px-2 py-1 rounded-lg hover:bg-slate-700 transition-colors"
                                   >
                                     <FileText className="w-3 h-3" />
-                                    <span>Ficha</span>
+                                    <div>Ficha</div>
                                   </button>
                                 </div>
                               </td>
@@ -16486,10 +12744,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="space-y-4">
                 <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
                   <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-                    <span className="text-xs font-bold text-white">
+                    <div className="text-xs font-bold text-white">
                       Bitácora de Tickets de Mantenimiento Preventivo y Correctivo ({assetMaintenanceTickets.length})
-                    </span>
-                    <span className="text-xs text-slate-400 font-mono">Soporte Escolar</span>
+                    </div>
+                    <div className="text-xs text-slate-400 font-mono">Soporte Escolar</div>
                   </div>
 
                   <div className="overflow-x-auto">
@@ -16509,12 +12767,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {assetMaintenanceTickets.map((ticket) => (
                           <tr key={ticket.id} className="hover:bg-slate-800/40 transition-colors">
                             <td className="py-3 px-4">
-                              <span className="font-mono font-bold text-amber-400 block">{ticket.ticketNumber}</span>
-                              <span className="text-[10px] text-slate-500 font-mono">{ticket.reportedAt}</span>
+                              <div className="font-mono font-bold text-amber-400 block">{ticket.ticketNumber}</div>
+                              <div className="text-[10px] text-slate-500 font-mono">{ticket.reportedAt}</div>
                             </td>
                             <td className="py-3 px-4">
                               <strong className="text-white block">{ticket.assetName}</strong>
-                              <span className="text-[10px] text-teal-400 font-mono">{ticket.assetTag} • {ticket.location}</span>
+                              <div className="text-[10px] text-teal-400 font-mono">{ticket.assetTag} • {ticket.location}</div>
                             </td>
                             <td className="py-3 px-4 max-w-xs text-[11px]">
                               <strong className="text-slate-200 block">{ticket.title}</strong>
@@ -16527,45 +12785,45 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             </td>
                             <td className="py-3 px-4">
                               {ticket.priority === 'URGENTE' && (
-                                <span className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse">
+                                <div className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse">
                                   🔴 Urgente
-                                </span>
+                                </div>
                               )}
                               {ticket.priority === 'ALTA' && (
-                                <span className="bg-orange-500/10 text-orange-300 border border-orange-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                <div className="bg-orange-500/10 text-orange-300 border border-orange-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
                                   🟠 Alta
-                                </span>
+                                </div>
                               )}
                               {ticket.priority === 'MEDIA' && (
-                                <span className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                <div className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
                                   🟡 Media
-                                </span>
+                                </div>
                               )}
                               {ticket.priority === 'BAJA' && (
-                                <span className="bg-slate-800 text-slate-300 border border-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                <div className="bg-slate-800 text-slate-300 border border-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-full">
                                   ⚪ Baja
-                                </span>
+                                </div>
                               )}
                             </td>
                             <td className="py-3 px-4 text-[11px]">
                               <strong className="text-slate-200 block">{ticket.assignedTo || 'Sin asignar'}</strong>
-                              <span className="text-[10px] text-slate-500">Por: {ticket.reportedBy}</span>
+                              <div className="text-[10px] text-slate-500">Por: {ticket.reportedBy}</div>
                             </td>
                             <td className="py-3 px-4">
                               {ticket.status === 'RESUELTO' && (
-                                <span className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
                                   ✓ Resuelto
-                                </span>
+                                </div>
                               )}
                               {ticket.status === 'EN_REPARACION' && (
-                                <span className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse">
+                                <div className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse">
                                   En Reparación
-                                </span>
+                                </div>
                               )}
                               {ticket.status === 'ABIERTO_REPORTADO' && (
-                                <span className="bg-sky-500/10 text-sky-300 border border-sky-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                <div className="bg-sky-500/10 text-sky-300 border border-sky-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
                                   Abierto
-                                </span>
+                                </div>
                               )}
                             </td>
                             <td className="py-3 px-4 text-right">
@@ -16615,13 +12873,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         >
                           <div>
                             <strong className="text-white block">{item.name}</strong>
-                            <span className="text-[10px] text-slate-500">
+                            <div className="text-[10px] text-slate-500">
                               {schoolAssets.filter((a) => a.category === item.cat).length} piezas inventariadas
-                            </span>
+                            </div>
                           </div>
-                          <span className="font-mono font-black text-emerald-400 text-sm">
+                          <div className="font-mono font-black text-emerald-400 text-sm">
                             ${totalVal.toLocaleString()}.00 MXN
-                          </span>
+                          </div>
                         </div>
                       );
                     })}
@@ -16644,13 +12902,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         >
                           <div>
                             <strong className="text-white block">{asset.name}</strong>
-                            <span className="text-[10px] text-teal-400 font-mono">
+                            <div className="text-[10px] text-teal-400 font-mono">
                               {asset.assetTag} • {asset.brandModel || 'Equipo'}
-                            </span>
+                            </div>
                           </div>
                           <div className="text-right">
-                            <span className="text-[10px] text-slate-400 block font-bold">Vence Garantía:</span>
-                            <span className="font-mono text-sky-300 font-bold">{asset.warrantyExpiry}</span>
+                            <div className="text-[10px] text-slate-400 block font-bold">Vence Garantía:</div>
+                            <div className="font-mono text-sky-300 font-bold">{asset.warrantyExpiry}</div>
                           </div>
                         </div>
                       ))}
@@ -16670,10 +12928,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-mono uppercase font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                        <div className="text-[10px] font-mono uppercase font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
                           COMISIÓN NACIONAL DE LIBROS DE TEXTO GRATUITOS (CONALITEG)
-                        </span>
-                        <span className="text-xs text-slate-400 font-bold">• Ciclo Escolar 2026-2027</span>
+                        </div>
+                        <div className="text-xs text-slate-400 font-bold">• Ciclo Escolar 2026-2027</div>
                       </div>
                       <h3 className="text-base font-black text-white mt-1">
                         Control de Paquetes NEM por Grado y Bitácora de Acuses con Firma de Tutores
@@ -16689,14 +12947,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-4 py-2.5 rounded-xl flex items-center gap-1.5 shadow-md shadow-amber-500/20 transition-all cursor-pointer"
                     >
                       <FileBadge className="w-4 h-4" />
-                      <span>Registrar Acuse Firmado</span>
+                      <div>Registrar Acuse Firmado</div>
                     </button>
                     <button
                       onClick={() => setShowNewConalitegPackageModal(true)}
                       className="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-4 py-2.5 rounded-xl flex items-center gap-1.5 border border-slate-700 transition-all cursor-pointer"
                     >
                       <Plus className="w-4 h-4" />
-                      <span>Ingresar Remesa SEP</span>
+                      <div>Ingresar Remesa SEP</div>
                     </button>
                   </div>
                 </div>
@@ -16708,9 +12966,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <BookOpen className="w-4 h-4 text-amber-400" />
                       Remesas Recibidas y Libros Incluidos por Grado ({conalitegPackages.length})
                     </h4>
-                    <span className="text-xs text-slate-400 font-mono">
+                    <div className="text-xs text-slate-400 font-mono">
                       Total Recibidos: {conalitegPackages.reduce((acc, p) => acc + p.receivedPackagesCount, 0)} paquetes
-                    </span>
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -16727,13 +12985,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <div className="space-y-3">
                             <div className="flex items-start justify-between gap-2">
                               <div>
-                                <span className="font-mono text-[10px] text-amber-400 uppercase font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20 block w-max">
+                                <div className="font-mono text-[10px] text-amber-400 uppercase font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20 block w-max">
                                   {pkg.remesaFolio}
-                                </span>
+                                </div>
                                 <h4 className="font-black text-white text-base leading-tight mt-1.5">{pkg.grade}</h4>
-                                <span className="text-[11px] text-slate-400 block font-medium">{pkg.level}</span>
+                                <div className="text-[11px] text-slate-400 block font-medium">{pkg.level}</div>
                               </div>
-                              <span
+                              <div
                                 className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
                                   pkg.status === 'COMPLETA'
                                     ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30'
@@ -16747,21 +13005,21 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   : pkg.status === 'EXCEDENTE_EN_RESGUARDO'
                                   ? '🔵 Excedente en Bodega'
                                   : '🔴 Déficit Solicitado'}
-                              </span>
+                              </div>
                             </div>
 
                             {/* Cifras de Entrega */}
                             <div className="grid grid-cols-3 gap-2 bg-slate-950 p-2.5 rounded-2xl border border-slate-800 text-center">
                               <div>
-                                <span className="text-[9px] text-slate-500 uppercase font-mono block">Recibidos</span>
+                                <div className="text-[9px] text-slate-500 uppercase font-mono block">Recibidos</div>
                                 <strong className="text-white text-xs font-mono">{pkg.receivedPackagesCount}</strong>
                               </div>
                               <div>
-                                <span className="text-[9px] text-slate-500 uppercase font-mono block">Entregados</span>
+                                <div className="text-[9px] text-slate-500 uppercase font-mono block">Entregados</div>
                                 <strong className="text-emerald-400 text-xs font-mono">{pkg.deliveredPackagesCount}</strong>
                               </div>
                               <div>
-                                <span className="text-[9px] text-slate-500 uppercase font-mono block">Reserva</span>
+                                <div className="text-[9px] text-slate-500 uppercase font-mono block">Reserva</div>
                                 <strong className="text-amber-400 text-xs font-mono">{pkg.warehouseReserveCount}</strong>
                               </div>
                             </div>
@@ -16769,10 +13027,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             {/* Barra de Progreso de Entregas */}
                             <div className="space-y-1">
                               <div className="flex justify-between text-[11px]">
-                                <span className="text-slate-400">Progreso de Entrega a Tutores:</span>
-                                <span className="text-white font-mono font-bold">
+                                <div className="text-slate-400">Progreso de Entrega a Tutores:</div>
+                                <div className="text-white font-mono font-bold">
                                   {pkg.deliveredPackagesCount}/{pkg.enrolledStudentsCount} ({percentDelivered}%)
-                                </span>
+                                </div>
                               </div>
                               <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
                                 <div
@@ -16786,27 +13044,27 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                             {/* Títulos Oficiales Incluidos */}
                             <div className="space-y-1.5 pt-1">
-                              <span className="text-[10px] font-mono text-slate-400 uppercase font-bold block">
+                              <div className="text-[10px] font-mono text-slate-400 uppercase font-bold block">
                                 Libros Oficiales Incluidos ({pkg.includedBooks.length}):
-                              </span>
+                              </div>
                               <div className="flex flex-wrap gap-1">
                                 {pkg.includedBooks.map((bk, i) => (
-                                  <span
+                                  <div
                                     key={i}
                                     className="bg-slate-950 border border-slate-800 text-slate-300 text-[10px] px-2 py-0.5 rounded-md flex items-center gap-1"
                                   >
                                     <BookOpenCheck className="w-3 h-3 text-amber-400/80" />
-                                    <span>{bk.title}</span>
-                                  </span>
+                                    <div>{bk.title}</div>
+                                  </div>
                                 ))}
                               </div>
                             </div>
 
                             <div className="text-[10px] text-slate-500 flex items-center justify-between pt-1 border-t border-slate-800/80">
-                              <span>Recibido: {pkg.receptionDate}</span>
-                              <span className="truncate max-w-[170px]" title={pkg.zoneSupervisorOffice}>
+                              <div>Recibido: {pkg.receptionDate}</div>
+                              <div className="truncate max-w-[170px]" title={pkg.zoneSupervisorOffice}>
                                 {pkg.zoneSupervisorOffice}
-                              </span>
+                              </div>
                             </div>
                           </div>
 
@@ -16824,7 +13082,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               className="w-full bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold text-xs py-2 rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer"
                             >
                               <FileBadge className="w-3.5 h-3.5" />
-                              <span>+ Generar Acuse para {pkg.grade}</span>
+                              <div>+ Generar Acuse para {pkg.grade}</div>
                             </button>
                           </div>
                         </div>
@@ -16845,9 +13103,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         Registro foliado con firma de conformidad para auditoría de Supervisión Escolar de Zona SEP.
                       </p>
                     </div>
-                    <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 font-bold w-max">
+                    <div className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 font-bold w-max">
                       ✓ 100% Acuses con Resguardo Físico
-                    </span>
+                    </div>
                   </div>
 
                   <div className="overflow-x-auto">
@@ -16869,29 +13127,29 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             <td className="py-3 px-4 font-mono font-bold text-amber-400">{rec.folio}</td>
                             <td className="py-3 px-4">
                               <strong className="text-white block">{rec.studentName}</strong>
-                              <span className="text-[10px] text-slate-400 font-mono">{rec.studentCode}</span>
+                              <div className="text-[10px] text-slate-400 font-mono">{rec.studentCode}</div>
                             </td>
                             <td className="py-3 px-4">{rec.grade}</td>
                             <td className="py-3 px-4">
-                              <span className="text-white font-medium block">{rec.parentName}</span>
+                              <div className="text-white font-medium block">{rec.parentName}</div>
                               {rec.parentPhone && (
-                                <span className="text-[10px] text-slate-400 font-mono">Tel: {rec.parentPhone}</span>
+                                <div className="text-[10px] text-slate-400 font-mono">Tel: {rec.parentPhone}</div>
                               )}
                             </td>
                             <td className="py-3 px-4 max-w-[240px]">
-                              <span className="text-[11px] text-slate-300 line-clamp-1" title={rec.titlesDelivered.join(', ')}>
+                              <div className="text-[11px] text-slate-300 line-clamp-1" title={rec.titlesDelivered.join(', ')}>
                                 {rec.titlesDelivered.length} libros: {rec.titlesDelivered.slice(0, 2).join(', ')}...
-                              </span>
+                              </div>
                             </td>
                             <td className="py-3 px-4">
-                              <span className="font-mono text-slate-300 block">{rec.deliveryDate}</span>
-                              <span className="text-[10px] text-slate-500">{rec.deliveredByStaff}</span>
+                              <div className="font-mono text-slate-300 block">{rec.deliveryDate}</div>
+                              <div className="text-[10px] text-slate-500">{rec.deliveredByStaff}</div>
                             </td>
                             <td className="py-3 px-4 text-right">
-                              <span className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1">
+                              <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1">
                                 <FileCheck className="w-3 h-3" />
-                                <span>Firmado</span>
-                              </span>
+                                <div>Firmado</div>
+                              </div>
                             </td>
                           </tr>
                         ))}
@@ -16913,10 +13171,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-mono uppercase font-bold text-teal-400 bg-teal-500/10 px-2 py-0.5 rounded border border-teal-500/20">
+                        <div className="text-[10px] font-mono uppercase font-bold text-teal-400 bg-teal-500/10 px-2 py-0.5 rounded border border-teal-500/20">
                           ALMACÉN INSTITUCIONAL DE INDUMENTARIA & MATERIALES
-                        </span>
-                        <span className="text-xs text-slate-400 font-bold">• Venta y Dotación Escolar</span>
+                        </div>
+                        <div className="text-xs text-slate-400 font-bold">• Venta y Dotación Escolar</div>
                       </div>
                       <h3 className="text-base font-black text-white mt-1">
                         Control de Existencias por Talla, Alertas de Stock Mínimo y Despacho a Familias
@@ -16931,7 +13189,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     className="bg-teal-600 hover:bg-teal-500 text-white font-black text-xs px-4 py-2.5 rounded-xl flex items-center gap-1.5 shadow-lg shadow-teal-600/20 transition-all cursor-pointer shrink-0"
                   >
                     <Plus className="w-4 h-4" />
-                    <span>Dar de Alta Prenda / Artículo</span>
+                    <div>Dar de Alta Prenda / Artículo</div>
                   </button>
                 </div>
 
@@ -16942,9 +13200,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <Tag className="w-4 h-4 text-teal-400" />
                       Inventario en Bodega Escolar ({schoolUniforms.length} Artículos)
                     </h4>
-                    <span className="text-xs font-mono text-slate-400">
+                    <div className="text-xs font-mono text-slate-400">
                       Total Piezas Físicas: {schoolUniforms.reduce((acc, u) => acc + u.stockQuantity, 0)} prendas
-                    </span>
+                    </div>
                   </div>
 
                   <div className="overflow-x-auto">
@@ -16969,32 +13227,32 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               <td className="py-3 px-4 font-mono font-bold text-teal-400">{item.sku}</td>
                               <td className="py-3 px-4">
                                 <strong className="text-white block">{item.name}</strong>
-                                <span className="text-[10px] text-slate-400">Prov: {item.supplierName}</span>
+                                <div className="text-[10px] text-slate-400">Prov: {item.supplierName}</div>
                               </td>
                               <td className="py-3 px-4">
-                                <span className="text-[10px] font-mono text-slate-300 block font-bold">
+                                <div className="text-[10px] font-mono text-slate-300 block font-bold">
                                   {item.category.replace(/_/g, ' ')}
-                                </span>
-                                <span className="text-[10px] text-slate-500">{item.level}</span>
+                                </div>
+                                <div className="text-[10px] text-slate-500">{item.level}</div>
                               </td>
                               <td className="py-3 px-4">
-                                <span className="bg-slate-950 border border-slate-800 text-slate-200 px-2.5 py-1 rounded-lg font-mono font-bold text-[11px]">
+                                <div className="bg-slate-950 border border-slate-800 text-slate-200 px-2.5 py-1 rounded-lg font-mono font-bold text-[11px]">
                                   {item.size.replace('TALLA_', 'T-')}
-                                </span>
+                                </div>
                               </td>
                               <td className="py-3 px-4">
                                 <div className="flex items-center gap-2">
-                                  <span
+                                  <div
                                     className={`text-sm font-black font-mono ${
                                       isLowStock ? 'text-rose-400' : 'text-emerald-400'
                                     }`}
                                   >
                                     {item.stockQuantity} pzs
-                                  </span>
+                                  </div>
                                   {isLowStock && (
-                                    <span className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[9px] font-bold px-1.5 py-0.5 rounded">
+                                    <div className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[9px] font-bold px-1.5 py-0.5 rounded">
                                       Bajo Mínimo ({item.minStockAlert})
-                                    </span>
+                                    </div>
                                   )}
                                 </div>
                               </td>
@@ -17013,7 +13271,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   className="bg-slate-800 hover:bg-slate-700 text-teal-300 font-bold text-[11px] px-3 py-1.5 rounded-xl border border-slate-700 transition-all cursor-pointer inline-flex items-center gap-1"
                                 >
                                   <Box className="w-3.5 h-3.5" />
-                                  <span>Ajustar Stock</span>
+                                  <div>Ajustar Stock</div>
                                 </button>
                               </td>
                             </tr>
@@ -17035,10 +13293,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="font-mono text-xs text-rose-400 font-bold bg-rose-500/10 px-2.5 py-0.5 rounded-lg border border-rose-500/20">
+                  <div className="font-mono text-xs text-rose-400 font-bold bg-rose-500/10 px-2.5 py-0.5 rounded-lg border border-rose-500/20">
                     CALIDAD EDUCATIVA Y EVALUACIÓN INSTITUCIONAL
-                  </span>
-                  <span className="text-xs text-slate-400 font-bold">• Clima Escolar y Satisfacción Familiar</span>
+                  </div>
+                  <div className="text-xs text-slate-400 font-bold">• Clima Escolar y Satisfacción Familiar</div>
                 </div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <MessageSquareQuote className="w-6 h-6 text-rose-400" />
@@ -17055,14 +13313,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 border border-slate-700 transition-all cursor-pointer"
                 >
                   <Send className="w-4 h-4 text-amber-400" />
-                  <span>Buzón de Sugerencias</span>
+                  <div>Buzón de Sugerencias</div>
                 </button>
                 <button
                   onClick={() => setShowNewSurveyModal(true)}
                   className="bg-rose-600 hover:bg-rose-500 text-white font-black text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 shadow-lg shadow-rose-600/20 transition-all cursor-pointer"
                 >
                   <Plus className="w-4 h-4" />
-                  <span>Nueva Encuesta</span>
+                  <div>Nueva Encuesta</div>
                 </button>
               </div>
             </div>
@@ -17070,33 +13328,33 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* KPI Cards de Clima Escolar */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">NPS Institucional Global</span>
+                <div className="text-[11px] text-slate-400 font-medium">NPS Institucional Global</div>
                 <div className="text-2xl font-black text-emerald-400 mt-1">+82</div>
-                <span className="text-[10px] text-emerald-400 font-bold">Nivel de Excelencia y Lealtad</span>
+                <div className="text-[10px] text-emerald-400 font-bold">Nivel de Excelencia y Lealtad</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Encuestas Activas</span>
+                <div className="text-[11px] text-slate-400 font-medium">Encuestas Activas</div>
                 <div className="text-2xl font-black text-white mt-1">
                   {institutionalSurveys.filter((s) => s.status === 'ACTIVA').length}
                 </div>
-                <span className="text-[10px] text-rose-400 font-bold">En periodo de recepción</span>
+                <div className="text-[10px] text-rose-400 font-bold">En periodo de recepción</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Respuestas Acumuladas</span>
+                <div className="text-[11px] text-slate-400 font-medium">Respuestas Acumuladas</div>
                 <div className="text-2xl font-black text-sky-400 mt-1">
                   {institutionalSurveys.reduce((acc, s) => acc + s.responsesCount, 0)}
                 </div>
-                <span className="text-[10px] text-slate-400 font-bold">Padres y docentes evaluados</span>
+                <div className="text-[10px] text-slate-400 font-bold">Padres y docentes evaluados</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Sugerencias Atendidas</span>
+                <div className="text-[11px] text-slate-400 font-medium">Sugerencias Atendidas</div>
                 <div className="text-2xl font-black text-amber-400 mt-1">
                   {confidentialSuggestions.filter((s) => s.status === 'ATENDIDO' || s.status === 'EN_ACCION').length} / {confidentialSuggestions.length}
                 </div>
-                <span className="text-[10px] text-teal-400 font-bold">Compromiso directivo activo</span>
+                <div className="text-[10px] text-teal-400 font-bold">Compromiso directivo activo</div>
               </div>
             </div>
 
@@ -17111,7 +13369,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <FileText className="w-4 h-4" />
-                <span>Encuestas Activas ({institutionalSurveys.length})</span>
+                <div>Encuestas Activas ({institutionalSurveys.length})</div>
               </button>
               <button
                 onClick={() => setSurveysSubTab('nps')}
@@ -17122,7 +13380,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <ThumbsUp className="w-4 h-4" />
-                <span>Semáforo NPS y Métricas</span>
+                <div>Semáforo NPS y Métricas</div>
               </button>
               <button
                 onClick={() => setSurveysSubTab('suggestions')}
@@ -17133,7 +13391,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <Send className="w-4 h-4" />
-                <span>Buzón Confidencial ({confidentialSuggestions.length})</span>
+                <div>Buzón Confidencial ({confidentialSuggestions.length})</div>
               </button>
             </div>
 
@@ -17147,12 +13405,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   >
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <span className="font-mono text-xs font-bold text-rose-400 bg-rose-500/10 px-2.5 py-0.5 rounded-lg border border-rose-500/20">
+                        <div className="font-mono text-xs font-bold text-rose-400 bg-rose-500/10 px-2.5 py-0.5 rounded-lg border border-rose-500/20">
                           {survey.code}
-                        </span>
-                        <span className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                        </div>
+                        <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
                           ● {survey.status}
-                        </span>
+                        </div>
                       </div>
 
                       <div>
@@ -17162,30 +13420,30 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                       <div className="grid grid-cols-2 gap-2 text-[11px] pt-1 border-t border-slate-800">
                         <div>
-                          <span className="text-slate-500 block">Audiencia:</span>
+                          <div className="text-slate-500 block">Audiencia:</div>
                           <strong className="text-slate-300">{survey.targetAudience.replace(/_/g, ' ')}</strong>
                         </div>
                         <div>
-                          <span className="text-slate-500 block">Vigencia:</span>
-                          <span className="text-slate-300 font-mono">{survey.startDate} al {survey.endDate}</span>
+                          <div className="text-slate-500 block">Vigencia:</div>
+                          <div className="text-slate-300 font-mono">{survey.startDate} al {survey.endDate}</div>
                         </div>
                       </div>
 
                       {/* Métricas de la Encuesta */}
                       <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-between text-xs">
                         <div>
-                          <span className="text-slate-400 block text-[10px]">Respuestas:</span>
+                          <div className="text-slate-400 block text-[10px]">Respuestas:</div>
                           <strong className="text-white font-mono text-sm">{survey.responsesCount}</strong>
                         </div>
                         {survey.npsScore !== undefined && (
                           <div>
-                            <span className="text-slate-400 block text-[10px]">Score NPS:</span>
+                            <div className="text-slate-400 block text-[10px]">Score NPS:</div>
                             <strong className="text-emerald-400 font-mono text-sm">+{survey.npsScore}</strong>
                           </div>
                         )}
                         {survey.averageRating && (
                           <div>
-                            <span className="text-slate-400 block text-[10px]">Satisfacción:</span>
+                            <div className="text-slate-400 block text-[10px]">Satisfacción:</div>
                             <strong className="text-amber-400 font-mono text-sm">⭐ {survey.averageRating} / 5.0</strong>
                           </div>
                         )}
@@ -17193,7 +13451,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
 
                     <div className="pt-3 border-t border-slate-800 flex items-center justify-between gap-2">
-                      <span className="text-[11px] text-slate-500">{survey.questions.length} preguntas diseñadas</span>
+                      <div className="text-[11px] text-slate-500">{survey.questions.length} preguntas diseñadas</div>
                       <button
                         onClick={() => {
                           setSelectedSurveyForRespond(survey);
@@ -17202,7 +13460,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         className="bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs px-4 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-md shadow-rose-600/20"
                       >
                         <ThumbsUp className="w-3.5 h-3.5" />
-                        <span>Responder Encuesta</span>
+                        <div>Responder Encuesta</div>
                       </button>
                     </div>
                   </div>
@@ -17222,21 +13480,21 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-around text-center">
                     <div>
-                      <span className="text-3xl font-black text-emerald-400 block">+82</span>
-                      <span className="text-[11px] text-slate-400 font-bold uppercase">NPS Score General</span>
+                      <div className="text-3xl font-black text-emerald-400 block">+82</div>
+                      <div className="text-[11px] text-slate-400 font-bold uppercase">NPS Score General</div>
                     </div>
                     <div className="h-12 w-px bg-slate-800" />
                     <div>
-                      <span className="text-xl font-black text-white block">Excelente</span>
-                      <span className="text-[11px] text-emerald-400 font-medium">Recomendación Activa</span>
+                      <div className="text-xl font-black text-white block">Excelente</div>
+                      <div className="text-[11px] text-emerald-400 font-medium">Recomendación Activa</div>
                     </div>
                   </div>
 
                   <div className="space-y-3 text-xs">
                     <div className="space-y-1">
                       <div className="flex items-center justify-between text-[11px]">
-                        <span className="text-emerald-400 font-bold">🟢 Promotores (Calificación 9 - 10):</span>
-                        <span className="font-mono text-white font-bold">86% (24 familias)</span>
+                        <div className="text-emerald-400 font-bold">🟢 Promotores (Calificación 9 - 10):</div>
+                        <div className="font-mono text-white font-bold">86% (24 familias)</div>
                       </div>
                       <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
                         <div className="h-full bg-emerald-500 rounded-full" style={{ width: '86%' }} />
@@ -17245,8 +13503,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                     <div className="space-y-1">
                       <div className="flex items-center justify-between text-[11px]">
-                        <span className="text-amber-400 font-bold">🟡 Pasivos o Neutros (Calificación 7 - 8):</span>
-                        <span className="font-mono text-white font-bold">10% (3 familias)</span>
+                        <div className="text-amber-400 font-bold">🟡 Pasivos o Neutros (Calificación 7 - 8):</div>
+                        <div className="font-mono text-white font-bold">10% (3 familias)</div>
                       </div>
                       <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
                         <div className="h-full bg-amber-500 rounded-full" style={{ width: '10%' }} />
@@ -17255,8 +13513,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                     <div className="space-y-1">
                       <div className="flex items-center justify-between text-[11px]">
-                        <span className="text-rose-400 font-bold">🔴 Detractores (Calificación 0 - 6):</span>
-                        <span className="font-mono text-white font-bold">4% (1 familia)</span>
+                        <div className="text-rose-400 font-bold">🔴 Detractores (Calificación 0 - 6):</div>
+                        <div className="font-mono text-white font-bold">4% (1 familia)</div>
                       </div>
                       <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
                         <div className="h-full bg-rose-500 rounded-full" style={{ width: '4%' }} />
@@ -17283,8 +13541,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     ].map((dim) => (
                       <div key={dim.area} className="p-2.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
                         <div className="flex items-center justify-between text-[11px]">
-                          <span className="text-slate-300 font-medium">{dim.area}</span>
-                          <span className="font-mono text-amber-400 font-bold">⭐ {dim.score} / 5.0</span>
+                          <div className="text-slate-300 font-medium">{dim.area}</div>
+                          <div className="font-mono text-amber-400 font-bold">⭐ {dim.score} / 5.0</div>
                         </div>
                         <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
                           <div className="h-full bg-rose-500 rounded-full" style={{ width: `${dim.pct}%` }} />
@@ -17301,10 +13559,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="space-y-4">
                 <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
                   <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-                    <span className="text-xs font-bold text-white">
+                    <div className="text-xs font-bold text-white">
                       Buzón Directivo de Sugerencias y Mejora Continua ({confidentialSuggestions.length})
-                    </span>
-                    <span className="text-xs text-slate-400 font-mono">Confidencialidad Garantizada</span>
+                    </div>
+                    <div className="text-xs text-slate-400 font-mono">Confidencialidad Garantizada</div>
                   </div>
 
                   <div className="overflow-x-auto">
@@ -17324,12 +13582,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <tr key={sug.id} className="hover:bg-slate-800/40 transition-colors">
                             <td className="py-3 px-4 font-mono font-bold text-amber-400">
                               {sug.folio}
-                              <span className="text-[10px] text-slate-500 block font-mono">{sug.submittedAt}</span>
+                              <div className="text-[10px] text-slate-500 block font-mono">{sug.submittedAt}</div>
                             </td>
                             <td className="py-3 px-4">
-                              <span className="bg-slate-950 border border-slate-800 text-[10px] font-bold px-2 py-0.5 rounded text-rose-300 block w-max">
+                              <div className="bg-slate-950 border border-slate-800 text-[10px] font-bold px-2 py-0.5 rounded text-rose-300 block w-max">
                                 {sug.category}
-                              </span>
+                              </div>
                               <strong className="text-white block mt-1">{sug.subject}</strong>
                             </td>
                             <td className="py-3 px-4 max-w-sm text-[11px]">
@@ -17341,26 +13599,26 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               )}
                             </td>
                             <td className="py-3 px-4 text-[11px]">
-                              <span className="text-slate-200 block font-bold">
+                              <div className="text-slate-200 block font-bold">
                                 {sug.senderName || (sug.senderRole === 'ANONIMO' ? '👤 Anónimo' : 'Padre de Familia')}
-                              </span>
-                              <span className="text-[10px] text-slate-500">{sug.senderRole}</span>
+                              </div>
+                              <div className="text-[10px] text-slate-500">{sug.senderRole}</div>
                             </td>
                             <td className="py-3 px-4">
                               {sug.status === 'ATENDIDO' && (
-                                <span className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                                <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
                                   ✓ Atendido
-                                </span>
+                                </div>
                               )}
                               {sug.status === 'EN_ACCION' && (
-                                <span className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full animate-pulse">
+                                <div className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full animate-pulse">
                                   En Acción
-                                </span>
+                                </div>
                               )}
                               {sug.status === 'RECIBIDO' && (
-                                <span className="bg-sky-500/10 text-sky-300 border border-sky-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                                <div className="bg-sky-500/10 text-sky-300 border border-sky-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
                                   Recibido
-                                </span>
+                                </div>
                               )}
                             </td>
                             <td className="py-3 px-4 text-right">
@@ -17411,10 +13669,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="font-mono text-xs text-amber-400 font-bold bg-amber-500/10 px-2.5 py-0.5 rounded-lg border border-amber-500/20">
+                  <div className="font-mono text-xs text-amber-400 font-bold bg-amber-500/10 px-2.5 py-0.5 rounded-lg border border-amber-500/20">
                     CALENDARIO CÍVICO SEP, CTE Y GESTIÓN DE EVENTOS
-                  </span>
-                  <span className="text-xs text-slate-400 font-bold">• Ciclo Escolar 2026-2027</span>
+                  </div>
+                  <div className="text-xs text-slate-400 font-bold">• Ciclo Escolar 2026-2027</div>
                 </div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <PartyPopper className="w-6 h-6 text-amber-400" />
@@ -17431,7 +13689,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 shadow-lg shadow-amber-500/20 transition-all cursor-pointer"
                 >
                   <Plus className="w-4 h-4" />
-                  <span>Programar Evento</span>
+                  <div>Programar Evento</div>
                 </button>
               </div>
             </div>
@@ -17439,33 +13697,33 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* KPI Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Eventos Programados</span>
+                <div className="text-[11px] text-slate-400 font-medium">Eventos Programados</div>
                 <div className="text-2xl font-black text-white mt-1">{schoolEvents.length}</div>
-                <span className="text-[10px] text-amber-400 font-bold">Actos cívicos y festivales</span>
+                <div className="text-[10px] text-amber-400 font-bold">Actos cívicos y festivales</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Suspensiones SEP</span>
+                <div className="text-[11px] text-slate-400 font-medium">Suspensiones SEP</div>
                 <div className="text-2xl font-black text-rose-400 mt-1">
                   {schoolEvents.filter((e) => e.classesSuspended).length}
                 </div>
-                <span className="text-[10px] text-rose-400 font-bold">Fechas sin actividades escolares</span>
+                <div className="text-[10px] text-rose-400 font-bold">Fechas sin actividades escolares</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Sesiones CTE</span>
+                <div className="text-[11px] text-slate-400 font-medium">Sesiones CTE</div>
                 <div className="text-2xl font-black text-sky-400 mt-1">
                   {schoolEvents.filter((e) => e.type === 'CONSEJO_TECNICO_CTE').length}
                 </div>
-                <span className="text-[10px] text-slate-400 font-bold">Consejos Técnicos Escolares</span>
+                <div className="text-[10px] text-slate-400 font-bold">Consejos Técnicos Escolares</div>
               </div>
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-                <span className="text-[11px] text-slate-400 font-medium">Comisiones Asignadas</span>
+                <div className="text-[11px] text-slate-400 font-medium">Comisiones Asignadas</div>
                 <div className="text-2xl font-black text-emerald-400 mt-1">
                   {schoolEvents.reduce((acc, e) => acc + e.commissions.length, 0)}
                 </div>
-                <span className="text-[10px] text-emerald-400 font-bold">Responsabilidades docentes</span>
+                <div className="text-[10px] text-emerald-400 font-bold">Responsabilidades docentes</div>
               </div>
             </div>
 
@@ -17480,7 +13738,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <CalendarDays className="w-4 h-4" />
-                <span>Calendario y Efemérides ({schoolEvents.length})</span>
+                <div>Calendario y Efemérides ({schoolEvents.length})</div>
               </button>
               <button
                 onClick={() => setEventsSubTab('cte')}
@@ -17491,7 +13749,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <FileText className="w-4 h-4" />
-                <span>Sesiones CTE y Minutas Colegiadas</span>
+                <div>Sesiones CTE y Minutas Colegiadas</div>
               </button>
               <button
                 onClick={() => setEventsSubTab('festivals')}
@@ -17502,7 +13760,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <Flag className="w-4 h-4" />
-                <span>Festivales y Comisiones Docentes</span>
+                <div>Festivales y Comisiones Docentes</div>
               </button>
             </div>
 
@@ -17517,24 +13775,24 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     >
                       <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                          <span className="font-mono text-[10px] text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                          <div className="font-mono text-[10px] text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
                             {evt.code}
-                          </span>
+                          </div>
                           {evt.classesSuspended ? (
-                            <span className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                            <div className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
                               ● Sin Clases
-                            </span>
+                            </div>
                           ) : (
-                            <span className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                            <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
                               ● Con Clases
-                            </span>
+                            </div>
                           )}
                         </div>
 
                         <div>
-                          <span className="text-[10px] font-mono text-slate-400 font-bold block">
+                          <div className="text-[10px] font-mono text-slate-400 font-bold block">
                             {evt.type.replace(/_/g, ' ')}
-                          </span>
+                          </div>
                           <h3 className="text-sm font-black text-white mt-0.5">{evt.title}</h3>
                         </div>
 
@@ -17542,30 +13800,30 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                         <div className="p-2.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1 text-[11px]">
                           <div className="flex items-center justify-between">
-                            <span className="text-slate-500">Fecha:</span>
-                            <span className="font-mono text-amber-300 font-bold">
+                            <div className="text-slate-500">Fecha:</div>
+                            <div className="font-mono text-amber-300 font-bold">
                               {evt.date} {evt.endDate ? `al ${evt.endDate}` : ''}
-                            </span>
+                            </div>
                           </div>
                           {evt.time && (
                             <div className="flex items-center justify-between">
-                              <span className="text-slate-500">Horario:</span>
-                              <span className="font-mono text-slate-300">{evt.time}</span>
+                              <div className="text-slate-500">Horario:</div>
+                              <div className="font-mono text-slate-300">{evt.time}</div>
                             </div>
                           )}
                           {evt.location && (
                             <div className="flex items-center justify-between">
-                              <span className="text-slate-500">Lugar:</span>
-                              <span className="text-slate-300 truncate max-w-[150px]">{evt.location}</span>
+                              <div className="text-slate-500">Lugar:</div>
+                              <div className="text-slate-300 truncate max-w-[150px]">{evt.location}</div>
                             </div>
                           )}
                         </div>
                       </div>
 
                       <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
-                        <span className="text-[10px] text-slate-500">
+                        <div className="text-[10px] text-slate-500">
                           {evt.commissions.length} comisiones asignadas
-                        </span>
+                        </div>
                         <button
                           onClick={() => {
                             setSelectedEventForDetail(evt);
@@ -17599,21 +13857,21 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="font-mono text-xs text-sky-400 font-bold bg-sky-500/10 px-2.5 py-0.5 rounded border border-sky-500/20">
+                            <div className="font-mono text-xs text-sky-400 font-bold bg-sky-500/10 px-2.5 py-0.5 rounded border border-sky-500/20">
                               {cte.code}
-                            </span>
-                            <span className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-xs font-bold px-2.5 py-0.5 rounded-full">
+                            </div>
+                            <div className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-xs font-bold px-2.5 py-0.5 rounded-full">
                               ● Suspensión de Clases para Alumnos
-                            </span>
+                            </div>
                           </div>
                           <h3 className="text-lg font-black text-white mt-1.5">{cte.title}</h3>
                           <p className="text-xs text-slate-400 mt-0.5">{cte.description}</p>
                         </div>
 
                         <div className="text-right">
-                          <span className="text-xs text-slate-400 block font-mono">Fecha de Sesión:</span>
-                          <span className="text-base font-black text-amber-300 font-mono">{cte.date}</span>
-                          <span className="text-xs text-slate-400 block font-mono">{cte.time}</span>
+                          <div className="text-xs text-slate-400 block font-mono">Fecha de Sesión:</div>
+                          <div className="text-base font-black text-amber-300 font-mono">{cte.date}</div>
+                          <div className="text-xs text-slate-400 block font-mono">{cte.time}</div>
                         </div>
                       </div>
 
@@ -17627,8 +13885,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <ul className="space-y-2 text-xs text-slate-300">
                             {cte.cteAgenda?.map((item, idx) => (
                               <li key={idx} className="flex items-start gap-2">
-                                <span className="text-sky-400 font-bold font-mono">{idx + 1}.</span>
-                                <span>{item}</span>
+                                <div className="text-sky-400 font-bold font-mono">{idx + 1}.</div>
+                                <div>{item}</div>
                               </li>
                             )) || <li className="text-slate-500">Sin puntos de agenda especificados.</li>}
                           </ul>
@@ -17667,17 +13925,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {/* Relatoría y Comisiones de la Sesión */}
                       <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-between flex-wrap gap-2 text-xs">
                         <div>
-                          <span className="text-slate-400">Responsable de Minuta Colegiada: </span>
+                          <div className="text-slate-400">Responsable de Minuta Colegiada: </div>
                           <strong className="text-white">
                             {cte.commissions[0]?.teacherName || 'Profra. Laura Gómez Gómez'}
                           </strong>
-                          <span className="text-slate-500 ml-1 font-mono text-[11px]">
+                          <div className="text-slate-500 ml-1 font-mono text-[11px]">
                             ({cte.commissions[0]?.role || 'Relatora Oficial'})
-                          </span>
+                          </div>
                         </div>
-                        <span className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded">
+                        <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded">
                           ✓ Minuta Lista para Firma Directiva
-                        </span>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -17697,12 +13955,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="font-mono text-xs text-amber-400 font-bold bg-amber-500/10 px-2.5 py-0.5 rounded border border-amber-500/20">
+                            <div className="font-mono text-xs text-amber-400 font-bold bg-amber-500/10 px-2.5 py-0.5 rounded border border-amber-500/20">
                               {fest.code}
-                            </span>
-                            <span className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-xs font-bold px-2.5 py-0.5 rounded-full">
+                            </div>
+                            <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-xs font-bold px-2.5 py-0.5 rounded-full">
                               ● Festival Escolar
-                            </span>
+                            </div>
                           </div>
                           <h3 className="text-lg font-black text-white mt-1.5">{fest.title}</h3>
                           <p className="text-xs text-slate-400 mt-0.5">{fest.description}</p>
@@ -17710,9 +13968,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                         <div className="flex items-center gap-3">
                           <div className="text-right">
-                            <span className="text-xs text-slate-400 block font-mono">Fecha & Lugar:</span>
-                            <span className="text-sm font-black text-white font-mono">{fest.date}</span>
-                            <span className="text-[11px] text-slate-400 block">{fest.location}</span>
+                            <div className="text-xs text-slate-400 block font-mono">Fecha & Lugar:</div>
+                            <div className="text-sm font-black text-white font-mono">{fest.date}</div>
+                            <div className="text-[11px] text-slate-400 block">{fest.location}</div>
                           </div>
                           <button
                             onClick={() => {
@@ -17722,7 +13980,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-3.5 py-2 rounded-xl transition-all cursor-pointer shadow-md shadow-amber-500/20 flex items-center gap-1.5"
                           >
                             <Plus className="w-3.5 h-3.5" />
-                            <span>Asignar Docente</span>
+                            <div>Asignar Docente</div>
                           </button>
                         </div>
                       </div>
@@ -17767,9 +14025,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                       : 'Pendiente'}
                                   </button>
                                 </div>
-                                <span className="text-[11px] text-amber-400 font-medium block mt-0.5">
+                                <div className="text-[11px] text-amber-400 font-medium block mt-0.5">
                                   {comm.role}
-                                </span>
+                                </div>
                                 {comm.notes && (
                                   <p className="text-[10px] text-slate-400 mt-1">{comm.notes}</p>
                                 )}
@@ -17915,10 +14173,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   >
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-2">
-                        <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700">
+                        <div className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700">
                           {vac.code}
-                        </span>
-                        <span
+                        </div>
+                        <div
                           className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                             vac.status === 'ABIERTA'
                               ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
@@ -17932,7 +14190,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             : vac.status === 'EN_ENTREVISTAS'
                             ? '● En Entrevistas'
                             : '● Plaza Cubierta'}
-                        </span>
+                        </div>
                       </div>
 
                       <h3 className="text-sm font-bold text-white mb-1.5 leading-snug">
@@ -17940,7 +14198,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </h3>
 
                       <div className="flex flex-wrap items-center gap-2 mb-3">
-                        <span className="text-[10px] font-semibold bg-emerald-950/40 text-emerald-300 border border-emerald-800/40 px-2 py-0.5 rounded">
+                        <div className="text-[10px] font-semibold bg-emerald-950/40 text-emerald-300 border border-emerald-800/40 px-2 py-0.5 rounded">
                           {vac.department === 'INGLES_BILINGUE'
                             ? 'Bilingüe / Inglés'
                             : vac.department === 'DOCENCIA_PRIMARIA'
@@ -17950,14 +14208,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             : vac.department === 'EXTRACURRICULAR_DEPORTES'
                             ? 'Deportes y Talleres'
                             : 'Servicios Médicos'}
-                        </span>
-                        <span className="text-[10px] text-slate-400">
+                        </div>
+                        <div className="text-[10px] text-slate-400">
                           {vac.type === 'TIEMPO_COMPLETO'
                             ? 'Tiempo Completo'
                             : vac.type === 'MEDIO_TIEMPO'
                             ? 'Medio Tiempo'
                             : 'Por Horas'}
-                        </span>
+                        </div>
                       </div>
 
                       <p className="text-xs text-slate-300 mb-3 leading-relaxed">
@@ -17971,8 +14229,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <ul className="space-y-1">
                           {vac.requirements.map((req, i) => (
                             <li key={i} className="text-[11px] text-slate-300 flex items-start gap-1.5">
-                              <span className="text-emerald-400 font-bold">✓</span>
-                              <span>{req}</span>
+                              <div className="text-emerald-400 font-bold">✓</div>
+                              <div>{req}</div>
                             </li>
                           ))}
                         </ul>
@@ -17980,14 +14238,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                       {vac.salaryRangeMXN && (
                         <div className="text-[11px] text-emerald-400 font-medium">
-                          💰 Rango Salarial: <span className="font-bold text-white">{vac.salaryRangeMXN}</span>
+                          💰 Rango Salarial: <div className="font-bold text-white">{vac.salaryRangeMXN}</div>
                         </div>
                       )}
                     </div>
 
                     <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
                       <div className="text-[11px] text-slate-400">
-                        👥 Postulantes: <span className="text-white font-bold">{vac.applicationsCount}</span>
+                        👥 Postulantes: <div className="text-white font-bold">{vac.applicationsCount}</div>
                       </div>
                       <button
                         onClick={() => {
@@ -18067,15 +14325,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               <div className="text-[11px] text-slate-400">{cand.email} • {cand.phone}</div>
                             </td>
                             <td className="p-3">
-                              <span className="font-medium text-slate-300">{cand.vacancyTitle}</span>
+                              <div className="font-medium text-slate-300">{cand.vacancyTitle}</div>
                             </td>
                             <td className="p-3">
                               <div className="text-slate-200">{cand.degree}</div>
                               <div className="text-[10px] text-slate-400">
                                 Cédula:{' '}
-                                <span className="font-mono text-emerald-400 font-bold">
+                                <div className="font-mono text-emerald-400 font-bold">
                                   {cand.professionalLicense || 'Pendiente'}
-                                </span>
+                                </div>
                               </div>
                             </td>
                             <td className="p-3">
@@ -18087,16 +14345,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                       style={{ width: `${cand.pedagogicalDemoScore}%` }}
                                     />
                                   </div>
-                                  <span className="font-bold text-white text-[11px]">
+                                  <div className="font-bold text-white text-[11px]">
                                     {cand.pedagogicalDemoScore}/100
-                                  </span>
+                                  </div>
                                 </div>
                               ) : (
-                                <span className="text-[10px] text-slate-500 italic">No evaluada</span>
+                                <div className="text-[10px] text-slate-500 italic">No evaluada</div>
                               )}
                             </td>
                             <td className="p-3">
-                              <span
+                              <div
                                 className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${
                                   cand.status === 'CONTRATADO'
                                     ? 'bg-teal-500/20 text-teal-300 border border-teal-500/30'
@@ -18110,7 +14368,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 }`}
                               >
                                 {cand.status.replace(/_/g, ' ')}
-                              </span>
+                              </div>
                             </td>
                             <td className="p-3 text-right">
                               <button
@@ -18162,8 +14420,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       >
                         <div>
                           <div className="flex items-center justify-between mb-2">
-                            <span className="font-bold text-white text-sm">{cand.fullName}</span>
-                            <span
+                            <div className="font-bold text-white text-sm">{cand.fullName}</div>
+                            <div
                               className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                                 cand.sepAccreditation === 'VALIDADA_DGP'
                                   ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
@@ -18177,7 +14435,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 : cand.sepAccreditation === 'EN_TRAMITE'
                                 ? '⏳ Constancia en Trámite'
                                 : '⚠ Pendiente de Cotejo'}
-                            </span>
+                            </div>
                           </div>
 
                           <div className="text-xs text-slate-300 font-medium mb-1">
@@ -18186,9 +14444,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                           <div className="text-xs text-slate-400">
                             Número de Cédula DGP:{' '}
-                            <span className="font-mono text-amber-400 font-bold">
+                            <div className="font-mono text-amber-400 font-bold">
                               {cand.professionalLicense || 'Sin registro'}
-                            </span>
+                            </div>
                           </div>
 
                           {cand.resumeSummary && (
@@ -18199,8 +14457,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
 
                         <div className="text-[11px] text-slate-400 flex items-center justify-between pt-2 border-t border-slate-800/80">
-                          <span>Años de Experiencia: <strong className="text-white">{cand.yearsOfExperience} años</strong></span>
-                          <span>Plaza: <strong className="text-emerald-400">{cand.vacancyTitle}</strong></span>
+                          <div>Años de Experiencia: <strong className="text-white">{cand.yearsOfExperience} años</strong></div>
+                          <div>Plaza: <strong className="text-emerald-400">{cand.vacancyTitle}</strong></div>
                         </div>
                       </div>
                     ))}
@@ -18218,12 +14476,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                  <div className="bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
                     Programa Interno de Protección Civil (PIPC / SEP)
-                  </span>
-                  <span className="bg-slate-800 text-slate-300 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                  </div>
+                  <div className="bg-slate-800 text-slate-300 text-[10px] font-bold px-2 py-0.5 rounded-full">
                     Norma Oficial Mexicana & CENAPRED
-                  </span>
+                  </div>
                 </div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <ShieldAlert className="w-6 h-6 text-rose-500" />
@@ -18359,10 +14617,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     >
                       <div>
                         <div className="flex items-center justify-between gap-2 mb-2">
-                          <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700">
+                          <div className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700">
                             {drill.code}
-                          </span>
-                          <span
+                          </div>
+                          <div
                             className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
                               drill.drillType === 'SISMO'
                                 ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20'
@@ -18372,7 +14630,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             }`}
                           >
                             {drill.drillType === 'SISMO' ? '🔔 Hipótesis Sismo' : '🔥 Conato Incendio'}
-                          </span>
+                          </div>
                         </div>
 
                         <h3 className="text-sm font-bold text-white mb-1.5 leading-snug">
@@ -18380,9 +14638,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </h3>
 
                         <div className="flex items-center gap-2 text-[11px] text-slate-400 mb-3">
-                          <span>📅 {drill.date}</span>
-                          <span>•</span>
-                          <span>⏰ {drill.time}</span>
+                          <div>📅 {drill.date}</div>
+                          <div>•</div>
+                          <div>⏰ {drill.time}</div>
                         </div>
 
                         <p className="text-xs text-slate-300 mb-3 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/80 leading-relaxed">
@@ -18392,12 +14650,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {/* Indicador de Tiempo de Evacuación */}
                         <div className="bg-slate-950 rounded-xl p-3 border border-slate-800 mb-3">
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-[11px] font-bold text-slate-400">
+                            <div className="text-[11px] font-bold text-slate-400">
                               Tiempo Total de Desalojo:
-                            </span>
-                            <span className="text-sm font-black font-mono text-emerald-400">
+                            </div>
+                            <div className="text-sm font-black font-mono text-emerald-400">
                               {Math.floor(drill.evacuationTimeSeconds / 60)}m {drill.evacuationTimeSeconds % 60}s ({drill.evacuationTimeSeconds} seg)
-                            </span>
+                            </div>
                           </div>
                           <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
                             <div
@@ -18446,8 +14704,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             </div>
                             {drill.incidentsReported.map((inc, i) => (
                               <div key={i} className="text-[11px] text-slate-300 flex items-start gap-1">
-                                <span className="text-rose-400">•</span>
-                                <span>{inc}</span>
+                                <div className="text-rose-400">•</div>
+                                <div>{inc}</div>
                               </div>
                             ))}
                           </div>
@@ -18455,7 +14713,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </div>
 
                       <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
-                        <span
+                        <div
                           className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${
                             drill.evaluation === 'EXCELENTE'
                               ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
@@ -18465,7 +14723,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           }`}
                         >
                           Dictamen: {drill.evaluation}
-                        </span>
+                        </div>
 
                         <button
                           onClick={() => {
@@ -18499,10 +14757,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-300">
+                          <div className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-300">
                             {brigade.code}
-                          </span>
-                          <span
+                          </div>
+                          <div
                             className="text-[10px] font-bold px-2.5 py-0.5 rounded-full"
                             style={{
                               backgroundColor: `${brigade.colorHex}20`,
@@ -18511,7 +14769,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             }}
                           >
                             {brigade.vestColor}
-                          </span>
+                          </div>
                         </div>
                         <h3 className="text-base font-bold text-white">{brigade.name}</h3>
                         <p className="text-xs text-slate-400 mt-0.5">
@@ -18544,12 +14802,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             <div>
                               <div className="font-bold text-white text-xs">{m.fullName}</div>
                               <div className="text-[11px] text-slate-400">
-                                {m.role} • <span className="text-slate-300">{m.buildingZone}</span>
+                                {m.role} • <div className="text-slate-300">{m.buildingZone}</div>
                               </div>
                             </div>
-                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
+                            <div className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
                               ✓ Certificado PC
-                            </span>
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -18565,10 +14823,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-mono font-bold bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20">
+                      <div className="text-xs font-mono font-bold bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20">
                         ZONA S-1
-                      </span>
-                      <span className="text-[10px] text-slate-400">Capacidad: 350 personas</span>
+                      </div>
+                      <div className="text-[10px] text-slate-400">Capacidad: 350 personas</div>
                     </div>
                     <h4 className="font-bold text-white text-sm">Patio Cívico Central</h4>
                     <p className="text-xs text-slate-300">
@@ -18581,10 +14839,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-mono font-bold bg-sky-500/10 text-sky-400 px-2 py-0.5 rounded border border-sky-500/20">
+                      <div className="text-xs font-mono font-bold bg-sky-500/10 text-sky-400 px-2 py-0.5 rounded border border-sky-500/20">
                         ZONA S-2
-                      </span>
-                      <span className="text-[10px] text-slate-400">Capacidad: 250 personas</span>
+                      </div>
+                      <div className="text-[10px] text-slate-400">Capacidad: 250 personas</div>
                     </div>
                     <h4 className="font-bold text-white text-sm">Canchas Deportivas Techadas</h4>
                     <p className="text-xs text-slate-300">
@@ -18597,10 +14855,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-mono font-bold bg-purple-500/10 text-purple-400 px-2 py-0.5 rounded border border-purple-500/20">
+                      <div className="text-xs font-mono font-bold bg-purple-500/10 text-purple-400 px-2 py-0.5 rounded border border-purple-500/20">
                         ZONA S-3
-                      </span>
-                      <span className="text-[10px] text-slate-400">Capacidad: 100 personas</span>
+                      </div>
+                      <div className="text-[10px] text-slate-400">Capacidad: 100 personas</div>
                     </div>
                     <h4 className="font-bold text-white text-sm">Explanada de Aulas de Ciencias</h4>
                     <p className="text-xs text-slate-300">
@@ -18615,9 +14873,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="bg-slate-900/60 border border-slate-800 p-4 rounded-2xl flex items-center justify-between text-xs text-slate-400">
                   <div className="flex items-center gap-2">
                     <Flame className="w-4 h-4 text-orange-400" />
-                    <span>Equipamiento: <strong>14 extintores PQS (tipo ABC)</strong> y <strong>4 extintores de CO2</strong> con recarga vigente hasta Diciembre 2026.</span>
+                    <div>Equipamiento: <strong>14 extintores PQS (tipo ABC)</strong> y <strong>4 extintores de CO2</strong> con recarga vigente hasta Diciembre 2026.</div>
                   </div>
-                  <span className="text-emerald-400 font-bold">Bitácora Inspección al Día ✓</span>
+                  <div className="text-emerald-400 font-bold">Bitácora Inspección al Día ✓</div>
                 </div>
               </div>
             )}
@@ -18631,12 +14889,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                  <div className="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
                     Acuerdo Secretarial 716 / SEP
-                  </span>
-                  <span className="bg-slate-800 text-slate-300 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                  </div>
+                  <div className="bg-slate-800 text-slate-300 text-[10px] font-bold px-2 py-0.5 rounded-full">
                     Ley General de Educación • APF & CEPS
-                  </span>
+                  </div>
                 </div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <HeartHandshake className="w-6 h-6 text-amber-400" />
@@ -18758,12 +15016,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   >
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-2">
-                        <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                        <div className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
                           {comm.type}
-                        </span>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        </div>
+                        <div className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                           {comm.status}
-                        </span>
+                        </div>
                       </div>
 
                       <h3 className="text-sm font-bold text-white mb-2 leading-snug">
@@ -18776,16 +15034,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                       <div className="bg-slate-950/40 p-2.5 rounded-xl border border-slate-800/60 space-y-1.5 text-xs mb-3">
                         <div className="flex items-center justify-between text-slate-400 text-[11px]">
-                          <span>Líder Tutor:</span>
+                          <div>Líder Tutor:</div>
                           <strong className="text-white">{comm.leaderTutorName}</strong>
                         </div>
                         <div className="flex items-center justify-between text-slate-400 text-[11px]">
-                          <span>Líder Docente:</span>
+                          <div>Líder Docente:</div>
                           <strong className="text-white">{comm.leaderTeacherName}</strong>
                         </div>
                         <div className="flex items-center justify-between text-slate-400 text-[11px]">
-                          <span>Miembros Voluntarios:</span>
-                          <span className="font-bold text-amber-400">{comm.membersCount} integrantes</span>
+                          <div>Miembros Voluntarios:</div>
+                          <div className="font-bold text-amber-400">{comm.membersCount} integrantes</div>
                         </div>
                       </div>
 
@@ -18795,8 +15053,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
                         {comm.activeProjects.map((proj, i) => (
                           <div key={i} className="text-[11px] text-slate-300 flex items-start gap-1.5">
-                            <span className="text-amber-400">✓</span>
-                            <span>{proj}</span>
+                            <div className="text-amber-400">✓</div>
+                            <div>{proj}</div>
                           </div>
                         ))}
                       </div>
@@ -18819,7 +15077,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3 hover:border-amber-500/40 transition-all"
                   >
                     <div className="flex items-start justify-between gap-2">
-                      <span
+                      <div
                         className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
                           member.role === 'PRESIDENTE'
                             ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
@@ -18831,10 +15089,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         }`}
                       >
                         {member.role.replace('_', ' ')}
-                      </span>
-                      <span className="text-[10px] text-slate-500 font-mono">
+                      </div>
+                      <div className="text-[10px] text-slate-500 font-mono">
                         Electo: {member.appointedDate}
-                      </span>
+                      </div>
                     </div>
 
                     <div>
@@ -18846,18 +15104,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                     <div className="bg-slate-950/70 p-3 rounded-xl border border-slate-800/80 space-y-1 text-xs">
                       <div className="flex items-center justify-between text-slate-400">
-                        <span>Correo Electrónico:</span>
-                        <span className="text-slate-200 font-mono text-[11px]">{member.email}</span>
+                        <div>Correo Electrónico:</div>
+                        <div className="text-slate-200 font-mono text-[11px]">{member.email}</div>
                       </div>
                       <div className="flex items-center justify-between text-slate-400">
-                        <span>Teléfono / WhatsApp:</span>
-                        <span className="text-slate-200 font-mono text-[11px]">{member.phone}</span>
+                        <div>Teléfono / WhatsApp:</div>
+                        <div className="text-slate-200 font-mono text-[11px]">{member.phone}</div>
                       </div>
                     </div>
 
                     <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px]">
-                      <span className="text-slate-500">Mesa Directiva 2026-2027</span>
-                      <span className="text-emerald-400 font-semibold">Toma de Protesta Oficial ✓</span>
+                      <div className="text-slate-500">Mesa Directiva 2026-2027</div>
+                      <div className="text-emerald-400 font-semibold">Toma de Protesta Oficial ✓</div>
                     </div>
                   </div>
                 ))}
@@ -18875,10 +15133,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     >
                       <div>
                         <div className="flex items-center justify-between gap-2 mb-2">
-                          <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
+                          <div className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
                             {asemb.code}
-                          </span>
-                          <span
+                          </div>
+                          <div
                             className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
                               asemb.status === 'REALIZADA_CON_ACTA'
                                 ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
@@ -18886,7 +15144,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             }`}
                           >
                             {asemb.status === 'REALIZADA_CON_ACTA' ? '✓ Acta Concluida y Firmada' : '⏳ Convocada'}
-                          </span>
+                          </div>
                         </div>
 
                         <h3 className="text-base font-bold text-white mb-2 leading-snug">
@@ -18908,18 +15166,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           </div>
                           {asemb.agreements.map((agr, i) => (
                             <div key={i} className="text-xs text-slate-300 flex items-start gap-1.5 bg-slate-950/40 p-2 rounded-lg border border-slate-800/60">
-                              <span className="text-amber-400 font-bold">§{i + 1}</span>
-                              <span>{agr}</span>
+                              <div className="text-amber-400 font-bold">§{i + 1}</div>
+                              <div>{agr}</div>
                             </div>
                           ))}
                         </div>
 
                         <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800 text-[10px]">
                           <div className="flex items-center gap-1 text-emerald-400 font-semibold">
-                            <span>✓</span> Firmado por Dirección
+                            <div>✓</div> Firmado por Dirección
                           </div>
                           <div className="flex items-center gap-1 text-emerald-400 font-semibold">
-                            <span>✓</span> Firmado por Presidencia APF
+                            <div>✓</div> Firmado por Presidencia APF
                           </div>
                         </div>
                       </div>
@@ -18952,12 +15210,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                  <div className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/10 text-amber-400 border border-amber-500/20">
                     Normatividad INIFED / COFEPRIS / Protección Civil
-                  </span>
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-sky-500/10 text-sky-400 border border-sky-500/20">
+                  </div>
+                  <div className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-sky-500/10 text-sky-400 border border-sky-500/20">
                     Plantel Seguro
-                  </span>
+                  </div>
                 </div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <Hammer className="w-6 h-6 text-amber-400" />
@@ -18974,14 +15232,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-4 py-2.5 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 transition-all cursor-pointer"
                 >
                   <Wrench className="w-4 h-4" />
-                  <span>+ Nueva Orden de Trabajo</span>
+                  <div>+ Nueva Orden de Trabajo</div>
                 </button>
                 <button
                   onClick={() => setShowNewInspectionModal(true)}
                   className="bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl flex items-center justify-center gap-2 border border-slate-700 transition-all cursor-pointer"
                 >
                   <FileText className="w-4 h-4" />
-                  <span>+ Registrar Inspección Técnica</span>
+                  <div>+ Registrar Inspección Técnica</div>
                 </button>
               </div>
             </div>
@@ -19105,16 +15363,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       >
                         <div className="space-y-3">
                           <div className="flex items-center justify-between gap-2">
-                            <span className="font-mono text-xs font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                            <div className="font-mono text-xs font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
                               {order.folio}
-                            </span>
+                            </div>
                             <div className="flex items-center gap-1.5">
-                              <span className={`text-[10px] px-2 py-0.5 rounded border ${priorityColors}`}>
+                              <div className={`text-[10px] px-2 py-0.5 rounded border ${priorityColors}`}>
                                 {order.priority}
-                              </span>
-                              <span className={`text-[10px] px-2 py-0.5 rounded border ${statusColors}`}>
+                              </div>
+                              <div className={`text-[10px] px-2 py-0.5 rounded border ${statusColors}`}>
                                 {order.status.replace(/_/g, ' ')}
-                              </span>
+                              </div>
                             </div>
                           </div>
 
@@ -19130,15 +15388,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <div className="bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 space-y-1.5 text-xs">
                             <div className="flex items-center gap-2 text-slate-300">
                               <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                              <span className="truncate">{order.areaLocation}</span>
+                              <div className="truncate">{order.areaLocation}</div>
                             </div>
                             <div className="flex items-center gap-2 text-slate-300">
                               <UserCheck className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                              <span>{order.assignedWorker}</span>
+                              <div>{order.assignedWorker}</div>
                             </div>
                             <div className="flex items-center gap-2 text-slate-400 text-[11px]">
                               <Calendar className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                              <span>Compromiso: {order.targetCompletionDate}</span>
+                              <div>Compromiso: {order.targetCompletionDate}</div>
                             </div>
                           </div>
 
@@ -19205,25 +15463,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       >
                         <div className="space-y-3">
                           <div className="flex items-center justify-between gap-2">
-                            <span className="font-mono text-xs font-bold text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/20">
+                            <div className="font-mono text-xs font-bold text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/20">
                               {insp.code}
-                            </span>
+                            </div>
                             <div className="flex items-center gap-1.5">
-                              <span className="text-[10px] px-2 py-0.5 rounded border border-slate-700 text-slate-300 bg-slate-800">
+                              <div className="text-[10px] px-2 py-0.5 rounded border border-slate-700 text-slate-300 bg-slate-800">
                                 {insp.frequency}
-                              </span>
-                              <span className={`text-[10px] px-2 py-0.5 rounded border ${statusBadge}`}>
+                              </div>
+                              <div className={`text-[10px] px-2 py-0.5 rounded border ${statusBadge}`}>
                                 {insp.overallStatus.replace(/_/g, ' ')}
-                              </span>
+                              </div>
                             </div>
                           </div>
 
                           <div>
                             <h3 className="text-base font-bold text-white">{insp.title}</h3>
                             <div className="text-xs text-slate-400 mt-0.5 flex items-center gap-2">
-                              <span>Inspector: <strong className="text-slate-200">{insp.inspectorName}</strong></span>
-                              <span>•</span>
-                              <span>Fecha: {insp.inspectionDate}</span>
+                              <div>Inspector: <strong className="text-slate-200">{insp.inspectorName}</strong></div>
+                              <div>•</div>
+                              <div>Fecha: {insp.inspectionDate}</div>
                             </div>
                           </div>
 
@@ -19253,9 +15511,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                         </div>
                                       )}
                                     </div>
-                                    <span className={`text-[10px] px-2 py-0.5 rounded border font-semibold shrink-0 ${itemStatusClass}`}>
+                                    <div className={`text-[10px] px-2 py-0.5 rounded border font-semibold shrink-0 ${itemStatusClass}`}>
                                       {item.status === 'OPTIMO' ? 'ÓPTIMO' : item.status === 'REGULAR_OBSERVACIONES' ? 'OBSERVACIÓN' : 'CRÍTICO'}
-                                    </span>
+                                    </div>
                                   </div>
                                 );
                               })}
@@ -19270,12 +15528,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
 
                         <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
-                          <span className="text-slate-400">
+                          <div className="text-slate-400">
                             Próxima Revisión Programada:
-                          </span>
-                          <span className="font-bold text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/20">
+                          </div>
+                          <div className="font-bold text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/20">
                             {insp.nextScheduledDate}
-                          </span>
+                          </div>
                         </div>
                       </div>
                     );
@@ -19298,15 +15556,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </p>
                     <div className="space-y-1.5 text-xs text-slate-300 bg-slate-950 p-3 rounded-xl border border-slate-800">
                       <div className="flex justify-between">
-                        <span>Cloración residual libre:</span>
+                        <div>Cloración residual libre:</div>
                         <strong className="text-emerald-400">1.0 ppm (Óptimo)</strong>
                       </div>
                       <div className="flex justify-between">
-                        <span>Lavado y desinfección:</span>
+                        <div>Lavado y desinfección:</div>
                         <strong className="text-emerald-400">Semestral (COFEPRIS)</strong>
                       </div>
                       <div className="flex justify-between">
-                        <span>Bebederos escolares:</span>
+                        <div>Bebederos escolares:</div>
                         <strong className="text-emerald-400">Filtros UV Vigentes</strong>
                       </div>
                     </div>
@@ -19322,15 +15580,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </p>
                     <div className="space-y-1.5 text-xs text-slate-300 bg-slate-950 p-3 rounded-xl border border-slate-800">
                       <div className="flex justify-between">
-                        <span>Termografía tableros:</span>
+                        <div>Termografía tableros:</div>
                         <strong className="text-emerald-400">Sin Puntos Calientes</strong>
                       </div>
                       <div className="flex justify-between">
-                        <span>Luces de emergencia:</span>
+                        <div>Luces de emergencia:</div>
                         <strong className="text-emerald-400">90 min Autonomía</strong>
                       </div>
                       <div className="flex justify-between">
-                        <span>Contactos GFCI:</span>
+                        <div>Contactos GFCI:</div>
                         <strong className="text-sky-400">Laboratorios y Sanitarios</strong>
                       </div>
                     </div>
@@ -19346,15 +15604,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </p>
                     <div className="space-y-1.5 text-xs text-slate-300 bg-slate-950 p-3 rounded-xl border border-slate-800">
                       <div className="flex justify-between">
-                        <span>Impermeabilizante:</span>
+                        <div>Impermeabilizante:</div>
                         <strong className="text-emerald-400">Garantía 5 años (2025-2030)</strong>
                       </div>
                       <div className="flex justify-between">
-                        <span>Bajadas pluviales:</span>
+                        <div>Bajadas pluviales:</div>
                         <strong className="text-emerald-400">Desazolve Mensual</strong>
                       </div>
                       <div className="flex justify-between">
-                        <span>Pintura antibacterial:</span>
+                        <div>Pintura antibacterial:</div>
                         <strong className="text-sky-400">Aulas y Sanitarios</strong>
                       </div>
                     </div>
@@ -19370,15 +15628,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </p>
                     <div className="space-y-1.5 text-xs text-slate-300 bg-slate-950 p-3 rounded-xl border border-slate-800">
                       <div className="flex justify-between">
-                        <span>Barras antipánico:</span>
+                        <div>Barras antipánico:</div>
                         <strong className="text-emerald-400">Auditorio y Puerta Norte</strong>
                       </div>
                       <div className="flex justify-between">
-                        <span>Rampa universal:</span>
+                        <div>Rampa universal:</div>
                         <strong className="text-emerald-400">Pendiente 6% Normativa</strong>
                       </div>
                       <div className="flex justify-between">
-                        <span>Portón vehicular:</span>
+                        <div>Portón vehicular:</div>
                         <strong className="text-emerald-400">Automatizado</strong>
                       </div>
                     </div>
@@ -19394,15 +15652,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </p>
                     <div className="space-y-1.5 text-xs text-slate-300 bg-slate-950 p-3 rounded-xl border border-slate-800">
                       <div className="flex justify-between">
-                        <span>Poda preventiva de árboles:</span>
+                        <div>Poda preventiva de árboles:</div>
                         <strong className="text-emerald-400">Trimestral</strong>
                       </div>
                       <div className="flex justify-between">
-                        <span>Superficie de caucho:</span>
+                        <div>Superficie de caucho:</div>
                         <strong className="text-emerald-400">Patios de Kínder</strong>
                       </div>
                       <div className="flex justify-between">
-                        <span>Tableros de basquetbol:</span>
+                        <div>Tableros de basquetbol:</div>
                         <strong className="text-emerald-400">Acrílico Reforzado</strong>
                       </div>
                     </div>
@@ -19463,7 +15721,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <div>
                       <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Matriculados</p>
                       <p className="text-sm font-black text-white">Alumnado Oficial Activo</p>
-                      <span className="text-[10px] text-slate-400">Base para cálculo del 5%</span>
+                      <div className="text-[10px] text-slate-400">Base para cálculo del 5%</div>
                     </div>
                   </div>
 
@@ -19474,7 +15732,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <div>
                       <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Meta SEP (5% Min)</p>
                       <p className="text-sm font-black text-white">Becas Totales Requeridas</p>
-                      <span className="text-[10px] text-amber-400 font-semibold">Art. 149 Fracc. III LGE</span>
+                      <div className="text-[10px] text-amber-400 font-semibold">Art. 149 Fracc. III LGE</div>
                     </div>
                   </div>
 
@@ -19490,13 +15748,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Equivalente Otorgado</p>
                       <div className="flex items-center gap-2">
                         <p className="text-sm font-black text-white">{approvedApps.length} Becados</p>
-                        <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${
+                        <div className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${
                           isCompliant ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'
                         }`}>
                           {compliancePct}%
-                        </span>
+                        </div>
                       </div>
-                      <span className="text-[10px] text-slate-400">Suma ponderada de %</span>
+                      <div className="text-[10px] text-slate-400">Suma ponderada de %</div>
                     </div>
                   </div>
 
@@ -19509,7 +15767,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <p className="text-sm font-black text-purple-300">
                         ${totalSavings.toLocaleString('es-MX')} MXN
                       </p>
-                      <span className="text-[10px] text-slate-400">Exención en colegiaturas</span>
+                      <div className="text-[10px] text-slate-400">Exención en colegiaturas</div>
                     </div>
                   </div>
                 </div>
@@ -19562,17 +15820,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <div className="flex items-start justify-between gap-3">
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="px-2 py-0.5 rounded text-[10px] font-black bg-slate-800 text-amber-400 border border-amber-500/30">
+                            <div className="px-2 py-0.5 rounded text-[10px] font-black bg-slate-800 text-amber-400 border border-amber-500/30">
                               {app.folio}
-                            </span>
-                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-300">
+                            </div>
+                            <div className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-300">
                               {app.level} • {app.grade}
-                            </span>
+                            </div>
                           </div>
                           <h3 className="text-base font-bold text-white mt-1.5">{app.studentName}</h3>
                           <p className="text-xs text-slate-400">Matrícula: {app.studentCode}</p>
                         </div>
-                        <span
+                        <div
                           className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
                             app.status === 'APROBADA'
                               ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
@@ -19584,13 +15842,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           }`}
                         >
                           {app.status}
-                        </span>
+                        </div>
                       </div>
 
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 text-xs">
                         <div>
-                          <span className="text-[10px] text-slate-500 block">Tipo de Beca</span>
-                          <span className="font-bold text-amber-300">
+                          <div className="text-[10px] text-slate-500 block">Tipo de Beca</div>
+                          <div className="font-bold text-amber-300">
                             {app.type === 'BECA_SEP_OBLIGATORIA'
                               ? 'SEP Obligatoria'
                               : app.type === 'BECA_EXCELENCIA_ACADEMICA'
@@ -19600,39 +15858,39 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               : app.type === 'BECA_HERMANOS_FAMILIA'
                               ? 'Hermanos en Plantel'
                               : 'Deportiva/Cultural'}
-                          </span>
+                          </div>
                         </div>
                         <div>
-                          <span className="text-[10px] text-slate-500 block">Promedio Ant.</span>
-                          <span className={`font-black ${app.previousGpa >= 9.0 ? 'text-emerald-400' : 'text-slate-300'}`}>
+                          <div className="text-[10px] text-slate-500 block">Promedio Ant.</div>
+                          <div className={`font-black ${app.previousGpa >= 9.0 ? 'text-emerald-400' : 'text-slate-300'}`}>
                             {app.previousGpa.toFixed(1)} / 10.0
-                          </span>
+                          </div>
                         </div>
                         <div>
-                          <span className="text-[10px] text-slate-500 block">Ingreso Familiar</span>
-                          <span className="font-bold text-slate-300">
+                          <div className="text-[10px] text-slate-500 block">Ingreso Familiar</div>
+                          <div className="font-bold text-slate-300">
                             ${app.monthlyFamilyIncomeMXN.toLocaleString('es-MX')} ({app.dependentsCount} dep.)
-                          </span>
+                          </div>
                         </div>
                         <div>
-                          <span className="text-[10px] text-slate-500 block">Descuento</span>
-                          <span className="font-black text-white">
+                          <div className="text-[10px] text-slate-500 block">Descuento</div>
+                          <div className="font-black text-white">
                             {app.approvedDiscountPercentage !== undefined
                               ? `${app.approvedDiscountPercentage}% Aprobado`
                               : `${app.requestedDiscountPercentage}% Solicitado`}
-                          </span>
+                          </div>
                         </div>
                       </div>
 
                       {/* Cuota estándar vs final */}
                       <div className="flex items-center justify-between text-xs bg-slate-800/40 px-3 py-2 rounded-xl">
-                        <span className="text-slate-400">
+                        <div className="text-slate-400">
                           Colegiatura regular: <strong className="text-slate-200">${app.standardTuitionMXN.toLocaleString('es-MX')} MXN</strong>
-                        </span>
+                        </div>
                         {app.finalTuitionMXN !== undefined && (
-                          <span className="text-emerald-400 font-bold">
+                          <div className="text-emerald-400 font-bold">
                             Colegiatura con beca: ${app.finalTuitionMXN.toLocaleString('es-MX')} MXN
-                          </span>
+                          </div>
                         )}
                       </div>
 
@@ -19640,15 +15898,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {app.resolutionNotes && (
                         <div className="bg-amber-500/5 border border-amber-500/10 p-3 rounded-xl text-xs space-y-1">
                           <div className="flex items-center justify-between text-[11px] font-bold text-amber-400">
-                            <span>Dictamen: {app.reviewerName || 'Comité de Becas'}</span>
-                            <span className="text-slate-500">{app.resolutionDate}</span>
+                            <div>Dictamen: {app.reviewerName || 'Comité de Becas'}</div>
+                            <div className="text-slate-500">{app.resolutionDate}</div>
                           </div>
                           <p className="text-slate-300 italic">"{app.resolutionNotes}"</p>
                         </div>
                       )}
 
                       <div className="flex items-center justify-between pt-2 border-t border-slate-800 text-[11px] text-slate-500">
-                        <span>Recepción: {app.submissionDate}</span>
+                        <div>Recepción: {app.submissionDate}</div>
                         <button
                           onClick={() => {
                             setSelectedScholarshipForEvaluation(app);
@@ -19712,9 +15970,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           return (
                             <tr key={pct} className="hover:bg-slate-800/30 transition-colors">
                               <td className="p-3 font-bold text-white">
-                                <span className="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                                <div className="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
                                   {pct}% de Descuento
-                                </span>
+                                </div>
                               </td>
                               <td className="p-3 text-slate-400">
                                 {pct === 100 ? '1.0 beca completa' : `${(pct / 100).toFixed(2)} de beca completa`}
@@ -19768,15 +16026,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <div className="space-y-3 text-xs text-slate-300">
                       <div className="p-3 bg-slate-950 rounded-xl border border-slate-800">
                         <strong className="text-white block mb-1">1. Requisitos Académicos:</strong>
-                        <span>Haber cursado al menos un ciclo escolar previo en la institución y contar con promedio mínimo general de 8.5 en escala de 10 sin materias reprobadas.</span>
+                        <div>Haber cursado al menos un ciclo escolar previo en la institución y contar con promedio mínimo general de 8.5 en escala de 10 sin materias reprobadas.</div>
                       </div>
                       <div className="p-3 bg-slate-950 rounded-xl border border-slate-800">
                         <strong className="text-white block mb-1">2. Estudio Socioeconómico:</strong>
-                        <span>Presentar comprobantes de ingresos familiares de los últimos 3 meses, carta de ingresos no comprobables bajo protesta de decir verdad y recibo de luz CFE reciente.</span>
+                        <div>Presentar comprobantes de ingresos familiares de los últimos 3 meses, carta de ingresos no comprobables bajo protesta de decir verdad y recibo de luz CFE reciente.</div>
                       </div>
                       <div className="p-3 bg-slate-950 rounded-xl border border-slate-800">
                         <strong className="text-white block mb-1">3. Criterios de Ponderación:</strong>
-                        <span>Prioridad a familias con dos o más hijos matriculados simultáneamente, orfandad parcial/total o disminución intempestiva de ingresos por causas médicas graves.</span>
+                        <div>Prioridad a familias con dos o más hijos matriculados simultáneamente, orfandad parcial/total o disminución intempestiva de ingresos por causas médicas graves.</div>
                       </div>
                     </div>
                   </div>
@@ -19790,15 +16048,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <div className="space-y-3 text-xs text-slate-300">
                       <div className="p-3 bg-slate-950 rounded-xl border border-slate-800">
                         <strong className="text-rose-400 block mb-1">Baja de Promedio:</strong>
-                        <span>Obtener un promedio trimestral inferior a 8.5 en Primaria o presentar reportes por indisciplina grave que contravengan el Reglamento Escolar.</span>
+                        <div>Obtener un promedio trimestral inferior a 8.5 en Primaria o presentar reportes por indisciplina grave que contravengan el Reglamento Escolar.</div>
                       </div>
                       <div className="p-3 bg-slate-950 rounded-xl border border-slate-800">
                         <strong className="text-rose-400 block mb-1">Falsedad de Declaraciones:</strong>
-                        <span>Comprobación de ingresos no declarados u omisión dolosa de dependientes en el estudio socioeconómico.</span>
+                        <div>Comprobación de ingresos no declarados u omisión dolosa de dependientes en el estudio socioeconómico.</div>
                       </div>
                       <div className="p-3 bg-slate-950 rounded-xl border border-slate-800">
                         <strong className="text-rose-400 block mb-1">Mora en Porcentaje Remanente:</strong>
-                        <span>Acumular más de 60 días naturales de adeudo en el pago de la cuota complementaria no subsidiada.</span>
+                        <div>Acumular más de 60 días naturales de adeudo en el pago de la cuota complementaria no subsidiada.</div>
                       </div>
                     </div>
                   </div>
@@ -19815,10 +16073,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">
+                  <div className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">
                     CONTROL ESCOLAR & VALIDEZ SEP
-                  </span>
-                  <span className="text-xs text-slate-400">CCT: 09PPR1849X • RVOE SEP-2022-0498</span>
+                  </div>
+                  <div className="text-xs text-slate-400">CCT: 09PPR1849X • RVOE SEP-2022-0498</div>
                 </div>
                 <h2 className="text-xl font-bold text-white flex items-center gap-2">
                   <ScrollText className="w-6 h-6 text-sky-400" />
@@ -19836,14 +16094,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-sky-300 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border border-slate-700 shadow-md cursor-pointer"
                 >
                   <QrCode className="w-4 h-4" />
-                  <span>Cotejar Código QR</span>
+                  <div>Cotejar Código QR</div>
                 </button>
                 <button
                   onClick={() => setShowNewCertificateModal(true)}
                   className="px-4 py-2.5 bg-sky-500 hover:bg-sky-400 text-slate-950 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-lg shadow-sky-500/20 cursor-pointer"
                 >
                   <FileText className="w-4 h-4" />
-                  <span>+ Emitir Constancia</span>
+                  <div>+ Emitir Constancia</div>
                 </button>
               </div>
             </div>
@@ -19852,7 +16110,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-lg">
                 <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
-                  <span>Documentos Emitidos</span>
+                  <div>Documentos Emitidos</div>
                   <FileCheck className="w-4 h-4 text-sky-400" />
                 </div>
                 <div className="text-2xl font-black text-white">{officialCertificates.length}</div>
@@ -19861,7 +16119,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-lg">
                 <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
-                  <span>Descargas & Consultas QR</span>
+                  <div>Descargas & Consultas QR</div>
                   <QrCode className="w-4 h-4 text-emerald-400" />
                 </div>
                 <div className="text-2xl font-black text-emerald-400">
@@ -19872,7 +16130,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-lg">
                 <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
-                  <span>Vigencia Reglamentaria</span>
+                  <div>Vigencia Reglamentaria</div>
                   <Clock className="w-4 h-4 text-amber-400" />
                 </div>
                 <div className="text-2xl font-black text-white">90 Días</div>
@@ -19881,7 +16139,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-lg">
                 <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
-                  <span>Sello de Autenticidad</span>
+                  <div>Sello de Autenticidad</div>
                   <ShieldCheck className="w-4 h-4 text-indigo-400" />
                 </div>
                 <div className="text-2xl font-black text-indigo-400">SHA-256</div>
@@ -19900,7 +16158,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <ScrollText className="w-4 h-4" />
-                <span>Padrón de Constancias Digitales ({officialCertificates.length})</span>
+                <div>Padrón de Constancias Digitales ({officialCertificates.length})</div>
               </button>
 
               <button
@@ -19912,7 +16170,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <GraduationCap className="w-4 h-4" />
-                <span>Kárdex Histórico de Calificaciones (NEM)</span>
+                <div>Kárdex Histórico de Calificaciones (NEM)</div>
               </button>
 
               <button
@@ -19924,7 +16182,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <QrCode className="w-4 h-4" />
-                <span>Validador Público de Autenticidad QR</span>
+                <div>Validador Público de Autenticidad QR</div>
               </button>
             </div>
 
@@ -19934,7 +16192,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 {/* Filters */}
                 <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex flex-wrap items-center justify-between gap-4">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-slate-400 font-medium">Filtrar por tipo:</span>
+                    <div className="text-xs text-slate-400 font-medium">Filtrar por tipo:</div>
                     <select
                       value={selectedCertTypeFilter}
                       onChange={(e) => setSelectedCertTypeFilter(e.target.value)}
@@ -19968,16 +16226,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <div className="flex items-start justify-between gap-2">
                             <div>
                               <div className="flex items-center gap-2 mb-1">
-                                <span className="font-mono text-xs font-bold text-sky-400 bg-sky-950/80 border border-sky-800/60 px-2 py-0.5 rounded-lg">
+                                <div className="font-mono text-xs font-bold text-sky-400 bg-sky-950/80 border border-sky-800/60 px-2 py-0.5 rounded-lg">
                                   {cert.folio}
-                                </span>
-                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${
+                                </div>
+                                <div className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${
                                   cert.status === 'EMITIDA'
                                     ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
                                     : 'bg-rose-500/20 text-rose-400 border-rose-500/30'
                                 }`}>
                                   {cert.status}
-                                </span>
+                                </div>
                               </div>
                               <h3 className="text-base font-bold text-white">{cert.studentName}</h3>
                               <p className="text-xs text-slate-400 font-mono">
@@ -20000,8 +16258,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                           <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs space-y-1.5">
                             <div className="flex justify-between text-slate-400">
-                              <span>Tipo de Constancia:</span>
-                              <span className="font-semibold text-white">
+                              <div>Tipo de Constancia:</div>
+                              <div className="font-semibold text-white">
                                 {cert.type === 'CONSTANCIA_ESTUDIOS_SIMPLE'
                                   ? 'Estudios Simple'
                                   : cert.type === 'CONSTANCIA_INSCRIPCION'
@@ -20011,29 +16269,29 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   : cert.type === 'CONSTANCIA_PROMEDIO'
                                   ? 'Con Desglose Promedio'
                                   : 'Kárdex Histórico'}
-                              </span>
+                              </div>
                             </div>
                             <div className="flex justify-between text-slate-400">
-                              <span>Grado / Grupo:</span>
-                              <span className="font-semibold text-slate-200">{cert.grade} ({cert.groupName})</span>
+                              <div>Grado / Grupo:</div>
+                              <div className="font-semibold text-slate-200">{cert.grade} ({cert.groupName})</div>
                             </div>
                             {cert.averageGrade && (
                               <div className="flex justify-between text-slate-400">
-                                <span>Promedio Registrado:</span>
-                                <span className="font-bold text-amber-400">{cert.averageGrade.toFixed(1)}</span>
+                                <div>Promedio Registrado:</div>
+                                <div className="font-bold text-amber-400">{cert.averageGrade.toFixed(1)}</div>
                               </div>
                             )}
                             <div className="flex justify-between text-slate-400">
-                              <span>Emisión / Vence:</span>
-                              <span className="text-slate-300 font-mono">{cert.issueDate} / {cert.validUntil}</span>
+                              <div>Emisión / Vence:</div>
+                              <div className="text-slate-300 font-mono">{cert.issueDate} / {cert.validUntil}</div>
                             </div>
                           </div>
 
                           <div className="text-[11px] text-slate-400">
-                            <span className="text-slate-500 block mb-0.5">Sello Digital Criptográfico (SHA-256):</span>
-                            <span className="font-mono text-slate-400 bg-slate-950 px-2 py-1 rounded-md block truncate border border-slate-800">
+                            <div className="text-slate-500 block mb-0.5">Sello Digital Criptográfico (SHA-256):</div>
+                            <div className="font-mono text-slate-400 bg-slate-950 px-2 py-1 rounded-md block truncate border border-slate-800">
                               {cert.digitalSeal}
-                            </span>
+                            </div>
                           </div>
 
                           {cert.notes && (
@@ -20044,9 +16302,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
 
                         <div className="flex items-center justify-between pt-3 border-t border-slate-800/80">
-                          <span className="text-[11px] text-slate-500">
+                          <div className="text-[11px] text-slate-500">
                             Firma: {cert.issuedByDirector} ({cert.directorCedula})
-                          </span>
+                          </div>
 
                           <div className="flex items-center gap-2">
                             {cert.status === 'EMITIDA' && (
@@ -20066,7 +16324,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               className="px-3 py-1.5 bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
                             >
                               <FileCheck className="w-3.5 h-3.5" />
-                              <span>Ver Documento</span>
+                              <div>Ver Documento</div>
                             </button>
                           </div>
                         </div>
@@ -20082,7 +16340,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 {/* Header Selector */}
                 <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div>
-                    <span className="text-xs text-slate-400 block mb-1">Historial Escolar Consolidado</span>
+                    <div className="text-xs text-slate-400 block mb-1">Historial Escolar Consolidado</div>
                     <h3 className="text-lg font-bold text-white flex items-center gap-2">
                       <GraduationCap className="w-5 h-5 text-sky-400" />
                       Trayectoria Curricular & Evaluaciones por Ciclo Escolar
@@ -20095,7 +16353,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer"
                     >
                       <Printer className="w-4 h-4" />
-                      <span>Imprimir Kárdex Oficial</span>
+                      <div>Imprimir Kárdex Oficial</div>
                     </button>
                   </div>
                 </div>
@@ -20129,16 +16387,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <div key={idx} className="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-3">
                         <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                           <div>
-                            <span className="text-xs font-bold text-white">{cycle.cycleName}</span>
-                            <span className="text-xs text-slate-400 ml-2">({cycle.gradeLevel})</span>
+                            <div className="text-xs font-bold text-white">{cycle.cycleName}</div>
+                            <div className="text-xs text-slate-400 ml-2">({cycle.gradeLevel})</div>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">
+                            <div className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">
                               {cycle.status}
-                            </span>
-                            <span className="text-xs font-bold text-amber-400">
+                            </div>
+                            <div className="text-xs font-bold text-amber-400">
                               Promedio Ciclo: {cycle.finalAverage.toFixed(1)}
-                            </span>
+                            </div>
                           </div>
                         </div>
 
@@ -20152,9 +16410,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 <div className="text-slate-200 font-medium">{sub.name}</div>
                                 <div className="text-[10px] text-slate-500">{sub.field.replace(/_/g, ' ')}</div>
                               </div>
-                              <span className="font-bold text-white bg-slate-950 px-2 py-1 rounded border border-slate-800 font-mono">
+                              <div className="font-bold text-white bg-slate-950 px-2 py-1 rounded border border-slate-800 font-mono">
                                 {sub.finalGrade.toFixed(1)}
-                              </span>
+                              </div>
                             </div>
                           ))}
                         </div>
@@ -20169,7 +16427,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <div className="font-mono text-[11px] text-slate-500 break-all">{kardexRecord.digitalSeal}</div>
                     </div>
                     <div className="text-right whitespace-nowrap text-slate-400 text-[11px]">
-                      Token: <span className="font-mono text-sky-400">{kardexRecord.verificationToken}</span>
+                      Token: <div className="font-mono text-sky-400">{kardexRecord.verificationToken}</div>
                       <br />
                       Actualizado: {new Date(kardexRecord.lastUpdated).toLocaleDateString()}
                     </div>
@@ -20212,14 +16470,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           className="px-5 py-2.5 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs rounded-xl transition-all shadow-md shadow-sky-500/20 cursor-pointer flex items-center justify-center gap-2"
                         >
                           <ShieldCheck className="w-4 h-4" />
-                          <span>Validar Autenticidad</span>
+                          <div>Validar Autenticidad</div>
                         </button>
                       </div>
                     </div>
 
                     {/* Quick Demo Chips */}
                     <div className="flex flex-wrap items-center gap-2 pt-1 text-xs text-slate-400">
-                      <span>Probar token de ejemplo:</span>
+                      <div>Probar token de ejemplo:</div>
                       <button
                         type="button"
                         onClick={() => setVerifierQueryToken('tok-ce-7f9a1b2c3d4e')}
@@ -20256,28 +16514,28 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           {verifierResult.certificate && (
                             <div className="p-4 bg-slate-950/80 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1.5">
                               <div className="flex justify-between">
-                                <span className="text-slate-400">Alumno:</span>
-                                <span className="font-bold text-white">{verifierResult.certificate.studentName}</span>
+                                <div className="text-slate-400">Alumno:</div>
+                                <div className="font-bold text-white">{verifierResult.certificate.studentName}</div>
                               </div>
                               <div className="flex justify-between">
-                                <span className="text-slate-400">Folio Oficial SEP:</span>
-                                <span className="font-mono text-sky-400 font-bold">{verifierResult.certificate.folio}</span>
+                                <div className="text-slate-400">Folio Oficial SEP:</div>
+                                <div className="font-mono text-sky-400 font-bold">{verifierResult.certificate.folio}</div>
                               </div>
                               <div className="flex justify-between">
-                                <span className="text-slate-400">Tipo de Documento:</span>
-                                <span className="font-semibold text-white">{verifierResult.certificate.type.replace(/_/g, ' ')}</span>
+                                <div className="text-slate-400">Tipo de Documento:</div>
+                                <div className="font-semibold text-white">{verifierResult.certificate.type.replace(/_/g, ' ')}</div>
                               </div>
                               <div className="flex justify-between">
-                                <span className="text-slate-400">Nivel y Grado:</span>
-                                <span>{verifierResult.certificate.grade} ({verifierResult.certificate.groupName})</span>
+                                <div className="text-slate-400">Nivel y Grado:</div>
+                                <div>{verifierResult.certificate.grade} ({verifierResult.certificate.groupName})</div>
                               </div>
                               <div className="flex justify-between">
-                                <span className="text-slate-400">Fecha de Expedición / Caducidad:</span>
-                                <span className="font-mono">{verifierResult.certificate.issueDate} / {verifierResult.certificate.validUntil}</span>
+                                <div className="text-slate-400">Fecha de Expedición / Caducidad:</div>
+                                <div className="font-mono">{verifierResult.certificate.issueDate} / {verifierResult.certificate.validUntil}</div>
                               </div>
                               <div className="flex justify-between">
-                                <span className="text-slate-400">Emisor Autorizado:</span>
-                                <span>{verifierResult.certificate.issuedByDirector} ({verifierResult.certificate.directorCedula})</span>
+                                <div className="text-slate-400">Emisor Autorizado:</div>
+                                <div>{verifierResult.certificate.issuedByDirector} ({verifierResult.certificate.directorCedula})</div>
                               </div>
                             </div>
                           )}
@@ -20298,10 +16556,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">
+                  <div className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">
                     SUPERVISIÓN DE ZONA 14 • SECTOR 05
-                  </span>
-                  <span className="text-xs text-slate-400">CCT: 09PPR1849X • RVOE SEP-2022-0498</span>
+                  </div>
+                  <div className="text-xs text-slate-400">CCT: 09PPR1849X • RVOE SEP-2022-0498</div>
                 </div>
                 <h2 className="text-xl font-bold text-white flex items-center gap-2">
                   <ShieldCheck className="w-6 h-6 text-sky-400" />
@@ -20319,7 +16577,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="px-4 py-2.5 bg-sky-500 hover:bg-sky-400 text-slate-950 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-lg shadow-sky-500/20 cursor-pointer"
                 >
                   <FileCheck className="w-4 h-4" />
-                  <span>+ Registrar Visita de Supervisión</span>
+                  <div>+ Registrar Visita de Supervisión</div>
                 </button>
               </div>
             </div>
@@ -20328,7 +16586,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-lg">
                 <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
-                  <span>Cumplimiento Normativo</span>
+                  <div>Cumplimiento Normativo</div>
                   <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                 </div>
                 <div className="text-2xl font-black text-emerald-400">99.2%</div>
@@ -20337,7 +16595,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-lg">
                 <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
-                  <span>Eventos Inmutables</span>
+                  <div>Eventos Inmutables</div>
                   <ShieldAlert className="w-4 h-4 text-sky-400" />
                 </div>
                 <div className="text-2xl font-black text-white">{auditLogs.length}</div>
@@ -20346,7 +16604,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-lg">
                 <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
-                  <span>Visitas de Supervisión</span>
+                  <div>Visitas de Supervisión</div>
                   <FileText className="w-4 h-4 text-indigo-400" />
                 </div>
                 <div className="text-2xl font-black text-white">{supervisionInspections.length}</div>
@@ -20355,7 +16613,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-lg">
                 <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
-                  <span>Integridad Criptográfica</span>
+                  <div>Integridad Criptográfica</div>
                   <Lock className="w-4 h-4 text-purple-400" />
                 </div>
                 <div className="text-2xl font-black text-purple-400">Tamper-Free</div>
@@ -20374,7 +16632,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <ShieldCheck className="w-4 h-4" />
-                <span>Bitácora Forense Inmutable ({auditLogs.length})</span>
+                <div>Bitácora Forense Inmutable ({auditLogs.length})</div>
               </button>
 
               <button
@@ -20386,7 +16644,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <FileCheck className="w-4 h-4" />
-                <span>Inspecciones de Zona & Actas SEP ({supervisionInspections.length})</span>
+                <div>Inspecciones de Zona & Actas SEP ({supervisionInspections.length})</div>
               </button>
 
               <button
@@ -20398,7 +16656,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 }`}
               >
                 <CheckCircle2 className="w-4 h-4" />
-                <span>Dossier de Cumplimiento Normativo (RVOE)</span>
+                <div>Dossier de Cumplimiento Normativo (RVOE)</div>
               </button>
             </div>
 
@@ -20475,16 +16733,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         >
                           <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
                             <div className="flex items-center gap-2 flex-wrap">
-                              <span className="font-mono text-xs font-bold text-sky-400 bg-sky-950/60 px-2 py-0.5 rounded border border-sky-800">
+                              <div className="font-mono text-xs font-bold text-sky-400 bg-sky-950/60 px-2 py-0.5 rounded border border-sky-800">
                                 {log.folio}
-                              </span>
-                              <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${severityBadge}`}>
+                              </div>
+                              <div className={`px-2 py-0.5 rounded text-[10px] font-bold border ${severityBadge}`}>
                                 {log.severity}
-                              </span>
-                              <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-800 text-slate-300 border border-slate-700">
+                              </div>
+                              <div className="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-800 text-slate-300 border border-slate-700">
                                 {log.category.replace(/_/g, ' ')}
-                              </span>
-                              <span className="text-[11px] text-slate-400">
+                              </div>
+                              <div className="text-[11px] text-slate-400">
                                 {new Date(log.timestamp).toLocaleString('es-MX', {
                                   year: 'numeric',
                                   month: 'short',
@@ -20492,7 +16750,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   hour: '2-digit',
                                   minute: '2-digit',
                                 })}
-                              </span>
+                              </div>
                             </div>
 
                             <button
@@ -20500,7 +16758,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               className="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold flex items-center gap-1.5 border border-slate-700 cursor-pointer self-start md:self-auto"
                             >
                               <Lock className="w-3.5 h-3.5 text-emerald-400" />
-                              <span>Verificar Hash SHA-256</span>
+                              <div>Verificar Hash SHA-256</div>
                             </button>
                           </div>
 
@@ -20508,9 +16766,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             <h4 className="text-sm font-bold text-white flex items-center gap-2">
                               {log.actionName}
                               {log.studentName && (
-                                <span className="text-xs font-normal text-slate-400">
+                                <div className="text-xs font-normal text-slate-400">
                                   — Alumno: <strong className="text-white">{log.studentName}</strong> ({log.entityIdentifier})
-                                </span>
+                                </div>
                               )}
                             </h4>
                           </div>
@@ -20546,7 +16804,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             {log.officialAgreementRef && (
                               <div className="text-slate-400 text-[11px] flex items-center gap-1.5">
                                 <FileText className="w-3.5 h-3.5 text-sky-400" />
-                                <span>Referencia Institucional: <strong>{log.officialAgreementRef}</strong></span>
+                                <div>Referencia Institucional: <strong>{log.officialAgreementRef}</strong></div>
                               </div>
                             )}
                           </div>
@@ -20554,7 +16812,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           {/* Pie con actor y hash */}
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between text-[11px] text-slate-500 gap-1 pt-1">
                             <div>
-                              Asentado por: <strong className="text-slate-300">{log.performedByName}</strong> ({log.performedByRole}) • IP: <span className="font-mono text-slate-400">{log.ipAddress}</span>
+                              Asentado por: <strong className="text-slate-300">{log.performedByName}</strong> ({log.performedByRole}) • IP: <div className="font-mono text-slate-400">{log.ipAddress}</div>
                             </div>
                             <div className="font-mono text-[10px] text-slate-400 truncate max-w-xs">
                               SHA-256: {log.integrityHash.substring(0, 20)}...
@@ -20585,7 +16843,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     className="px-3 py-1.5 bg-sky-500 hover:bg-sky-400 text-slate-950 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
                   >
                     <Plus className="w-3.5 h-3.5" />
-                    <span>Nueva Acta</span>
+                    <div>Nueva Acta</div>
                   </button>
                 </div>
 
@@ -20598,15 +16856,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-800 pb-4">
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="font-mono text-xs font-bold text-sky-400 bg-sky-950/60 px-2.5 py-0.5 rounded border border-sky-800">
+                            <div className="font-mono text-xs font-bold text-sky-400 bg-sky-950/60 px-2.5 py-0.5 rounded border border-sky-800">
                               {insp.officialNoticeNumber}
-                            </span>
-                            <span className="px-2.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                            </div>
+                            <div className="px-2.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                               {insp.status}
-                            </span>
-                            <span className="text-xs text-slate-400 font-medium">
+                            </div>
+                            <div className="text-xs text-slate-400 font-medium">
                               Fecha: {insp.inspectionDate}
-                            </span>
+                            </div>
                           </div>
                           <h3 className="text-base font-bold text-white">{insp.purpose}</h3>
                           <div className="text-xs text-slate-400 mt-0.5">
@@ -20633,8 +16891,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               key={idx}
                               className="p-3 bg-slate-950 rounded-xl border border-slate-800/80 text-xs text-slate-300 flex items-start gap-2"
                             >
-                              <span className="text-sky-400 font-bold">•</span>
-                              <span>{f}</span>
+                              <div className="text-sky-400 font-bold">•</div>
+                              <div>{f}</div>
                             </div>
                           ))}
                         </div>
@@ -20652,8 +16910,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               key={idx}
                               className="p-3 bg-slate-950 rounded-xl border border-slate-800/80 text-xs text-slate-300 flex items-start gap-2"
                             >
-                              <span className="text-emerald-400 font-bold">✓</span>
-                              <span>{a}</span>
+                              <div className="text-emerald-400 font-bold">✓</div>
+                              <div>{a}</div>
                             </div>
                           ))}
                         </div>
@@ -20663,11 +16921,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <div className="bg-slate-950/70 p-4 rounded-2xl border border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-3">
                         <div className="flex items-center gap-2">
                           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                          <span>Acta rubricada por la Autoridad Educativa de Zona y Dirección General</span>
+                          <div>Acta rubricada por la Autoridad Educativa de Zona y Dirección General</div>
                         </div>
                         <div className="flex items-center gap-4 text-[11px] font-mono">
-                          <span className="text-slate-300">Rubricado: {insp.inspectorName}</span>
-                          <span className="text-slate-300">Dirección: Dra. Elena Vázquez</span>
+                          <div className="text-slate-300">Rubricado: {insp.inspectorName}</div>
+                          <div className="text-slate-300">Dirección: Dra. Elena Vázquez</div>
                         </div>
                       </div>
                     </div>
@@ -20691,19 +16949,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </p>
                     </div>
                     <div className="text-right">
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                      <div className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
                         DICTAMEN: 100% CONFORME
-                      </span>
+                      </div>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                     <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
                       <div className="flex items-center justify-between">
-                        <span className="font-bold text-white">1. Acuerdos de Incorporación RVOE</span>
-                        <span className="text-emerald-400 font-bold flex items-center gap-1">
+                        <div className="font-bold text-white">1. Acuerdos de Incorporación RVOE</div>
+                        <div className="text-emerald-400 font-bold flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" /> Vigente
-                        </span>
+                        </div>
                       </div>
                       <p className="text-slate-400 text-[11px]">
                         Preescolar (RVOE-SEP-2020-0112) y Primaria (RVOE-SEP-2022-0498) ratificados ante la Dirección General de Incorporación.
@@ -20713,10 +16971,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                     <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
                       <div className="flex items-center justify-between">
-                        <span className="font-bold text-white">2. Expedientes y Cotejo CURP (RENAPO)</span>
-                        <span className="text-emerald-400 font-bold flex items-center gap-1">
+                        <div className="font-bold text-white">2. Expedientes y Cotejo CURP (RENAPO)</div>
+                        <div className="text-emerald-400 font-bold flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" /> 100% Validados
-                        </span>
+                        </div>
                       </div>
                       <p className="text-slate-400 text-[11px]">
                         Expedientes físicos y digitales completos con acta de nacimiento certificada y CURP validada en el Registro Nacional de Población.
@@ -20726,10 +16984,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                     <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
                       <div className="flex items-center justify-between">
-                        <span className="font-bold text-white">3. Padrón Obligatorio de Becas SEP (Art. 149 LGE)</span>
-                        <span className="text-emerald-400 font-bold flex items-center gap-1">
+                        <div className="font-bold text-white">3. Padrón Obligatorio de Becas SEP (Art. 149 LGE)</div>
+                        <div className="text-emerald-400 font-bold flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" /> 7.8% (Mínimo 5%)
-                        </span>
+                        </div>
                       </div>
                       <p className="text-slate-400 text-[11px]">
                         Convocatoria pública anual emitida en julio y comité de becas constituido formalmente con representantes del cuerpo docente.
@@ -20739,10 +16997,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                     <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
                       <div className="flex items-center justify-between">
-                        <span className="font-bold text-white">4. Dotaciones de Libros Gratuitos CONALITEG</span>
-                        <span className="text-emerald-400 font-bold flex items-center gap-1">
+                        <div className="font-bold text-white">4. Dotaciones de Libros Gratuitos CONALITEG</div>
+                        <div className="text-emerald-400 font-bold flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" /> 100% Entregado
-                        </span>
+                        </div>
                       </div>
                       <p className="text-slate-400 text-[11px]">
                         Paquetes completos de la Nueva Escuela Mexicana entregados a la totalidad de los alumnos con acuse de firma resguardado.
@@ -20752,10 +17010,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                     <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
                       <div className="flex items-center justify-between">
-                        <span className="font-bold text-white">5. Consejos Técnicos Escolares (CTE)</span>
-                        <span className="text-emerald-400 font-bold flex items-center gap-1">
+                        <div className="font-bold text-white">5. Consejos Técnicos Escolares (CTE)</div>
+                        <div className="text-emerald-400 font-bold flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" /> Al Corriente
-                        </span>
+                        </div>
                       </div>
                       <p className="text-slate-400 text-[11px]">
                         Minutas foliadas de Fase Intensiva y sesiones ordinarias mensuales con registro colegiado de acuerdos pedagógicos.
@@ -20765,10 +17023,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                     <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
                       <div className="flex items-center justify-between">
-                        <span className="font-bold text-white">6. Protección Civil & Seguridad Escolar</span>
-                        <span className="text-emerald-400 font-bold flex items-center gap-1">
+                        <div className="font-bold text-white">6. Protección Civil & Seguridad Escolar</div>
+                        <div className="text-emerald-400 font-bold flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" /> Certificado
-                        </span>
+                        </div>
                       </div>
                       <p className="text-slate-400 text-[11px]">
                         Programa interno avalado, señalética reglamentaria y calendario de simulacros bimestrales de sismo e incendio.
@@ -20801,7 +17059,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs px-4 py-3 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-sky-500/20 transition-all cursor-pointer shrink-0"
               >
                 <UserPlus className="w-4 h-4" />
-                <span>+ Inscribir Nuevo Alumno</span>
+                <div>+ Inscribir Nuevo Alumno</div>
               </button>
             </div>
 
@@ -20822,7 +17080,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     className="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs px-6 py-3.5 rounded-2xl shadow-xl shadow-sky-500/20 inline-flex items-center gap-2 transition-all cursor-pointer"
                   >
                     <UserPlus className="w-4 h-4" />
-                    <span>Inscribir Primer Alumno</span>
+                    <div>Inscribir Primer Alumno</div>
                   </button>
                 </div>
               </div>
@@ -20848,9 +17106,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <td className="py-3.5 px-4 text-slate-300">{st.groupName}</td>
                           <td className="py-3.5 px-4 text-slate-400">{st.tutorName}</td>
                           <td className="py-3.5 px-4">
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-950/80 text-emerald-400 border border-emerald-800">
+                            <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-950/80 text-emerald-400 border border-emerald-800">
                               <CheckCircle2 className="w-3.5 h-3.5" /> Inscrito Regular
-                            </span>
+                            </div>
                           </td>
                           <td className="py-3.5 px-4 text-center">
                             <button
@@ -20890,7 +17148,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className="bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs px-4 py-3 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/20 transition-all cursor-pointer shrink-0"
               >
                 <PlusCircle className="w-4 h-4" />
-                <span>+ Crear Grupo</span>
+                <div>+ Crear Grupo</div>
               </button>
             </div>
 
@@ -20898,9 +17156,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {filteredGroups.map((grp) => (
                 <div key={grp.id} className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col justify-between">
                   <div>
-                    <span className="text-[10px] font-bold uppercase px-2.5 py-1 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40">
+                    <div className="text-[10px] font-bold uppercase px-2.5 py-1 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40">
                       {grp.level}
-                    </span>
+                    </div>
                     <h3 className="text-lg font-black text-white mt-2 mb-1">{grp.name}</h3>
                     <p className="text-xs text-slate-400 mb-3">Turno: {grp.shift}</p>
                     <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 text-xs">
@@ -20936,25 +17194,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs px-4 py-3 rounded-2xl flex items-center justify-center gap-2 cursor-pointer"
               >
                 <PlusCircle className="w-4 h-4" />
-                <span>+ Emitir Nuevo Cobro</span>
+                <div>+ Emitir Nuevo Cobro</div>
               </button>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="bg-amber-950/40 border border-amber-800/80 p-5 rounded-3xl">
-                <span className="text-xs font-bold text-amber-400">💵 Efectivo en Bóveda</span>
+                <div className="text-xs font-bold text-amber-400">💵 Efectivo en Bóveda</div>
                 <div className="text-2xl font-black font-mono text-white mt-1">${cashSummary.totalCashInVault.toLocaleString()} MXN</div>
               </div>
               <div className="bg-emerald-950/40 border border-emerald-800/80 p-5 rounded-3xl">
-                <span className="text-xs font-bold text-emerald-400">📲 CoDi Banxico (0%)</span>
+                <div className="text-xs font-bold text-emerald-400">📲 CoDi Banxico (0%)</div>
                 <div className="text-2xl font-black font-mono text-white mt-1">${cashSummary.totalCodiBanxico.toLocaleString()} MXN</div>
               </div>
               <div className="bg-sky-950/40 border border-sky-800/80 p-5 rounded-3xl">
-                <span className="text-xs font-bold text-sky-400">🏦 Transferencias SPEI</span>
+                <div className="text-xs font-bold text-sky-400">🏦 Transferencias SPEI</div>
                 <div className="text-2xl font-black font-mono text-white mt-1">${cashSummary.totalBankTransfers.toLocaleString()} MXN</div>
               </div>
               <div className="bg-slate-900 border border-slate-700 p-5 rounded-3xl">
-                <span className="text-xs font-bold text-slate-300">💰 Recaudación Total</span>
+                <div className="text-xs font-bold text-slate-300">💰 Recaudación Total</div>
                 <div className="text-2xl font-black font-mono text-sky-400 mt-1">${cashSummary.grandTotal.toLocaleString()} MXN</div>
               </div>
             </div>
@@ -20981,7 +17239,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs px-5 py-3 rounded-2xl flex items-center gap-2 shadow-xl shadow-amber-400/20 transition-all cursor-pointer"
                 >
                   <Award className="w-4 h-4" />
-                  <span>Consultar Boleta Oficial SEP de Carlos</span>
+                  <div>Consultar Boleta Oficial SEP de Carlos</div>
                 </button>
               )}
             </div>
@@ -20991,42 +17249,42 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
                   <div>
-                    <span className="text-[10px] font-mono text-sky-400 uppercase font-bold tracking-wider">Hijo Registrado</span>
+                    <div className="text-[10px] font-mono text-sky-400 uppercase font-bold tracking-wider">Hijo Registrado</div>
                     <h3 className="text-lg font-black text-white">{students[0].firstName} {students[0].lastName}</h3>
                     <p className="text-xs text-slate-400">{students[0].groupName} • Matrícula: <strong className="font-mono text-slate-200">{students[0].studentCode}</strong></p>
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <span className="bg-emerald-950 text-emerald-300 border border-emerald-800 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                    <div className="bg-emerald-950 text-emerald-300 border border-emerald-800 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
                       <CheckCircle2 className="w-3.5 h-3.5" /> Alumno Regular Acreditado
-                    </span>
+                    </div>
                     <button
                       onClick={() => handleOpenReportCard(students[0])}
                       className="bg-slate-800 hover:bg-slate-750 text-slate-200 border border-slate-700 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer"
                     >
                       <Printer className="w-3.5 h-3.5 text-amber-400" />
-                      <span>Imprimir Boleta SEP</span>
+                      <div>Imprimir Boleta SEP</div>
                     </button>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs pt-1">
                   <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1">
-                    <span className="text-slate-500 font-bold block text-[11px]">Promedio General del Ciclo:</span>
-                    <span className="text-2xl font-black text-amber-400">9.3</span>
-                    <span className="text-[10px] text-slate-500 block">Evaluado por maestros titulares</span>
+                    <div className="text-slate-500 font-bold block text-[11px]">Promedio General del Ciclo:</div>
+                    <div className="text-2xl font-black text-amber-400">9.3</div>
+                    <div className="text-[10px] text-slate-500 block">Evaluado por maestros titulares</div>
                   </div>
 
                   <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1">
-                    <span className="text-slate-500 font-bold block text-[11px]">Inasistencias Acumuladas:</span>
-                    <span className="text-2xl font-black text-purple-400">4 faltas</span>
-                    <span className="text-[10px] text-slate-500 block">97.8% de asistencia escolar</span>
+                    <div className="text-slate-500 font-bold block text-[11px]">Inasistencias Acumuladas:</div>
+                    <div className="text-2xl font-black text-purple-400">4 faltas</div>
+                    <div className="text-[10px] text-slate-500 block">97.8% de asistencia escolar</div>
                   </div>
 
                   <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1">
-                    <span className="text-slate-500 font-bold block text-[11px]">Colegiatura Vigente:</span>
-                    <span className="text-2xl font-black text-emerald-400">Al Corriente</span>
-                    <span className="text-[10px] text-slate-500 block">Pagos validados con CoDi®</span>
+                    <div className="text-slate-500 font-bold block text-[11px]">Colegiatura Vigente:</div>
+                    <div className="text-2xl font-black text-emerald-400">Al Corriente</div>
+                    <div className="text-[10px] text-slate-500 block">Pagos validados con CoDi®</div>
                   </div>
                 </div>
 
@@ -21037,19 +17295,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <CalendarCheck className="w-5 h-5" />
                     </div>
                     <div>
-                      <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Pase de Lista de Hoy</span>
+                      <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Pase de Lista de Hoy</div>
                       <div className="text-white font-black text-sm flex items-center gap-2 flex-wrap">
-                        <span>Estatus Diario:</span>
-                        <span className="text-emerald-400 font-bold bg-emerald-950 px-2.5 py-0.5 rounded-lg border border-emerald-800 text-xs">
+                        <div>Estatus Diario:</div>
+                        <div className="text-emerald-400 font-bold bg-emerald-950 px-2.5 py-0.5 rounded-lg border border-emerald-800 text-xs">
                           ✅ PRESENTE (Puntual en aula)
-                        </span>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <span className="text-xs text-slate-400 font-mono">
+                  <div className="text-xs text-slate-400 font-mono">
                     Registrado por Prof. Roberto Salazar • Primaria 1º "A"
-                  </span>
+                  </div>
                 </div>
 
                 {/* Justificantes Oficiales del Alumno en el Portal Familiar */}
@@ -21060,15 +17318,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <FileText className="w-5 h-5" />
                       </div>
                       <div>
-                        <span className="text-[11px] font-bold text-indigo-400 uppercase tracking-wider block">
+                        <div className="text-[11px] font-bold text-indigo-400 uppercase tracking-wider block">
                           Justificante Escolar Autorizado
-                        </span>
+                        </div>
                         <div className="text-white font-black text-sm">
                           Folio {justifications[0].folio}: {justifications[0].reasonDescription}
                         </div>
-                        <span className="text-slate-400 text-[11px]">
+                        <div className="text-slate-400 text-[11px]">
                           Vigencia: {justifications[0].startDate} al {justifications[0].endDate} • Autorizado por {justifications[0].authorizedBy}
-                        </span>
+                        </div>
                       </div>
                     </div>
 
@@ -21080,7 +17338,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 cursor-pointer shadow-md shadow-indigo-600/20 transition-all shrink-0"
                     >
                       <Printer className="w-3.5 h-3.5" />
-                      <span>Ver Volante Oficial</span>
+                      <div>Ver Volante Oficial</div>
                     </button>
                   </div>
                 )}
@@ -21097,9 +17355,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         Comunicados institucionales, convocatorias y citatorios presenciales dirigidos a ti como tutor legal.
                       </p>
                     </div>
-                    <span className="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-xs font-mono font-bold px-3 py-1 rounded-xl">
+                    <div className="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-xs font-mono font-bold px-3 py-1 rounded-xl">
                       {notices.length} Comunicados
-                    </span>
+                    </div>
                   </div>
 
                   <div className="space-y-3">
@@ -21118,10 +17376,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         >
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                             <div className="flex items-center gap-2 flex-wrap">
-                              <span className="font-mono text-[11px] font-bold bg-slate-950 px-2 py-0.5 rounded-lg border border-slate-800 text-purple-300">
+                              <div className="font-mono text-[11px] font-bold bg-slate-950 px-2 py-0.5 rounded-lg border border-slate-800 text-purple-300">
                                 {notice.folio}
-                              </span>
-                              <span
+                              </div>
+                              <div
                                 className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full border ${
                                   isCitatorio
                                     ? 'bg-amber-500/10 text-amber-300 border-amber-500/40'
@@ -21129,17 +17387,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 }`}
                               >
                                 {isCitatorio ? 'Citatorio Presencial Urgente' : 'Circular General'}
-                              </span>
+                              </div>
                               {isUrgent && (
-                                <span className="bg-rose-600 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-full animate-pulse">
+                                <div className="bg-rose-600 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-full animate-pulse">
                                   Acción Requerida
-                                </span>
+                                </div>
                               )}
                             </div>
 
-                            <span className="text-[11px] text-slate-400 font-mono">
+                            <div className="text-[11px] text-slate-400 font-mono">
                               {notice.publishDate} • {notice.publishedBy}
-                            </span>
+                            </div>
                           </div>
 
                           <div>
@@ -21154,7 +17412,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             <div className="bg-amber-950/50 border border-amber-700/60 p-3 rounded-xl text-xs space-y-1 text-amber-200">
                               <div className="font-bold flex items-center gap-1.5 text-amber-300">
                                 <Clock className="w-4 h-4" />
-                                <span>Cita Programada:</span>
+                                <div>Cita Programada:</div>
                                 <strong className="text-white text-xs">{notice.appointmentDateTime}</strong>
                               </div>
                               <div className="text-[11px] text-amber-200/90">
@@ -21167,17 +17425,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-800">
                             <div>
                               {notice.isAcknowledgedByCurrentTutor ? (
-                                <span className="bg-emerald-950 text-emerald-300 border border-emerald-800 text-xs font-bold px-3 py-1 rounded-xl flex items-center gap-1.5">
+                                <div className="bg-emerald-950 text-emerald-300 border border-emerald-800 text-xs font-bold px-3 py-1 rounded-xl flex items-center gap-1.5">
                                   <CheckCheck className="w-4 h-4 text-emerald-400" />
-                                  <span>Acuse de Enterado Confirmado ({notice.acknowledgedToken || 'ACK-2026-OK'})</span>
-                                </span>
+                                  <div>Acuse de Enterado Confirmado ({notice.acknowledgedToken || 'ACK-2026-OK'})</div>
+                                </div>
                               ) : notice.requiresAcknowledgment ? (
-                                <span className="text-amber-400 text-xs font-bold flex items-center gap-1">
+                                <div className="text-amber-400 text-xs font-bold flex items-center gap-1">
                                   <AlertTriangle className="w-3.5 h-3.5" />
-                                  <span>Pendiente de confirmar lectura y enterado</span>
-                                </span>
+                                  <div>Pendiente de confirmar lectura y enterado</div>
+                                </div>
                               ) : (
-                                <span className="text-slate-400 text-xs font-mono">Informativo</span>
+                                <div className="text-slate-400 text-xs font-mono">Informativo</div>
                               )}
                             </div>
 
@@ -21188,7 +17446,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   className="bg-purple-600 hover:bg-purple-500 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 cursor-pointer shadow-lg shadow-purple-600/25 transition-all"
                                 >
                                   <CheckCheck className="w-4 h-4" />
-                                  <span>Firmar Acuse de Enterado</span>
+                                  <div>Firmar Acuse de Enterado</div>
                                 </button>
                               )}
 
@@ -21197,7 +17455,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 className="bg-slate-800 hover:bg-slate-750 text-slate-300 border border-slate-700 text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1 cursor-pointer transition-colors"
                               >
                                 <Printer className="w-3.5 h-3.5 text-purple-400" />
-                                <span>Ver Formato Oficial</span>
+                                <div>Ver Formato Oficial</div>
                               </button>
                             </div>
                           </div>
@@ -21216,9 +17474,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <div className="bg-slate-950 p-6 rounded-2xl border border-cyan-500/40 shadow-xl space-y-4">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
                         <div>
-                          <span className="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+                          <div className="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full inline-flex items-center gap-1">
                             <QrCode className="w-3 h-3" /> Carnet Oficial del Alumno
-                          </span>
+                          </div>
                           <h4 className="text-base font-black text-white flex items-center gap-2 mt-1">
                             <CreditCard className="w-5 h-5 text-cyan-400" />
                             Credencial Escolar Digital de Carlos
@@ -21234,7 +17492,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold text-xs px-3 py-2 rounded-xl flex items-center gap-1.5 cursor-pointer transition-colors"
                           >
                             <Scan className="w-3.5 h-3.5" />
-                            <span>Probar Pase en Puerta</span>
+                            <div>Probar Pase en Puerta</div>
                           </button>
 
                           <button
@@ -21242,7 +17500,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             className="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 cursor-pointer shadow-md shadow-cyan-500/20 transition-all"
                           >
                             <Printer className="w-3.5 h-3.5" />
-                            <span>Descargar Gafete PVC</span>
+                            <div>Descargar Gafete PVC</div>
                           </button>
                         </div>
                       </div>
@@ -21259,9 +17517,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               <div className="text-[9px] text-slate-400 font-mono">CCT: {carlosCred.cct}</div>
                             </div>
                           </div>
-                          <span className="text-[9px] font-mono text-emerald-400 font-bold bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">
+                          <div className="text-[9px] font-mono text-emerald-400 font-bold bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">
                             ● ACTIVA
-                          </span>
+                          </div>
                         </div>
 
                         <div className="flex items-center gap-4">
@@ -21269,7 +17527,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             <div className="w-9 h-9 rounded-full bg-slate-700 flex items-center justify-center text-white font-bold text-sm">
                               C
                             </div>
-                            <span className="text-[8px] font-mono text-cyan-300 mt-1">ALUMNO</span>
+                            <div className="text-[8px] font-mono text-cyan-300 mt-1">ALUMNO</div>
                           </div>
 
                           <div className="flex-1 min-w-0 space-y-0.5">
@@ -21285,9 +17543,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
 
                         <div className="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-400">
-                          <span>Sangre: <strong className="text-rose-400">{carlosCred.bloodType}</strong></span>
-                          <span>Emergencia: <strong className="text-slate-200">{carlosCred.emergencyContactPhone}</strong></span>
-                          <span className="font-mono text-cyan-300">{carlosCred.validThrough}</span>
+                          <div>Sangre: <strong className="text-rose-400">{carlosCred.bloodType}</strong></div>
+                          <div>Emergencia: <strong className="text-slate-200">{carlosCred.emergencyContactPhone}</strong></div>
+                          <div className="font-mono text-cyan-300">{carlosCred.validThrough}</div>
                         </div>
                       </div>
                     </div>
@@ -21298,9 +17556,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="bg-slate-950 p-6 rounded-2xl border border-blue-500/40 shadow-xl space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
                     <div>
-                      <span className="bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+                      <div className="bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full inline-flex items-center gap-1">
                         <ClipboardList className="w-3 h-3" /> Agenda de Actividades
-                      </span>
+                      </div>
                       <h4 className="text-base font-black text-white flex items-center gap-2 mt-1">
                         <ClipboardList className="w-5 h-5 text-blue-400" />
                         Cuaderno Digital de Tareas de Carlos
@@ -21310,9 +17568,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </p>
                     </div>
 
-                    <span className="text-xs font-mono text-slate-400">
+                    <div className="text-xs font-mono text-slate-400">
                       Ciclo Escolar 2026-2027 • 1º "A"
-                    </span>
+                    </div>
                   </div>
 
                   <div className="space-y-3">
@@ -21330,20 +17588,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         >
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                             <div className="flex items-center gap-2 flex-wrap">
-                              <span className="font-mono text-[11px] font-bold bg-slate-950 px-2 py-0.5 rounded-lg border border-slate-800 text-blue-300">
+                              <div className="font-mono text-[11px] font-bold bg-slate-950 px-2 py-0.5 rounded-lg border border-slate-800 text-blue-300">
                                 {task.folio}
-                              </span>
-                              <span className="text-[10px] font-bold bg-slate-850 text-slate-300 px-2 py-0.5 rounded-full border border-slate-700">
+                              </div>
+                              <div className="text-[10px] font-bold bg-slate-850 text-slate-300 px-2 py-0.5 rounded-full border border-slate-700">
                                 {task.subjectName}
-                              </span>
-                              <span className="text-[10px] font-bold bg-blue-950 text-blue-300 px-2 py-0.5 rounded-full border border-blue-800">
+                              </div>
+                              <div className="text-[10px] font-bold bg-blue-950 text-blue-300 px-2 py-0.5 rounded-full border border-blue-800">
                                 {task.type}
-                              </span>
+                              </div>
                             </div>
 
-                            <span className="text-xs text-rose-400 font-mono">
+                            <div className="text-xs text-rose-400 font-mono">
                               Entrega: {task.dueDate}
-                            </span>
+                            </div>
                           </div>
 
                           <div>
@@ -21356,7 +17614,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             <div className="bg-amber-950/40 border border-amber-500/50 rounded-xl p-3 text-xs text-amber-200 space-y-1">
                               <div className="font-bold flex items-center gap-1.5 text-amber-300">
                                 <HeartPulse className="w-3.5 h-3.5 text-rose-400" />
-                                <span>Prórroga Médica Oficial Autorizada (Folio: JUST-2026-001)</span>
+                                <div>Prórroga Médica Oficial Autorizada (Folio: JUST-2026-001)</div>
                               </div>
                               <p className="text-[11px] text-amber-100/90 leading-relaxed">
                                 Por motivos de reposo clínico de Carlos, la Dirección Técnica autorizó entrega
@@ -21370,21 +17628,21 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-slate-800/80">
                             <div>
                               {carlosSub?.status === 'CALIFICADO' ? (
-                                <span className="text-xs font-bold text-emerald-400 flex items-center gap-1">
+                                <div className="text-xs font-bold text-emerald-400 flex items-center gap-1">
                                   <Check className="w-3.5 h-3.5" /> Calificación: {carlosSub.score}/10 pts
-                                </span>
+                                </div>
                               ) : isDelivered ? (
-                                <span className="text-xs font-bold text-emerald-400 flex items-center gap-1">
+                                <div className="text-xs font-bold text-emerald-400 flex items-center gap-1">
                                   <Check className="w-3.5 h-3.5" /> Tarea Entregada (Revisión Docente)
-                                </span>
+                                </div>
                               ) : isExtemp ? (
-                                <span className="text-xs font-bold text-amber-400 flex items-center gap-1">
+                                <div className="text-xs font-bold text-amber-400 flex items-center gap-1">
                                   <Clock className="w-3.5 h-3.5" /> Prórroga Médica Vigente
-                                </span>
+                                </div>
                               ) : (
-                                <span className="text-xs font-bold text-slate-400 flex items-center gap-1">
+                                <div className="text-xs font-bold text-slate-400 flex items-center gap-1">
                                   <Clock className="w-3.5 h-3.5" /> Pendiente de Entrega
-                                </span>
+                                </div>
                               )}
                             </div>
 
@@ -21400,12 +17658,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 className="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 cursor-pointer shadow-md shadow-blue-600/20 transition-all self-start sm:self-auto"
                               >
                                 <FileCheck className="w-3.5 h-3.5" />
-                                <span>Confirmar Entrega de Tarea</span>
+                                <div>Confirmar Entrega de Tarea</div>
                               </button>
                             ) : (
-                              <span className="text-[11px] font-mono text-emerald-400">
+                              <div className="text-[11px] font-mono text-emerald-400">
                                 ✅ Registrada en Sistema
-                              </span>
+                              </div>
                             )}
                           </div>
                         </div>
@@ -21418,9 +17676,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="bg-slate-950 p-6 rounded-2xl border border-indigo-500/40 shadow-xl space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
                     <div>
-                      <span className="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+                      <div className="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full inline-flex items-center gap-1">
                         <CalendarDays className="w-3 h-3" /> Cronograma de Asignaturas
-                      </span>
+                      </div>
                       <h4 className="text-base font-black text-white flex items-center gap-2 mt-1">
                         <CalendarDays className="w-5 h-5 text-indigo-400" />
                         Horario Semanal de Clases de Carlos
@@ -21431,7 +17689,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
 
                     <div className="text-xs text-amber-300 font-bold bg-amber-950/60 border border-amber-800/80 px-3 py-1.5 rounded-xl self-start sm:self-auto flex items-center gap-1.5">
-                      <span>👟 Uniforme Deportivo: Lunes, Miércoles y Viernes</span>
+                      <div>👟 Uniforme Deportivo: Lunes, Miércoles y Viernes</div>
                     </div>
                   </div>
 
@@ -21448,10 +17706,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           className="bg-slate-900 border border-slate-800 rounded-2xl p-3 space-y-2.5"
                         >
                           <div className="text-center border-b border-slate-800 pb-1.5">
-                            <span className="text-xs font-black text-white">{day}</span>
-                            <span className="text-[10px] text-indigo-400 font-mono block">
+                            <div className="text-xs font-black text-white">{day}</div>
+                            <div className="text-[10px] text-indigo-400 font-mono block">
                               {daySlots.length} Módulos
-                            </span>
+                            </div>
                           </div>
 
                           <div className="space-y-1.5">
@@ -21464,13 +17722,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   backgroundColor: `${slot.colorHex || '#3b82f6'}10`,
                                 }}
                               >
-                                <span className="font-mono text-[9px] text-slate-400 block mb-0.5">
+                                <div className="font-mono text-[9px] text-slate-400 block mb-0.5">
                                   {slot.startTime} - {slot.endTime}
-                                </span>
+                                </div>
                                 <strong className="text-white block truncate">{slot.subjectName}</strong>
-                                <span className="text-[9px] text-slate-400 truncate block mt-0.5">
+                                <div className="text-[9px] text-slate-400 truncate block mt-0.5">
                                   {slot.classroom}
-                                </span>
+                                </div>
                               </div>
                             ))}
                           </div>
@@ -21484,17 +17742,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
+                      <div className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
                         Control de Acervo y Lectura en Casa
-                      </span>
+                      </div>
                       <h3 className="text-base font-black text-white flex items-center gap-2">
                         <BookOpen className="w-5 h-5 text-rose-400" />
                         Biblioteca Escolar: Préstamos de Carlos
                       </h3>
                     </div>
-                    <span className="bg-slate-800 text-slate-300 text-xs px-3 py-1 rounded-xl font-bold font-mono">
+                    <div className="bg-slate-800 text-slate-300 text-xs px-3 py-1 rounded-xl font-bold font-mono">
                       {bookLoans.filter((l) => l.studentId === 'student-01' && l.status === 'ACTIVO').length} en lectura
-                    </span>
+                    </div>
                   </div>
 
                   <div className="space-y-3">
@@ -21507,24 +17765,24 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         >
                           <div className="space-y-1">
                             <div className="flex items-center gap-2">
-                              <span className="font-mono text-[11px] font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-lg border border-amber-500/20">
+                              <div className="font-mono text-[11px] font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-lg border border-amber-500/20">
                                 {loan.folio}
-                              </span>
+                              </div>
                               {loan.status === 'ACTIVO' ? (
-                                <span className="bg-amber-500/10 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-500/30">
+                                <div className="bg-amber-500/10 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-500/30">
                                   Préstamo Activo
-                                </span>
+                                </div>
                               ) : (
-                                <span className="bg-emerald-500/10 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/30 flex items-center gap-1">
+                                <div className="bg-emerald-500/10 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/30 flex items-center gap-1">
                                   <CheckCircle2 className="w-3 h-3" /> Devuelto
-                                </span>
+                                </div>
                               )}
                             </div>
                             <h4 className="text-sm font-black text-white">{loan.bookTitle}</h4>
-                            <span className="text-slate-400 text-[11px]">
+                            <div className="text-slate-400 text-[11px]">
                               Modalidad: {loan.loanType === 'DOMICILIO' ? '🏠 Lectura en Casa' : '🏫 En Sala'} • Fecha Límite:{' '}
                               <strong className="text-amber-300 font-mono">{loan.dueDate}</strong>
-                            </span>
+                            </div>
                             {loan.librarianNotes && (
                               <p className="text-[11px] text-slate-400 italic">"{loan.librarianNotes}"</p>
                             )}
@@ -21532,10 +17790,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                           {loan.status === 'ACTIVO' && (
                             <div className="text-right sm:self-center">
-                              <span className="text-[10px] text-slate-400 block">Recordatorio escolar:</span>
-                              <span className="text-[11px] text-rose-300 font-bold">
+                              <div className="text-[10px] text-slate-400 block">Recordatorio escolar:</div>
+                              <div className="text-[11px] text-rose-300 font-bold">
                                 Traer en mochila para devolución el martes
-                              </span>
+                              </div>
                             </div>
                           )}
                         </div>
@@ -21547,9 +17805,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
-                      <span className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
+                      <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                         Seguridad & Traslado Escolar en Vivo
-                      </span>
+                      </div>
                       <h3 className="text-base font-black text-white flex items-center gap-2">
                         <Bus className="w-5 h-5 text-amber-400" />
                         Transporte Escolar: Ruta de Carlos
@@ -21565,24 +17823,24 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                       if (status === 'ENTREGADO_ESCUELA') {
                         return (
-                          <span className="bg-emerald-500/10 text-emerald-300 font-bold text-xs px-3 py-1 rounded-xl border border-emerald-500/30 flex items-center gap-1.5 self-start sm:self-auto">
+                          <div className="bg-emerald-500/10 text-emerald-300 font-bold text-xs px-3 py-1 rounded-xl border border-emerald-500/30 flex items-center gap-1.5 self-start sm:self-auto">
                             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                            <span>Entregado Seguro en Colegio ({carlosLog?.checkOutTime || '07:45'} hrs)</span>
-                          </span>
+                            <div>Entregado Seguro en Colegio ({carlosLog?.checkOutTime || '07:45'} hrs)</div>
+                          </div>
                         );
                       }
                       if (status === 'A_BORDO') {
                         return (
-                          <span className="bg-amber-500/10 text-amber-300 font-bold text-xs px-3 py-1 rounded-xl border border-amber-500/30 flex items-center gap-1.5 animate-pulse self-start sm:self-auto">
+                          <div className="bg-amber-500/10 text-amber-300 font-bold text-xs px-3 py-1 rounded-xl border border-amber-500/30 flex items-center gap-1.5 animate-pulse self-start sm:self-auto">
                             <Bus className="w-4 h-4 text-amber-400" />
-                            <span>A Bordo de la Unidad (En Camino)</span>
-                          </span>
+                            <div>A Bordo de la Unidad (En Camino)</div>
+                          </div>
                         );
                       }
                       return (
-                        <span className="bg-slate-800 text-slate-300 font-bold text-xs px-3 py-1 rounded-xl self-start sm:self-auto">
+                        <div className="bg-slate-800 text-slate-300 font-bold text-xs px-3 py-1 rounded-xl self-start sm:self-auto">
                           Turno Matutino Concluido
-                        </span>
+                        </div>
                       );
                     })()}
                   </div>
@@ -21590,41 +17848,41 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
                     <div className="flex items-center justify-between flex-wrap gap-2 border-b border-slate-800/80 pb-3">
                       <div>
-                        <span className="text-[10px] font-mono text-amber-400 font-bold uppercase">Ruta Oficial</span>
+                        <div className="text-[10px] font-mono text-amber-400 font-bold uppercase">Ruta Oficial</div>
                         <h4 className="text-sm font-black text-white">Ruta Norte - Lindavista / Vallejo</h4>
                       </div>
-                      <span className="text-xs text-slate-400 font-mono bg-slate-900 px-2.5 py-1 rounded-lg border border-slate-800">
+                      <div className="text-xs text-slate-400 font-mono bg-slate-900 px-2.5 py-1 rounded-lg border border-slate-800">
                         Unidad: <strong>Mercedes-Benz Sprinter (Placas: 84-RB-29)</strong>
-                      </span>
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                       <div>
-                        <span className="text-[10px] text-slate-400 block font-bold">Parada Asignada:</span>
+                        <div className="text-[10px] text-slate-400 block font-bold">Parada Asignada:</div>
                         <strong className="text-white block">Residencial Lindavista</strong>
-                        <span className="text-[11px] text-slate-400">Eje 5 Nte #204</span>
+                        <div className="text-[11px] text-slate-400">Eje 5 Nte #204</div>
                       </div>
 
                       <div>
-                        <span className="text-[10px] text-slate-400 block font-bold">Horarios Programados:</span>
-                        <span className="text-amber-300 font-mono block">🌅 Recogida: 07:05 hrs</span>
-                        <span className="text-amber-300 font-mono block">🌇 Entrega: 14:45 hrs</span>
+                        <div className="text-[10px] text-slate-400 block font-bold">Horarios Programados:</div>
+                        <div className="text-amber-300 font-mono block">🌅 Recogida: 07:05 hrs</div>
+                        <div className="text-amber-300 font-mono block">🌇 Entrega: 14:45 hrs</div>
                       </div>
 
                       <div>
-                        <span className="text-[10px] text-slate-400 block font-bold">Monitora a Cargo:</span>
+                        <div className="text-[10px] text-slate-400 block font-bold">Monitora a Cargo:</div>
                         <strong className="text-white block">Profra. Martha Morales</strong>
-                        <span className="text-slate-400 font-mono text-[11px] block">+52 55 2211 4433</span>
+                        <div className="text-slate-400 font-mono text-[11px] block">+52 55 2211 4433</div>
                       </div>
                     </div>
 
                     <div className="p-3 bg-amber-500/5 rounded-xl border border-amber-500/20 text-[11px] text-amber-200/90 flex items-center justify-between flex-wrap gap-2">
-                      <span>
+                      <div>
                         ℹ️ <strong>Asiento Asignado:</strong> Asiento delantero preferencial por recomendación pediátrica.
-                      </span>
-                      <span className="text-[10px] text-slate-400 font-mono">
+                      </div>
+                      <div className="text-[10px] text-slate-400 font-mono">
                         Póliza GNP #9948271-B
-                      </span>
+                      </div>
                     </div>
                   </div>
 
@@ -21632,9 +17890,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-6 shadow-xl space-y-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
                       <div>
-                        <span className="text-[10px] font-mono text-orange-400 font-bold uppercase tracking-wider block">
+                        <div className="text-[10px] font-mono text-orange-400 font-bold uppercase tracking-wider block">
                           Nutrición y Control de Gastos
-                        </span>
+                        </div>
                         <h4 className="text-base font-black text-white flex items-center gap-2">
                           <Utensils className="w-5 h-5 text-orange-400" />
                           Monedero Digital de Carlos & Cafetería
@@ -21651,44 +17909,44 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         className="bg-orange-500 hover:bg-orange-400 text-slate-950 font-black text-xs px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 shadow-md shadow-orange-500/20 cursor-pointer transition-all"
                       >
                         <CircleDollarSign className="w-3.5 h-3.5" />
-                        <span>Recargar Saldo</span>
+                        <div>Recargar Saldo</div>
                       </button>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                       <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800">
-                        <span className="text-[10px] text-slate-400 block font-bold">Saldo Disponible:</span>
+                        <div className="text-[10px] text-slate-400 block font-bold">Saldo Disponible:</div>
                         <strong className="text-2xl font-black text-emerald-400 font-mono block mt-0.5">
                           ${studentWallets.find((w) => w.studentId === 'student-01')?.currentBalanceMXN || 162} MXN
                         </strong>
-                        <span className="text-[10px] text-slate-400 font-mono">Fondos recargados en caja</span>
+                        <div className="text-[10px] text-slate-400 font-mono">Fondos recargados en caja</div>
                       </div>
 
                       <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800">
-                        <span className="text-[10px] text-slate-400 block font-bold">Límite Diario Autorizado:</span>
+                        <div className="text-[10px] text-slate-400 block font-bold">Límite Diario Autorizado:</div>
                         <strong className="text-2xl font-black text-white font-mono block mt-0.5">
                           ${studentWallets.find((w) => w.studentId === 'student-01')?.dailySpendingLimitMXN || 60} MXN
                         </strong>
-                        <span className="text-[10px] text-amber-300 font-mono">
+                        <div className="text-[10px] text-amber-300 font-mono">
                           Gastado hoy: ${studentWallets.find((w) => w.studentId === 'student-01')?.spentTodayMXN || 38} MXN
-                        </span>
+                        </div>
                       </div>
 
                       <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800">
-                        <span className="text-[10px] text-slate-400 block font-bold">Último Consumo en Receso:</span>
+                        <div className="text-[10px] text-slate-400 block font-bold">Último Consumo en Receso:</div>
                         <strong className="text-sm font-black text-white block mt-1">
                           🥪 Sándwich Integral de Pavo
                         </strong>
-                        <span className="text-[11px] text-slate-400 font-mono block">
+                        <div className="text-[11px] text-slate-400 font-mono block">
                           Hoy a las 10:45 hrs • $38.00 MXN
-                        </span>
+                        </div>
                       </div>
                     </div>
 
                     <div className="p-3 bg-rose-950/20 border border-rose-500/30 rounded-xl flex items-center justify-between flex-wrap gap-2 text-xs">
-                      <span className="text-rose-200">
+                      <div className="text-rose-200">
                         🛡️ <strong>Protección Médica Activa:</strong> La cafetería tiene bloqueada la venta de <strong>CACAHUATE y MARISCOS</strong> para Carlos.
-                      </span>
+                      </div>
                       <button
                         onClick={() => {
                           const cWallet = studentWallets.find((w) => w.studentId === 'student-01');
@@ -21709,65 +17967,65 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-6 shadow-xl space-y-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
                       <div>
-                        <span className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
+                        <div className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
                           Seguridad Médica en Plantel
-                        </span>
+                        </div>
                         <h4 className="text-base font-black text-white flex items-center gap-2">
                           <HeartPulse className="w-5 h-5 text-rose-400" />
                           Enfermería Escolar & Expediente Clínico de Carlos
                         </h4>
                       </div>
-                      <span className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-xs font-bold px-3 py-1 rounded-xl flex items-center gap-1.5">
+                      <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-xs font-bold px-3 py-1 rounded-xl flex items-center gap-1.5">
                         <Check className="w-3.5 h-3.5" />
-                        <span>En Clases • Signos Vitales Estables</span>
-                      </span>
+                        <div>En Clases • Signos Vitales Estables</div>
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                       <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800">
-                        <span className="text-[10px] text-slate-400 block font-bold">Atención Médica de Hoy:</span>
+                        <div className="text-[10px] text-slate-400 block font-bold">Atención Médica de Hoy:</div>
                         <strong className="text-xs font-black text-white block mt-1">
                           🩹 Raspón leve en rodilla izquierda
                         </strong>
-                        <span className="text-[11px] text-slate-400 font-mono block">
+                        <div className="text-[11px] text-slate-400 font-mono block">
                           11:15 hrs • Temp: 36.5°C
-                        </span>
-                        <span className="text-[10px] text-emerald-400 font-bold block mt-1">
+                        </div>
+                        <div className="text-[10px] text-emerald-400 font-bold block mt-1">
                           Asepsia realizada y reincorporado a clases
-                        </span>
+                        </div>
                       </div>
 
                       <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800">
-                        <span className="text-[10px] text-slate-400 block font-bold">Medicamento Programado:</span>
+                        <div className="text-[10px] text-slate-400 block font-bold">Medicamento Programado:</div>
                         <strong className="text-xs font-black text-white block mt-1">
                           💨 Salbutamol Inhalador 100mcg
                         </strong>
-                        <span className="text-[11px] text-slate-400 font-mono block">
+                        <div className="text-[11px] text-slate-400 font-mono block">
                           Previo a Educación Física (08:00 hrs)
-                        </span>
-                        <span className="text-[10px] text-emerald-400 font-bold block mt-1">
+                        </div>
+                        <div className="text-[10px] text-emerald-400 font-bold block mt-1">
                           ✓ Dosis de hoy aplicada a las 07:55 hrs
-                        </span>
+                        </div>
                       </div>
 
                       <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800">
-                        <span className="text-[10px] text-slate-400 block font-bold">Enfermera a Cargo:</span>
+                        <div className="text-[10px] text-slate-400 block font-bold">Enfermera a Cargo:</div>
                         <strong className="text-xs font-black text-white block mt-1">
                           Enfra. Rosaura Morales
                         </strong>
-                        <span className="text-[11px] text-slate-400 font-mono block">
+                        <div className="text-[11px] text-slate-400 font-mono block">
                           Céd. Profesional 748291
-                        </span>
-                        <span className="text-[10px] text-sky-400 font-bold block mt-1">
+                        </div>
+                        <div className="text-[10px] text-sky-400 font-bold block mt-1">
                           Consultorio Médico Torre A
-                        </span>
+                        </div>
                       </div>
                     </div>
 
                     <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-between flex-wrap gap-2 text-xs">
-                      <span className="text-slate-300">
+                      <div className="text-slate-300">
                         📋 <strong>Alergias en Expediente:</strong> Alergia severa a <strong>CACAHUATE y MARISCOS</strong> (Notificada a docentes y cafetería).
-                      </span>
+                      </div>
                       <button
                         onClick={() => {
                           const carlosConsultation = medicalConsultations.find((c) => c.studentId === 'student-01');
@@ -21779,7 +18037,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         className="text-xs font-bold text-rose-400 hover:text-rose-300 flex items-center gap-1 cursor-pointer"
                       >
                         <FileText className="w-3.5 h-3.5" />
-                        <span>Ver Hoja Clínica de Atención</span>
+                        <div>Ver Hoja Clínica de Atención</div>
                       </button>
                     </div>
                   </div>
@@ -21788,27 +18046,27 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-6 shadow-xl space-y-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
                       <div>
-                        <span className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
+                        <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                           Formación Integral Vespertina
-                        </span>
+                        </div>
                         <h4 className="text-base font-black text-white flex items-center gap-2">
                           <Trophy className="w-5 h-5 text-amber-400" />
                           Academias & Talleres Extracurriculares de Carlos
                         </h4>
                       </div>
-                      <span className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-xs font-bold px-3 py-1 rounded-xl flex items-center gap-1.5">
+                      <div className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-xs font-bold px-3 py-1 rounded-xl flex items-center gap-1.5">
                         <Check className="w-3.5 h-3.5" />
-                        <span>2 Talleres Activos • Asistencia al 100%</span>
-                      </span>
+                        <div>2 Talleres Activos • Asistencia al 100%</div>
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
                         <div className="flex items-center justify-between">
-                          <span className="text-[10px] font-mono text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded">
+                          <div className="text-[10px] font-mono text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded">
                             MARTES Y JUEVES
-                          </span>
-                          <span className="text-xs font-bold text-emerald-400">14:45 - 16:15 hrs</span>
+                          </div>
+                          <div className="text-xs font-bold text-emerald-400">14:45 - 16:15 hrs</div>
                         </div>
                         <strong className="text-sm font-black text-white block">
                           🤖 Robótica Educativa LEGO SPIKE Prime
@@ -21819,17 +18077,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <p className="text-emerald-400 font-mono font-bold">Cuota: $480.00 MXN / mes</p>
                         </div>
                         <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px]">
-                          <span className="text-slate-400">Última sesión (01/Sep):</span>
-                          <span className="text-emerald-400 font-bold">✓ Asistencia Registrada</span>
+                          <div className="text-slate-400">Última sesión (01/Sep):</div>
+                          <div className="text-emerald-400 font-bold">✓ Asistencia Registrada</div>
                         </div>
                       </div>
 
                       <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
                         <div className="flex items-center justify-between">
-                          <span className="text-[10px] font-mono text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded">
+                          <div className="text-[10px] font-mono text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded">
                             LUNES Y MIÉRCOLES
-                          </span>
-                          <span className="text-xs font-bold text-emerald-400">14:45 - 16:15 hrs</span>
+                          </div>
+                          <div className="text-xs font-bold text-emerald-400">14:45 - 16:15 hrs</div>
                         </div>
                         <strong className="text-sm font-black text-white block">
                           ⚽ Fútbol Infantil Formativo y Torneos
@@ -21840,16 +18098,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <p className="text-emerald-400 font-mono font-bold">Cuota: $420.00 MXN / mes</p>
                         </div>
                         <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px]">
-                          <span className="text-slate-400">Última sesión (02/Sep):</span>
-                          <span className="text-emerald-400 font-bold">✓ Asistencia Registrada</span>
+                          <div className="text-slate-400">Última sesión (02/Sep):</div>
+                          <div className="text-emerald-400 font-bold">✓ Asistencia Registrada</div>
                         </div>
                       </div>
                     </div>
 
                     <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-between flex-wrap gap-2 text-xs">
-                      <span className="text-slate-300">
+                      <div className="text-slate-300">
                         🎒 <strong>Entrega de Alumnos:</strong> La salida del turno vespertino es a las <strong>16:15 hrs</strong> por la Puerta Principal.
-                      </span>
+                      </div>
                       <button
                         onClick={() => {
                           setEnrollWorkshopForm({ workshopId: 'work-04', studentId: 'student-01' });
@@ -21858,7 +18116,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         className="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 cursor-pointer"
                       >
                         <Plus className="w-3.5 h-3.5" />
-                        <span>Inscribir a otra academia</span>
+                        <div>Inscribir a otra academia</div>
                       </button>
                     </div>
                   </div>
@@ -21867,27 +18125,27 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-6 shadow-xl space-y-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
                       <div>
-                        <span className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
+                        <div className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
                           Voz y Participación de la Familia
-                        </span>
+                        </div>
                         <h4 className="text-base font-black text-white flex items-center gap-2">
                           <MessageSquareQuote className="w-5 h-5 text-rose-400" />
                           Encuesta de Calidad & Buzón para la Dirección
                         </h4>
                       </div>
-                      <span className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-xs font-bold px-3 py-1 rounded-xl flex items-center gap-1.5">
+                      <div className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-xs font-bold px-3 py-1 rounded-xl flex items-center gap-1.5">
                         <ThumbsUp className="w-3.5 h-3.5" />
-                        <span>Encuesta Trimestral 2026-1 Disponible</span>
-                      </span>
+                        <div>Encuesta Trimestral 2026-1 Disponible</div>
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
                         <div className="flex items-center justify-between">
-                          <span className="text-[10px] font-mono text-rose-400 font-bold bg-rose-500/10 px-2 py-0.5 rounded">
+                          <div className="text-[10px] font-mono text-rose-400 font-bold bg-rose-500/10 px-2 py-0.5 rounded">
                             EVALUACIÓN DE SERVICIOS
-                          </span>
-                          <span className="text-xs font-bold text-sky-400">Vence: 30/Sep/2026</span>
+                          </div>
+                          <div className="text-xs font-bold text-sky-400">Vence: 30/Sep/2026</div>
                         </div>
                         <strong className="text-sm font-black text-white block">
                           📋 Evaluación Trimestral de Calidad Educativa y Servicios
@@ -21907,17 +18165,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             className="w-full py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black text-xs transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-md shadow-rose-600/20"
                           >
                             <ThumbsUp className="w-3.5 h-3.5" />
-                            <span>Completar Encuesta Institucional</span>
+                            <div>Completar Encuesta Institucional</div>
                           </button>
                         </div>
                       </div>
 
                       <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
                         <div className="flex items-center justify-between">
-                          <span className="text-[10px] font-mono text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded">
+                          <div className="text-[10px] font-mono text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded">
                             CANAL DIRECTO
-                          </span>
-                          <span className="text-xs font-bold text-emerald-400">Respuesta en &lt; 48 hrs</span>
+                          </div>
+                          <div className="text-xs font-bold text-emerald-400">Respuesta en &lt; 48 hrs</div>
                         </div>
                         <strong className="text-sm font-black text-white block">
                           📬 Buzón de Sugerencias y Felicitaciones
@@ -21931,7 +18189,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             className="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-1.5 border border-slate-700"
                           >
                             <Send className="w-3.5 h-3.5" />
-                            <span>Escribir al Buzón Directivo</span>
+                            <div>Escribir al Buzón Directivo</div>
                           </button>
                         </div>
                       </div>
@@ -21942,18 +18200,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-6 shadow-xl space-y-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
                       <div>
-                        <span className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
+                        <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                           Agenda Escolar Oficial
-                        </span>
+                        </div>
                         <h4 className="text-base font-black text-white flex items-center gap-2">
                           <PartyPopper className="w-5 h-5 text-amber-400" />
                           Próximos Eventos Cívicos, Festivales y Suspensiones SEP
                         </h4>
                       </div>
-                      <span className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-xs font-bold px-3 py-1 rounded-xl flex items-center gap-1.5">
+                      <div className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-xs font-bold px-3 py-1 rounded-xl flex items-center gap-1.5">
                         <CalendarDays className="w-3.5 h-3.5" />
-                        <span>Calendario SEP 2026-2027</span>
-                      </span>
+                        <div>Calendario SEP 2026-2027</div>
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -21964,13 +18222,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         >
                           <div>
                             <div className="flex items-center justify-between">
-                              <span className="text-[10px] font-mono text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded">
+                              <div className="text-[10px] font-mono text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded">
                                 {evt.date}
-                              </span>
+                              </div>
                               {evt.classesSuspended ? (
-                                <span className="text-[10px] font-bold text-rose-400">Sin Clases</span>
+                                <div className="text-[10px] font-bold text-rose-400">Sin Clases</div>
                               ) : (
-                                <span className="text-[10px] font-bold text-emerald-400">Actividad Escolar</span>
+                                <div className="text-[10px] font-bold text-emerald-400">Actividad Escolar</div>
                               )}
                             </div>
                             <strong className="text-xs font-black text-white block mt-2">{evt.title}</strong>
@@ -21978,8 +18236,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           </div>
 
                           <div className="pt-2 border-t border-slate-800/80 text-[10px] text-slate-400 flex items-center justify-between">
-                            <span>{evt.location || 'Plantel Escolar'}</span>
-                            <span className="font-mono text-slate-300">{evt.time || 'Horario habitual'}</span>
+                            <div>{evt.location || 'Plantel Escolar'}</div>
+                            <div className="font-mono text-slate-300">{evt.time || 'Horario habitual'}</div>
                           </div>
                         </div>
                       ))}
@@ -21990,27 +18248,27 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-6 shadow-xl space-y-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
                       <div>
-                        <span className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
+                        <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                           Comunidad Escolar & Participación Social (SEP)
-                        </span>
+                        </div>
                         <h4 className="text-base font-black text-white flex items-center gap-2">
                           <HeartHandshake className="w-5 h-5 text-amber-400" />
                           Participación Familiar: Asociación de Padres (APF) y CEPS
                         </h4>
                       </div>
-                      <span className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-xs font-bold px-3 py-1 rounded-xl flex items-center gap-1.5">
+                      <div className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-xs font-bold px-3 py-1 rounded-xl flex items-center gap-1.5">
                         <Scale className="w-3.5 h-3.5" />
-                        <span>Mesa Directiva APF 2026-2027</span>
-                      </span>
+                        <div>Mesa Directiva APF 2026-2027</div>
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2 text-xs">
                         <div className="flex items-center justify-between">
-                          <span className="text-[10px] font-mono text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded">
+                          <div className="text-[10px] font-mono text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded">
                             CARGO DEL TUTOR
-                          </span>
-                          <span className="text-emerald-400 font-bold">Activo en Ciclo Escolar</span>
+                          </div>
+                          <div className="text-emerald-400 font-bold">Activo en Ciclo Escolar</div>
                         </div>
                         <h5 className="font-bold text-white text-sm">
                           Ing. Roberto Mendoza Valdés (Presidente de la APF)
@@ -22025,12 +18283,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                       <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2 text-xs">
                         <div className="flex items-center justify-between">
-                          <span className="text-[10px] font-mono text-sky-400 font-bold bg-sky-500/10 px-2 py-0.5 rounded">
+                          <div className="text-[10px] font-mono text-sky-400 font-bold bg-sky-500/10 px-2 py-0.5 rounded">
                             ÚLTIMA ASAMBLEA GENERAL
-                          </span>
-                          <span className="text-slate-400 font-mono text-[10px]">
+                          </div>
+                          <div className="text-slate-400 font-mono text-[10px]">
                             {schoolAssemblies[0]?.date || 'Septiembre 2026'}
-                          </span>
+                          </div>
                         </div>
                         <h5 className="font-bold text-white text-sm">
                           {schoolAssemblies[0]?.title || 'Asamblea General Ordinaria'}
@@ -22049,17 +18307,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <span className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
+                        <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                           Ambiente Escolar Seguro • Normas COFEPRIS & INIFED
-                        </span>
+                        </div>
                         <h3 className="text-base font-black text-white flex items-center gap-2">
                           <Hammer className="w-5 h-5 text-amber-400" />
                           Higiene de Instalaciones & Red Hidráulica Escolar
                         </h3>
                       </div>
-                      <span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-3 py-1 rounded-xl font-bold flex items-center gap-1">
+                      <div className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-3 py-1 rounded-xl font-bold flex items-center gap-1">
                         <CheckCircle2 className="w-3.5 h-3.5" /> 100% Conforme
-                      </span>
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
@@ -22106,17 +18364,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <span className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
+                        <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                           Apoyo a la Economía Familiar • Artículo 149 LGE
-                        </span>
+                        </div>
                         <h3 className="text-base font-black text-white flex items-center gap-2">
                           <Percent className="w-5 h-5 text-amber-400" />
                           Programa de Becas Oficiales SEP & Descuentos por Hermanos
                         </h3>
                       </div>
-                      <span className="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs px-3 py-1 rounded-xl font-bold flex items-center gap-1">
+                      <div className="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs px-3 py-1 rounded-xl font-bold flex items-center gap-1">
                         <Scale className="w-3.5 h-3.5" /> 5% Legal Garantizado
-                      </span>
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
@@ -22163,17 +18421,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <span className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
+                        <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                           Recursos y Dotaciones Oficiales • Nueva Escuela Mexicana
-                        </span>
+                        </div>
                         <h3 className="text-base font-black text-white flex items-center gap-2">
                           <BookOpenCheck className="w-5 h-5 text-amber-400" />
                           Libros Gratuitos CONALITEG & Almacén de Uniformes
                         </h3>
                       </div>
-                      <span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-3 py-1 rounded-xl font-bold flex items-center gap-1">
+                      <div className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-3 py-1 rounded-xl font-bold flex items-center gap-1">
                         <CheckCircle2 className="w-3.5 h-3.5" /> Entrega Conforme
-                      </span>
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
@@ -22233,9 +18491,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
                       </div>
 
-                      <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full text-xs font-bold self-start sm:self-auto">
+                      <div className="px-3 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full text-xs font-bold self-start sm:self-auto">
                         Vigente Ciclo 2026-2027
-                      </span>
+                      </div>
                     </div>
 
                     <p className="text-xs text-slate-300">
@@ -22266,7 +18524,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         className="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-md shadow-sky-500/20 cursor-pointer"
                       >
                         <Printer className="w-4 h-4" />
-                        <span>Descargar / Imprimir Constancia con QR</span>
+                        <div>Descargar / Imprimir Constancia con QR</div>
                       </button>
 
                       <button
@@ -22277,7 +18535,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer"
                       >
                         <GraduationCap className="w-4 h-4" />
-                        <span>Ver Kárdex Histórico Completo</span>
+                        <div>Ver Kárdex Histórico Completo</div>
                       </button>
                     </div>
                   </div>
@@ -22304,7 +18562,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono uppercase text-sky-400 font-bold">Nombramiento Directivo</span>
+                <div className="text-[10px] font-mono uppercase text-sky-400 font-bold">Nombramiento Directivo</div>
                 <h3 className="font-black text-white text-lg">Registrar Director(a) de {activeLevelForAction.name}</h3>
               </div>
               <button onClick={() => setShowRegisterDirectorModal(false)} className="text-slate-400 hover:text-white font-bold text-lg cursor-pointer">✕</button>
@@ -22387,7 +18645,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex gap-3 pt-3">
                 <button type="button" onClick={() => setShowRegisterDirectorModal(false)} className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 py-3 rounded-xl font-bold cursor-pointer">Cancelar</button>
                 <button type="submit" className="flex-1 bg-sky-500 hover:bg-sky-400 text-slate-950 font-black py-3 rounded-xl shadow-lg shadow-sky-500/20 cursor-pointer flex items-center justify-center gap-1.5">
-                  <Send className="w-4 h-4" /> <span>Guardar y Enviar OTP</span>
+                  <Send className="w-4 h-4" /> <div>Guardar y Enviar OTP</div>
                 </button>
               </div>
             </form>
@@ -22429,7 +18687,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono uppercase text-emerald-400 font-bold">Plantilla Docente</span>
+                <div className="text-[10px] font-mono uppercase text-emerald-400 font-bold">Plantilla Docente</div>
                 <h3 className="font-black text-white text-lg">Alta de Nuevo Maestro / Profesor</h3>
               </div>
               <button onClick={() => setShowNewTeacherModal(false)} className="text-slate-400 hover:text-white font-bold text-lg cursor-pointer">✕</button>
@@ -22544,7 +18802,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex gap-3 pt-3">
                 <button type="button" onClick={() => setShowNewTeacherModal(false)} className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 py-3 rounded-xl font-bold cursor-pointer">Cancelar</button>
                 <button type="submit" className="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-3 rounded-xl shadow-lg shadow-emerald-500/20 cursor-pointer flex items-center justify-center gap-1.5">
-                  <Send className="w-4 h-4" /> <span>Dar de Alta y Enviar OTP</span>
+                  <Send className="w-4 h-4" /> <div>Dar de Alta y Enviar OTP</div>
                 </button>
               </div>
             </form>
@@ -22643,7 +18901,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="flex items-center justify-between border-b border-slate-200 pb-4 print:hidden">
               <div className="flex items-center gap-2 text-slate-700">
                 <Award className="w-5 h-5 text-amber-600" />
-                <span className="font-bold text-xs uppercase tracking-wider">Documento Oficial SEP • Vista Previa e Impresión</span>
+                <div className="font-bold text-xs uppercase tracking-wider">Documento Oficial SEP • Vista Previa e Impresión</div>
               </div>
               <div className="flex items-center gap-2">
                 <button
@@ -22651,7 +18909,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-md shadow-emerald-600/20 transition-all cursor-pointer"
                 >
                   <Printer className="w-4 h-4" />
-                  <span>Imprimir Boleta Oficial SEP</span>
+                  <div>Imprimir Boleta Oficial SEP</div>
                 </button>
                 <button
                   onClick={() => setShowReportCardModal(false)}
@@ -22668,8 +18926,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="border-b-2 border-slate-900 pb-4 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 bg-slate-900 text-white rounded-2xl flex flex-col items-center justify-center font-black leading-none shadow-md">
-                    <span className="text-xl tracking-tighter">SEP</span>
-                    <span className="text-[8px] font-mono tracking-widest text-amber-400 mt-0.5">MÉXICO</span>
+                    <div className="text-xl tracking-tighter">SEP</div>
+                    <div className="text-[8px] font-mono tracking-widest text-amber-400 mt-0.5">MÉXICO</div>
                   </div>
                   <div>
                     <h4 className="text-[10px] font-bold tracking-widest text-slate-600 uppercase">
@@ -22678,9 +18936,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <h1 className="text-xl font-black text-slate-900 uppercase tracking-tight">
                       Boleta de Evaluación Oficial
                     </h1>
-                    <span className="text-xs font-semibold text-slate-700 block">
+                    <div className="text-xs font-semibold text-slate-700 block">
                       {activeStudentForReportCard.levelId === 'PREESCOLAR' ? 'Educación Preescolar' : 'Educación Primaria'} • Ciclo Escolar 2026 - 2027
-                    </span>
+                    </div>
                   </div>
                 </div>
 
@@ -22695,16 +18953,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs bg-slate-50 p-4 rounded-2xl border border-slate-200">
                 <div className="space-y-1">
                   <div>
-                    <span className="text-slate-500 block text-[11px]">Nombre Completo del Educando:</span>
+                    <div className="text-slate-500 block text-[11px]">Nombre Completo del Educando:</div>
                     <strong className="text-slate-900 text-sm">{activeStudentForReportCard.firstName} {activeStudentForReportCard.lastName}</strong>
                   </div>
                   <div className="flex items-center gap-4 pt-1">
                     <div>
-                      <span className="text-slate-500 text-[10px] block">CURP:</span>
+                      <div className="text-slate-500 text-[10px] block">CURP:</div>
                       <strong className="font-mono text-slate-900 text-xs">{activeStudentForReportCard.curp || 'MERU180512HDFZRR03'}</strong>
                     </div>
                     <div>
-                      <span className="text-slate-500 text-[10px] block">Matrícula Escolar:</span>
+                      <div className="text-slate-500 text-[10px] block">Matrícula Escolar:</div>
                       <strong className="font-mono text-slate-900 text-xs">{activeStudentForReportCard.studentCode}</strong>
                     </div>
                   </div>
@@ -22712,16 +18970,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div className="space-y-1 md:border-l md:border-slate-200 md:pl-4">
                   <div>
-                    <span className="text-slate-500 block text-[11px]">Institución Educativa:</span>
+                    <div className="text-slate-500 block text-[11px]">Institución Educativa:</div>
                     <strong className="text-slate-900 text-xs">{currentTenant.name}</strong>
                   </div>
                   <div className="flex items-center gap-4 pt-1">
                     <div>
-                      <span className="text-slate-500 text-[10px] block">Grado y Grupo:</span>
+                      <div className="text-slate-500 text-[10px] block">Grado y Grupo:</div>
                       <strong className="text-slate-900 text-xs">{activeStudentForReportCard.groupName}</strong>
                     </div>
                     <div>
-                      <span className="text-slate-500 text-[10px] block">Dirección Técnica del Nivel:</span>
+                      <div className="text-slate-500 text-[10px] block">Dirección Técnica del Nivel:</div>
                       <strong className="text-slate-900 text-xs">
                         {activeStudentForReportCard.levelId === 'PREESCOLAR' ? 'Mtra. Sofía Valenzuela' : 'Lic. Armando Paredes'}
                       </strong>
@@ -22761,8 +19019,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         return (
                           <tr key={sub.id} className="hover:bg-slate-50/80">
                             <td className="py-2.5 px-3">
-                              <span className="font-bold text-slate-900 block">{sub.name}</span>
-                              <span className="text-[10px] text-slate-500">{sub.campoFormativo}</span>
+                              <div className="font-bold text-slate-900 block">{sub.name}</div>
+                              <div className="text-[10px] text-slate-500">{sub.campoFormativo}</div>
                             </td>
                             <td className="py-2.5 px-2 text-center font-mono">{p1}</td>
                             <td className="py-2.5 px-2 text-center font-mono">{p2}</td>
@@ -22797,11 +19055,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           </td>
                           <td className="py-3 px-2 text-center font-mono">{totalAbs}</td>
                           <td className="py-3 px-3">
-                            <span className={`inline-block px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider ${
+                            <div className={`inline-block px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider ${
                               isAccredited ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
                             }`}>
                               {isAccredited ? '✅ Acreditado' : 'En Regularización'}
-                            </span>
+                            </div>
                           </td>
                         </tr>
                       </tfoot>
@@ -22830,15 +19088,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div className="border border-dashed border-slate-300 rounded-2xl p-3 flex items-center justify-center gap-3 bg-slate-50 h-24">
                   <div className="w-12 h-12 bg-slate-900 text-white rounded-xl flex flex-col items-center justify-center font-mono text-[9px] font-black leading-tight">
-                    <span>QR</span>
-                    <span>SEP</span>
+                    <div>QR</div>
+                    <div>SEP</div>
                   </div>
                   <div className="text-[10px] text-slate-600 text-left">
                     <strong className="text-slate-900 block">Sello Digital de Autenticidad</strong>
-                    <span className="font-mono text-[9px] text-slate-500 block truncate w-32">
+                    <div className="font-mono text-[9px] text-slate-500 block truncate w-32">
                       SIGED-2026-SEP-884920
-                    </span>
-                    <span className="text-[9px] text-emerald-700 font-bold block">Folio Oficial Verificado</span>
+                    </div>
+                    <div className="text-[9px] text-emerald-700 font-bold block">Folio Oficial Verificado</div>
                   </div>
                 </div>
               </div>
@@ -22853,9 +19111,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-purple-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-purple-400 font-bold uppercase tracking-wider block">
                   Control Escolar Institucional
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <FileText className="w-5 h-5 text-purple-400" />
                   Emitir Justificante Oficial de Inasistencia
@@ -23004,7 +19262,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="flex-1 bg-purple-600 hover:bg-purple-500 text-white py-3 rounded-xl font-black cursor-pointer shadow-lg shadow-purple-600/20 transition-all flex items-center justify-center gap-2"
                 >
                   <FileText className="w-4 h-4" />
-                  <span>Emitir y Autorizar Justificante</span>
+                  <div>Emitir y Autorizar Justificante</div>
                 </button>
               </div>
             </form>
@@ -23018,9 +19276,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-6 max-h-[92vh] overflow-y-auto custom-scrollbar text-white">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
               <div>
-                <span className="text-[10px] font-mono text-purple-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-purple-400 font-bold uppercase tracking-wider block">
                   Documento Oficial Emitido
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <FileText className="w-5 h-5 text-purple-400" />
                   Volante Oficial de Justificante Escolar
@@ -23033,7 +19291,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md shadow-purple-600/20 transition-all"
                 >
                   <Printer className="w-3.5 h-3.5" />
-                  <span>Imprimir Volante</span>
+                  <div>Imprimir Volante</div>
                 </button>
                 <button
                   onClick={() => setShowPrintJustificationModal(false)}
@@ -23084,25 +19342,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl text-xs space-y-2">
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <span className="text-slate-500 text-[10px] uppercase font-bold block">Alumno(a):</span>
+                    <div className="text-slate-500 text-[10px] uppercase font-bold block">Alumno(a):</div>
                     <strong className="text-sm text-slate-900">{activeJustificationForPrint.studentName}</strong>
                   </div>
                   <div>
-                    <span className="text-slate-500 text-[10px] uppercase font-bold block">Matrícula Escolar:</span>
-                    <span className="font-mono font-bold text-slate-800">{activeJustificationForPrint.studentCode}</span>
+                    <div className="text-slate-500 text-[10px] uppercase font-bold block">Matrícula Escolar:</div>
+                    <div className="font-mono font-bold text-slate-800">{activeJustificationForPrint.studentCode}</div>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-200">
                   <div>
-                    <span className="text-slate-500 text-[10px] uppercase font-bold block">Grado y Grupo:</span>
-                    <span className="font-bold text-slate-800">{activeJustificationForPrint.groupName}</span>
+                    <div className="text-slate-500 text-[10px] uppercase font-bold block">Grado y Grupo:</div>
+                    <div className="font-bold text-slate-800">{activeJustificationForPrint.groupName}</div>
                   </div>
                   <div>
-                    <span className="text-slate-500 text-[10px] uppercase font-bold block">Periodo Justificado:</span>
-                    <span className="font-bold text-purple-900">
+                    <div className="text-slate-500 text-[10px] uppercase font-bold block">Periodo Justificado:</div>
+                    <div className="font-bold text-purple-900">
                       {activeJustificationForPrint.startDate} al {activeJustificationForPrint.endDate}
-                    </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -23110,13 +19368,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Motivo y Soporte */}
               <div className="space-y-2 text-xs">
                 <div className="border border-slate-200 p-3 rounded-xl">
-                  <span className="text-slate-500 text-[10px] uppercase font-bold block">Causa o Categoría:</span>
+                  <div className="text-slate-500 text-[10px] uppercase font-bold block">Causa o Categoría:</div>
                   <div className="font-bold text-slate-900 capitalize">
                     {activeJustificationForPrint.reasonCategory.replace('_', ' ').toLowerCase()}
                     {activeJustificationForPrint.documentFolio && (
-                      <span className="ml-2 font-mono text-purple-800 text-[11px]">
+                      <div className="ml-2 font-mono text-purple-800 text-[11px]">
                         (Comprobante Ref: {activeJustificationForPrint.documentFolio})
-                      </span>
+                      </div>
                     )}
                   </div>
                   <p className="text-slate-700 text-xs mt-1 italic">
@@ -23136,24 +19394,24 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-2 gap-8 pt-6 border-t border-slate-200 text-center">
                 <div className="space-y-1">
                   <div className="h-12 flex items-end justify-center">
-                    <span className="font-serif italic text-slate-700 text-xs">A. Paredes</span>
+                    <div className="font-serif italic text-slate-700 text-xs">A. Paredes</div>
                   </div>
                   <div className="border-t border-slate-400 pt-1">
                     <strong className="text-xs text-slate-900 block">{activeJustificationForPrint.authorizedBy}</strong>
-                    <span className="text-[10px] text-slate-500">Dirección Técnica Escolar</span>
+                    <div className="text-[10px] text-slate-500">Dirección Técnica Escolar</div>
                   </div>
                 </div>
 
                 <div className="space-y-1">
                   <div className="h-12 flex items-center justify-center">
                     <div className="w-16 h-12 border border-dashed border-purple-800 rounded-lg flex flex-col items-center justify-center text-[9px] font-black text-purple-900 leading-tight bg-purple-50">
-                      <span>SELLO</span>
-                      <span>DIRECCIÓN</span>
+                      <div>SELLO</div>
+                      <div>DIRECCIÓN</div>
                     </div>
                   </div>
                   <div className="border-t border-slate-400 pt-1">
                     <strong className="text-xs text-slate-900 block">Sello Institucional</strong>
-                    <span className="text-[10px] text-slate-500">Vigencia Ciclo 2026-2027</span>
+                    <div className="text-[10px] text-slate-500">Vigencia Ciclo 2026-2027</div>
                   </div>
                 </div>
               </div>
@@ -23168,9 +19426,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-purple-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-purple-400 font-bold uppercase tracking-wider block">
                   Comunicación y Relaciones Institucionales
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <Megaphone className="w-5 h-5 text-purple-400" />
                   Redactar Comunicado o Citatorio Oficial
@@ -23296,7 +19554,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="bg-amber-950/30 border border-amber-800/60 p-3 rounded-2xl space-y-3">
                   <div className="text-[11px] font-bold text-amber-300 flex items-center gap-1.5">
                     <Clock className="w-3.5 h-3.5" />
-                    <span>Detalles de la Cita Presencial con el Tutor:</span>
+                    <div>Detalles de la Cita Presencial con el Tutor:</div>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <input
@@ -23411,7 +19669,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="flex-1 bg-purple-600 hover:bg-purple-500 text-white py-3 rounded-xl font-black cursor-pointer shadow-lg shadow-purple-600/25 transition-all flex items-center justify-center gap-2"
                 >
                   <Megaphone className="w-4 h-4" />
-                  <span>Publicar Comunicado</span>
+                  <div>Publicar Comunicado</div>
                 </button>
               </div>
             </form>
@@ -23425,9 +19683,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-6 max-h-[92vh] overflow-y-auto custom-scrollbar text-white">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
               <div>
-                <span className="text-[10px] font-mono text-purple-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-purple-400 font-bold uppercase tracking-wider block">
                   Documento Oficial de Difusión
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <Megaphone className="w-5 h-5 text-purple-400" />
                   {activeNoticeForPrint.type === 'CITATORIO_PADRES' ? 'Citatorio Oficial a Padres' : 'Circular Institucional'}
@@ -23440,7 +19698,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md shadow-purple-600/20 transition-all"
                 >
                   <Printer className="w-3.5 h-3.5" />
-                  <span>Imprimir Formato</span>
+                  <div>Imprimir Formato</div>
                 </button>
                 <button
                   onClick={() => setShowPrintNoticeModal(false)}
@@ -23480,7 +19738,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Asunto */}
               <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl text-xs space-y-1">
                 <div>
-                  <span className="text-slate-500 text-[10px] uppercase font-bold block">Destinatarios:</span>
+                  <div className="text-slate-500 text-[10px] uppercase font-bold block">Destinatarios:</div>
                   <strong className="text-slate-900 text-sm">
                     {activeNoticeForPrint.targetAudience === 'TODOS'
                       ? 'Padres de Familia y Comunidad Escolar en General'
@@ -23490,7 +19748,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </strong>
                 </div>
                 <div className="pt-1 border-t border-slate-200">
-                  <span className="text-slate-500 text-[10px] uppercase font-bold block">Asunto:</span>
+                  <div className="text-slate-500 text-[10px] uppercase font-bold block">Asunto:</div>
                   <strong className="text-purple-950 font-black text-sm">{activeNoticeForPrint.title}</strong>
                 </div>
               </div>
@@ -23503,11 +19761,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
                   <div className="grid grid-cols-2 gap-2 pt-1 text-slate-800">
                     <div>
-                      <span className="text-slate-500 text-[10px] uppercase font-bold block">Fecha y Hora:</span>
+                      <div className="text-slate-500 text-[10px] uppercase font-bold block">Fecha y Hora:</div>
                       <strong className="text-slate-900">{activeNoticeForPrint.appointmentDateTime}</strong>
                     </div>
                     <div>
-                      <span className="text-slate-500 text-[10px] uppercase font-bold block">Lugar:</span>
+                      <div className="text-slate-500 text-[10px] uppercase font-bold block">Lugar:</div>
                       <strong className="text-slate-900">{activeNoticeForPrint.appointmentLocation || 'Dirección Técnica'}</strong>
                     </div>
                   </div>
@@ -23523,24 +19781,24 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-2 gap-8 text-center pt-2">
                 <div className="space-y-1">
                   <div className="h-10 flex items-end justify-center">
-                    <span className="font-serif italic text-slate-700 text-xs">A. Paredes</span>
+                    <div className="font-serif italic text-slate-700 text-xs">A. Paredes</div>
                   </div>
                   <div className="border-t border-slate-400 pt-1">
                     <strong className="text-xs text-slate-900 block">{activeNoticeForPrint.publishedBy}</strong>
-                    <span className="text-[10px] text-slate-500">Dirección Escolar</span>
+                    <div className="text-[10px] text-slate-500">Dirección Escolar</div>
                   </div>
                 </div>
 
                 <div className="space-y-1">
                   <div className="h-10 flex items-center justify-center">
                     <div className="w-16 h-10 border border-dashed border-purple-800 rounded-lg flex flex-col items-center justify-center text-[8px] font-black text-purple-900 leading-tight bg-purple-50">
-                      <span>SELLO</span>
-                      <span>DIRECCIÓN</span>
+                      <div>SELLO</div>
+                      <div>DIRECCIÓN</div>
                     </div>
                   </div>
                   <div className="border-t border-slate-400 pt-1">
                     <strong className="text-xs text-slate-900 block">Sello Institucional</strong>
-                    <span className="text-[10px] text-slate-500">Ciclo 2026-2027</span>
+                    <div className="text-[10px] text-slate-500">Ciclo 2026-2027</div>
                   </div>
                 </div>
               </div>
@@ -23549,22 +19807,22 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {activeNoticeForPrint.requiresAcknowledgment && (
                 <div className="border-t-2 border-dashed border-slate-400 pt-4 space-y-3 bg-slate-50 p-4 rounded-xl">
                   <div className="flex items-center justify-between text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                    <span>✂️ TALÓN DE ACUSE DE ENTERADO (DESPRENDER Y ENVIAR FIRMADO AL COLEGIO)</span>
-                    <span className="font-mono">FOLIO: {activeNoticeForPrint.folio}</span>
+                    <div>✂️ TALÓN DE ACUSE DE ENTERADO (DESPRENDER Y ENVIAR FIRMADO AL COLEGIO)</div>
+                    <div className="font-mono">FOLIO: {activeNoticeForPrint.folio}</div>
                   </div>
 
                   <div className="grid grid-cols-3 gap-2 text-[11px] text-slate-800">
                     <div>
-                      <span className="text-slate-500 text-[10px] block">Nombre del Alumno(a):</span>
+                      <div className="text-slate-500 text-[10px] block">Nombre del Alumno(a):</div>
                       <strong className="text-slate-900">{activeNoticeForPrint.targetStudentName || 'Carlos Mendoza Ruiz'}</strong>
                     </div>
                     <div>
-                      <span className="text-slate-500 text-[10px] block">Grado y Grupo:</span>
+                      <div className="text-slate-500 text-[10px] block">Grado y Grupo:</div>
                       <strong className="text-slate-900">{activeNoticeForPrint.targetGroupName || 'Primaria 1º "A"'}</strong>
                     </div>
                     <div>
-                      <span className="text-slate-500 text-[10px] block">Fecha de Notificación:</span>
-                      <span className="text-slate-900 font-mono">{activeNoticeForPrint.publishDate}</span>
+                      <div className="text-slate-500 text-[10px] block">Fecha de Notificación:</div>
+                      <div className="text-slate-900 font-mono">{activeNoticeForPrint.publishDate}</div>
                     </div>
                   </div>
 
@@ -23573,7 +19831,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       "Hago constar que he recibido y leído en su totalidad el comunicado oficial arriba citado."
                     </div>
                     <div className="w-48 text-center border-t border-slate-600 pt-1">
-                      <span className="text-[10px] text-slate-600 block">Firma Autógrafa del Padre / Tutor</span>
+                      <div className="text-[10px] text-slate-600 block">Firma Autógrafa del Padre / Tutor</div>
                     </div>
                   </div>
                 </div>
@@ -23589,9 +19847,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-6 max-h-[92vh] overflow-y-auto custom-scrollbar text-white">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
               <div>
-                <span className="text-[10px] font-mono text-cyan-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-cyan-400 font-bold uppercase tracking-wider block">
                   Estándar CR-80 (PVC 85.6mm x 53.98mm)
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <CreditCard className="w-5 h-5 text-cyan-400" />
                   Credencial Oficial Escolar • Anverso y Reverso
@@ -23604,7 +19862,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="bg-cyan-500 hover:bg-cyan-400 text-slate-950 px-4 py-2 rounded-xl text-xs font-black flex items-center gap-1.5 cursor-pointer shadow-md shadow-cyan-500/20 transition-all"
                 >
                   <Printer className="w-3.5 h-3.5" />
-                  <span>Imprimir Formato PVC</span>
+                  <div>Imprimir Formato PVC</div>
                 </button>
                 <button
                   onClick={() => setShowPrintBadgeModal(false)}
@@ -23638,9 +19896,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           CCT: {activeCredentialForPrint.cct} • {activeCredentialForPrint.levelName}
                         </div>
                       </div>
-                      <span className="text-[8px] font-mono font-bold bg-blue-800/80 px-1.5 py-0.5 rounded text-white">
+                      <div className="text-[8px] font-mono font-bold bg-blue-800/80 px-1.5 py-0.5 rounded text-white">
                         2026-2027
-                      </span>
+                      </div>
                     </div>
 
                     {/* Cuerpo Anverso */}
@@ -23650,9 +19908,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <div className="w-7 h-7 rounded-full bg-slate-700 flex items-center justify-center text-white font-black text-xs">
                           {activeCredentialForPrint.fullName.charAt(0)}
                         </div>
-                        <span className="text-[6px] font-mono text-cyan-300 mt-0.5 uppercase">
+                        <div className="text-[6px] font-mono text-cyan-300 mt-0.5 uppercase">
                           {activeCredentialForPrint.personType === 'STUDENT' ? 'ALUMNO' : 'DOCENTE'}
-                        </span>
+                        </div>
                       </div>
 
                       {/* Datos */}
@@ -23681,8 +19939,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                     {/* Footer Anverso */}
                     <div className="border-t border-blue-800/80 pt-1 flex items-center justify-between text-[7px] font-mono text-slate-400">
-                      <span>FOLIO: {activeCredentialForPrint.credentialCode}</span>
-                      <span className="text-emerald-400 font-bold">● ACREDITACIÓN OFICIAL</span>
+                      <div>FOLIO: {activeCredentialForPrint.credentialCode}</div>
+                      <div className="text-emerald-400 font-bold">● ACREDITACIÓN OFICIAL</div>
                     </div>
                   </div>
                 </div>
@@ -23700,15 +19958,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                     <div className="grid grid-cols-2 gap-1.5 text-[8px] my-1">
                       <div className="bg-white p-1 rounded border border-slate-200">
-                        <span className="text-slate-500 block">Tipo de Sangre:</span>
+                        <div className="text-slate-500 block">Tipo de Sangre:</div>
                         <strong className="text-rose-600 font-black text-[9px]">{activeCredentialForPrint.bloodType}</strong>
                       </div>
                       <div className="bg-white p-1 rounded border border-slate-200">
-                        <span className="text-slate-500 block">Alergias:</span>
+                        <div className="text-slate-500 block">Alergias:</div>
                         <strong className="text-slate-800 truncate block">{activeCredentialForPrint.allergies || 'Ninguna'}</strong>
                       </div>
                       <div className="bg-white p-1 rounded border border-slate-200 col-span-2">
-                        <span className="text-slate-500 block">En caso de emergencia avisar a:</span>
+                        <div className="text-slate-500 block">En caso de emergencia avisar a:</div>
                         <strong className="text-slate-900 truncate block">
                           {activeCredentialForPrint.emergencyContactName} ({activeCredentialForPrint.emergencyContactPhone})
                         </strong>
@@ -23721,8 +19979,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
 
                     <div className="flex items-center justify-between border-t border-slate-300 pt-1 text-[7px] text-slate-600">
-                      <span>Firma Director Escolar: ________________</span>
-                      <span className="font-mono font-bold">SELLO SEP</span>
+                      <div>Firma Director Escolar: ________________</div>
+                      <div className="font-mono font-bold">SELLO SEP</div>
                     </div>
                   </div>
                 </div>
@@ -23738,9 +19996,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider block">
                   Torniquete & Puerta Principal
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <Scan className="w-5 h-5 text-emerald-400" />
                   Simulador de Lector QR de Puerta
@@ -23801,12 +20059,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     className="w-full text-left bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 p-2.5 rounded-xl text-xs flex items-center justify-between cursor-pointer transition-colors"
                   >
                     <div className="flex items-center gap-2 truncate">
-                      <span className="font-mono text-[10px] text-cyan-400 bg-slate-950 px-1.5 py-0.5 rounded border border-slate-800">
+                      <div className="font-mono text-[10px] text-cyan-400 bg-slate-950 px-1.5 py-0.5 rounded border border-slate-800">
                         {c.credentialCode}
-                      </span>
+                      </div>
                       <strong className="text-white truncate">{c.fullName}</strong>
                     </div>
-                    <span className="text-[10px] text-slate-400 shrink-0">{c.roleOrGrade}</span>
+                    <div className="text-[10px] text-slate-400 shrink-0">{c.roleOrGrade}</div>
                   </button>
                 ))}
               </div>
@@ -23823,7 +20081,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               >
                 <div className="font-bold flex items-center gap-1.5">
                   {scannerResult.success ? <Check className="w-4 h-4 text-emerald-400" /> : <X className="w-4 h-4 text-rose-400" />}
-                  <span>{scannerResult.personName || 'Resultado'}</span>
+                  <div>{scannerResult.personName || 'Resultado'}</div>
                 </div>
                 <div className="text-[11px] leading-relaxed">{scannerResult.message}</div>
               </div>
@@ -23838,9 +20096,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-blue-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-blue-400 font-bold uppercase tracking-wider block">
                   Cuaderno de Tareas • Docente
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <ClipboardList className="w-5 h-5 text-blue-400" />
                   Asignar Nueva Tarea o Proyecto
@@ -23961,15 +20219,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   />
                   <label htmlFor="allowExtemp" className="text-slate-300 cursor-pointer select-none">
                     <strong className="text-white block">Permitir Prórroga por Justificante Médico</strong>
-                    <span className="text-[11px] text-slate-400 block mt-0.5">
+                    <div className="text-[11px] text-slate-400 block mt-0.5">
                       Habilita automáticamente entrega extemporánea sin deducción de calificación para alumnos con justificante médico aprobado.
-                    </span>
+                    </div>
                   </label>
                 </div>
 
                 {createTaskForm.allowExtempWithJustification && (
                   <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px]">
-                    <span className="text-slate-400">Fecha Límite con Prórroga Médica:</span>
+                    <div className="text-slate-400">Fecha Límite con Prórroga Médica:</div>
                     <input
                       type="date"
                       value={createTaskForm.extempExtendedDueDate}
@@ -24008,15 +20266,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-6 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
               <div>
-                <span className="text-[10px] font-mono text-blue-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-blue-400 font-bold uppercase tracking-wider block">
                   Revisión Docente • {activeTaskForSubmissions.folio}
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white">
                   Entregas de {activeTaskForSubmissions.title}
                 </h3>
-                <span className="text-xs text-slate-400">
+                <div className="text-xs text-slate-400">
                   {activeTaskForSubmissions.subjectName} • {activeTaskForSubmissions.groupName}
-                </span>
+                </div>
               </div>
               <button
                 onClick={() => setShowSubmissionsModal(false)}
@@ -24063,22 +20321,22 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {/* Estatus */}
                         <div>
                           {sub.hasMedicalJustification ? (
-                            <span className="bg-amber-950 text-amber-300 border border-amber-800 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                            <div className="bg-amber-950 text-amber-300 border border-amber-800 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
                               <HeartPulse className="w-3 h-3 text-rose-400" />
                               Prórroga Justificante {sub.justificationFolio}
-                            </span>
+                            </div>
                           ) : sub.status === 'CALIFICADO' ? (
-                            <span className="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                            <div className="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
                               <Check className="w-3 h-3" /> Calificado ({sub.score}/10)
-                            </span>
+                            </div>
                           ) : sub.status === 'ENTREGADO' ? (
-                            <span className="bg-blue-950 text-blue-400 border border-blue-800 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                            <div className="bg-blue-950 text-blue-400 border border-blue-800 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
                               <FileCheck className="w-3 h-3" /> Entregado
-                            </span>
+                            </div>
                           ) : (
-                            <span className="bg-slate-900 text-slate-400 border border-slate-800 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                            <div className="bg-slate-900 text-slate-400 border border-slate-800 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
                               <Clock className="w-3 h-3" /> Pendiente
-                            </span>
+                            </div>
                           )}
                         </div>
                       </div>
@@ -24158,9 +20416,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-indigo-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-indigo-400 font-bold uppercase tracking-wider block">
                   Matriz Curricular • Director Técnico
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <CalendarDays className="w-5 h-5 text-indigo-400" />
                   Asignar Módulo a la Parrilla Horaria
@@ -24180,7 +20438,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="bg-rose-950/60 border border-rose-600/70 p-3.5 rounded-2xl text-rose-200 text-xs space-y-1">
                   <div className="font-bold flex items-center gap-1.5 text-rose-300">
                     <AlertTriangle className="w-4 h-4 text-rose-400" />
-                    <span>Colisión Detectada por el Sistema:</span>
+                    <div>Colisión Detectada por el Sistema:</div>
                   </div>
                   <p className="text-[11px] leading-relaxed">{slotConflictError}</p>
                 </div>
@@ -24335,9 +20593,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                   Control Escolar & Admisiones
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <UserPlus className="w-5 h-5 text-amber-400" />
                   Registro de Aspirante a Nuevo Ingreso
@@ -24479,9 +20737,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               {/* Datos del Padre o Tutor */}
               <div className="bg-slate-950 p-3.5 rounded-2xl border border-slate-800 space-y-3">
-                <span className="font-bold text-slate-300 block text-xs">
+                <div className="font-bold text-slate-300 block text-xs">
                   Datos del Padre / Madre o Tutor Legal:
-                </span>
+                </div>
 
                 <div className="space-y-1">
                   <label className="text-slate-400 text-[11px]">Nombre Completo del Tutor:</label>
@@ -24565,9 +20823,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-purple-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-purple-400 font-bold uppercase tracking-wider block">
                   Folio: {selectedApplicantForDetail.folio}
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <CalendarClock className="w-5 h-5 text-purple-400" />
                   Citas y Evaluación Diagnóstica
@@ -24582,7 +20840,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 text-xs">
-              <span className="text-slate-400 block text-[10px]">Aspirante:</span>
+              <div className="text-slate-400 block text-[10px]">Aspirante:</div>
               <strong className="text-white text-sm">
                 {selectedApplicantForDetail.applicantFirstName} {selectedApplicantForDetail.applicantLastName}
               </strong>
@@ -24593,9 +20851,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             <form onSubmit={handleScheduleApplicantEvaluation} className="space-y-4 text-xs">
               <div className="space-y-2 bg-slate-950 p-3.5 rounded-2xl border border-purple-500/30">
-                <span className="font-bold text-purple-300 block text-xs">
+                <div className="font-bold text-purple-300 block text-xs">
                   1. Evaluación Diagnóstica Psicopedagógica:
-                </span>
+                </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1">
@@ -24643,9 +20901,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="space-y-2 bg-slate-950 p-3.5 rounded-2xl border border-blue-500/30">
-                <span className="font-bold text-blue-300 block text-xs">
+                <div className="font-bold text-blue-300 block text-xs">
                   2. Entrevista Familiar con Dirección:
-                </span>
+                </div>
 
                 <div className="space-y-1">
                   <label className="text-slate-400 text-[11px]">Fecha y Hora de la Entrevista:</label>
@@ -24700,9 +20958,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                   Documento Oficial de Preinscripción
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <Printer className="w-5 h-5 text-amber-400" />
                   Ficha Oficial de Admisión SEP
@@ -24733,9 +20991,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="text-right">
-                  <span className="bg-amber-100 text-amber-900 font-mono font-black text-xs px-2.5 py-1 rounded border border-amber-300 inline-block">
+                  <div className="bg-amber-100 text-amber-900 font-mono font-black text-xs px-2.5 py-1 rounded border border-amber-300 inline-block">
                     {showAdmissionReceiptModal.folio}
-                  </span>
+                  </div>
                   <div className="text-[10px] text-slate-500 mt-1 font-mono">
                     Ciclo Escolar 2026-2027
                   </div>
@@ -24750,26 +21008,26 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Datos del Aspirante */}
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div>
-                  <span className="text-[10px] text-slate-500 font-bold block">Aspirante:</span>
+                  <div className="text-[10px] text-slate-500 font-bold block">Aspirante:</div>
                   <strong className="text-slate-900 font-black text-sm">
                     {showAdmissionReceiptModal.applicantFirstName} {showAdmissionReceiptModal.applicantLastName}
                   </strong>
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-500 font-bold block">CURP:</span>
+                  <div className="text-[10px] text-slate-500 font-bold block">CURP:</div>
                   <strong className="text-slate-900 font-mono">
                     {showAdmissionReceiptModal.curp}
                   </strong>
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-500 font-bold block">Grado y Nivel Solicitado:</span>
+                  <div className="text-[10px] text-slate-500 font-bold block">Grado y Nivel Solicitado:</div>
                   <strong className="text-indigo-800">
                     {showAdmissionReceiptModal.targetGrade} ({showAdmissionReceiptModal.targetLevelName})
                   </strong>
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-500 font-bold block">Padre o Tutor:</span>
-                  <span className="text-slate-800 font-bold">{showAdmissionReceiptModal.parentName}</span>
+                  <div className="text-[10px] text-slate-500 font-bold block">Padre o Tutor:</div>
+                  <div className="text-slate-800 font-bold">{showAdmissionReceiptModal.parentName}</div>
                 </div>
               </div>
 
@@ -24779,7 +21037,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="grid grid-cols-2 gap-2">
                   {showAdmissionReceiptModal.documents.map((doc) => (
                     <div key={doc.id} className="flex items-center justify-between">
-                      <span className="text-slate-600 truncate max-w-[160px]">{doc.documentName}:</span>
+                      <div className="text-slate-600 truncate max-w-[160px]">{doc.documentName}:</div>
                       <strong className={doc.status === 'VALIDADO' ? 'text-emerald-700' : 'text-amber-700'}>
                         {doc.status}
                       </strong>
@@ -24793,12 +21051,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="bg-purple-50 border border-purple-200 rounded-xl p-3 text-xs text-purple-950 flex items-center justify-between">
                   <div>
                     <strong className="block text-purple-900">Cita de Evaluación Psicopedagógica:</strong>
-                    <span className="font-mono">{showAdmissionReceiptModal.evaluationDate} hrs</span>
+                    <div className="font-mono">{showAdmissionReceiptModal.evaluationDate} hrs</div>
                   </div>
                   {showAdmissionReceiptModal.interviewDate && (
                     <div className="text-right">
                       <strong className="block text-purple-900">Entrevista con Dirección:</strong>
-                      <span className="font-mono">{showAdmissionReceiptModal.interviewDate} hrs</span>
+                      <div className="font-mono">{showAdmissionReceiptModal.interviewDate} hrs</div>
                     </div>
                   )}
                 </div>
@@ -24807,10 +21065,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Firmas y Sellos */}
               <div className="pt-6 grid grid-cols-2 gap-8 text-center text-[10px] text-slate-600 border-t border-slate-200">
                 <div className="border-t border-slate-400 pt-1">
-                  <span>Firma del Padre / Tutor</span>
+                  <div>Firma del Padre / Tutor</div>
                 </div>
                 <div className="border-t border-slate-400 pt-1">
-                  <span>Sello y Firma de Control Escolar</span>
+                  <div>Sello y Firma de Control Escolar</div>
                 </div>
               </div>
             </div>
@@ -24829,7 +21087,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/20 transition-all cursor-pointer flex items-center gap-1.5"
               >
                 <Printer className="w-4 h-4" />
-                <span>Imprimir Ficha Oficial</span>
+                <div>Imprimir Ficha Oficial</div>
               </button>
             </div>
           </div>
@@ -24842,9 +21100,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider block">
                   Módulo Web Público • Portal Familiar de Admisiones
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <Search className="w-5 h-5 text-emerald-400" />
                   Portal Web de Preinscripción en Línea
@@ -24859,9 +21117,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs space-y-3">
-              <span className="font-bold text-slate-200 block">
+              <div className="font-bold text-slate-200 block">
                 🔍 Consulta en tiempo real el estatus de tu Solicitud con tu Folio:
-              </span>
+              </div>
 
               <form onSubmit={handleSearchPublicFolio} className="flex gap-2">
                 <input
@@ -24883,16 +21141,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="bg-slate-900 p-4 rounded-xl border border-emerald-500/40 space-y-2.5 animate-in fade-in">
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="font-mono text-xs font-black text-amber-400">
+                      <div className="font-mono text-xs font-black text-amber-400">
                         {publicSearchResult.folio}
-                      </span>
+                      </div>
                       <h4 className="text-sm font-black text-white">
                         {publicSearchResult.applicantFirstName} {publicSearchResult.applicantLastName}
                       </h4>
                     </div>
-                    <span className="bg-emerald-500/10 text-emerald-400 text-xs font-bold px-3 py-1 rounded-xl border border-emerald-500/20">
+                    <div className="bg-emerald-500/10 text-emerald-400 text-xs font-bold px-3 py-1 rounded-xl border border-emerald-500/20">
                       {publicSearchResult.status}
-                    </span>
+                    </div>
                   </div>
 
                   <div className="text-[11px] text-slate-300 grid grid-cols-2 gap-2 border-t border-slate-800 pt-2">
@@ -24912,7 +21170,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs px-3 py-1.5 rounded-xl transition-colors cursor-pointer flex items-center gap-1.5"
                     >
                       <Printer className="w-3.5 h-3.5" />
-                      <span>Descargar Ficha Oficial de Admisión</span>
+                      <div>Descargar Ficha Oficial de Admisión</div>
                     </button>
                   </div>
                 </div>
@@ -24920,9 +21178,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             <div className="text-center pt-2">
-              <span className="text-[11px] text-slate-500">
+              <div className="text-[11px] text-slate-500">
                 Los padres de familia pueden llenar su formulario público en línea desde cualquier dispositivo celular o computadora.
-              </span>
+              </div>
             </div>
           </div>
         </div>
@@ -24934,9 +21192,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
                   Biblioteca Escolar & Acervo
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <BookOpen className="w-5 h-5 text-rose-400" />
                   Alta de Libro en Catálogo
@@ -25105,9 +21363,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                   Control de Préstamos
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <BookmarkCheck className="w-5 h-5 text-amber-400" />
                   Préstamo de Libro a Alumno
@@ -25220,9 +21478,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider block">
                   Constancia Institucional
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <ShieldCheck className="w-5 h-5 text-emerald-400" />
                   Sello de No Adeudo Bibliotecario
@@ -25254,9 +21512,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         Ciclo Escolar 2026-2027
                       </div>
                     </div>
-                    <span className="bg-emerald-100 text-emerald-900 font-mono font-black text-xs px-2.5 py-1 rounded border border-emerald-300">
+                    <div className="bg-emerald-100 text-emerald-900 font-mono font-black text-xs px-2.5 py-1 rounded border border-emerald-300">
                       SOLVENTE
-                    </span>
+                    </div>
                   </div>
 
                   {/* Título de la Constancia */}
@@ -25288,10 +21546,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   {/* Sellos y Firmas */}
                   <div className="pt-6 grid grid-cols-2 gap-8 text-center text-[10px] text-slate-600 border-t border-slate-200">
                     <div className="border-t border-slate-400 pt-1">
-                      <span>Responsable de Biblioteca Escolar</span>
+                      <div>Responsable de Biblioteca Escolar</div>
                     </div>
                     <div className="border-t border-slate-400 pt-1">
-                      <span>Sello de Dirección Técnica Escolar</span>
+                      <div>Sello de Dirección Técnica Escolar</div>
                     </div>
                   </div>
                 </div>
@@ -25312,7 +21570,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black shadow-lg shadow-emerald-600/20 transition-all cursor-pointer flex items-center gap-1.5"
               >
                 <Printer className="w-4 h-4" />
-                <span>Imprimir Constancia</span>
+                <div>Imprimir Constancia</div>
               </button>
             </div>
           </div>
@@ -25325,9 +21583,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                   Transporte Escolar
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <Bus className="w-5 h-5 text-amber-400" />
                   Alta de Nueva Ruta Escolar
@@ -25527,9 +21785,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                   Asignación de Pasajeros
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <UserPlus className="w-5 h-5 text-amber-400" />
                   Inscribir Alumno a Ruta Escolar
@@ -25652,9 +21910,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-orange-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-orange-400 font-bold uppercase tracking-wider block">
                   Nutrición y Cooperativa Escolar
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <Utensils className="w-5 h-5 text-orange-400" />
                   Alta de Alimento o Bebida
@@ -25759,9 +22017,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   onChange={(e) => setNewProductForm({ ...newProductForm, allergensStr: e.target.value })}
                   className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-orange-400"
                 />
-                <span className="text-[10px] text-rose-400 block font-mono">
+                <div className="text-[10px] text-rose-400 block font-mono">
                   * El sistema bloqueará automáticamente este producto en caja si el alumno tiene alergia registrada.
-                </span>
+                </div>
               </div>
 
               <div className="flex items-center gap-2 p-3 bg-slate-950 rounded-xl border border-slate-800">
@@ -25803,9 +22061,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider block">
                   Fondos Prepagados Escolares
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <CircleDollarSign className="w-5 h-5 text-emerald-400" />
                   Recargar Monedero Digital
@@ -25820,13 +22078,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1">
-              <span className="text-[10px] font-mono text-slate-400 block font-bold">ALUMNO BENEFICIARIO:</span>
+              <div className="text-[10px] font-mono text-slate-400 block font-bold">ALUMNO BENEFICIARIO:</div>
               <strong className="text-white text-sm block">{selectedWalletForAction.studentName}</strong>
               <div className="flex items-center justify-between text-xs text-slate-400 pt-1">
-                <span>{selectedWalletForAction.groupName}</span>
-                <span className="text-emerald-400 font-mono font-bold">
+                <div>{selectedWalletForAction.groupName}</div>
+                <div className="text-emerald-400 font-mono font-bold">
                   Saldo Actual: ${selectedWalletForAction.currentBalanceMXN} MXN
-                </span>
+                </div>
               </div>
             </div>
 
@@ -25914,9 +22172,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-orange-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-orange-400 font-bold uppercase tracking-wider block">
                   Control Familiar y Presupuesto
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <Settings className="w-5 h-5 text-orange-400" />
                   Límite Diario de Gasto
@@ -25931,9 +22189,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1 text-xs">
-              <span className="text-[10px] font-mono text-slate-400 block font-bold">ALUMNO:</span>
+              <div className="text-[10px] font-mono text-slate-400 block font-bold">ALUMNO:</div>
               <strong className="text-white text-sm block">{selectedWalletForAction.studentName}</strong>
-              <span className="text-slate-400 block">Límite actual: ${selectedWalletForAction.dailySpendingLimitMXN} MXN</span>
+              <div className="text-slate-400 block">Límite actual: ${selectedWalletForAction.dailySpendingLimitMXN} MXN</div>
             </div>
 
             <form onSubmit={handleUpdateWalletLimit} className="space-y-4 text-xs">
@@ -25994,7 +22252,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4 text-white">
             <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-              <span className="font-mono text-xs text-orange-400 font-bold">Comprobante de Cafetería</span>
+              <div className="font-mono text-xs text-orange-400 font-bold">Comprobante de Cafetería</div>
               <button
                 onClick={() => setShowTicketReceiptModal(false)}
                 className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800"
@@ -26028,7 +22286,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="border-b border-slate-200 pb-2 space-y-1 text-[11px]">
                   {activeTransactionForReceipt.items.map((it, idx) => (
                     <div key={idx} className="flex justify-between">
-                      <span>{it.quantity}x {it.productName}</span>
+                      <div>{it.quantity}x {it.productName}</div>
                       <strong className="font-mono">${it.subtotalMXN}.00</strong>
                     </div>
                   ))}
@@ -26038,16 +22296,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Totales */}
               <div className="space-y-1 text-[11px] pt-1">
                 <div className="flex justify-between font-black text-sm border-b border-slate-200 pb-1">
-                  <span>TOTAL COBRADO:</span>
-                  <span>${activeTransactionForReceipt.amountMXN}.00 MXN</span>
+                  <div>TOTAL COBRADO:</div>
+                  <div>${activeTransactionForReceipt.amountMXN}.00 MXN</div>
                 </div>
                 <div className="flex justify-between text-slate-600 text-[10px]">
-                  <span>Saldo Anterior:</span>
-                  <span>${activeTransactionForReceipt.previousBalanceMXN}.00 MXN</span>
+                  <div>Saldo Anterior:</div>
+                  <div>${activeTransactionForReceipt.previousBalanceMXN}.00 MXN</div>
                 </div>
                 <div className="flex justify-between text-emerald-700 font-bold text-[10px]">
-                  <span>Nuevo Saldo Monedero:</span>
-                  <span>${activeTransactionForReceipt.newBalanceMXN}.00 MXN</span>
+                  <div>Nuevo Saldo Monedero:</div>
+                  <div>${activeTransactionForReceipt.newBalanceMXN}.00 MXN</div>
                 </div>
               </div>
 
@@ -26072,7 +22330,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className="px-4 py-2 rounded-xl bg-orange-500 hover:bg-orange-400 text-slate-950 font-black text-xs cursor-pointer flex items-center gap-1.5 shadow-md shadow-orange-500/20"
               >
                 <Printer className="w-3.5 h-3.5" />
-                <span>Imprimir Ticket</span>
+                <div>Imprimir Ticket</div>
               </button>
             </div>
           </div>
@@ -26085,9 +22343,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
                   Enfermería General del Plantel
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <Stethoscope className="w-5 h-5 text-rose-400" />
                   Registro de Consulta o Atención Médica
@@ -26160,9 +22418,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               {/* Signos Vitales */}
               <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-2">
-                <span className="text-[10px] font-mono text-slate-400 uppercase font-bold block">
+                <div className="text-[10px] font-mono text-slate-400 uppercase font-bold block">
                   Toma de Signos Vitales
-                </span>
+                </div>
                 <div className="grid grid-cols-3 gap-2">
                   <div className="space-y-0.5">
                     <label className="text-[10px] text-slate-400">Temperatura (°C):</label>
@@ -26298,9 +22556,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-sky-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-sky-400 font-bold uppercase tracking-wider block">
                   Control Farmacéutico Escolar
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <Pill className="w-5 h-5 text-sky-400" />
                   Programar Medicamento Bajo Receta Médica
@@ -26392,9 +22650,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-3">
-                <span className="text-[10px] font-mono text-sky-400 uppercase font-bold block">
+                <div className="text-[10px] font-mono text-sky-400 uppercase font-bold block">
                   Datos de la Receta Médica Oficial
-                </span>
+                </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1">
                     <label className="text-[11px] text-slate-400 font-bold">Médico que Prescribe:</label>
@@ -26462,7 +22720,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-              <span className="font-mono text-xs text-rose-400 font-bold">Hoja Clínica Oficial de Atención</span>
+              <div className="font-mono text-xs text-rose-400 font-bold">Hoja Clínica Oficial de Atención</div>
               <button
                 onClick={() => setShowMedicalReportModal(false)}
                 className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800"
@@ -26483,9 +22741,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
                 <div className="text-right font-mono text-[10px]">
                   <strong className="text-rose-600 block text-xs">{selectedConsultationForReport.folio}</strong>
-                  <span className="text-slate-500">
+                  <div className="text-slate-500">
                     {selectedConsultationForReport.date} • {selectedConsultationForReport.time} hrs
-                  </span>
+                  </div>
                 </div>
               </div>
 
@@ -26507,20 +22765,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               {/* Signos Vitales */}
               <div className="border border-slate-200 rounded-xl p-3 bg-slate-50/50">
-                <span className="font-mono text-[10px] font-bold text-slate-500 uppercase block mb-1">
+                <div className="font-mono text-[10px] font-bold text-slate-500 uppercase block mb-1">
                   Signos Vitales Registrados
-                </span>
+                </div>
                 <div className="grid grid-cols-3 gap-2 font-mono text-[11px]">
                   <div>
-                    <span className="text-slate-500 block text-[10px]">Temperatura:</span>
+                    <div className="text-slate-500 block text-[10px]">Temperatura:</div>
                     <strong>{selectedConsultationForReport.vitalSigns.temperatureCelsius || 36.5}°C</strong>
                   </div>
                   <div>
-                    <span className="text-slate-500 block text-[10px]">Presión Art.:</span>
+                    <div className="text-slate-500 block text-[10px]">Presión Art.:</div>
                     <strong>{selectedConsultationForReport.vitalSigns.bloodPressure || 'Normal'}</strong>
                   </div>
                   <div>
-                    <span className="text-slate-500 block text-[10px]">Frec. Cardíaca:</span>
+                    <div className="text-slate-500 block text-[10px]">Frec. Cardíaca:</div>
                     <strong>{selectedConsultationForReport.vitalSigns.heartRateBpm || 80} bpm</strong>
                   </div>
                 </div>
@@ -26548,13 +22806,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="border-b border-slate-400 pb-1 mb-1 font-bold text-slate-800">
                     {selectedConsultationForReport.nurseInCharge}
                   </div>
-                  <span className="text-slate-500">Enfermería Escolar (Firma & Cédula)</span>
+                  <div className="text-slate-500">Enfermería Escolar (Firma & Cédula)</div>
                 </div>
                 <div>
                   <div className="border-b border-slate-400 pb-1 mb-1 font-bold text-slate-800">
                     Acuse Notificado Vía App
                   </div>
-                  <span className="text-slate-500">Padre o Tutor Autorizado</span>
+                  <div className="text-slate-500">Padre o Tutor Autorizado</div>
                 </div>
               </div>
             </div>
@@ -26573,7 +22831,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black text-xs cursor-pointer flex items-center gap-1.5 shadow-md shadow-rose-600/20"
               >
                 <Printer className="w-3.5 h-3.5" />
-                <span>Imprimir Reporte Clínico</span>
+                <div>Imprimir Reporte Clínico</div>
               </button>
             </div>
           </div>
@@ -26586,9 +22844,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                   Turno Vespertino
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <Trophy className="w-5 h-5 text-amber-400" />
                   Nueva Academia o Taller Extracurricular
@@ -26776,9 +23034,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                   Inscripción Extracurricular
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <Users className="w-5 h-5 text-amber-400" />
                   Inscribir Alumno a Academia
@@ -26824,7 +23082,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 text-[11px] text-slate-300 space-y-1">
-                <span className="text-amber-400 font-bold block">✓ Autorización del Tutor Requerida</span>
+                <div className="text-amber-400 font-bold block">✓ Autorización del Tutor Requerida</div>
                 <p>
                   Al confirmar la inscripción, el alumno quedará integrado a la lista oficial de asistencia vespertina y la cuota mensual se reflejará en el estado de cuenta familiar.
                 </p>
@@ -26856,9 +23114,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-teal-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-teal-400 font-bold uppercase tracking-wider block">
                   Control Patrimonial
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <Box className="w-5 h-5 text-teal-400" />
                   Registrar Nuevo Activo Fijo
@@ -27036,9 +23294,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                   Mesa de Ayuda
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <Wrench className="w-5 h-5 text-amber-400" />
                   Reportar Avería o Mantenimiento
@@ -27160,9 +23418,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-teal-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-teal-400 font-bold uppercase tracking-wider block">
                   Ficha Técnica Oficial
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <FileText className="w-5 h-5 text-teal-400" />
                   {selectedAssetForDetail.assetTag}
@@ -27178,34 +23436,34 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-3 text-xs">
               <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                <span className="text-slate-400">Nombre del Activo:</span>
+                <div className="text-slate-400">Nombre del Activo:</div>
                 <strong className="text-white font-bold">{selectedAssetForDetail.name}</strong>
               </div>
               <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                <span className="text-slate-400">Categoría:</span>
-                <span className="text-teal-300 font-bold">{selectedAssetForDetail.category.replace(/_/g, ' ')}</span>
+                <div className="text-slate-400">Categoría:</div>
+                <div className="text-teal-300 font-bold">{selectedAssetForDetail.category.replace(/_/g, ' ')}</div>
               </div>
               <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                <span className="text-slate-400">Número de Serie:</span>
-                <span className="font-mono text-slate-200">{selectedAssetForDetail.serialNumber || 'N/A'}</span>
+                <div className="text-slate-400">Número de Serie:</div>
+                <div className="font-mono text-slate-200">{selectedAssetForDetail.serialNumber || 'N/A'}</div>
               </div>
               <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                <span className="text-slate-400">Ubicación en Plantel:</span>
-                <span className="text-white font-bold">{selectedAssetForDetail.assignedLocation}</span>
+                <div className="text-slate-400">Ubicación en Plantel:</div>
+                <div className="text-white font-bold">{selectedAssetForDetail.assignedLocation}</div>
               </div>
               <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                <span className="text-slate-400">Responsable:</span>
-                <span className="text-slate-200">{selectedAssetForDetail.responsiblePerson}</span>
+                <div className="text-slate-400">Responsable:</div>
+                <div className="text-slate-200">{selectedAssetForDetail.responsiblePerson}</div>
               </div>
               <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                <span className="text-slate-400">Valor en Libros:</span>
-                <span className="font-mono text-emerald-400 font-bold">
+                <div className="text-slate-400">Valor en Libros:</div>
+                <div className="font-mono text-emerald-400 font-bold">
                   ${selectedAssetForDetail.purchaseValueMXN.toLocaleString()}.00 MXN
-                </span>
+                </div>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-slate-400">Garantía Proveedor:</span>
-                <span className="font-mono text-sky-400">{selectedAssetForDetail.warrantyExpiry || 'Sin garantía'}</span>
+                <div className="text-slate-400">Garantía Proveedor:</div>
+                <div className="font-mono text-sky-400">{selectedAssetForDetail.warrantyExpiry || 'Sin garantía'}</div>
               </div>
             </div>
 
@@ -27229,7 +23487,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-black text-xs cursor-pointer flex items-center gap-1.5 shadow-md shadow-teal-600/20"
               >
                 <Printer className="w-3.5 h-3.5" />
-                <span>Imprimir Placa / Código</span>
+                <div>Imprimir Placa / Código</div>
               </button>
             </div>
           </div>
@@ -27242,9 +23500,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
                   Evaluación Institucional
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <MessageSquareQuote className="w-5 h-5 text-rose-400" />
                   Crear Nueva Encuesta Institucional
@@ -27348,7 +23606,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 text-[11px] text-slate-400 space-y-1">
-                <span className="text-rose-400 font-bold block">✓ Plantilla Integral Automatizada</span>
+                <div className="text-rose-400 font-bold block">✓ Plantilla Integral Automatizada</div>
                 <p>
                   Esta encuesta incluye por defecto el bloque de medición NPS (0 al 10), escala de valoración docente, evaluación de servicios de apoyo y campo de observaciones abiertas.
                 </p>
@@ -27380,9 +23638,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
                   {selectedSurveyForRespond.code} • Participación Activa
-                </span>
+                </div>
                 <h3 className="text-base sm:text-lg font-black text-white flex items-center gap-2">
                   <ThumbsUp className="w-5 h-5 text-rose-400" />
                   {selectedSurveyForRespond.title}
@@ -27403,9 +23661,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <strong className="text-slate-200 text-xs block">
                     1. ¿Qué tan probable es que recomiende nuestro Instituto a familiares y amigos?
                   </strong>
-                  <span className="font-mono text-xs font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded">
+                  <div className="font-mono text-xs font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded">
                     Score: {surveyAnswerForm.npsRating} / 10
-                  </span>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-11 gap-1">
@@ -27430,9 +23688,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="flex items-center justify-between text-[10px] text-slate-400 px-1">
-                  <span>🔴 Nada Probable (0)</span>
-                  <span>🟡 Neutral (7-8)</span>
-                  <span>🟢 Definitivamente Sí (10)</span>
+                  <div>🔴 Nada Probable (0)</div>
+                  <div>🟡 Neutral (7-8)</div>
+                  <div>🟢 Definitivamente Sí (10)</div>
                 </div>
               </div>
 
@@ -27502,9 +23760,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) => setSurveyAnswerForm({ ...surveyAnswerForm, isAnonymous: e.target.checked })}
                     className="rounded accent-rose-500 w-4 h-4 cursor-pointer"
                   />
-                  <span>Enviar evaluación de forma 100% anónima</span>
+                  <div>Enviar evaluación de forma 100% anónima</div>
                 </label>
-                <span className="text-[10px] text-slate-400">Protección de Datos</span>
+                <div className="text-[10px] text-slate-400">Protección de Datos</div>
               </div>
 
               <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
@@ -27533,9 +23791,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                   Buzón Directivo Confidencial
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <Send className="w-5 h-5 text-amber-400" />
                   Enviar Mensaje a Dirección General
@@ -27631,9 +23889,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     }
                     className="rounded accent-amber-500 w-4 h-4 cursor-pointer"
                   />
-                  <span>Enviar como mensaje 100% anónimo</span>
+                  <div>Enviar como mensaje 100% anónimo</div>
                 </label>
-                <span className="text-[10px] text-amber-400 font-bold">Buzón Seguro</span>
+                <div className="text-[10px] text-amber-400 font-bold">Buzón Seguro</div>
               </div>
 
               <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
@@ -27662,9 +23920,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                   Organización Institucional
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <PartyPopper className="w-5 h-5 text-amber-400" />
                   Programar Evento o Sesión CTE
@@ -27806,7 +24064,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     }
                     className="rounded accent-amber-500 w-4 h-4 cursor-pointer"
                   />
-                  <span className="font-bold">Suspensión de labores docentes y clases presenciales</span>
+                  <div className="font-bold">Suspensión de labores docentes y clases presenciales</div>
                 </label>
               </div>
 
@@ -27836,9 +24094,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                   {selectedEventForDetail.code}
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <Flag className="w-5 h-5 text-amber-400" />
                   Asignar Comisión Docente
@@ -27924,9 +24182,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-mono text-sky-400 font-bold uppercase tracking-wider block">
+                <div className="text-[10px] font-mono text-sky-400 font-bold uppercase tracking-wider block">
                   {selectedEventForDetail.code} • Minuta Colegiada
-                </span>
+                </div>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   <Check className="w-5 h-5 text-emerald-400" />
                   Asentar Acuerdo Colegiado CTE
@@ -28310,9 +24568,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <FileBadge className="w-5 h-5 text-emerald-400" />
                   Expediente de Selección Docente
                 </h3>
-                <span className="text-xs text-slate-400">
+                <div className="text-xs text-slate-400">
                   {selectedCandidateForDetail.folio} • {selectedCandidateForDetail.fullName}
-                </span>
+                </div>
               </div>
               <button
                 onClick={() => setShowCandidateDetailModal(false)}
@@ -28331,9 +24589,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
               <div className="text-slate-400">
                 <strong>Cédula DGP:</strong>{' '}
-                <span className="font-mono text-amber-400 font-bold">
+                <div className="font-mono text-amber-400 font-bold">
                   {selectedCandidateForDetail.professionalLicense || 'Pendiente'}
-                </span>
+                </div>
               </div>
             </div>
 
@@ -28577,7 +24835,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   <div>
-                    <span className="text-[10px] text-slate-400">Alumnos:</span>
+                    <div className="text-[10px] text-slate-400">Alumnos:</div>
                     <input
                       type="number"
                       min={0}
@@ -28589,7 +24847,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     />
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-400">Docentes:</span>
+                    <div className="text-[10px] text-slate-400">Docentes:</div>
                     <input
                       type="number"
                       min={0}
@@ -28601,7 +24859,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     />
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-400">Personal Admn:</span>
+                    <div className="text-[10px] text-slate-400">Personal Admn:</div>
                     <input
                       type="number"
                       min={0}
@@ -28613,7 +24871,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     />
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-400">Visitantes:</span>
+                    <div className="text-[10px] text-slate-400">Visitantes:</div>
                     <input
                       type="number"
                       min={0}
@@ -28703,7 +24961,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <UserPlus className="w-5 h-5 text-rose-400" />
                   Asignar Integrante a Brigada
                 </h3>
-                <span className="text-xs text-slate-400">{selectedBrigadeForAdd.name}</span>
+                <div className="text-xs text-slate-400">{selectedBrigadeForAdd.name}</div>
               </div>
               <button
                 onClick={() => setShowAddBrigadeMemberModal(false)}
@@ -28779,7 +25037,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   }
                   className="w-4 h-4 rounded text-rose-500 focus:ring-0 bg-slate-950 border-slate-700"
                 />
-                <span>Cuenta con Constancia Vigente de Capacitación en Protección Civil</span>
+                <div>Cuenta con Constancia Vigente de Capacitación en Protección Civil</div>
               </label>
 
               <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
@@ -28812,9 +25070,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <ShieldCheck className="w-5 h-5 text-rose-400" />
                   Dictamen Oficial de Protección Civil
                 </h3>
-                <span className="text-xs text-slate-400">
+                <div className="text-xs text-slate-400">
                   {selectedDrillForDetail.code} • {selectedDrillForDetail.title}
-                </span>
+                </div>
               </div>
               <button
                 onClick={() => setShowDrillDetailModal(false)}
@@ -28826,16 +25084,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             <div className="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800 space-y-1 text-xs">
               <div className="flex justify-between">
-                <span className="text-slate-400">Tiempo de Desalojo:</span>
-                <span className="font-bold text-emerald-400">{selectedDrillForDetail.evacuationTimeSeconds} segundos</span>
+                <div className="text-slate-400">Tiempo de Desalojo:</div>
+                <div className="font-bold text-emerald-400">{selectedDrillForDetail.evacuationTimeSeconds} segundos</div>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">Personas Totales:</span>
-                <span className="font-bold text-white">{selectedDrillForDetail.participants.total} personas</span>
+                <div className="text-slate-400">Personas Totales:</div>
+                <div className="font-bold text-white">{selectedDrillForDetail.participants.total} personas</div>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">Punto de Reunión:</span>
-                <span className="font-medium text-slate-300">{selectedDrillForDetail.assemblyPoint}</span>
+                <div className="text-slate-400">Punto de Reunión:</div>
+                <div className="font-medium text-slate-300">{selectedDrillForDetail.assemblyPoint}</div>
               </div>
             </div>
 
@@ -29237,9 +25495,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <FileText className="w-5 h-5 text-amber-400" />
                   Asentar Acuerdo en Acta de Asamblea
                 </h3>
-                <span className="text-xs text-slate-400">
+                <div className="text-xs text-slate-400">
                   {selectedAssemblyForAgreement.code} • {selectedAssemblyForAgreement.title}
-                </span>
+                </div>
               </div>
               <button
                 onClick={() => setShowAddAgreementModal(false)}
@@ -29466,9 +25724,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <span className="font-mono text-[10px] text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                <div className="font-mono text-[10px] text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
                   {selectedWorkOrderForUpdate.folio}
-                </span>
+                </div>
                 <h3 className="text-base font-black text-white mt-1">
                   Actualizar Estatus de Reparación
                 </h3>
@@ -29909,7 +26167,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) => setNewScholarshipForm({ ...newScholarshipForm, documentsVerified: e.target.checked })}
                     className="rounded bg-slate-800 border-slate-700 text-amber-500 focus:ring-0 w-4 h-4 cursor-pointer"
                   />
-                  <span>Expediente completo (Comprobantes de ingreso, boletas y solicitud formal entregados)</span>
+                  <div>Expediente completo (Comprobantes de ingreso, boletas y solicitud formal entregados)</div>
                 </label>
               </div>
 
@@ -29957,7 +26215,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs space-y-2">
               <div className="flex justify-between items-center">
                 <strong className="text-sm font-black text-white">{selectedScholarshipForEvaluation.studentName}</strong>
-                <span className="text-amber-400 font-bold">{selectedScholarshipForEvaluation.grade}</span>
+                <div className="text-amber-400 font-bold">{selectedScholarshipForEvaluation.grade}</div>
               </div>
               <div className="grid grid-cols-3 gap-2 text-slate-400 text-[11px] pt-1">
                 <div>Promedio: <strong className="text-emerald-400">{selectedScholarshipForEvaluation.previousGpa}</strong></div>
@@ -30010,17 +26268,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Cálculo en Vivo de Colegiatura Resultante */}
               {evaluateScholarshipForm.status !== 'RECHAZADA' && (
                 <div className="p-3 bg-slate-950/80 rounded-xl border border-emerald-500/20 text-xs flex items-center justify-between">
-                  <span className="text-slate-400">
+                  <div className="text-slate-400">
                     Colegiatura Regular: ${selectedScholarshipForEvaluation.standardTuitionMXN.toLocaleString('es-MX')} MXN
-                  </span>
-                  <span className="text-emerald-400 font-black">
+                  </div>
+                  <div className="text-emerald-400 font-black">
                     Cuota Final: $
                     {Math.round(
                       selectedScholarshipForEvaluation.standardTuitionMXN *
                         (1 - evaluateScholarshipForm.approvedDiscountPercentage / 100)
                     ).toLocaleString('es-MX')}{' '}
                     MXN / mes
-                  </span>
+                  </div>
                 </div>
               )}
 
@@ -30624,22 +26882,22 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 text-xs space-y-1">
               <div className="flex justify-between">
-                <span className="text-slate-400">SKU / Talla:</span>
-                <span className="font-mono text-teal-400 font-bold">
+                <div className="text-slate-400">SKU / Talla:</div>
+                <div className="font-mono text-teal-400 font-bold">
                   {selectedUniformForStock.sku} ({selectedUniformForStock.size.replace('TALLA_', 'T-')})
-                </span>
+                </div>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">Stock Físico Actual:</span>
-                <span className="font-mono font-black text-white text-sm">
+                <div className="text-slate-400">Stock Físico Actual:</div>
+                <div className="font-mono font-black text-white text-sm">
                   {selectedUniformForStock.stockQuantity} piezas
-                </span>
+                </div>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-400">Precio Sugerido Venta:</span>
-                <span className="font-mono text-emerald-400 font-bold">
+                <div className="text-slate-400">Precio Sugerido Venta:</div>
+                <div className="font-mono text-emerald-400 font-bold">
                   ${selectedUniformForStock.salePriceMXN}.00 MXN
-                </span>
+                </div>
               </div>
             </div>
 
@@ -30670,12 +26928,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   }
                   className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono font-bold text-sm focus:border-teal-400 focus:outline-none"
                 />
-                <span className="text-[10px] text-slate-500 mt-1 block">
+                <div className="text-[10px] text-slate-500 mt-1 block">
                   Nuevo stock resultante:{' '}
                   <strong className="text-white">
                     {Math.max(0, selectedUniformForStock.stockQuantity + Number(adjustStockForm.deltaStock))} piezas
                   </strong>
-                </span>
+                </div>
               </div>
 
               <div className="flex justify-end gap-2 pt-2 border-t border-slate-800">
@@ -30871,16 +27129,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-[11px] text-slate-400 space-y-1">
                 <div className="flex justify-between">
-                  <span>Autoridad Certificadora:</span>
-                  <span className="text-slate-200 font-semibold">{newCertificateForm.issuedByDirector}</span>
+                  <div>Autoridad Certificadora:</div>
+                  <div className="text-slate-200 font-semibold">{newCertificateForm.issuedByDirector}</div>
                 </div>
                 <div className="flex justify-between">
-                  <span>Cédula Profesional:</span>
-                  <span className="text-slate-300 font-mono">{newCertificateForm.directorCedula}</span>
+                  <div>Cédula Profesional:</div>
+                  <div className="text-slate-300 font-mono">{newCertificateForm.directorCedula}</div>
                 </div>
                 <div className="flex justify-between">
-                  <span>Vigencia del Documento:</span>
-                  <span className="text-emerald-400 font-bold">90 días naturales con cotejo QR</span>
+                  <div>Vigencia del Documento:</div>
+                  <div className="text-emerald-400 font-bold">90 días naturales con cotejo QR</div>
                 </div>
               </div>
 
@@ -30897,7 +27155,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black shadow-lg shadow-sky-500/25 transition-all cursor-pointer flex items-center gap-1.5"
                 >
                   <FileCheck className="w-4 h-4" />
-                  <span>Emitir & Sellar Digitalmente</span>
+                  <div>Emitir & Sellar Digitalmente</div>
                 </button>
               </div>
             </form>
@@ -30913,9 +27171,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="p-4 border-b border-slate-800 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <ScrollText className="w-5 h-5 text-sky-400" />
-                <span className="text-xs font-bold text-white uppercase tracking-wider">
+                <div className="text-xs font-bold text-white uppercase tracking-wider">
                   Vista Previa del Documento Oficial Certificado
-                </span>
+                </div>
               </div>
               <div className="flex items-center gap-2">
                 <button
@@ -30923,7 +27181,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className="px-3 py-1.5 bg-sky-500 hover:bg-sky-400 text-slate-950 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-md shadow-sky-500/20"
                 >
                   <Printer className="w-3.5 h-3.5" />
-                  <span>Imprimir Formato SEP</span>
+                  <div>Imprimir Formato SEP</div>
                 </button>
                 <button
                   onClick={() => {
@@ -30965,9 +27223,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex justify-between items-center text-xs font-sans">
                 <div>
                   <strong>FOLIO OFICIAL:</strong>{' '}
-                  <span className="font-mono bg-slate-100 px-2 py-0.5 rounded border border-slate-300 font-bold text-slate-900">
+                  <div className="font-mono bg-slate-100 px-2 py-0.5 rounded border border-slate-300 font-bold text-slate-900">
                     {selectedCertForDetail.folio}
-                  </span>
+                  </div>
                 </div>
                 <div>
                   <strong>CIUDAD DE MÉXICO, A:</strong> {selectedCertForDetail.issueDate}
@@ -31042,12 +27300,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="w-20 h-20 bg-slate-900 p-2 rounded-lg flex items-center justify-center text-white">
                     <QrCode className="w-16 h-16 text-sky-400" />
                   </div>
-                  <span className="font-bold text-[9px] text-slate-700 text-center">
+                  <div className="font-bold text-[9px] text-slate-700 text-center">
                     Cotejo en Línea con QR
-                  </span>
-                  <span className="font-mono text-[8px] text-slate-500 text-center truncate max-w-full">
+                  </div>
+                  <div className="font-mono text-[8px] text-slate-500 text-center truncate max-w-full">
                     {selectedCertForDetail.verificationToken}
-                  </span>
+                  </div>
                 </div>
 
                 {/* Sello Digital SHA-256 */}
@@ -31252,53 +27510,53 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
                   <div>
-                    <span className="font-bold text-emerald-300 block">ESTADO: INTEGRO Y NO ADULTERADO</span>
-                    <span className="text-[11px] text-emerald-400/80">La firma digital del bloque coincide exactamente con los parámetros asentados.</span>
+                    <div className="font-bold text-emerald-300 block">ESTADO: INTEGRO Y NO ADULTERADO</div>
+                    <div className="text-[11px] text-emerald-400/80">La firma digital del bloque coincide exactamente con los parámetros asentados.</div>
                   </div>
                 </div>
-                <span className="font-mono text-xs font-bold text-sky-400 bg-slate-950 px-3 py-1 rounded-xl border border-slate-800">
+                <div className="font-mono text-xs font-bold text-sky-400 bg-slate-950 px-3 py-1 rounded-xl border border-slate-800">
                   {selectedLogForDetail.folio}
-                </span>
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3 bg-slate-950 p-4 rounded-2xl border border-slate-800">
                 <div>
-                  <span className="text-slate-400 block text-[10px]">ACCIÓN ASENTADA:</span>
+                  <div className="text-slate-400 block text-[10px]">ACCIÓN ASENTADA:</div>
                   <strong className="text-white">{selectedLogForDetail.actionName}</strong>
                 </div>
                 <div>
-                  <span className="text-slate-400 block text-[10px]">FECHA Y HORA (UTC):</span>
-                  <span className="text-white font-mono">{selectedLogForDetail.timestamp}</span>
+                  <div className="text-slate-400 block text-[10px]">FECHA Y HORA (UTC):</div>
+                  <div className="text-white font-mono">{selectedLogForDetail.timestamp}</div>
                 </div>
                 <div>
-                  <span className="text-slate-400 block text-[10px]">USUARIO EMISOR:</span>
+                  <div className="text-slate-400 block text-[10px]">USUARIO EMISOR:</div>
                   <strong className="text-white">{selectedLogForDetail.performedByName}</strong>
-                  <span className="text-slate-400 block text-[11px] font-mono">Rol: {selectedLogForDetail.performedByRole}</span>
+                  <div className="text-slate-400 block text-[11px] font-mono">Rol: {selectedLogForDetail.performedByRole}</div>
                 </div>
                 <div>
-                  <span className="text-slate-400 block text-[10px]">DIRECCIÓN IP AUDITADA:</span>
-                  <span className="text-white font-mono">{selectedLogForDetail.ipAddress}</span>
+                  <div className="text-slate-400 block text-[10px]">DIRECCIÓN IP AUDITADA:</div>
+                  <div className="text-white font-mono">{selectedLogForDetail.ipAddress}</div>
                 </div>
               </div>
 
               {(selectedLogForDetail.previousValue || selectedLogForDetail.newValue) && (
                 <div className="space-y-2">
-                  <span className="text-slate-400 font-bold block">Trazabilidad de Valores:</span>
+                  <div className="text-slate-400 font-bold block">Trazabilidad de Valores:</div>
                   <div className="grid grid-cols-2 gap-2 text-[11px]">
                     <div className="p-3 bg-rose-950/30 border border-rose-900/40 rounded-xl">
-                      <span className="text-rose-400 font-bold block mb-0.5">VALOR ANTERIOR:</span>
-                      <span className="text-rose-200">{selectedLogForDetail.previousValue || 'N/A'}</span>
+                      <div className="text-rose-400 font-bold block mb-0.5">VALOR ANTERIOR:</div>
+                      <div className="text-rose-200">{selectedLogForDetail.previousValue || 'N/A'}</div>
                     </div>
                     <div className="p-3 bg-emerald-950/30 border border-emerald-900/40 rounded-xl">
-                      <span className="text-emerald-400 font-bold block mb-0.5">VALOR SUSTITUTO:</span>
-                      <span className="text-emerald-200">{selectedLogForDetail.newValue || 'N/A'}</span>
+                      <div className="text-emerald-400 font-bold block mb-0.5">VALOR SUSTITUTO:</div>
+                      <div className="text-emerald-200">{selectedLogForDetail.newValue || 'N/A'}</div>
                     </div>
                   </div>
                 </div>
               )}
 
               <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
-                <span className="text-slate-400 block text-[10px]">JUSTIFICACIÓN Y FUNDAMENTO NORMATIVO:</span>
+                <div className="text-slate-400 block text-[10px]">JUSTIFICACIÓN Y FUNDAMENTO NORMATIVO:</div>
                 <p className="text-slate-200">{selectedLogForDetail.justificationReason}</p>
                 {selectedLogForDetail.officialAgreementRef && (
                   <div className="text-sky-400 text-[11px] pt-1">
@@ -31308,7 +27566,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="space-y-1">
-                <span className="text-slate-400 text-[10px] font-bold block">SELLO DIGITAL CRIPTOGRÁFICO (SHA-256):</span>
+                <div className="text-slate-400 text-[10px] font-bold block">SELLO DIGITAL CRIPTOGRÁFICO (SHA-256):</div>
                 <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 font-mono text-[10px] text-emerald-400 break-all leading-relaxed">
                   {selectedLogForDetail.integrityHash}
                 </div>

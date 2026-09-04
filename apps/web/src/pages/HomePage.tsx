@@ -80,10 +80,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <ArrowRight />
           </button>
           <button
-            onClick={() => onNavigate('dashboard')}
+            onClick={() => onNavigate('login')}
             className="btn btn-secondary btn-lg"
           >
-            Explorar Demo en Vivo
+            Iniciar Sesión Institucional
             <ChevronRight />
           </button>
         </div>
