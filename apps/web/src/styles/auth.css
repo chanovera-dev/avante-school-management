@@ -38,14 +38,40 @@
 .auth-card {
   width: 100%;
   max-width: 28rem;
-  background: var(--color-bg-surface);
-  border: 1px solid var(--color-border-subtle);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: var(--radius-2xl);
   padding: 2.25rem;
-  box-shadow: 0 10px 25px rgba(0, 121, 255, 0.08), 0 4px 6px rgba(15, 23, 42, 0.04);
+  box-shadow: var(--shadow-card);
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  position: relative;
+
+  .is-chromium & {
+    border-radius: calc(var(--radius-2xl) * 2);
+    corner-shape: squircle;
+    -webkit-corner-shape: squircle;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.02));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
 
   &.auth-card-wide {
     max-width: 36rem;
@@ -107,6 +133,12 @@
     border-radius: var(--radius-md);
     transition: all var(--transition-fast);
     cursor: pointer;
+
+    .is-chromium & {
+      border-radius: calc(var(--radius-md) * 2);
+      corner-shape: squircle;
+      -webkit-corner-shape: squircle;
+    }
 
     &:hover {
       border-color: var(--color-primary);

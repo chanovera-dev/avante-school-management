@@ -61,6 +61,12 @@
   gap: 0.75rem;
   transition: all var(--transition-fast);
 
+  .is-chromium & {
+    border-radius: calc(var(--radius-xl) * 2);
+    corner-shape: squircle;
+    -webkit-corner-shape: squircle;
+  }
+
   &:hover {
     border-color: var(--color-primary-border);
     box-shadow: var(--shadow-md);
@@ -85,6 +91,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
+
+      .is-chromium & {
+        border-radius: calc(var(--radius-md) * 2);
+        corner-shape: squircle;
+        -webkit-corner-shape: squircle;
+      }
     }
   }
 
@@ -111,6 +123,12 @@
   border-radius: var(--radius-2xl);
   overflow: hidden;
   box-shadow: var(--shadow-card);
+
+  .is-chromium & {
+    border-radius: calc(var(--radius-2xl) * 2);
+    corner-shape: squircle;
+    -webkit-corner-shape: squircle;
+  }
 }
 
 .sa-table-header {

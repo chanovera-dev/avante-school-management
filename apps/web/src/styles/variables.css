@@ -78,12 +78,14 @@
   --radius-2xl: 28px;
   --radius-full: 9999px;
 
-  /* Sombras Modernas para Tema Claro */
-  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
-  --shadow-md: 0 4px 8px -1px rgba(0, 121, 255, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
-  --shadow-lg: 0 10px 20px -3px rgba(0, 121, 255, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
-  --shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
-  --shadow-card: 0 2px 10px rgba(0, 121, 255, 0.06), 0 1px 3px rgba(15, 23, 42, 0.03);
+  /* Sombras Modernas para Tema Claro (Inspiradas en x-meetings) */
+  --shadow-btn: #0f122926 0 -2px 0 inset, rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  --shadow-btn-hover: #0f122926 0 -2px 0 inset, rgba(50, 50, 93, 0.35) 0px 13px 27px -5px, rgba(0, 0, 0, 0.4) 0px 8px 16px -8px;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 6px 18px rgba(0, 121, 255, 0.08), 0 2px 4px rgba(15, 23, 42, 0.04);
+  --shadow-lg: rgba(0, 0, 0, 0.0625) 0px 54px 55px, rgba(0, 0, 0, 0.03) 0px -12px 30px, rgba(0, 0, 0, 0.03) 0px 4px 6px, rgba(0, 0, 0, 0.0425) 0px 12px 13px, rgba(0, 0, 0, 0.00225) 0px -3px 5px;
+  --shadow-xl: 0 20px 30px -5px rgba(15, 23, 42, 0.1), 0 10px 12px -5px rgba(0, 121, 255, 0.08);
+  --shadow-card: rgba(0, 0, 0, 0.0625) 0px 54px 55px, rgba(0, 0, 0, 0.03) 0px -12px 30px, rgba(0, 0, 0, 0.03) 0px 4px 6px, rgba(0, 0, 0, 0.0425) 0px 12px 13px, rgba(0, 0, 0, 0.00225) 0px -3px 5px;
 
   /* Transiciones */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);

@@ -72,6 +72,12 @@
   gap: 1.5rem;
   color: #ffffff;
 
+  .is-chromium & {
+    border-radius: calc(var(--radius-2xl) * 2);
+    corner-shape: squircle;
+    -webkit-corner-shape: squircle;
+  }
+
   @media (min-width: 768px) {
     flex-direction: row;
     padding: 2.75rem;
@@ -174,6 +180,12 @@
   gap: 1.5rem;
   transition: all var(--transition-normal);
 
+  .is-chromium & {
+    border-radius: calc(var(--radius-xl) * 2);
+    corner-shape: squircle;
+    -webkit-corner-shape: squircle;
+  }
+
   &:hover {
     border-color: var(--color-primary-border);
     box-shadow: var(--shadow-md);
@@ -188,6 +200,12 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 0.75rem;
+
+    .is-chromium & {
+      border-radius: calc(var(--radius-lg) * 2);
+      corner-shape: squircle;
+      -webkit-corner-shape: squircle;
+    }
   }
 
   h4 {
