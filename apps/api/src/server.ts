@@ -10,7 +10,11 @@ import { tenantRoutes } from './routes/tenant.routes.js';
 import { academicRoutes } from './routes/academic.routes.js';
 import { financeRoutes } from './routes/finance.routes.js';
 
+import { store } from './store/memory.store.js';
+
 export async function buildServer() {
+  await store.loadFromDatabase();
+
   const fastify = Fastify({
     logger: true,
   });

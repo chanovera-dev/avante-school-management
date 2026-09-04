@@ -1,0 +1,553 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// -----------------------------------------------------------------------------
+// 1. ORGANIZACIÓN Y MULTI-TENANCY
+// -----------------------------------------------------------------------------
+
+model Tenant {
+  id               String   @id @default(uuid())
+  name             String
+  subdomain        String   @unique
+  legalBusinessName String
+  rfc              String?
+  logoUrl          String?
+  contactEmail     String
+  contactPhone     String
+  timeZone         String   @default("America/Mexico_City")
+  currency         String   @default("MXN")
+  gatewayFeePolicy String   @default("TRANSFERRED_TO_TUTOR")
+  whatsappEnabled  Boolean  @default(true)
+  status           String   @default("ACTIVO")
+  isEmailVerified  Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  subscription     TenantSubscription?
+  campuses         Campus[]
+  users            User[]
+  educationalLevels EducationalLevel[]
+  cycles           AcademicCycle[]
+  groups           AcademicGroup[]
+  teachers         Teacher[]
+  subjects         Subject[]
+  students         Student[]
+  grades           StudentSubjectGrade[]
+  attendances      DailyAttendanceRecord[]
+  justifications   AbsenceJustification[]
+  notices          SchoolNotice[]
+  credentials      SchoolCredential[]
+  assignments      SchoolAssignment[]
+  schedules        ClassScheduleSlot[]
+  applicants       AdmissionApplicant[]
+  charges          Charge[]
+  payments         PaymentTransaction[]
+  auditLogs        AuditLog[]
+  verificationTokens EmailVerificationToken[]
+
+  @@map("tenants")
+}
+
+model TenantSubscription {
+  id                String    @id @default(uuid())
+  tenantId          String    @unique
+  planTier          String    @default("FREE_TIER_LAUNCH")
+  status            String    @default("FREE")
+  startedAt         DateTime  @default(now())
+  expiresAt         DateTime?
+  maxStudentsLimit  Int       @default(500)
+  monthlyFeeMXN     Float     @default(0)
+  isFreeLaunchPromo Boolean   @default(true)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  tenant            Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("tenant_subscriptions")
+}
+
+model Campus {
+  id            String   @id @default(uuid())
+  tenantId      String
+  name          String
+  code          String
+  address       String
+  phone         String
+  levelsOffered String[] @default([])
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  tenant        Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  groups        AcademicGroup[]
+  students      Student[]
+
+  @@map("campuses")
+}
+
+// -----------------------------------------------------------------------------
+// 2. USUARIOS Y AUTENTICACIÓN
+// -----------------------------------------------------------------------------
+
+model User {
+  id              String    @id @default(uuid())
+  tenantId        String
+  email           String
+  passwordHash    String
+  fullName        String
+  role            String
+  phone           String?
+  campusId        String?
+  isEmailVerified Boolean   @default(true)
+  isActive        Boolean   @default(true)
+  lastLoginAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  tenant          Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, email])
+  @@map("users")
+}
+
+model EmailVerificationToken {
+  id        String   @id @default(uuid())
+  email     String
+  code      String
+  tenantId  String
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("email_verification_tokens")
+}
+
+// -----------------------------------------------------------------------------
+// 3. ESTRUCTURA ACADÉMICA
+// -----------------------------------------------------------------------------
+
+model EducationalLevel {
+  id                 String   @id @default(uuid())
+  tenantId           String
+  level              String
+  name               String
+  code               String
+  evaluationScale    String
+  minPassingGrade    Float    @default(6.0)
+  directorName       String?
+  directorEmail      String?
+  directorPhone      String?
+  isDirectorVerified Boolean  @default(false)
+  isActive           Boolean  @default(true)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  tenant             Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  groups             AcademicGroup[]
+  subjects           Subject[]
+
+  @@unique([tenantId, level])
+  @@map("educational_levels")
+}
+
+model AcademicCycle {
+  id        String   @id @default(uuid())
+  tenantId  String
+  campusId  String?
+  name      String
+  startDate DateTime
+  endDate   DateTime
+  status    String   @default("ACTIVE")
+  isCurrent Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  groups    AcademicGroup[]
+
+  @@map("academic_cycles")
+}
+
+model AcademicGroup {
+  id             String   @id @default(uuid())
+  tenantId       String
+  campusId       String
+  cycleId        String
+  level          String   // EducationLevel
+  gradeNumber    Int
+  name           String   // "1° A Primaria"
+  shift          String   @default("MATUTINO")
+  type           String   @default("BASE_REGULAR")
+  maxCapacity    Int      @default(35)
+  tutorTeacherId String?
+  classroom      String?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  tenant         Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  campus         Campus   @relation(fields: [campusId], references: [id], onDelete: Cascade)
+  cycle          AcademicCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  levelRef       EducationalLevel? @relation(fields: [tenantId, level], references: [tenantId, level], onDelete: Cascade)
+  students       Student[]
+  grades         StudentSubjectGrade[]
+  attendances    DailyAttendanceRecord[]
+  schedules      ClassScheduleSlot[]
+
+  @@map("academic_groups")
+}
+
+model Teacher {
+  id             String   @id @default(uuid())
+  tenantId       String
+  campusId       String?
+  fullName       String
+  email          String
+  phone          String?
+  rfc            String?
+  curp           String?
+  academicDegree String?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  tenant         Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, email])
+  @@map("teachers")
+}
+
+model Subject {
+  id            String   @id @default(uuid())
+  tenantId      String
+  level         String   // EducationLevel
+  gradeNumber   Int
+  name          String
+  code          String
+  credits       Float    @default(1.0)
+  isOfficialSep Boolean  @default(true)
+  weeklyHours   Int      @default(4)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  tenant        Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  levelRef      EducationalLevel? @relation(fields: [tenantId, level], references: [tenantId, level], onDelete: Cascade)
+  grades        StudentSubjectGrade[]
+
+  @@map("subjects")
+}
+
+// -----------------------------------------------------------------------------
+// 4. EXPEDIENTE Y ALUMNOS
+// -----------------------------------------------------------------------------
+
+model Student {
+  id                   String    @id @default(uuid())
+  tenantId             String
+  campusId             String
+  studentCode          String
+  curp                 String?
+  firstName            String
+  lastName             String
+  secondLastName       String?
+  gender               String    @default("M")
+  birthDate            DateTime
+  status               String    @default("INSCRITO_ACTIVO")
+  emergencyContactName String?
+  emergencyContactPhone String?
+  bloodType            String?
+  allergies            String?
+  emergencyNotes       String?
+  currentGroupBaseId   String?
+  isConditional        Boolean   @default(false)
+  conditionalDeadline  DateTime?
+  tutorName            String?
+  tutorEmail           String?
+  tutorPhone           String?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  tenant               Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  campus               Campus    @relation(fields: [campusId], references: [id], onDelete: Cascade)
+  currentGroup         AcademicGroup? @relation(fields: [currentGroupBaseId], references: [id], onDelete: SetNull)
+  grades               StudentSubjectGrade[]
+  attendances          DailyAttendanceRecord[]
+  justifications       AbsenceJustification[]
+  charges              Charge[]
+  payments             PaymentTransaction[]
+
+  @@unique([tenantId, studentCode])
+  @@map("students")
+}
+
+// -----------------------------------------------------------------------------
+// 5. EVALUACIÓN Y ASISTENCIAS
+// -----------------------------------------------------------------------------
+
+model StudentSubjectGrade {
+  id                String   @id @default(uuid())
+  tenantId          String
+  studentId         String
+  subjectId         String
+  groupId           String
+  periodIndex       Int      // 1, 2, 3
+  gradeValue        Float?
+  qualitativeRubric String?  // LOGRADO | EN_PROCESO | REQUIERE_APOYO
+  observations      String?
+  isRectified       Boolean  @default(false)
+  rectifiedBy       String?
+  rectifiedReason   String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  tenant            Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  student           Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  subject           Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  group             AcademicGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, studentId, subjectId, periodIndex])
+  @@map("student_subject_grades")
+}
+
+model DailyAttendanceRecord {
+  id         String   @id @default(uuid())
+  tenantId   String
+  groupId    String
+  studentId  String
+  date       DateTime @db.Date
+  status     String   // PRESENTE | FALTA_INJUSTIFICADA | FALTA_JUSTIFICADA | RETARDO | SALIDA_ANTICIPADA
+  recordedBy String
+  notes      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  tenant     Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  group      AcademicGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  student    Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, groupId, studentId, date])
+  @@map("daily_attendance_records")
+}
+
+model AbsenceJustification {
+  id           String   @id @default(uuid())
+  tenantId     String
+  studentId    String
+  medicalFolio String?
+  doctorName   String?
+  diagnosis    String?
+  startDate    DateTime @db.Date
+  endDate      DateTime @db.Date
+  status       String   @default("APROBADO")
+  authorizedBy String
+  notes        String?
+  createdAt    DateTime @default(now())
+
+  tenant       Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  student      Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@map("absence_justifications")
+}
+
+// -----------------------------------------------------------------------------
+// 6. COMUNICACIÓN Y ASIGNACIONES
+// -----------------------------------------------------------------------------
+
+model SchoolNotice {
+  id          String   @id @default(uuid())
+  tenantId    String
+  title       String
+  content     String
+  category    String
+  targetRoles String[] @default([])
+  publishedBy String
+  createdAt   DateTime @default(now())
+
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  acknowledgments NoticeAcknowledgment[]
+
+  @@map("school_notices")
+}
+
+model NoticeAcknowledgment {
+  id          String   @id @default(uuid())
+  noticeId    String
+  userId      String
+  acknowledgedAt DateTime @default(now())
+
+  notice      SchoolNotice @relation(fields: [noticeId], references: [id], onDelete: Cascade)
+
+  @@unique([noticeId, userId])
+  @@map("notice_acknowledgments")
+}
+
+model SchoolCredential {
+  id        String   @id @default(uuid())
+  tenantId  String
+  studentId String
+  qrCode    String
+  barCode   String
+  issuedAt  DateTime @default(now())
+  expiresAt DateTime
+  status    String   @default("ACTIVE")
+
+  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("school_credentials")
+}
+
+model SchoolAssignment {
+  id          String   @id @default(uuid())
+  tenantId    String
+  groupId     String
+  subjectId   String
+  teacherId   String
+  title       String
+  description String
+  dueDate     DateTime
+  maxScore    Float    @default(100.0)
+  createdAt   DateTime @default(now())
+
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("school_assignments")
+}
+
+model ClassScheduleSlot {
+  id          String   @id @default(uuid())
+  tenantId    String
+  groupId     String
+  subjectId   String
+  teacherId   String
+  dayOfWeek   String
+  startTime   String
+  endTime     String
+  classroom   String?
+
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  group       AcademicGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@map("class_schedule_slots")
+}
+
+// -----------------------------------------------------------------------------
+// 7. ADMISIONES
+// -----------------------------------------------------------------------------
+
+model AdmissionApplicant {
+  id                 String    @id @default(uuid())
+  tenantId           String
+  folio              String
+  aspirantName       String
+  levelId            String
+  gradeNumber        Int
+  campusId           String
+  status             String    @default("EN_REVISION")
+  tutorName          String
+  tutorEmail         String
+  tutorPhone         String
+  curp               String?
+  isConditional      Boolean   @default(false)
+  commitmentDeadline DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  tenant             Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  documents          ApplicantDocument[]
+
+  @@unique([tenantId, folio])
+  @@map("admission_applicants")
+}
+
+model ApplicantDocument {
+  id           String   @id @default(uuid())
+  applicantId  String
+  documentType String
+  status       String   @default("PENDIENTE")
+  fileUrl      String?
+  notes        String?
+  updatedAt    DateTime @updatedAt
+
+  applicant    AdmissionApplicant @relation(fields: [applicantId], references: [id], onDelete: Cascade)
+
+  @@map("applicant_documents")
+}
+
+// -----------------------------------------------------------------------------
+// 8. MOTOR FINANCIERO, CAJA Y CODI
+// -----------------------------------------------------------------------------
+
+model Charge {
+  id                 String   @id @default(uuid())
+  tenantId           String
+  studentId          String
+  conceptName        String
+  periodName         String?
+  baseAmount         Float
+  discountAmount     Float    @default(0)
+  lateFeeAmount      Float    @default(0)
+  paidAmount         Float    @default(0)
+  outstandingBalance Float
+  dueDate            DateTime
+  earlyBirdDueDate   DateTime?
+  status             String   @default("EMITIDO_POR_VENCER")
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  tenant             Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  student            Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  payments           PaymentTransaction[]
+
+  @@map("charges")
+}
+
+model PaymentTransaction {
+  id                   String    @id @default(uuid())
+  tenantId             String
+  chargeId             String?
+  studentId            String
+  amount               Float
+  method               String
+  fundDestination      String
+  status               String    @default("COMPLETED")
+  authorizationFolio   String?
+  isOfflineProvisional Boolean   @default(false)
+  offlineLocalFolio    String?
+  paidAt               DateTime  @default(now())
+  syncedAt             DateTime?
+
+  tenant               Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  charge               Charge?   @relation(fields: [chargeId], references: [id], onDelete: SetNull)
+  student              Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@map("payment_transactions")
+}
+
+// -----------------------------------------------------------------------------
+// 9. AUDITORÍA INMUTABLE
+// -----------------------------------------------------------------------------
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  tenantId  String
+  userId    String?
+  action    String
+  entity    String
+  entityId  String?
+  details   String?
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("audit_logs")
+}

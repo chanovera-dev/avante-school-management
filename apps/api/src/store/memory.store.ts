@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import { prisma } from '../lib/prisma.js';
 import {
   UserRole,
   TenantStatus,
@@ -287,6 +288,226 @@ class MemoryStore {
 
   constructor() {
     this.seedInitialData();
+  }
+
+  public async loadFromDatabase() {
+    try {
+      const dbTenants = await prisma.tenant.findMany({ include: { subscription: true } });
+      if (dbTenants && dbTenants.length > 0) {
+        this.tenants = dbTenants.map((t) => ({
+          id: t.id,
+          name: t.name,
+          subdomain: t.subdomain,
+          legalBusinessName: t.legalBusinessName,
+          rfc: t.rfc || undefined,
+          logoUrl: t.logoUrl || undefined,
+          contactEmail: t.contactEmail,
+          contactPhone: t.contactPhone,
+          timeZone: t.timeZone,
+          currency: t.currency,
+          gatewayFeePolicy: t.gatewayFeePolicy as any,
+          whatsappEnabled: t.whatsappEnabled,
+          status: t.status as any,
+          isEmailVerified: t.isEmailVerified,
+          subscription: t.subscription
+            ? {
+                id: t.subscription.id,
+                tenantId: t.subscription.tenantId,
+                planTier: t.subscription.planTier as any,
+                status: t.subscription.status as any,
+                startedAt: t.subscription.startedAt,
+                expiresAt: t.subscription.expiresAt || undefined,
+                maxStudentsLimit: t.subscription.maxStudentsLimit,
+                monthlyFeeMXN: t.subscription.monthlyFeeMXN,
+                isFreeLaunchPromo: t.subscription.isFreeLaunchPromo,
+              }
+            : undefined,
+          createdAt: t.createdAt,
+          updatedAt: t.updatedAt,
+        }));
+
+        const dbCampuses = await prisma.campus.findMany();
+        if (dbCampuses && dbCampuses.length > 0) {
+          this.campuses = dbCampuses.map((c) => ({
+            id: c.id,
+            tenantId: c.tenantId,
+            name: c.name,
+            code: c.code,
+            address: c.address,
+            phone: c.phone,
+            levelsOffered: c.levelsOffered as any,
+            isActive: c.isActive,
+            createdAt: c.createdAt,
+            updatedAt: c.updatedAt,
+          }));
+        }
+
+        const dbUsers = await prisma.user.findMany();
+        if (dbUsers && dbUsers.length > 0) {
+          this.users = dbUsers.map((u) => ({
+            id: u.id,
+            tenantId: u.tenantId,
+            email: u.email,
+            fullName: u.fullName,
+            role: u.role as any,
+            phone: u.phone || undefined,
+            campusId: u.campusId || undefined,
+            isEmailVerified: u.isEmailVerified,
+            isActive: u.isActive,
+            passwordHash: u.passwordHash,
+            lastLoginAt: u.lastLoginAt || undefined,
+            createdAt: u.createdAt,
+            updatedAt: u.updatedAt,
+          }));
+        }
+
+        const dbLevels = await prisma.educationalLevel.findMany();
+        if (dbLevels && dbLevels.length > 0) {
+          this.educationalLevels = dbLevels.map((l) => ({
+            id: l.id,
+            tenantId: l.tenantId,
+            name: l.name,
+            cctCode: l.code || 'CCT-001',
+            directorName: l.directorName || undefined,
+            directorEmail: l.directorEmail || undefined,
+            directorPhone: l.directorPhone || undefined,
+            isEmailVerified: l.isDirectorVerified,
+            grades: ['1', '2', '3', '4', '5', '6'],
+            createdAt: l.createdAt,
+            updatedAt: l.updatedAt,
+          }));
+        }
+
+        const dbCycles = await prisma.academicCycle.findMany();
+        if (dbCycles && dbCycles.length > 0) {
+          this.cycles = dbCycles.map((c) => ({
+            id: c.id,
+            tenantId: c.tenantId,
+            campusId: c.campusId || 'campus-central-01',
+            name: c.name,
+            startDate: c.startDate,
+            endDate: c.endDate,
+            status: c.status as any,
+          }));
+        }
+
+        const dbGroups = await prisma.academicGroup.findMany();
+        if (dbGroups && dbGroups.length > 0) {
+          this.groups = dbGroups.map((g) => ({
+            id: g.id,
+            tenantId: g.tenantId,
+            campusId: g.campusId,
+            cycleId: g.cycleId,
+            level: g.level as any,
+            gradeNumber: g.gradeNumber,
+            name: g.name,
+            shift: g.shift as any,
+            maxCapacity: g.maxCapacity,
+            type: g.type as any,
+            tutorTeacherId: g.tutorTeacherId || undefined,
+          }));
+        }
+
+        const dbTeachers = await prisma.teacher.findMany();
+        if (dbTeachers && dbTeachers.length > 0) {
+          this.teachers = dbTeachers.map((t) => ({
+            id: t.id,
+            tenantId: t.tenantId,
+            fullName: t.fullName,
+            email: t.email,
+            phone: t.phone || '',
+            levelId: 'PRIMARIA',
+            specialty: t.academicDegree || 'Educación General',
+            assignedGroup: '1º A',
+            assignedSubject: 'Matemáticas',
+            isEmailVerified: true,
+            createdAt: t.createdAt,
+            updatedAt: t.updatedAt,
+          }));
+        }
+
+        const dbSubjects = await prisma.subject.findMany();
+        if (dbSubjects && dbSubjects.length > 0) {
+          this.subjects = dbSubjects.map((s, idx) => ({
+            id: s.id,
+            tenantId: s.tenantId,
+            levelId: s.level,
+            name: s.name,
+            campoFormativo: 'Saberes y Pensamiento Científico',
+            isQualitative: false,
+            orderIndex: idx + 1,
+          }));
+        }
+
+        const dbStudents = await prisma.student.findMany();
+        if (dbStudents && dbStudents.length > 0) {
+          this.students = dbStudents.map((s) => ({
+            id: s.id,
+            tenantId: s.tenantId,
+            campusId: s.campusId,
+            studentCode: s.studentCode,
+            curp: s.curp || undefined,
+            firstName: s.firstName,
+            lastName: s.lastName,
+            birthDate: s.birthDate,
+            gender: s.gender as any,
+            status: s.status as any,
+            bloodType: s.bloodType || undefined,
+            allergies: s.allergies || undefined,
+            emergencyNotes: s.emergencyNotes || undefined,
+            currentGroupBaseId: s.currentGroupBaseId || undefined,
+            isConditional: s.isConditional,
+            conditionalDeadline: s.conditionalDeadline || undefined,
+            createdAt: s.createdAt,
+            updatedAt: s.updatedAt,
+          }));
+        }
+
+        const dbCharges = await prisma.charge.findMany();
+        if (dbCharges && dbCharges.length > 0) {
+          this.charges = dbCharges.map((ch) => ({
+            id: ch.id,
+            tenantId: ch.tenantId,
+            studentId: ch.studentId,
+            conceptName: ch.conceptName,
+            periodName: ch.periodName || '',
+            baseAmount: ch.baseAmount,
+            discountAmount: ch.discountAmount,
+            lateFeeAmount: ch.lateFeeAmount,
+            paidAmount: ch.paidAmount,
+            outstandingBalance: ch.outstandingBalance,
+            dueDate: ch.dueDate,
+            earlyBirdDueDate: ch.earlyBirdDueDate || undefined,
+            status: ch.status as any,
+            createdAt: ch.createdAt,
+            updatedAt: ch.updatedAt,
+          }));
+        }
+
+        const dbPayments = await prisma.paymentTransaction.findMany();
+        if (dbPayments && dbPayments.length > 0) {
+          this.payments = dbPayments.map((p) => ({
+            id: p.id,
+            tenantId: p.tenantId,
+            chargeId: p.chargeId || '',
+            studentId: p.studentId,
+            amount: p.amount,
+            method: p.method as any,
+            fundDestination: p.fundDestination as any,
+            status: p.status as any,
+            authorizationFolio: p.authorizationFolio || undefined,
+            isOfflineProvisional: p.isOfflineProvisional,
+            offlineLocalFolio: p.offlineLocalFolio || undefined,
+            paidAt: p.paidAt,
+            syncedAt: p.syncedAt || undefined,
+          }));
+        }
+
+        console.log(`📦 asm_db sincronizado: ${dbTenants.length} tenants, ${dbUsers.length} usuarios, ${dbStudents.length} alumnos.`);
+      }
+    } catch (err) {
+      console.warn('⚠️ No se pudo cargar datos desde PostgreSQL asm_db:', err);
+    }
   }
 
   private seedInitialData() {

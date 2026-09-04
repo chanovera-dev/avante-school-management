@@ -7,12 +7,20 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "prisma:generate": "prisma generate",
+    "prisma:push": "prisma db push",
+    "prisma:seed": "tsx prisma/seed.ts",
+    "prisma:studio": "prisma studio"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@asm/shared": "workspace:*",
     "@fastify/cors": "^11.0.0",
     "@fastify/jwt": "^9.0.4",
+    "@prisma/client": "^6.19.3",
     "bcryptjs": "^3.0.2",
     "dotenv": "^16.4.7",
     "fastify": "^5.2.1",
@@ -23,6 +31,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.13.10",
     "@types/nodemailer": "^8.0.1",
+    "prisma": "6.19.3",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2"
   }
