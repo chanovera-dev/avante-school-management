@@ -210,13 +210,32 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
     notes: '',
   });
 
+  // Los documentos inician vacíos (no prellenados) para cotejo real
   const [studentDocs, setStudentDocs] = useState([
-    { id: 'ACTA_NACIMIENTO', name: 'Acta de Nacimiento (Copia Certificada)', required: true, attached: true, fileName: 'acta_nacimiento_certificada.pdf' },
-    { id: 'CURP', name: 'CURP Certificada por RENAPO', required: true, attached: true, fileName: 'curp_oficial_renapo.pdf' },
-    { id: 'CARTILLA_VACUNACION', name: 'Cartilla Nacional de Salud / Vacunación', required: true, attached: true, fileName: 'cartilla_vacunacion_sellada.pdf' },
-    { id: 'COMPROBANTE_DOMICILIO', name: 'Comprobante de Domicilio (< 3 meses)', required: true, attached: true, fileName: 'comprobante_cfe_reciente.pdf' },
-    { id: 'CERTIFICADO_PREVIO', name: 'Boleta de Calificaciones Ciclo Anterior', required: false, attached: false, fileName: '' },
+    { id: 'ACTA_NACIMIENTO', name: 'Acta de Nacimiento (Copia Certificada)', required: true, attached: false, fileName: '' },
+    { id: 'CURP', name: 'CURP Oficial validada ante RENAPO', required: true, attached: false, fileName: '' },
+    { id: 'CARTILLA_VACUNACION', name: 'Cartilla Nacional de Salud / Vacunación', required: true, attached: false, fileName: '' },
+    { id: 'COMPROBANTE_DOMICILIO', name: 'Comprobante de Domicilio Vigente (< 3 meses)', required: true, attached: false, fileName: '' },
+    { id: 'CERTIFICADO_PREVIO', name: 'Boleta o Certificado de Estudios Previos', required: false, attached: false, fileName: '' },
   ]);
+
+  // Documentos requeridos faltantes para determinar si procede Inscripción Condicionada
+  const missingRequiredDocs = useMemo(() => {
+    return studentDocs.filter((d) => d.required && !d.attached);
+  }, [studentDocs]);
+
+  const hasMissingDocs = missingRequiredDocs.length > 0;
+
+  // Estado de Carta Compromiso de Entrega de Documentos (SEP)
+  const [compromiseAccepted, setCompromiseAccepted] = useState(false);
+  const [compromiseSignerName, setCompromiseSignerName] = useState('');
+  const [compromiseDeadlineDays] = useState(30);
+
+  const compromiseDeadlineDate = useMemo(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + compromiseDeadlineDays);
+    return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' });
+  }, [compromiseDeadlineDays]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [copiedClabe, setCopiedClabe] = useState(false);
@@ -225,6 +244,10 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
   const [submissionResult, setSubmissionResult] = useState<{
     applicant: any;
     emailResult?: any;
+    isConditional?: boolean;
+    missingDocs?: string[];
+    compromiseSigner?: string;
+    compromiseDeadline?: string;
     paymentSheet: {
       folio: string;
       amount: number;
@@ -269,7 +292,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
     }));
   };
 
-  const toggleDocAttachment = (id: string) => {
+  const toggleDocAttachment = (id: string, simulatedFile?: string) => {
     setStudentDocs((prev) =>
       prev.map((doc) => {
         if (doc.id === id) {
@@ -277,7 +300,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
           return {
             ...doc,
             attached: nextAttached,
-            fileName: nextAttached ? `${doc.id.toLowerCase()}_anexado.pdf` : '',
+            fileName: nextAttached ? (simulatedFile || `${doc.id.toLowerCase()}_anexo.pdf`) : '',
           };
         }
         return doc;
@@ -285,12 +308,34 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
     );
   };
 
+  const handleFileChange = (id: string, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setStudentDocs((prev) =>
+        prev.map((doc) => (doc.id === id ? { ...doc, attached: true, fileName: file.name } : doc))
+      );
+    }
+  };
+
   const handleStudentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validación de Documentos SEP y Carta Compromiso
+    if (hasMissingDocs && !compromiseAccepted) {
+      alert(`⚠️ Faltan ${missingRequiredDocs.length} documento(s) obligatorio(s) de la SEP:\n- ${missingRequiredDocs.map((d) => d.name).join('\n- ')}\n\nPara continuar con una Inscripción Condicionada, debes marcar la casilla y firmar digitalmente la Carta Compromiso de Prórroga.`);
+      return;
+    }
+
     setIsSubmitting(true);
 
     const year = new Date().getFullYear();
     const fallbackFolio = `ADM-${year}-${String(Math.floor(1000 + Math.random() * 9000))}`;
+    const isConditional = hasMissingDocs && compromiseAccepted;
+    const finalSigner = compromiseSignerName.trim() || studentForm.parentName;
+
+    const compromiseNotice = isConditional
+      ? `⚠️ INSCRIPCIÓN CONDICIONADA SEP: Carta Compromiso firmada por ${finalSigner}. Documentos pendientes de entrega física en 30 días naturales (${compromiseDeadlineDate}): ${missingRequiredDocs.map((d) => d.name).join(', ')}. `
+      : '';
 
     const newApplicant = {
       id: `app-${Date.now()}`,
@@ -306,7 +351,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
       parentName: studentForm.parentName,
       parentPhone: studentForm.parentPhone,
       parentEmail: studentForm.parentEmail,
-      status: 'REGISTRADO' as const,
+      status: isConditional ? ('DOCUMENTACION_EN_REVISION' as const) : ('REGISTRADO' as const),
       appliedAt: new Date().toISOString().split('T')[0],
       documents: studentDocs.map((d) => ({
         id: `doc-${d.id}`,
@@ -314,7 +359,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
         documentName: d.name,
         status: d.attached ? ('CARGADO' as const) : ('PENDIENTE' as const),
       })),
-      notes: `Tutor: ${studentForm.parentRelationship}. Sangre: ${studentForm.bloodType}. ${studentForm.medicalNotes ? `Notas médicas: ${studentForm.medicalNotes}` : ''}`,
+      notes: `${compromiseNotice}Tutor: ${studentForm.parentRelationship}. Sangre: ${studentForm.bloodType}. ${studentForm.medicalNotes ? `Notas médicas: ${studentForm.medicalNotes}` : ''}`,
     };
 
     // 1. Guardar de inmediato en localStorage para este colegio y el default
@@ -371,7 +416,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
           paymentMethod: studentForm.paymentMethod,
           tuitionFee: currentFee,
           submittedDocs: studentDocs.filter((d) => d.attached).map((d) => d.id),
-          notes: studentForm.notes || `Tipo de Sangre: ${studentForm.bloodType}. ${studentForm.medicalNotes}`,
+          notes: newApplicant.notes,
         }),
       });
 
@@ -379,7 +424,6 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
         const data = await res.json();
         if (data.applicant) {
           apiApplicant = data.applicant;
-          // Actualizar folio en localStorage si vino del backend
           try {
             const specificKey = `asm_applicants_${currentTenant.id || 'default'}`;
             const currentList = JSON.parse(localStorage.getItem(specificKey) || '[]');
@@ -404,6 +448,10 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
     setSubmissionResult({
       applicant: apiApplicant,
       emailResult: emailResultData,
+      isConditional,
+      missingDocs: missingRequiredDocs.map((d) => d.name),
+      compromiseSigner: finalSigner,
+      compromiseDeadline: compromiseDeadlineDate,
       paymentSheet: paymentSheetData,
     });
 
@@ -422,6 +470,15 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
   const handleResetEnrollForm = () => {
     setEnrollSubmitted(false);
     setSubmissionResult(null);
+    setCompromiseAccepted(false);
+    setCompromiseSignerName('');
+    setStudentDocs([
+      { id: 'ACTA_NACIMIENTO', name: 'Acta de Nacimiento (Copia Certificada)', required: true, attached: false, fileName: '' },
+      { id: 'CURP', name: 'CURP Oficial validada ante RENAPO', required: true, attached: false, fileName: '' },
+      { id: 'CARTILLA_VACUNACION', name: 'Cartilla Nacional de Salud / Vacunación', required: true, attached: false, fileName: '' },
+      { id: 'COMPROBANTE_DOMICILIO', name: 'Comprobante de Domicilio Vigente (< 3 meses)', required: true, attached: false, fileName: '' },
+      { id: 'CERTIFICADO_PREVIO', name: 'Boleta o Certificado de Estudios Previos', required: false, attached: false, fileName: '' },
+    ]);
     setStudentForm({
       studentFirstName: '',
       studentLastName: '',
@@ -637,14 +694,14 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
       {/* MODAL DE PREINSCRIPCIÓN DE ALUMNOS (CÉDULA OFICIAL SEP Y FICHA DE PAGO) */}
       {showStudentEnrollModal && (
         <div className="modal-backdrop">
-          <div className="modal-card modal-card-2xl max-h-[92vh] overflow-y-auto">
+          <div className="modal-card enrollment-modal-card">
             <div className="modal-header">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0">
                   <UserPlus className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="modal-title">Cédula Oficial de Inscripción en Línea</h3>
                     <span className="badge badge-emerald text-[10px] font-mono">Admisiones 2026-2027</span>
                   </div>
@@ -668,30 +725,65 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
 
             {enrollSubmitted ? (
               /* VISTA DE CONFIRMACIÓN: CÉDULA Y FICHA DE PAGO */
-              <div className="space-y-4 text-xs pt-2">
-                <div className="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-500/30 text-emerald-300 flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <CheckCircle2 className="w-5 h-5" />
-                  </div>
-                  <div className="flex-1">
+              <div className="space-y-4 text-xs pt-1">
+                {/* BANNER DE ESTADO SEGÚN COTEJO */}
+                {submissionResult?.isConditional ? (
+                  <div className="p-4 rounded-2xl bg-amber-950/20 border border-amber-500/40 text-amber-200 space-y-2">
                     <div className="flex items-center justify-between flex-wrap gap-2">
-                      <h4 className="font-bold text-sm text-emerald-200">¡Solicitud Registrada con Éxito en el Sistema!</h4>
-                      <div className="badge badge-emerald font-mono text-xs px-3 py-1 font-bold">
+                      <div className="flex items-center gap-2">
+                        <AlertCircle className="w-5 h-5 text-amber-400 flex-shrink-0" />
+                        <h4 className="font-bold text-sm text-amber-200">
+                          ⚠️ Inscripción Condicionada por Carta Compromiso SEP
+                        </h4>
+                      </div>
+                      <div className="badge badge-amber font-mono text-xs px-3 py-1 font-bold">
                         ⭐ Folio: {submissionResult?.applicant?.folio || 'ADM-2026-0001'}
                       </div>
                     </div>
-                    <p className="text-xs mt-1 text-emerald-300/90">
-                      El aspirante ha sido incorporado al módulo de <strong>Admisiones</strong> de la dirección escolar. Hemos enviado la ficha oficial y las instrucciones de ingreso al correo <strong>{studentForm.parentEmail}</strong>.
+                    <p className="text-xs text-amber-300/90 leading-relaxed">
+                      La preinscripción ha sido aceptada bajo <strong>condición de entrega documental posterior</strong>. Se ha generado la prórroga oficial de <strong>30 días naturales</strong> (límite: <strong>{submissionResult?.compromiseDeadline}</strong>) firmada digitalmente por <strong>{submissionResult?.compromiseSigner}</strong>.
                     </p>
+                    {submissionResult?.missingDocs && submissionResult.missingDocs.length > 0 && (
+                      <div className="bg-amber-900/30 p-2.5 rounded-xl border border-amber-500/20 mt-2">
+                        <span className="text-[11px] font-bold text-amber-300 block mb-1">
+                          Documentos oficiales pendientes de entrega física en Dirección Escolar:
+                        </span>
+                        <ul className="text-[11px] text-amber-200/90 space-y-0.5">
+                          {submissionResult.missingDocs.map((docName: string, idx: number) => (
+                            <li key={idx} className="flex items-center gap-1.5">
+                              <span>•</span>
+                              <span>{docName}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
-                </div>
+                ) : (
+                  <div className="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-500/30 text-emerald-300 flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <CheckCircle2 className="w-5 h-5" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between flex-wrap gap-2">
+                        <h4 className="font-bold text-sm text-emerald-200">¡Solicitud Registrada con Éxito en el Sistema!</h4>
+                        <div className="badge badge-emerald font-mono text-xs px-3 py-1 font-bold">
+                          ⭐ Folio: {submissionResult?.applicant?.folio || 'ADM-2026-0001'}
+                        </div>
+                      </div>
+                      <p className="text-xs mt-1 text-emerald-300/90">
+                        El aspirante cuenta con su expediente documental completo y ha sido incorporado al módulo de <strong>Admisiones</strong> de la dirección escolar.
+                      </p>
+                    </div>
+                  </div>
+                )}
 
                 {/* RESUMEN DEL ASPIRANTE Y TUTOR */}
-                <div className="dashboard-subcard p-4 rounded-2xl bg-surface border border-subtle space-y-3">
-                  <div className="text-[11px] font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
-                    <School className="w-3.5 h-3.5" /> Expediente Escolar Registrado
+                <div className="enrollment-section">
+                  <div className="enrollment-section-title">
+                    <School className="w-4 h-4" /> Expediente Escolar Registrado
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div className="grid-cols-3 gap-3">
                     <div className="bg-surface-subtle p-3 rounded-xl border border-subtle">
                       <span className="text-[10px] text-muted uppercase block">Aspirante</span>
                       <strong className="text-sm text-main block font-semibold">
@@ -701,7 +793,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                     </div>
 
                     <div className="bg-surface-subtle p-3 rounded-xl border border-subtle">
-                      <span className="text-[10px] text-muted uppercase block">Nivel y Grado Ofertado</span>
+                      <span className="text-[10px] text-muted uppercase block">Nivel y Grado</span>
                       <strong className="text-sm text-primary block font-semibold">
                         {studentForm.levelName}
                       </strong>
@@ -709,7 +801,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                     </div>
 
                     <div className="bg-surface-subtle p-3 rounded-xl border border-subtle">
-                      <span className="text-[10px] text-muted uppercase block">Padre / Madre / Tutor</span>
+                      <span className="text-[10px] text-muted uppercase block">Tutor Legal</span>
                       <strong className="text-sm text-main block font-semibold">{studentForm.parentName}</strong>
                       <span className="text-[11px] text-muted block mt-0.5">Tel: {studentForm.parentPhone}</span>
                     </div>
@@ -717,19 +809,19 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                 </div>
 
                 {/* FICHA OFICIAL DE PAGO */}
-                <div className="dashboard-subcard p-4 rounded-2xl bg-surface border border-primary/40 space-y-3">
+                <div className="enrollment-section" style={{ borderColor: 'var(--color-primary)' }}>
                   <div className="flex items-center justify-between flex-wrap gap-2">
-                    <div className="text-[11px] font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
-                      <CreditCard className="w-3.5 h-3.5" /> Ficha Oficial de Pago de Matrícula
+                    <div className="enrollment-section-title">
+                      <CreditCard className="w-4 h-4" /> Ficha Oficial de Pago de Matrícula
                     </div>
                     <div className="text-xs font-mono text-muted">
                       Método: <strong className="text-main">{studentForm.paymentMethod}</strong>
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-gradient-to-r from-sky-950/40 via-surface-subtle to-surface border border-sky-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                  <div className="p-4 rounded-xl bg-surface-subtle border border-subtle flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                     <div>
-                      <span className="text-[10px] text-sky-400 uppercase tracking-wider font-semibold block">
+                      <span className="text-[10px] text-primary uppercase tracking-wider font-semibold block">
                         Cuota de Admisión y Matrícula ({studentForm.levelName})
                       </span>
                       <div className="text-2xl font-black text-emerald-400 font-mono mt-0.5">
@@ -741,9 +833,9 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                     </div>
 
                     {studentForm.paymentMethod === 'SPEI' ? (
-                      <div className="bg-surface p-3 rounded-xl border border-subtle space-y-1.5 w-full md:w-auto min-w-[280px]">
+                      <div className="bg-surface p-3 rounded-xl border border-subtle space-y-1.5 w-full md:w-auto" style={{ minWidth: '260px' }}>
                         <div className="flex items-center justify-between">
-                          <span className="text-[10px] text-muted uppercase font-mono">Banco Receptor: STP / BBVA</span>
+                          <span className="text-[10px] text-muted uppercase font-mono">Banco: STP / BBVA</span>
                           <span className="badge badge-sky text-[9px]">SPEI Instantáneo</span>
                         </div>
                         <div className="flex items-center justify-between gap-2">
@@ -788,11 +880,11 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                 </div>
 
                 {/* ESTADO DOCUMENTAL SEP */}
-                <div className="dashboard-subcard p-4 rounded-2xl bg-surface border border-subtle space-y-2">
-                  <div className="text-[11px] font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
-                    <FileText className="w-3.5 h-3.5" /> Estado del Cotejo Documental SEP
+                <div className="enrollment-section">
+                  <div className="enrollment-section-title">
+                    <FileText className="w-4 h-4" /> Estado del Cotejo Documental SEP
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  <div className="grid-cols-2 gap-2">
                     {studentDocs.map((doc) => (
                       <div key={doc.id} className="flex items-center justify-between p-2 rounded-xl bg-surface-subtle border border-subtle text-[11px]">
                         <div className="flex items-center gap-2 truncate">
@@ -803,8 +895,8 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                           )}
                           <span className="truncate">{doc.name}</span>
                         </div>
-                        <span className={`badge ${doc.attached ? 'badge-emerald' : 'badge-amber'} text-[9px] flex-shrink-0`}>
-                          {doc.attached ? '✓ Anexado' : '⏳ Pendiente'}
+                        <span className={`badge ${doc.attached ? 'badge-emerald' : (doc.required ? 'badge-amber' : 'badge-subtle')} text-[9px] flex-shrink-0`}>
+                          {doc.attached ? '✓ Anexado' : (doc.required ? '⏳ Con Prórroga' : 'Opcional')}
                         </span>
                       </div>
                     ))}
@@ -815,7 +907,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                 <div className="p-3 rounded-2xl bg-sky-950/20 border border-sky-500/30 flex items-center justify-between flex-wrap gap-2">
                   <div className="flex items-center gap-2 text-xs text-sky-300">
                     <Mail className="w-4 h-4 text-sky-400" />
-                    <span>¿Deseas verificar el correo de confirmación enviado?</span>
+                    <span>Se envió la confirmación y ficha a <strong>{studentForm.parentEmail}</strong></span>
                   </div>
                   <button
                     type="button"
@@ -823,11 +915,11 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                     className="btn btn-outline btn-sm text-xs flex items-center gap-1.5"
                   >
                     <Eye className="w-3.5 h-3.5" />
-                    <span>📧 Ver Correo Electrónico Enviado</span>
+                    <span>📧 Ver Correo Enviado</span>
                   </button>
                 </div>
 
-                {/* ACCIONES DE CIERRE Y PRUEBA INMEDIATA EN PANEL DE DIRECTOR */}
+                {/* ACCIONES DE CIERRE */}
                 <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-subtle">
                   <div className="flex items-center gap-2 w-full sm:w-auto">
                     <button
@@ -862,12 +954,12 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
               /* FORMULARIO DE CAPTURA COMPLETO */
               <form onSubmit={handleStudentSubmit} className="space-y-4 text-xs pt-1">
                 {/* SECCIÓN 1: DATOS DEL ASPIRANTE */}
-                <div className="dashboard-subcard p-4 rounded-2xl bg-surface border border-subtle space-y-3">
-                  <div className="text-[11px] font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
-                    <UserPlus className="w-3.5 h-3.5" /> 1. Datos Personales del Aspirante
+                <div className="enrollment-section">
+                  <div className="enrollment-section-title">
+                    <UserPlus className="w-4 h-4" /> 1. Datos Personales del Aspirante
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="grid-cols-2 gap-3">
                     <div>
                       <label className="form-label">Nombre(s) del Aspirante *</label>
                       <input
@@ -892,7 +984,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div className="grid-cols-3 gap-3">
                     <div>
                       <label className="form-label">CURP (18 Caracteres) *</label>
                       <input
@@ -906,7 +998,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                       />
                       {studentForm.curp.length === 18 && (
                         <span className="text-[10px] text-emerald-400 mt-1 block">
-                          ✓ CURP con formato válido (Fecha y Sexo calculados)
+                          ✓ CURP con formato válido
                         </span>
                       )}
                     </div>
@@ -939,7 +1031,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="grid-cols-2 gap-3">
                     <div>
                       <label className="form-label">Grupo Sanguíneo y Factor Rh</label>
                       <ModernSelect
@@ -962,7 +1054,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                     </div>
 
                     <div>
-                      <label className="form-label">Alergias o Observaciones Médicas (Opcional)</label>
+                      <label className="form-label">Alergias u Observaciones Médicas</label>
                       <input
                         type="text"
                         value={studentForm.medicalNotes}
@@ -975,17 +1067,17 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                 </div>
 
                 {/* SECCIÓN 2: ASIGNACIÓN DE NIVEL Y GRADO */}
-                <div className="dashboard-subcard p-4 rounded-2xl bg-surface border border-subtle space-y-3">
+                <div className="enrollment-section">
                   <div className="flex items-center justify-between">
-                    <div className="text-[11px] font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
-                      <School className="w-3.5 h-3.5" /> 2. Nivel Educativo y Grado Ofertado
+                    <div className="enrollment-section-title">
+                      <School className="w-4 h-4" /> 2. Nivel Educativo y Grado Ofertado
                     </div>
                     <span className="badge badge-sky text-[10px] font-mono font-bold">
                       Cuota: {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(currentFee)}
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="grid-cols-2 gap-3">
                     <div>
                       <label className="form-label">Nivel Escolar Solicitado *</label>
                       <ModernSelect
@@ -1037,12 +1129,12 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                 </div>
 
                 {/* SECCIÓN 3: PADRE, MADRE O TUTOR */}
-                <div className="dashboard-subcard p-4 rounded-2xl bg-surface border border-subtle space-y-3">
-                  <div className="text-[11px] font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
-                    <Users className="w-3.5 h-3.5" /> 3. Datos del Padre, Madre o Tutor Legal
+                <div className="enrollment-section">
+                  <div className="enrollment-section-title">
+                    <Users className="w-4 h-4" /> 3. Datos del Padre, Madre o Tutor Legal
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="grid-cols-2 gap-3">
                     <div>
                       <label className="form-label">Nombre Completo del Tutor *</label>
                       <input
@@ -1072,7 +1164,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="grid-cols-2 gap-3">
                     <div>
                       <label className="form-label">Teléfono Celular / WhatsApp *</label>
                       <input
@@ -1100,140 +1192,245 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                 </div>
 
                 {/* SECCIÓN 4: EXPEDIENTE SEP (DOCUMENTOS) */}
-                <div className="dashboard-subcard p-4 rounded-2xl bg-surface border border-subtle space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="text-[11px] font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
-                      <FileText className="w-3.5 h-3.5" /> 4. Cotejo Documental Requerido (SEP)
+                <div className="enrollment-section">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <div className="enrollment-section-title">
+                      <FileText className="w-4 h-4" /> 4. Cotejo Documental Requerido (SEP)
                     </div>
-                    <span className="text-[10px] text-muted">Marca los documentos que tienes listos</span>
+                    <span className={`badge ${hasMissingDocs ? 'badge-amber' : 'badge-emerald'} text-[10px]`}>
+                      {hasMissingDocs
+                        ? `${studentDocs.filter(d => d.required && d.attached).length}/${missingRequiredDocs.length + studentDocs.filter(d => d.required && d.attached).length} obligatorios adjuntos`
+                        : '✓ Documentación Completa'}
+                    </span>
                   </div>
+
+                  <p className="text-[11px] text-muted">
+                    Adjunta tus documentos en formato PDF o imagen. Si no dispones de algún documento en este momento, podrás aplicar para una <strong>Inscripción Condicionada</strong> firmando la Carta Compromiso institucional abajo.
+                  </p>
 
                   <div className="space-y-2">
                     {studentDocs.map((doc) => (
                       <div
                         key={doc.id}
-                        className={`p-2.5 rounded-xl border transition-all flex items-center justify-between gap-3 ${
-                          doc.attached ? 'bg-emerald-950/20 border-emerald-500/30' : 'bg-surface-subtle border-subtle'
-                        }`}
+                        className={`doc-item-row ${doc.attached ? 'attached' : (doc.required ? 'missing' : '')}`}
                       >
-                        <div className="flex items-center gap-2.5">
+                        <div className="flex items-center gap-2.5 min-w-0">
                           <button
                             type="button"
                             onClick={() => toggleDocAttachment(doc.id)}
-                            className={`w-5 h-5 rounded-lg flex items-center justify-center border transition-colors ${
-                              doc.attached ? 'bg-emerald-500 text-white border-emerald-600' : 'bg-surface border-subtle text-transparent'
+                            className={`w-6 h-6 rounded-lg flex items-center justify-center border transition-colors flex-shrink-0 ${
+                              doc.attached ? 'bg-emerald-500 text-white border-emerald-600' : 'bg-surface border-subtle text-muted hover:border-primary'
                             }`}
+                            title={doc.attached ? 'Desmarcar' : 'Marcar adjunto'}
                           >
-                            <Check className="w-3.5 h-3.5" />
+                            {doc.attached ? <Check className="w-4 h-4" /> : <Square className="w-4 h-4 opacity-40" />}
                           </button>
-                          <div>
-                            <span className="font-medium text-main text-[11px] block">{doc.name}</span>
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <span className="font-semibold text-main text-xs">{doc.name}</span>
+                              <span className={`badge ${doc.required ? 'badge-amber' : 'badge-subtle'} text-[9px]`}>
+                                {doc.required ? 'Obligatorio SEP' : 'Opcional'}
+                              </span>
+                            </div>
                             {doc.attached && doc.fileName ? (
-                              <span className="text-[10px] text-emerald-400 font-mono flex items-center gap-1">
-                                <Paperclip className="w-2.5 h-2.5" /> {doc.fileName}
+                              <span className="text-[10px] text-emerald-600 font-mono flex items-center gap-1 mt-0.5 truncate">
+                                <Paperclip className="w-3 h-3 flex-shrink-0" /> {doc.fileName}
                               </span>
                             ) : (
-                              <span className="text-[10px] text-muted block">
-                                {doc.required ? 'Obligatorio para matrícula oficial' : 'Opcional / según grado'}
+                              <span className="text-[10px] text-muted block mt-0.5">
+                                {doc.attached ? '✓ Documento listo para cotejo' : 'Sin archivo adjunto aún'}
                               </span>
                             )}
                           </div>
                         </div>
 
-                        <button
-                          type="button"
-                          onClick={() => toggleDocAttachment(doc.id)}
-                          className={`btn btn-xs ${doc.attached ? 'btn-ghost text-emerald-400' : 'btn-outline text-[10px]'}`}
-                        >
-                          {doc.attached ? 'Anexado' : 'Adjuntar PDF'}
-                        </button>
+                        <div className="flex items-center gap-2 flex-shrink-0">
+                          <input
+                            type="file"
+                            accept=".pdf,image/*"
+                            id={`file-upload-${doc.id}`}
+                            style={{ display: 'none' }}
+                            onChange={(e) => handleFileChange(doc.id, e)}
+                          />
+                          {doc.attached ? (
+                            <button
+                              type="button"
+                              onClick={() => toggleDocAttachment(doc.id)}
+                              className="btn btn-ghost btn-xs text-danger text-[11px]"
+                            >
+                              ✕ Quitar
+                            </button>
+                          ) : (
+                            <label
+                              htmlFor={`file-upload-${doc.id}`}
+                              className="btn btn-outline btn-xs flex items-center gap-1.5 cursor-pointer text-[11px]"
+                            >
+                              <UploadCloud className="w-3.5 h-3.5" />
+                              <span>Subir Archivo</span>
+                            </label>
+                          )}
+                        </div>
                       </div>
                     ))}
                   </div>
+
+                  {/* CARTA COMPROMISO SEP SI FALTAN DOCUMENTOS OBLIGATORIOS */}
+                  {hasMissingDocs ? (
+                    <div className="compromise-letter-card mt-3">
+                      <div className="letter-title">
+                        <AlertCircle className="w-4 h-4 text-amber-500" />
+                        <span>Inscripción Condicionada: Carta Compromiso de Entrega Documental (SEP)</span>
+                      </div>
+
+                      <div className="letter-body">
+                        <p className="mb-2">
+                          Por medio del presente instrumento, conforme a la normativa vigente de Control Escolar de la <strong>Secretaría de Educación Pública (SEP)</strong>, yo, el padre, madre o tutor legal que suscribe, manifiesto bajo protesta de decir verdad que al día de hoy no cuento físicamente con la totalidad de los documentos oficiales requeridos para la matrícula definitiva.
+                        </p>
+                        <p className="font-semibold mb-1">
+                          Documentos obligatorios pendientes de cotejo en la Dirección Escolar:
+                        </p>
+                        <ul className="list-disc pl-5 mb-2 font-mono text-[11px]">
+                          {missingRequiredDocs.map((doc) => (
+                            <li key={doc.id}>{doc.name}</li>
+                          ))}
+                        </ul>
+                        <p className="mb-2">
+                          Me comprometo formalmente a entregar los documentos originales y copias legibles en la oficina de Control Escolar en un plazo improrrogable de <strong>{compromiseDeadlineDays} días naturales</strong> a partir de esta fecha (con fecha límite el <strong>{compromiseDeadlineDate}</strong>).
+                        </p>
+                        <p className="text-[11px] opacity-90 italic">
+                          * Nota: Si fenecido el plazo no se entregan los documentos requeridos, la inscripción provisional quedará suspendida conforme al reglamento escolar.
+                        </p>
+                      </div>
+
+                      <div className="space-y-2 pt-1">
+                        <div>
+                          <label className="form-label text-[11px] font-bold text-amber-900">
+                            Nombre Completo del Tutor que Firma el Compromiso *
+                          </label>
+                          <input
+                            type="text"
+                            value={compromiseSignerName}
+                            onChange={(e) => setCompromiseSignerName(e.target.value)}
+                            placeholder={studentForm.parentName || 'Escribe tu nombre completo como firma digital'}
+                            className="form-input w-full bg-white"
+                          />
+                        </div>
+
+                        <label className="letter-checkbox-label">
+                          <input
+                            type="checkbox"
+                            checked={compromiseAccepted}
+                            onChange={(e) => setCompromiseAccepted(e.target.checked)}
+                          />
+                          <span>
+                            He leído y acepto los términos de la <strong>Carta Compromiso de Prórroga Documental SEP</strong> con fecha límite al {compromiseDeadlineDate}.
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 flex items-center gap-2 text-xs">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                      <span>¡Excelente! Tienes todos los documentos obligatorios requeridos por la SEP listos para su validación oficial.</span>
+                    </div>
+                  )}
                 </div>
 
-                {/* SECCIÓN 5: FORMA DE PAGO */}
-                <div className="dashboard-subcard p-4 rounded-2xl bg-surface border border-subtle space-y-3">
-                  <div className="text-[11px] font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
-                    <CreditCard className="w-3.5 h-3.5" /> 5. Método de Pago de la Cuota de Matrícula
+                {/* SECCIÓN 5: MÉTODO DE PAGO */}
+                <div className="enrollment-section">
+                  <div className="enrollment-section-title">
+                    <CreditCard className="w-4 h-4" /> 5. Método de Pago de la Cuota de Matrícula
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <div
+                  <div className="payment-methods-grid">
+                    <button
+                      type="button"
                       onClick={() => setStudentForm({ ...studentForm, paymentMethod: 'SPEI' })}
-                      className={`p-3 rounded-xl border cursor-pointer transition-all ${
-                        studentForm.paymentMethod === 'SPEI'
-                          ? 'bg-sky-950/30 border-sky-500 text-sky-300 ring-2 ring-sky-500/20'
-                          : 'bg-surface-subtle border-subtle opacity-70 hover:opacity-100'
-                      }`}
+                      className={`payment-method-card ${studentForm.paymentMethod === 'SPEI' ? 'selected' : ''}`}
                     >
-                      <div className="flex items-center justify-between mb-1.5">
-                        <Building2 className="w-4 h-4 text-sky-400" />
-                        <span className="badge badge-sky text-[9px]">Recomendado</span>
+                      <div className="method-header">
+                        <div className="flex items-center gap-2">
+                          <Building2 className="w-4 h-4 text-sky-500" />
+                          <span className="method-title">Transferencia SPEI</span>
+                        </div>
+                        <div className="radio-indicator">
+                          <div className="radio-indicator-dot" />
+                        </div>
                       </div>
-                      <strong className="text-xs block text-main">Transferencia SPEI</strong>
-                      <p className="text-[10px] text-muted mt-1 leading-relaxed">
-                        Genera CLABE única STP / BBVA para pago desde banca móvil con validación inmediata.
+                      <p className="method-desc">
+                        Genera CLABE STP/BBVA única con confirmación automática 24/7.
                       </p>
-                    </div>
+                      <span className="badge badge-sky text-[9px] self-start">Recomendado</span>
+                    </button>
 
-                    <div
+                    <button
+                      type="button"
                       onClick={() => setStudentForm({ ...studentForm, paymentMethod: 'CAJA' })}
-                      className={`p-3 rounded-xl border cursor-pointer transition-all ${
-                        studentForm.paymentMethod === 'CAJA'
-                          ? 'bg-amber-950/30 border-amber-500 text-amber-300 ring-2 ring-amber-500/20'
-                          : 'bg-surface-subtle border-subtle opacity-70 hover:opacity-100'
-                      }`}
+                      className={`payment-method-card ${studentForm.paymentMethod === 'CAJA' ? 'selected' : ''}`}
                     >
-                      <div className="flex items-center justify-between mb-1.5">
-                        <DollarSign className="w-4 h-4 text-amber-400" />
-                        <span className="badge badge-amber text-[9px]">En Colegio</span>
+                      <div className="method-header">
+                        <div className="flex items-center gap-2">
+                          <DollarSign className="w-4 h-4 text-amber-500" />
+                          <span className="method-title">Efectivo en Caja</span>
+                        </div>
+                        <div className="radio-indicator">
+                          <div className="radio-indicator-dot" />
+                        </div>
                       </div>
-                      <strong className="text-xs block text-main">Efectivo en Caja</strong>
-                      <p className="text-[10px] text-muted mt-1 leading-relaxed">
-                        Paga en ventanilla de administración del plantel en horario hábil con tu folio.
+                      <p className="method-desc">
+                        Pago en ventanilla de administración escolar de 07:30 a 15:30 hrs.
                       </p>
-                    </div>
+                      <span className="badge badge-amber text-[9px] self-start">En Plantel</span>
+                    </button>
 
-                    <div
+                    <button
+                      type="button"
                       onClick={() => setStudentForm({ ...studentForm, paymentMethod: 'TARJETA' })}
-                      className={`p-3 rounded-xl border cursor-pointer transition-all ${
-                        studentForm.paymentMethod === 'TARJETA'
-                          ? 'bg-emerald-950/30 border-emerald-500 text-emerald-300 ring-2 ring-emerald-500/20'
-                          : 'bg-surface-subtle border-subtle opacity-70 hover:opacity-100'
-                      }`}
+                      className={`payment-method-card ${studentForm.paymentMethod === 'TARJETA' ? 'selected' : ''}`}
                     >
-                      <div className="flex items-center justify-between mb-1.5">
-                        <CreditCard className="w-4 h-4 text-emerald-400" />
-                        <span className="badge badge-emerald text-[9px]">Online</span>
+                      <div className="method-header">
+                        <div className="flex items-center gap-2">
+                          <CreditCard className="w-4 h-4 text-emerald-500" />
+                          <span className="method-title">Tarjeta Débito / Crédito</span>
+                        </div>
+                        <div className="radio-indicator">
+                          <div className="radio-indicator-dot" />
+                        </div>
                       </div>
-                      <strong className="text-xs block text-main">Tarjeta Débito / Crédito</strong>
-                      <p className="text-[10px] text-muted mt-1 leading-relaxed">
-                        Cargo en línea con pasarela segura sin comisiones adicionales para el tutor.
+                      <p className="method-desc">
+                        Cargo en línea protegido con pasarela bancaria y comprobante inmediato.
                       </p>
-                    </div>
+                      <span className="badge badge-emerald text-[9px] self-start">En Línea</span>
+                    </button>
                   </div>
                 </div>
 
                 {/* BOTONES DEL FORMULARIO */}
-                <div className="flex items-center justify-between gap-3 pt-2">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
                   <button
                     type="button"
                     onClick={() => setShowStudentEnrollModal(false)}
-                    className="btn btn-secondary"
+                    className="btn btn-secondary w-full sm:w-auto"
                   >
                     Cancelar
                   </button>
 
                   <button
                     type="submit"
-                    disabled={isSubmitting}
-                    className="btn btn-success flex items-center gap-2 px-6 py-2.5 font-bold shadow-md shadow-emerald-500/20"
+                    disabled={isSubmitting || (hasMissingDocs && !compromiseAccepted)}
+                    className={`btn ${hasMissingDocs ? 'btn-primary' : 'btn-success'} flex items-center justify-center gap-2 px-6 py-2.5 font-bold shadow-md w-full sm:w-auto ${
+                      hasMissingDocs && !compromiseAccepted ? 'opacity-60 cursor-not-allowed' : ''
+                    }`}
                   >
                     {isSubmitting ? (
                       <>
                         <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
                         <span>Registrando y Enviando Correo...</span>
+                      </>
+                    ) : hasMissingDocs ? (
+                      <>
+                        <AlertCircle className="w-4 h-4" />
+                        <span>{compromiseAccepted ? 'Firmar Carta Compromiso y Registrar Preinscripción' : 'Firma la Carta Compromiso para continuar'}</span>
                       </>
                     ) : (
                       <>

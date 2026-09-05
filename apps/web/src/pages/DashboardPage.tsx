@@ -9975,7 +9975,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
 
                         {/* Estatus del Aspirante */}
-                        <div>
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          {applicant.notes && applicant.notes.includes('INSCRIPCIÓN CONDICIONADA') && (
+                            <div className="badge badge-amber font-bold">
+                              ⚠️ Inscripción Condicionada (SEP)
+                            </div>
+                          )}
                           {applicant.status === 'REGISTRADO' && (
                             <div className="bg-subtle text-muted text-xs font-bold px-3 py-1 rounded-xl border border-subtle">
                               📋 Registrado
@@ -10026,14 +10031,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             Tel: <div className="text-muted font-mono">{applicant.parentPhone}</div> • Correo: <div className="text-muted font-mono">{applicant.parentEmail}</div>
                           </div>
                           {applicant.notes && (
-                            <div className="badge badge-sky">
-                              "{applicant.notes}"
+                            <div className={`p-2.5 rounded-xl text-xs mt-1.5 leading-relaxed ${applicant.notes.includes('INSCRIPCIÓN CONDICIONADA') ? 'bg-amber-950/20 border border-amber-500/40 text-amber-300 font-medium' : 'bg-surface-subtle border border-subtle text-muted'}`}>
+                              {applicant.notes}
                             </div>
                           )}
                         </div>
 
                         {/* Documentos y Requisitos */}
-                        <div className="badge badge-sky">
+                        <div className="bg-surface-subtle p-3 rounded-2xl border border-subtle space-y-2">
                           <div className="flex items-center justify-between text-xs">
                             <div className="font-bold text-muted">Expediente Documental:</div>
                             <div className="font-mono text-amber-400 font-bold">
@@ -10063,7 +10068,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
 
                         {/* Citas y Evaluación */}
-                        <div className="badge badge-sky">
+                        <div className="bg-surface-subtle p-3 rounded-2xl border border-subtle space-y-2">
                           <div className="font-bold text-muted text-xs block">
                             Evaluación Diagnóstica:
                           </div>
