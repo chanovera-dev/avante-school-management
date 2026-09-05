@@ -56,6 +56,17 @@ export function App() {
 
   const [activeRole, setActiveRole] = useState<'SUPER_ADMIN' | 'DIRECTOR' | 'DOCENTE' | 'CONTROL_ESCOLAR' | 'FINANZAS' | 'TUTOR'>('DIRECTOR');
   
+  const [currentUser, setCurrentUser] = useState<{
+    id: string;
+    email: string;
+    fullName: string;
+    role: string;
+    assignedLevel?: string | null;
+    assignedLevelName?: string | null;
+    isDirectorVerified?: boolean;
+    isGeneralAdmin?: boolean;
+  } | null>(null);
+
   const [isCheckingSubdomain, setIsCheckingSubdomain] = useState(detected.isSubdomain && !detected.isAdmin);
   const [subdomainNotFound, setSubdomainNotFound] = useState(false);
 
@@ -72,6 +83,34 @@ export function App() {
     adminEmail: '',
     levelsOffered: [],
   });
+
+  // Restaurar sesión activa si hay token guardado
+  useEffect(() => {
+    const token = localStorage.getItem('asm_token');
+    if (token) {
+      fetch('/api/auth/me', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (data && data.user) {
+            setCurrentUser(data.user);
+            setActiveRole(data.user.role);
+            if (data.tenant) {
+              setCurrentTenant((prev) => ({
+                ...prev,
+                id: data.tenant.id,
+                name: data.tenant.name,
+                subdomain: data.tenant.subdomain,
+                adminEmail: data.user.email || data.tenant.contactEmail,
+                levelsOffered: data.tenant.levelsOffered || prev.levelsOffered,
+              }));
+            }
+          }
+        })
+        .catch(() => {});
+    }
+  }, []);
 
   // Si cambia el hostname o se detecta subdominio
   useEffect(() => {
@@ -128,6 +167,7 @@ export function App() {
     name: string;
     subdomain: string;
     adminEmail: string;
+    adminFullName?: string;
     levelsOffered?: string[];
   }) => {
     setCurrentTenant({
@@ -136,6 +176,14 @@ export function App() {
       subdomain: school.subdomain,
       adminEmail: school.adminEmail,
       levelsOffered: school.levelsOffered,
+    });
+    setCurrentUser({
+      id: `user-owner-${school.id}`,
+      email: school.adminEmail,
+      fullName: school.adminFullName || 'Director General',
+      role: 'DIRECTOR',
+      isGeneralAdmin: true,
+      assignedLevel: null,
     });
     setActiveRole('DIRECTOR');
     setCurrentRoute('dashboard');
@@ -147,6 +195,9 @@ export function App() {
     tenantData?: any
   ) => {
     setActiveRole(role);
+    if (userData) {
+      setCurrentUser(userData);
+    }
     if (tenantData) {
       setCurrentTenant({
         id: tenantData.id,
@@ -252,11 +303,12 @@ export function App() {
           />
         ) : (
           <DashboardPage
-            key={currentTenant.id}
+            key={currentTenant.id + (currentUser?.id || '')}
             onNavigate={setCurrentRoute}
             activeRole={activeRole}
             setActiveRole={setActiveRole}
             currentTenant={currentTenant}
+            currentUser={currentUser}
           />
         )
       )}

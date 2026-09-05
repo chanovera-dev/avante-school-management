@@ -2,6 +2,7 @@ import { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import bcrypt from 'bcryptjs';
 import { store } from '../store/memory.store.js';
+import { prisma } from '../lib/prisma.js';
 import { authenticate, requireRoles } from '../middleware/auth.middleware.js';
 import { emailService } from '../services/email.service.js';
 import {
@@ -90,75 +91,112 @@ export async function academicRoutes(fastify: FastifyInstance) {
   // 1. Listar Niveles Educativos y Directores
   fastify.get('/levels', { preHandler: [authenticate] }, async (request, reply) => {
     const tenantId = request.userPayload!.tenantId;
-    let levels = store.educationalLevels.filter((l) => l.tenantId === tenantId);
 
-    // Inicializar sólo los niveles que la escuela realmente oferta (o vacío si no tiene)
-    if (levels.length === 0) {
+    const levelMap: Record<string, { name: string; cctCode: string; grades: string[] }> = {
+      GUARDERIA: {
+        name: 'Guardería / Maternal',
+        cctCode: '30PDI0001X',
+        grades: ['Lactantes', 'Maternal A', 'Maternal B'],
+      },
+      PREESCOLAR: {
+        name: 'Preescolar / Jardín de Niños',
+        cctCode: '30PJN0145X',
+        grades: ['1º Kínder', '2º Kínder', '3º Kínder'],
+      },
+      KINDER_PREESCOLAR: {
+        name: 'Preescolar / Jardín de Niños',
+        cctCode: '30PJN0145X',
+        grades: ['1º Kínder', '2º Kínder', '3º Kínder'],
+      },
+      PRIMARIA: {
+        name: 'Primaria',
+        cctCode: '30PPR0289Z',
+        grades: ['1º Primaria', '2º Primaria', '3º Primaria', '4º Primaria', '5º Primaria', '6º Primaria'],
+      },
+      SECUNDARIA: {
+        name: 'Secundaria',
+        cctCode: '30PES0100Y',
+        grades: ['1º Secundaria', '2º Secundaria', '3º Secundaria'],
+      },
+      PREPARATORIA: {
+        name: 'Preparatoria / Bachillerato',
+        cctCode: '30PBH0050W',
+        grades: ['1º Semestre', '2º Semestre', '3º Semestre', '4º Semestre', '5º Semestre', '6º Semestre'],
+      },
+    };
+
+    let dbLevels = await prisma.educationalLevel.findMany({
+      where: { tenantId },
+    });
+
+    if (dbLevels.length === 0) {
       const campus = store.campuses.find((c) => c.tenantId === tenantId);
       const offered = campus?.levelsOffered || [];
 
       if (offered.length > 0) {
-        const levelMap: Record<string, { name: string; cctCode: string; grades: string[] }> = {
-          GUARDERIA: {
-            name: 'Guardería / Maternal',
-            cctCode: '30PDI0001X',
-            grades: ['Lactantes', 'Maternal A', 'Maternal B'],
-          },
-          PREESCOLAR: {
-            name: 'Preescolar / Jardín de Niños',
-            cctCode: '30PJN0145X',
-            grades: ['1º Kínder', '2º Kínder', '3º Kínder'],
-          },
-          KINDER_PREESCOLAR: {
-            name: 'Preescolar / Jardín de Niños',
-            cctCode: '30PJN0145X',
-            grades: ['1º Kínder', '2º Kínder', '3º Kínder'],
-          },
-          PRIMARIA: {
-            name: 'Primaria',
-            cctCode: '30PPR0289Z',
-            grades: ['1º Primaria', '2º Primaria', '3º Primaria', '4º Primaria', '5º Primaria', '6º Primaria'],
-          },
-          SECUNDARIA: {
-            name: 'Secundaria',
-            cctCode: '30PES0100Y',
-            grades: ['1º Secundaria', '2º Secundaria', '3º Secundaria'],
-          },
-          PREPARATORIA: {
-            name: 'Preparatoria / Bachillerato',
-            cctCode: '30PBH0050W',
-            grades: ['1º Semestre', '2º Semestre', '3º Semestre', '4º Semestre', '5º Semestre', '6º Semestre'],
-          },
-        };
-
-        const newLevels: EducationalLevelDTO[] = offered.map((lvl) => {
+        for (const lvl of offered) {
           const info = levelMap[lvl] || {
             name: lvl,
             cctCode: '30PPR0000X',
             grades: [],
           };
           const normId = lvl === 'KINDER_PREESCOLAR' ? 'PREESCOLAR' : lvl;
-          return {
-            id: normId,
-            tenantId,
-            name: info.name,
-            cctCode: info.cctCode,
-            grades: info.grades,
-            isEmailVerified: false,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          };
+          try {
+            await prisma.educationalLevel.create({
+              data: {
+                id: `lvl-${normId.toLowerCase()}-${Date.now()}`,
+                tenantId,
+                level: normId,
+                name: info.name,
+                code: info.cctCode,
+                evaluationScale: 'NUMERICA_SEP_DECIMAL',
+              },
+            });
+          } catch (err) {
+            // Ignorar duplicados
+          }
+        }
+        dbLevels = await prisma.educationalLevel.findMany({
+          where: { tenantId },
         });
-
-        store.educationalLevels.push(...newLevels);
-        levels = newLevels;
       }
+    }
+
+    let levels: EducationalLevelDTO[] = [];
+    if (dbLevels.length > 0) {
+      levels = dbLevels.map((dl) => {
+        const info = levelMap[dl.level] || {
+          name: dl.name,
+          cctCode: dl.code,
+          grades: [],
+        };
+        return {
+          id: dl.level,
+          tenantId: dl.tenantId,
+          name: dl.name || info.name,
+          cctCode: dl.code || info.cctCode,
+          grades: info.grades,
+          directorName: dl.directorName || '',
+          directorEmail: dl.directorEmail || '',
+          directorPhone: dl.directorPhone || '',
+          directorTitle: `Dirección de ${dl.name || info.name}`,
+          isEmailVerified: dl.isDirectorVerified,
+          createdAt: dl.createdAt,
+          updatedAt: dl.updatedAt,
+        };
+      });
+
+      // Sincronizar store en memoria
+      store.educationalLevels = store.educationalLevels.filter((l) => l.tenantId !== tenantId);
+      store.educationalLevels.push(...levels);
+    } else {
+      levels = store.educationalLevels.filter((l) => l.tenantId === tenantId);
     }
 
     return reply.send({ levels });
   });
 
-  // 2. Asignar / Registrar Director(a) de Nivel con Envío de Correo
+  // 2. Asignar / Registrar Director(a) de Nivel con Envío de Correo y Persistencia en PostgreSQL
   fastify.post(
     '/levels/:levelId/director',
     {
@@ -179,18 +217,99 @@ export async function academicRoutes(fastify: FastifyInstance) {
 
       const data = parseResult.data;
       const tenantId = request.userPayload!.tenantId;
-      const tenant = store.tenants.find((t) => t.id === tenantId);
+      const tenant = (await prisma.tenant.findUnique({ where: { id: tenantId } })) || store.tenants.find((t) => t.id === tenantId);
       const schoolName = tenant?.name || 'Tu Escuela';
 
-      // Buscar o crear el nivel
-      let level = store.educationalLevels.find((l) => l.tenantId === tenantId && l.id === levelId);
+      const normLevelId = levelId === 'KINDER_PREESCOLAR' ? 'PREESCOLAR' : levelId;
+      const normEmail = data.directorEmail.toLowerCase().trim();
+      const normCct = data.cctCode.toUpperCase().trim();
+      const password = data.directorPassword || 'Director2026!';
+      const passwordHash = bcrypt.hashSync(password, 10);
+
+      // 1. Guardar o actualizar nivel educativo en PostgreSQL
+      await prisma.educationalLevel.upsert({
+        where: {
+          tenantId_level: {
+            tenantId,
+            level: normLevelId,
+          },
+        },
+        update: {
+          directorName: data.directorName,
+          directorEmail: normEmail,
+          directorPhone: data.directorPhone,
+          code: normCct,
+          isDirectorVerified: false,
+        },
+        create: {
+          id: `lvl-${normLevelId.toLowerCase()}-${Date.now()}`,
+          tenantId,
+          level: normLevelId,
+          name: normLevelId === 'PREESCOLAR' ? 'Preescolar / Jardín de Niños' : normLevelId === 'PRIMARIA' ? 'Primaria' : normLevelId,
+          code: normCct,
+          evaluationScale: 'NUMERICA_SEP_DECIMAL',
+          directorName: data.directorName,
+          directorEmail: normEmail,
+          directorPhone: data.directorPhone,
+          isDirectorVerified: false,
+        },
+      });
+
+      // 2. Guardar o actualizar usuario en PostgreSQL para que pueda iniciar sesión con credenciales
+      const dbUser = await prisma.user.upsert({
+        where: {
+          tenantId_email: {
+            tenantId,
+            email: normEmail,
+          },
+        },
+        update: {
+          fullName: data.directorName,
+          phone: data.directorPhone,
+          passwordHash,
+          role: UserRole.DIRECTOR,
+          isActive: true,
+          isEmailVerified: false,
+        },
+        create: {
+          tenantId,
+          email: normEmail,
+          fullName: data.directorName,
+          phone: data.directorPhone,
+          passwordHash,
+          role: UserRole.DIRECTOR,
+          isActive: true,
+          isEmailVerified: false,
+        },
+      });
+
+      // 3. Generar token OTP y persistirlo
+      const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+      const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+      await prisma.emailVerificationToken.deleteMany({
+        where: { email: normEmail },
+      });
+
+      await prisma.emailVerificationToken.create({
+        data: {
+          email: normEmail,
+          code: otpCode,
+          tenantId,
+          userId: dbUser.id,
+          expiresAt,
+        },
+      });
+
+      // 4. Sincronizar en memoria para endpoints secundarios
+      let level = store.educationalLevels.find((l) => l.tenantId === tenantId && l.id === normLevelId);
       if (!level) {
         level = {
-          id: levelId,
+          id: normLevelId,
           tenantId,
-          name: levelId === 'PREESCOLAR' ? 'Preescolar / Jardín de Niños' : levelId === 'PRIMARIA' ? 'Primaria' : levelId,
-          cctCode: data.cctCode,
-          grades: levelId === 'PREESCOLAR' ? ['1º Kínder', '2º Kínder', '3º Kínder'] : ['1º Primaria', '2º Primaria', '3º Primaria', '4º Primaria', '5º Primaria', '6º Primaria'],
+          name: normLevelId === 'PREESCOLAR' ? 'Preescolar / Jardín de Niños' : normLevelId === 'PRIMARIA' ? 'Primaria' : normLevelId,
+          cctCode: normCct,
+          grades: normLevelId === 'PREESCOLAR' ? ['1º Kínder', '2º Kínder', '3º Kínder'] : ['1º Primaria', '2º Primaria', '3º Primaria', '4º Primaria', '5º Primaria', '6º Primaria'],
           isEmailVerified: false,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -198,21 +317,16 @@ export async function academicRoutes(fastify: FastifyInstance) {
         store.educationalLevels.push(level);
       }
 
-      // Actualizar datos del director en el nivel
       level.directorName = data.directorName;
       level.directorTitle = data.directorTitle;
-      level.directorEmail = data.directorEmail.toLowerCase().trim();
+      level.directorEmail = normEmail;
       level.directorPhone = data.directorPhone;
-      level.cctCode = data.cctCode.toUpperCase().trim();
+      level.cctCode = normCct;
       level.academicCoordinator = data.academicCoordinator;
-      level.isEmailVerified = false; // Requiere verificación
+      level.isEmailVerified = false;
       level.updatedAt = new Date();
 
-      // Generar usuario para el director de nivel si no existe
-      const password = data.directorPassword || 'Director2026!';
-      const passwordHash = bcrypt.hashSync(password, 10);
-      let user = store.users.find((u) => u.tenantId === tenantId && u.email === level!.directorEmail);
-
+      let user = store.users.find((u) => u.tenantId === tenantId && u.email === normEmail);
       if (user) {
         user.fullName = data.directorName;
         user.phone = data.directorPhone;
@@ -220,9 +334,9 @@ export async function academicRoutes(fastify: FastifyInstance) {
         user.isEmailVerified = false;
       } else {
         user = {
-          id: `user-dir-${levelId.toLowerCase()}-${Date.now()}`,
+          id: dbUser.id,
           tenantId,
-          email: level.directorEmail,
+          email: normEmail,
           fullName: data.directorName,
           role: UserRole.DIRECTOR,
           phone: data.directorPhone,
@@ -235,20 +349,18 @@ export async function academicRoutes(fastify: FastifyInstance) {
         store.users.push(user);
       }
 
-      // Generar código OTP de 6 dígitos
-      const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
-      store.verificationTokens = store.verificationTokens.filter((t) => t.email !== user!.email);
+      store.verificationTokens = store.verificationTokens.filter((t) => t.email !== normEmail);
       store.verificationTokens.push({
-        email: user.email,
+        email: normEmail,
         code: otpCode,
         tenantId,
-        userId: user.id,
-        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24h
+        userId: dbUser.id,
+        expiresAt,
       });
 
       // Enviar correo real
       const emailResult = await emailService.sendDirectorVerificationEmail(
-        user.email,
+        normEmail,
         data.directorName,
         level.name,
         otpCode,
@@ -259,7 +371,7 @@ export async function academicRoutes(fastify: FastifyInstance) {
         success: true,
         level,
         devOtpCode: emailResult.devMode ? otpCode : undefined,
-        message: `Código de verificación de 6 dígitos enviado a ${user.email}`,
+        message: `Código de verificación de 6 dígitos enviado a ${normEmail}`,
       });
     }
   );
@@ -277,33 +389,71 @@ export async function academicRoutes(fastify: FastifyInstance) {
 
     const { email, code } = parseResult.data;
     const normalizedEmail = email.toLowerCase().trim();
+    const normLevelId = levelId === 'KINDER_PREESCOLAR' ? 'PREESCOLAR' : levelId;
 
-    const tokenEntry = store.verificationTokens.find(
+    // Buscar en Prisma o en memoria
+    const dbToken = await prisma.emailVerificationToken.findFirst({
+      where: {
+        email: normalizedEmail,
+        code,
+        expiresAt: { gt: new Date() },
+      },
+    });
+
+    const memoryToken = store.verificationTokens.find(
       (t) => t.email === normalizedEmail && t.code === code && t.expiresAt > new Date()
     );
 
-    if (!tokenEntry) {
+    if (!dbToken && !memoryToken) {
       return reply.status(400).send({
         error: 'INVALID_OR_EXPIRED_CODE',
         message: 'El código de 6 dígitos es incorrecto o ha expirado.',
       });
     }
 
-    // Actualizar usuario y nivel
+    const effectiveTenantId = dbToken?.tenantId || memoryToken?.tenantId;
+
+    // Actualizar en PostgreSQL vía Prisma
+    if (effectiveTenantId) {
+      await prisma.educationalLevel.updateMany({
+        where: {
+          tenantId: effectiveTenantId,
+          level: normLevelId,
+        },
+        data: {
+          isDirectorVerified: true,
+        },
+      });
+
+      await prisma.user.updateMany({
+        where: {
+          tenantId: effectiveTenantId,
+          email: normalizedEmail,
+        },
+        data: {
+          isEmailVerified: true,
+        },
+      });
+
+      await prisma.emailVerificationToken.deleteMany({
+        where: { email: normalizedEmail },
+      });
+    }
+
+    // Actualizar en memoria
     const user = store.users.find((u) => u.email === normalizedEmail);
     if (user) {
       user.isEmailVerified = true;
     }
 
     const level = store.educationalLevels.find(
-      (l) => l.tenantId === tokenEntry.tenantId && (l.id === levelId || l.directorEmail === normalizedEmail)
+      (l) => (l.tenantId === effectiveTenantId || !l.tenantId) && (l.id === normLevelId || l.directorEmail === normalizedEmail)
     );
     if (level) {
       level.isEmailVerified = true;
       level.updatedAt = new Date();
     }
 
-    // Limpiar token
     store.verificationTokens = store.verificationTokens.filter((t) => t.email !== normalizedEmail);
 
     return reply.send({

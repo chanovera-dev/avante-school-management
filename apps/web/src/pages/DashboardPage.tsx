@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Users,
   GraduationCap,
@@ -122,6 +122,16 @@ interface DashboardPageProps {
     adminPhone?: string;
     levelsOffered?: string[];
   };
+  currentUser?: {
+    id: string;
+    email: string;
+    fullName: string;
+    role: string;
+    assignedLevel?: string | null;
+    assignedLevelName?: string | null;
+    isDirectorVerified?: boolean;
+    isGeneralAdmin?: boolean;
+  } | null;
 }
 
 export interface SepSubject {
@@ -1152,11 +1162,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   activeRole,
   setActiveRole,
   currentTenant,
+  currentUser,
 }) => {
+  const isLevelDirector = Boolean(currentUser?.assignedLevel);
+  const userLevelId = currentUser?.assignedLevel || null;
+
   const [activeTab, setActiveTab] = useState<'levels' | 'teachers' | 'attendance' | 'grades' | 'notices' | 'credentials' | 'tasks' | 'schedules' | 'admissions' | 'library' | 'transport' | 'cafeteria' | 'infirmary' | 'workshops' | 'inventory' | 'surveys' | 'events' | 'recruitment' | 'safety' | 'community' | 'maintenance' | 'scholarships' | 'certificates' | 'audit' | 'academic' | 'finance' | 'groups' | 'parent' | 'superadmin'>(
-    activeRole === 'DOCENTE' ? 'attendance' : 'levels'
+    activeRole === 'DOCENTE' ? 'attendance' : (isLevelDirector ? 'teachers' : 'levels')
   );
-  const [selectedLevelFilter, setSelectedLevelFilter] = useState<string>('ALL'); // 'ALL', 'PREESCOLAR', 'PRIMARIA'
+  const [selectedLevelFilter, setSelectedLevelFilter] = useState<string>(userLevelId || 'ALL');
   
   const [isOnline, setIsOnline] = useState(true);
   const [notification, setNotification] = useState<string | null>(null);
@@ -1258,6 +1272,57 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       };
     });
   });
+
+  // Sincronizar niveles y directores desde el backend
+  useEffect(() => {
+    const fetchLevels = async () => {
+      try {
+        const token = localStorage.getItem('asm_token');
+        const res = await fetch('/api/academic/levels', {
+          headers: {
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            ...(currentTenant.id ? { 'x-tenant-id': currentTenant.id } : {}),
+          },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.levels && Array.isArray(data.levels) && data.levels.length > 0) {
+            setEducationalLevels(
+              data.levels.map((lvl: any) => {
+                const config = LEVEL_CONFIG_MAP[lvl.id] || LEVEL_CONFIG_MAP[lvl.level] || {
+                  name: lvl.name,
+                  levelCategory: 'PRIMARIA' as const,
+                  cctCode: lvl.cctCode || lvl.code || '30PPR0000X',
+                  grades: lvl.grades || [],
+                  color: 'border-sky-500/40 bg-sky-950/20 text-sky-300',
+                  icon: BookOpen,
+                };
+                return {
+                  id: lvl.id || lvl.level,
+                  name: lvl.name || config.name,
+                  levelCategory: config.levelCategory,
+                  cctCode: lvl.cctCode || lvl.code || config.cctCode,
+                  directorName: lvl.directorName || '',
+                  directorTitle: lvl.directorTitle || `Dirección de ${lvl.name || config.name}`,
+                  directorEmail: lvl.directorEmail || '',
+                  directorPhone: lvl.directorPhone || '',
+                  academicCoordinator: lvl.academicCoordinator || '',
+                  isEmailVerified: Boolean(lvl.isEmailVerified),
+                  grades: lvl.grades && lvl.grades.length > 0 ? lvl.grades : config.grades,
+                  color: config.color,
+                  icon: config.icon,
+                };
+              })
+            );
+          }
+        }
+      } catch (err) {
+        console.error('Error al sincronizar niveles escolares:', err);
+      }
+    };
+
+    fetchLevels();
+  }, [currentTenant.id]);
 
   // DOCENTES / MAESTROS TITULARES
   const [teachers, setTeachers] = useState<Teacher[]>([]);
@@ -2105,6 +2170,21 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
     password: '',
   });
 
+  const handleOpenNewTeacherModal = () => {
+    const defaultLevel = (isLevelDirector && userLevelId) ? userLevelId : (selectedLevelFilter !== 'ALL' ? selectedLevelFilter : 'PRIMARIA');
+    setNewTeacherForm({
+      fullName: '',
+      email: '',
+      phone: '',
+      levelId: defaultLevel,
+      specialty: defaultLevel === 'PREESCOLAR' ? 'Lic. en Educación Preescolar' : 'Lic. en Educación Primaria',
+      assignedGroup: defaultLevel === 'PREESCOLAR' ? 'Kínder 1º "A"' : 'Primaria 1º "A"',
+      assignedSubject: defaultLevel === 'PREESCOLAR' ? 'Campos Formativos Preescolar' : 'Español y Matemáticas',
+      password: '',
+    });
+    setShowNewTeacherModal(true);
+  };
+
   // Formulario OTP
   const [otpCodeInput, setOtpCodeInput] = useState('');
   const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
@@ -2209,9 +2289,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
     if (!activeLevelForAction) return;
 
     try {
+      const token = localStorage.getItem('asm_token');
       const res = await fetch(`/api/academic/levels/${activeLevelForAction.id}/director`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          ...(currentTenant.id ? { 'x-tenant-id': currentTenant.id } : {}),
+        },
         body: JSON.stringify(directorForm),
       });
 
@@ -2273,9 +2358,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
     setIsVerifyingOtp(true);
     try {
+      const token = localStorage.getItem('asm_token');
       await fetch(`/api/academic/levels/${activeLevelForAction.id}/verify-director-email`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          ...(currentTenant.id ? { 'x-tenant-id': currentTenant.id } : {}),
+        },
         body: JSON.stringify({
           email: activeLevelForAction.directorEmail || directorForm.directorEmail,
           code: otpCodeInput,
@@ -6885,6 +6975,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div>{isOnline ? 'Online' : 'Offline'}</div>
             </button>
 
+            {/* Información del Usuario Activo */}
+            {currentUser && (
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-sky-500/10 text-sky-300 border border-sky-500/30">
+                <ShieldCheck className="w-4 h-4 text-sky-400" />
+                <span>
+                  {currentUser.fullName} • {isLevelDirector ? (currentUser.assignedLevelName || `Dirección de ${userLevelId}`) : 'Director General'}
+                </span>
+              </div>
+            )}
+
             {/* Selector de Rol */}
             <div className="flex items-center gap-2 bg-slate-950 border border-slate-800 px-3 py-1 rounded-xl">
               <ShieldCheck className="w-4 h-4 text-sky-400" />
@@ -6893,7 +6993,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 onChange={(e) => setActiveRole(e.target.value as any)}
                 className="bg-transparent text-xs text-slate-300 font-semibold outline-none cursor-pointer"
               >
-                <option value="DIRECTOR" className="bg-slate-900">Director General</option>
+                <option value="DIRECTOR" className="bg-slate-900">
+                  {isLevelDirector ? `🎯 Dirección de ${userLevelId}` : 'Director General'}
+                </option>
                 <option value="DOCENTE" className="bg-slate-900">👨‍🏫 Maestro(a) / Docente Titular</option>
                 <option value="CONTROL_ESCOLAR" className="bg-slate-900">Control Escolar</option>
                 <option value="FINANZAS" className="bg-slate-900">Finanzas y Caja</option>
@@ -6903,9 +7005,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             <button
-              onClick={() => onNavigate('home')}
+              onClick={() => {
+                localStorage.removeItem('asm_token');
+                onNavigate(currentTenant.subdomain ? 'portal' : 'home');
+              }}
               className="p-2 rounded-xl bg-slate-800 hover:bg-slate-750 text-slate-400 hover:text-white transition-colors cursor-pointer"
-              title="Cerrar sesión o ir al inicio"
+              title="Cerrar sesión"
             >
               <LogOut className="w-4 h-4" />
             </button>
@@ -6925,7 +7030,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             }`}
           >
             <School className="w-4 h-4" />
-            <div>Niveles & Directores ({educationalLevels.length})</div>
+            <div>{isLevelDirector ? `Mi Nivel Técnico (${educationalLevels.find(l => l.id === userLevelId)?.name?.split('/')[0].trim() || userLevelId})` : `Niveles & Directores (${educationalLevels.length})`}</div>
           </button>
 
           <button
@@ -7300,7 +7405,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {educationalLevels.map((lvl) => {
+                {(isLevelDirector && userLevelId
+                  ? educationalLevels.filter((lvl) => lvl.id === userLevelId)
+                  : educationalLevels
+                ).map((lvl) => {
                 const Icon = lvl.icon;
                 const levelStudentsCount = students.filter((s) => s.levelId === lvl.id).length;
                 const levelTeachersCount = teachers.filter((t) => t.levelId === lvl.id).length;
@@ -7343,22 +7451,34 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 <div>Verificar OTP</div>
                               </button>
                             )}
-                            <button
-                              onClick={() => handleOpenRegisterDirector(lvl)}
-                              className="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs px-2.5 py-1.5 rounded-xl font-bold transition-colors cursor-pointer"
-                              title="Editar datos de director"
-                            >
-                              <Edit3 className="w-3.5 h-3.5" />
-                            </button>
+                            {!isLevelDirector ? (
+                              <button
+                                onClick={() => handleOpenRegisterDirector(lvl)}
+                                className="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs px-2.5 py-1.5 rounded-xl font-bold transition-colors cursor-pointer"
+                                title="Editar datos de director"
+                              >
+                                <Edit3 className="w-3.5 h-3.5" />
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => setActiveTab('teachers')}
+                                className="bg-sky-500 hover:bg-sky-400 text-slate-950 text-xs px-3 py-1.5 rounded-xl font-black flex items-center gap-1.5 transition-all cursor-pointer shadow-md shadow-sky-500/20"
+                              >
+                                <UserCheck className="w-3.5 h-3.5" />
+                                <div>Mis Docentes</div>
+                              </button>
+                            )}
                           </div>
                         ) : (
-                          <button
-                            onClick={() => handleOpenRegisterDirector(lvl)}
-                            className="bg-sky-500 hover:bg-sky-400 text-slate-950 text-xs px-3.5 py-2 rounded-xl font-black flex items-center gap-1.5 shadow-lg shadow-sky-500/20 transition-all cursor-pointer"
-                          >
-                            <UserPlus className="w-3.5 h-3.5" />
-                            <div>+ Asignar Director(a)</div>
-                          </button>
+                          !isLevelDirector && (
+                            <button
+                              onClick={() => handleOpenRegisterDirector(lvl)}
+                              className="bg-sky-500 hover:bg-sky-400 text-slate-950 text-xs px-3.5 py-2 rounded-xl font-black flex items-center gap-1.5 shadow-lg shadow-sky-500/20 transition-all cursor-pointer"
+                            >
+                              <UserPlus className="w-3.5 h-3.5" />
+                              <div>+ Asignar Director(a)</div>
+                            </button>
+                          )
                         )}
                       </div>
 
@@ -7433,7 +7553,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <button
-                onClick={() => setShowNewTeacherModal(true)}
+                onClick={handleOpenNewTeacherModal}
                 className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs px-4 py-3 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition-all cursor-pointer shrink-0"
               >
                 <UserPlus className="w-4 h-4" />
@@ -7454,7 +7574,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
                 <div className="pt-2">
                   <button
-                    onClick={() => setShowNewTeacherModal(true)}
+                    onClick={handleOpenNewTeacherModal}
                     className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs px-6 py-3.5 rounded-2xl shadow-xl shadow-emerald-500/20 inline-flex items-center gap-2 transition-all cursor-pointer"
                   >
                     <UserPlus className="w-4 h-4" />
@@ -18753,10 +18873,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <select
                     value={newTeacherForm.levelId}
                     onChange={(e) => setNewTeacherForm({ ...newTeacherForm, levelId: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-500"
+                    disabled={isLevelDirector}
+                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-500 disabled:opacity-60"
                   >
-                    <option value="PREESCOLAR">Preescolar / Kínder</option>
-                    <option value="PRIMARIA">Primaria</option>
+                    {educationalLevels.map((lvl) => (
+                      <option key={lvl.id} value={lvl.id}>
+                        {lvl.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
 

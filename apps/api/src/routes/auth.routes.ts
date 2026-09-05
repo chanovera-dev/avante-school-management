@@ -54,6 +54,32 @@ export async function authRoutes(fastify: FastifyInstance) {
       email: user.email,
     });
 
+    // Determinar si el usuario es Director de un Nivel específico o Director General
+    let assignedLevel = null;
+    let isGeneralAdmin = false;
+
+    if (user.role === 'DIRECTOR') {
+      const dbLevel = await prisma.educationalLevel.findFirst({
+        where: {
+          tenantId: user.tenantId,
+          directorEmail: { equals: user.email, mode: 'insensitive' },
+        },
+      });
+
+      if (dbLevel) {
+        assignedLevel = {
+          level: dbLevel.level,
+          name: dbLevel.name,
+          code: dbLevel.code,
+          isDirectorVerified: dbLevel.isDirectorVerified,
+        };
+      } else {
+        isGeneralAdmin = true;
+      }
+    } else if (user.role === 'SUPER_ADMIN') {
+      isGeneralAdmin = true;
+    }
+
     return reply.send({
       token,
       user: {
@@ -63,6 +89,10 @@ export async function authRoutes(fastify: FastifyInstance) {
         role: user.role,
         tenantId: user.tenantId,
         campusId: user.campusId,
+        assignedLevel: assignedLevel?.level || null,
+        assignedLevelName: assignedLevel?.name || null,
+        isDirectorVerified: assignedLevel ? assignedLevel.isDirectorVerified : user.isEmailVerified,
+        isGeneralAdmin,
       },
       tenant: user.tenant || { id: user.tenantId, name: 'Plataforma Global' },
     });
@@ -82,6 +112,31 @@ export async function authRoutes(fastify: FastifyInstance) {
       return reply.status(404).send({ error: 'User Not Found' });
     }
 
+    let assignedLevel = null;
+    let isGeneralAdmin = false;
+
+    if (user.role === 'DIRECTOR') {
+      const dbLevel = await prisma.educationalLevel.findFirst({
+        where: {
+          tenantId: user.tenantId,
+          directorEmail: { equals: user.email, mode: 'insensitive' },
+        },
+      });
+
+      if (dbLevel) {
+        assignedLevel = {
+          level: dbLevel.level,
+          name: dbLevel.name,
+          code: dbLevel.code,
+          isDirectorVerified: dbLevel.isDirectorVerified,
+        };
+      } else {
+        isGeneralAdmin = true;
+      }
+    } else if (user.role === 'SUPER_ADMIN') {
+      isGeneralAdmin = true;
+    }
+
     return reply.send({
       user: {
         id: user.id,
@@ -90,6 +145,10 @@ export async function authRoutes(fastify: FastifyInstance) {
         role: user.role,
         tenantId: user.tenantId,
         campusId: user.campusId,
+        assignedLevel: assignedLevel?.level || null,
+        assignedLevelName: assignedLevel?.name || null,
+        isDirectorVerified: assignedLevel ? assignedLevel.isDirectorVerified : user.isEmailVerified,
+        isGeneralAdmin,
       },
       tenant: user.tenant || { id: user.tenantId, name: 'Plataforma Global' },
     });

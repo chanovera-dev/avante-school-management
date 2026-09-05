@@ -9,12 +9,20 @@ import {
   CheckCircle2,
   ChevronRight,
   School,
-  UserPlus
+  UserPlus,
+  Lock,
+  Mail,
+  X,
+  AlertCircle,
 } from 'lucide-react';
 
 interface SchoolPortalPageProps {
   onNavigate: (route: 'home' | 'register' | 'login' | 'dashboard' | 'portal') => void;
-  onSelectRoleAndLogin: (role: 'SUPER_ADMIN' | 'DIRECTOR' | 'DOCENTE' | 'CONTROL_ESCOLAR' | 'FINANZAS' | 'TUTOR') => void;
+  onSelectRoleAndLogin: (
+    role: 'SUPER_ADMIN' | 'DIRECTOR' | 'DOCENTE' | 'CONTROL_ESCOLAR' | 'FINANZAS' | 'TUTOR',
+    userData?: any,
+    tenantData?: any
+  ) => void;
   currentTenant: {
     id: string;
     name: string;
@@ -31,6 +39,55 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
 }) => {
   const [showStudentEnrollModal, setShowStudentEnrollModal] = useState(false);
   const [enrollSubmitted, setEnrollSubmitted] = useState(false);
+
+  // Modal de Login Institucional
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [targetRole, setTargetRole] = useState<'SUPER_ADMIN' | 'DIRECTOR' | 'DOCENTE' | 'CONTROL_ESCOLAR' | 'FINANZAS' | 'TUTOR'>('DIRECTOR');
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
+
+  const openLoginModal = (role: 'SUPER_ADMIN' | 'DIRECTOR' | 'DOCENTE' | 'CONTROL_ESCOLAR' | 'FINANZAS' | 'TUTOR') => {
+    setTargetRole(role);
+    setLoginError(null);
+    setLoginEmail('');
+    setLoginPassword('');
+    setShowLoginModal(true);
+  };
+
+  const handleLoginSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError(null);
+    setLoginLoading(true);
+
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: loginEmail, password: loginPassword }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setLoginError(data.message || 'Correo electrónico o contraseña incorrectos.');
+        setLoginLoading(false);
+        return;
+      }
+
+      if (data.token) {
+        localStorage.setItem('asm_token', data.token);
+      }
+
+      setShowLoginModal(false);
+      onSelectRoleAndLogin(data.user.role, data.user, data.tenant);
+    } catch (err) {
+      setLoginError('Error de conexión al servidor de autenticación.');
+    } finally {
+      setLoginLoading(false);
+    }
+  };
 
   const [studentForm, setStudentForm] = useState({
     studentName: '',
@@ -85,10 +142,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
               ← Volver al Inicio
             </button>
             <button
-              onClick={() => {
-                onSelectRoleAndLogin('DIRECTOR');
-                onNavigate('dashboard');
-              }}
+              onClick={() => openLoginModal('DIRECTOR')}
               className="btn btn-primary btn-sm"
             >
               Panel de Administración
@@ -179,10 +233,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
               </div>
 
               <button
-                onClick={() => {
-                  onSelectRoleAndLogin('DIRECTOR');
-                  onNavigate('dashboard');
-                }}
+                onClick={() => openLoginModal('DIRECTOR')}
                 className="btn btn-secondary btn-sm"
               >
                 Entrar como Director
@@ -203,10 +254,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
               </div>
 
               <button
-                onClick={() => {
-                  onSelectRoleAndLogin('DOCENTE');
-                  onNavigate('dashboard');
-                }}
+                onClick={() => openLoginModal('DOCENTE')}
                 className="btn btn-secondary btn-sm"
               >
                 Entrar como Maestro
@@ -227,10 +275,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
               </div>
 
               <button
-                onClick={() => {
-                  onSelectRoleAndLogin('FINANZAS');
-                  onNavigate('dashboard');
-                }}
+                onClick={() => openLoginModal('FINANZAS')}
                 className="btn btn-secondary btn-sm"
               >
                 Entrar a Caja Escolar
@@ -251,10 +296,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
               </div>
 
               <button
-                onClick={() => {
-                  onSelectRoleAndLogin('TUTOR');
-                  onNavigate('dashboard');
-                }}
+                onClick={() => openLoginModal('TUTOR')}
                 className="btn btn-secondary btn-sm"
               >
                 Entrar como Tutor
@@ -399,6 +441,102 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                 </div>
               </form>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* MODAL DE INICIO DE SESIÓN INSTITUCIONAL */}
+      {showLoginModal && (
+        <div className="modal-backdrop" onClick={() => setShowLoginModal(false)}>
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={() => setShowLoginModal(false)}
+              className="modal-close"
+              title="Cerrar ventana"
+            >
+              <X size={18} />
+            </button>
+
+            <div className="modal-header">
+              <div>
+                <div className="badge badge-sky">
+                  <ShieldCheck size={14} />
+                  {targetRole === 'DIRECTOR'
+                    ? 'Portal de Directores'
+                    : targetRole === 'DOCENTE'
+                    ? 'Portal Docente'
+                    : targetRole === 'FINANZAS'
+                    ? 'Caja y Finanzas'
+                    : 'Portal Familiar'}
+                </div>
+                <h3 className="modal-title" style={{ marginTop: '0.5rem' }}>
+                  {targetRole === 'DIRECTOR'
+                    ? 'Acceso Directivo Institucional'
+                    : 'Iniciar Sesión Institucional'}
+                </h3>
+                <p className="modal-subtitle">
+                  {currentTenant.name ? currentTenant.name : 'Ingresa con tus credenciales'}
+                </p>
+              </div>
+            </div>
+
+            {loginError && (
+              <div className="alert alert-danger" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <AlertCircle size={18} />
+                <p style={{ margin: 0, fontSize: '0.875rem' }}>{loginError}</p>
+              </div>
+            )}
+
+            <form onSubmit={handleLoginSubmit} className="modal-form">
+              <div className="form-group">
+                <label className="form-label">Correo Electrónico Institucional</label>
+                <div className="auth-input-wrapper">
+                  <Mail className="input-icon" />
+                  <input
+                    type="email"
+                    required
+                    value={loginEmail}
+                    onChange={(e) => setLoginEmail(e.target.value)}
+                    className="form-input"
+                    placeholder="ejemplo@colegio.edu.mx"
+                    autoFocus
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Contraseña</label>
+                <div className="auth-input-wrapper">
+                  <Lock className="input-icon" />
+                  <input
+                    type="password"
+                    required
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                    className="form-input"
+                    placeholder="••••••••"
+                  />
+                </div>
+              </div>
+
+              <div className="modal-actions">
+                <button
+                  type="button"
+                  onClick={() => setShowLoginModal(false)}
+                  className="btn btn-secondary"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  disabled={loginLoading}
+                  className="btn btn-primary"
+                >
+                  {loginLoading ? 'Comprobando acceso...' : 'Ingresar al Sistema'}
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
