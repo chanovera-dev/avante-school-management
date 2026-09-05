@@ -7608,10 +7608,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <select
                     value={attendanceGroup}
                     onChange={(e) => setAttendanceGroup(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 focus:border-emerald-400 rounded-xl px-3 py-2 text-xs font-semibold text-white outline-none cursor-pointer"
+                    className="form-select"
                   >
                     {groups.map((g) => (
-                      <option key={g.id} value={g.name} className="bg-slate-900">
+                      <option key={g.id} value={g.name}>
                         {g.name} ({g.level})
                       </option>
                     ))}
@@ -7627,10 +7627,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <select
                     value={attendanceTeacherId}
                     onChange={(e) => setAttendanceTeacherId(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 focus:border-emerald-400 rounded-xl px-3 py-2 text-xs font-semibold text-white outline-none cursor-pointer"
+                    className="form-select"
                   >
                     {teachers.map((t) => (
-                      <option key={t.id} value={t.id} className="bg-slate-900">
+                      <option key={t.id} value={t.id}>
                         {t.fullName} ({t.assignedSubject})
                       </option>
                     ))}
@@ -7646,11 +7646,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <select
                     value={attendanceSubjectId}
                     onChange={(e) => setAttendanceSubjectId(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 focus:border-emerald-400 rounded-xl px-3 py-2 text-xs font-semibold text-white outline-none cursor-pointer"
+                    className="form-select"
                   >
-                    <option value="ALL" className="bg-slate-900">Jornada Completa Matutina</option>
+                    <option value="ALL">Jornada Completa Matutina</option>
                     {sepSubjects.map((s) => (
-                      <option key={s.id} value={s.id} className="bg-slate-900">
+                      <option key={s.id} value={s.id}>
                         {s.name}
                       </option>
                     ))}
@@ -7987,10 +7987,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <select
                     value={selectedTeacherId}
                     onChange={(e) => handleSelectTeacherForGrades(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 focus:border-amber-400 rounded-xl px-3 py-2 text-xs font-semibold text-white outline-none cursor-pointer"
+                    className="form-select"
                   >
                     {teachers.map((t) => (
-                      <option key={t.id} value={t.id} className="bg-slate-900">
+                      <option key={t.id} value={t.id}>
                         {t.fullName} ({t.assignedSubject})
                       </option>
                     ))}
@@ -8006,10 +8006,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <select
                     value={selectedGradeGroup}
                     onChange={(e) => setSelectedGradeGroup(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 focus:border-amber-400 rounded-xl px-3 py-2 text-xs font-semibold text-white outline-none cursor-pointer"
+                    className="form-select"
                   >
                     {groups.map((g) => (
-                      <option key={g.id} value={g.name} className="bg-slate-900">
+                      <option key={g.id} value={g.name}>
                         {g.name} ({g.level})
                       </option>
                     ))}
@@ -8025,10 +8025,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <select
                     value={selectedSubjectId}
                     onChange={(e) => setSelectedSubjectId(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 focus:border-amber-400 rounded-xl px-3 py-2 text-xs font-semibold text-white outline-none cursor-pointer"
+                    className="form-select"
                   >
                     {sepSubjects.map((s) => (
-                      <option key={s.id} value={s.id} className="bg-slate-900">
+                      <option key={s.id} value={s.id}>
                         {s.name} [{s.levelId}]
                       </option>
                     ))}
@@ -19174,10 +19174,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <select
                   value={justificationForm.studentId}
                   onChange={(e) => setJustificationForm({ ...justificationForm, studentId: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-white outline-none focus:border-purple-400"
+                  className="form-select"
                 >
                   {students.map((s) => (
-                    <option key={s.id} value={s.id} className="bg-slate-900">
+                    <option key={s.id} value={s.id}>
                       {s.firstName} {s.lastName} ({s.studentCode}) — {s.groupName}
                     </option>
                   ))}
