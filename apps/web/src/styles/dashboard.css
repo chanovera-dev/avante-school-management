@@ -2539,4 +2539,66 @@
   overflow: hidden;
 }
 
+/* 16. Semantic Button, Stat, Badge & Text Utilities */
+.btn-warning {
+  background: var(--color-warning, #d97706) !important;
+  color: #ffffff !important;
+  border: 1px solid var(--color-warning, #d97706) !important;
+
+  &:hover {
+    background: #b45309 !important;
+    border-color: #b45309 !important;
+    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25) !important;
+  }
+}
+
+.stat-label {
+  font-size: 0.6875rem !important;
+  font-weight: 700 !important;
+  color: var(--color-text-secondary, #64748b) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  display: block;
+}
+
+.stat-value {
+  font-size: 1.5rem !important;
+  font-weight: 900 !important;
+  color: var(--color-text-main, #0f172a) !important;
+  line-height: 1.2 !important;
+}
+
+.stat-sub {
+  font-size: 0.6875rem !important;
+  color: var(--color-text-muted, #94a3b8) !important;
+  display: block;
+  margin-top: 0.125rem;
+}
+
+/* Semantic Text Colors */
+.text-main { color: var(--color-text-main, #0f172a) !important; }
+.text-muted { color: var(--color-text-secondary, #64748b) !important; }
+.text-success { color: var(--color-success, #059669) !important; }
+.text-warning { color: var(--color-warning, #d97706) !important; }
+.text-danger { color: var(--color-danger, #ef4444) !important; }
+.text-primary { color: var(--color-primary, #0079ff) !important; }
+.text-purple { color: #7c3aed !important; }
+
+/* Light Theme Color Overrides for Tailwind neon text */
+.text-emerald-400, .text-emerald-500 { color: #059669 !important; }
+.text-amber-400, .text-amber-500 { color: #d97706 !important; }
+.text-sky-400, .text-sky-500 { color: #0079ff !important; }
+.text-purple-400, .text-purple-500 { color: #7c3aed !important; }
+.text-rose-400, .text-rose-500 { color: #ef4444 !important; }
+.text-cyan-400, .text-cyan-500 { color: #0284c7 !important; }
+
+/* Subtle Borders */
+.border-subtle,
+.border-slate-800,
+.border-slate-700,
+.border-slate-800\/80 {
+  border-color: var(--color-border-subtle, #e2e8f0) !important;
+}
+
+
 

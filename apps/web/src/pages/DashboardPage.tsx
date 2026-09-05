@@ -7382,16 +7382,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                  <div className="badge badge-emerald font-mono">
                     <CalendarCheck className="w-3 h-3" /> Control Diario de Asistencia Escolar
                   </div>
-                  <div className="text-slate-400 text-xs">• Ciclo Escolar 2026-2027</div>
+                  <div className="text-muted text-xs">• Ciclo Escolar 2026-2027</div>
                 </div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <CalendarCheck className="w-6 h-6 text-emerald-400" />
                   Pase de Lista Diario & Bitácora de Asistencias
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="dashboard-section-desc">
                   Registro ágil de presencia, retardos e inasistencias por grupo. Las faltas se acumulan y sincronizan con la Boleta Oficial SEP.
                 </p>
               </div>
@@ -7399,7 +7399,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex items-center gap-2.5 flex-wrap">
                 <button
                   onClick={() => handleOpenJustifyModal()}
-                  className="bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-purple-600/20"
+                  className="btn btn-purple btn-sm"
                 >
                   <FileText className="w-4 h-4" />
                   <div>📄 Emitir Justificante</div>
@@ -7415,7 +7415,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <button
                   onClick={handleSaveAttendance}
-                  className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-5 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-emerald-500/20"
+                  className="btn btn-success btn-sm"
                 >
                   <CheckCircle2 className="w-4 h-4" />
                   <div>Guardar Asistencia del Día</div>
@@ -7530,36 +7530,36 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               return (
                 <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">Total en Lista</div>
-                    <div className="text-2xl font-black text-white">{totalStudents}</div>
-                    <div className="text-[10px] text-slate-500 block mt-0.5">{attendanceGroup}</div>
+                    <div className="stat-label">Total en Lista</div>
+                    <div className="stat-value">{totalStudents}</div>
+                    <div className="stat-sub">{attendanceGroup}</div>
                   </div>
 
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">Presentes</div>
-                    <div className="text-2xl font-black text-emerald-400">{presentCount}</div>
-                    <div className="text-[10px] text-slate-500 block mt-0.5">A tiempo en el aula</div>
+                    <div className="stat-label">Presentes</div>
+                    <div className="stat-value text-success">{presentCount}</div>
+                    <div className="stat-sub">A tiempo en el aula</div>
                   </div>
 
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">Retardos</div>
-                    <div className="text-2xl font-black text-amber-400">{lateCount}</div>
-                    <div className="text-[10px] text-slate-500 block mt-0.5">Tolerancia superada</div>
+                    <div className="stat-label">Retardos</div>
+                    <div className="stat-value text-warning">{lateCount}</div>
+                    <div className="stat-sub">Tolerancia superada</div>
                   </div>
 
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">Faltas (Total)</div>
+                    <div className="stat-label">Faltas (Total)</div>
                     <div className="flex items-center gap-1.5 mt-0.5">
-                      <div className="text-2xl font-black text-rose-400">{unexcusedCount + excusedCount}</div>
-                      <div className="text-[10px] text-slate-400">({unexcusedCount} inj. / {excusedCount} just.)</div>
+                      <div className="stat-value text-danger">{unexcusedCount + excusedCount}</div>
+                      <div className="text-[10px] text-muted">({unexcusedCount} inj. / {excusedCount} just.)</div>
                     </div>
-                    <div className="text-[10px] text-slate-500 block">Impacto en Boleta SEP</div>
+                    <div className="stat-sub">Impacto en Boleta SEP</div>
                   </div>
 
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">% de Asistencia</div>
-                    <div className="text-2xl font-black text-sky-400">{percentage}%</div>
-                    <div className="w-full bg-slate-950 h-1.5 rounded-full overflow-hidden mt-1.5 border border-slate-800">
+                    <div className="stat-label">% de Asistencia</div>
+                    <div className="stat-value text-primary">{percentage}%</div>
+                    <div className="badge badge-sky">
                       <div
                         className="bg-sky-400 h-full rounded-full transition-all"
                         style={{ width: `${percentage}%` }}
@@ -7577,11 +7577,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               if (studentsInGroup.length === 0) {
                 return (
                   <div className="dashboard-card p-12 text-center space-y-3">
-                    <div className="w-16 h-16 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-3xl flex items-center justify-center mx-auto">
+                    <div className="badge badge-emerald">
                       <CalendarCheck className="w-8 h-8" />
                     </div>
                     <h3 className="modal-title">No hay alumnos en {attendanceGroup}</h3>
-                    <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                    <p className="text-xs text-muted max-w-sm mx-auto">
                       Inscribe alumnos en la sección de control escolar asignándolos a este grupo para tomar su asistencia diaria.
                     </p>
                   </div>
@@ -7590,13 +7590,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               return (
                 <div className="dashboard-table-card">
-                  <div className="px-6 py-4 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div className="px-6 py-4 border-b border-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
-                      <h3 className="text-base font-black text-white flex items-center gap-2">
+                      <h3 className="text-base font-black flex items-center gap-2">
                         <UserCheck className="w-4 h-4 text-emerald-400" />
                         Lista de Alumnos — {attendanceGroup}
                       </h3>
-                      <p className="text-xs text-slate-400 mt-0.5">
+                      <p className="text-xs text-muted mt-0.5">
                         Fecha: <strong>{attendanceDate}</strong> • Selecciona el estado de cada estudiante con un clic.
                       </p>
                     </div>
@@ -7619,7 +7619,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <th className="py-3.5 px-4 text-center min-w-[130px]">Aviso a Padres</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-800/80">
+                      <tbody className="table-body">
                         {studentsInGroup.map((std, idx) => {
                           const record = attendanceRecords.find(
                             (r) => r.studentId === std.id && r.date === attendanceDate && r.groupId === attendanceGroup
@@ -7629,22 +7629,22 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                           return (
                             <tr key={std.id} className="table-row-hover">
-                              <td className="py-3 px-4 font-mono text-slate-500">{idx + 1}</td>
+                              <td className="py-3 px-4 font-mono text-muted">{idx + 1}</td>
                               <td className="py-3 px-4">
-                                <div className="font-bold text-white flex items-center gap-2">
+                                <div className="font-bold flex items-center gap-2">
                                   <div>{std.firstName} {std.lastName}</div>
                                   {currentStatus === 'FALTA_INJUSTIFICADA' && (
-                                    <div className="bg-rose-950 text-rose-300 text-[10px] px-2 py-0.5 rounded-full border border-rose-800 font-normal">
+                                    <div className="badge badge-rose">
                                       Falta
                                     </div>
                                   )}
                                   {currentStatus === 'RETARDO' && (
-                                    <div className="bg-amber-950 text-amber-300 text-[10px] px-2 py-0.5 rounded-full border border-amber-800 font-normal">
+                                    <div className="badge badge-amber">
                                       Retardo
                                     </div>
                                   )}
                                 </div>
-                                <div className="font-mono text-[10px] text-slate-400 mt-0.5">
+                                <div className="font-mono text-[10px] text-muted mt-0.5">
                                   {std.studentCode} • CURP: {std.curp || 'Sin CURP'}
                                 </div>
                               </td>
@@ -7657,7 +7657,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                     className={`flex-1 py-1.5 px-2 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1 ${
                                       currentStatus === 'PRESENTE'
                                         ? 'bg-emerald-500 text-slate-950 font-black shadow-md shadow-emerald-500/20'
-                                        : 'text-slate-400 hover:text-white hover:bg-slate-850'
+                                        : 'text-muted hover:text-white hover:bg-slate-850'
                                     }`}
                                   >
                                     <Check className="w-3.5 h-3.5" />
@@ -7669,7 +7669,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                     className={`flex-1 py-1.5 px-2 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1 ${
                                       currentStatus === 'RETARDO'
                                         ? 'bg-amber-400 text-slate-950 font-black shadow-md shadow-amber-400/20'
-                                        : 'text-slate-400 hover:text-white hover:bg-slate-850'
+                                        : 'text-muted hover:text-white hover:bg-slate-850'
                                     }`}
                                   >
                                     <Clock className="w-3.5 h-3.5" />
@@ -7681,7 +7681,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                     className={`flex-1 py-1.5 px-2 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1 ${
                                       currentStatus === 'FALTA_INJUSTIFICADA'
                                         ? 'bg-rose-500 text-white font-black shadow-md shadow-rose-500/20'
-                                        : 'text-slate-400 hover:text-white hover:bg-slate-850'
+                                        : 'text-muted hover:text-white hover:bg-slate-850'
                                     }`}
                                   >
                                     <XCircle className="w-3.5 h-3.5" />
@@ -7693,7 +7693,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                     className={`flex-1 py-1.5 px-2 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1 ${
                                       currentStatus === 'FALTA_JUSTIFICADA'
                                         ? 'bg-indigo-500 text-white font-black shadow-md shadow-indigo-500/20'
-                                        : 'text-slate-400 hover:text-white hover:bg-slate-850'
+                                        : 'text-muted hover:text-white hover:bg-slate-850'
                                     }`}
                                   >
                                     <FileText className="w-3.5 h-3.5" />
@@ -7761,14 +7761,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   {/* Barra al pie de la tabla */}
                   <div className="table-footer flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-                    <div className="text-slate-400 flex items-center gap-2">
+                    <div className="text-muted flex items-center gap-2">
                       <Check className="w-4 h-4 text-emerald-400" />
                       <div>Las inasistencias y retardos se guardan de forma acumulativa y alimentan la Boleta Oficial SEP.</div>
                     </div>
 
                     <button
                       onClick={handleSaveAttendance}
-                      className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-6 py-2.5 rounded-2xl font-black text-xs shadow-lg shadow-emerald-500/25 transition-all cursor-pointer flex items-center gap-2"
+                      className="btn btn-success btn-sm"
                     >
                       <CheckCircle2 className="w-4 h-4" />
                       <div>Guardar Asistencia de {attendanceGroup}</div>
@@ -7787,16 +7787,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                  <div className="badge badge-amber font-mono">
                     <Sparkles className="w-3 h-3" /> Sistema de Evaluación Oficial SEP
                   </div>
-                  <div className="text-slate-400 text-xs">• Ciclo Escolar 2026-2027</div>
+                  <div className="text-muted text-xs">• Ciclo Escolar 2026-2027</div>
                 </div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <Award className="w-6 h-6 text-amber-400" />
                   Cuaderno de Calificaciones & Boletas SEP
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="dashboard-section-desc">
                   Los maestros titulares registran las evaluaciones trimestrales (escala 5 a 10) e inasistencias en su materia para generar las boletas oficiales.
                 </p>
               </div>
@@ -7816,7 +7816,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <button
                   onClick={handleSaveGrades}
-                  className="bg-amber-400 hover:bg-amber-300 text-slate-950 px-5 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-amber-400/20"
+                  className="btn btn-warning btn-sm"
                 >
                   <CheckCircle2 className="w-4 h-4" />
                   <div>Guardar Calificaciones en SEP</div>
@@ -7894,7 +7894,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <button
                       onClick={() => setActiveGradePeriod('ALL')}
                       className={`flex-1 py-1 rounded-lg transition-colors cursor-pointer ${
-                        activeGradePeriod === 'ALL' ? 'bg-amber-400 text-slate-950 font-black' : 'text-slate-400 hover:text-white'
+                        activeGradePeriod === 'ALL' ? 'bg-amber-400 text-slate-950 font-black' : 'text-muted hover:text-white'
                       }`}
                     >
                       Todos
@@ -7902,7 +7902,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <button
                       onClick={() => setActiveGradePeriod('P1')}
                       className={`flex-1 py-1 rounded-lg transition-colors cursor-pointer ${
-                        activeGradePeriod === 'P1' ? 'bg-amber-400 text-slate-950 font-black' : 'text-slate-400 hover:text-white'
+                        activeGradePeriod === 'P1' ? 'bg-amber-400 text-slate-950 font-black' : 'text-muted hover:text-white'
                       }`}
                     >
                       1º Trim
@@ -7910,7 +7910,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <button
                       onClick={() => setActiveGradePeriod('P2')}
                       className={`flex-1 py-1 rounded-lg transition-colors cursor-pointer ${
-                        activeGradePeriod === 'P2' ? 'bg-amber-400 text-slate-950 font-black' : 'text-slate-400 hover:text-white'
+                        activeGradePeriod === 'P2' ? 'bg-amber-400 text-slate-950 font-black' : 'text-muted hover:text-white'
                       }`}
                     >
                       2º Trim
@@ -7918,7 +7918,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <button
                       onClick={() => setActiveGradePeriod('P3')}
                       className={`flex-1 py-1 rounded-lg transition-colors cursor-pointer ${
-                        activeGradePeriod === 'P3' ? 'bg-amber-400 text-slate-950 font-black' : 'text-slate-400 hover:text-white'
+                        activeGradePeriod === 'P3' ? 'bg-amber-400 text-slate-950 font-black' : 'text-muted hover:text-white'
                       }`}
                     >
                       3º Trim
@@ -7932,27 +7932,27 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 const currentTch = teachers.find((t) => t.id === selectedTeacherId);
                 const currentSub = sepSubjects.find((s) => s.id === selectedSubjectId);
                 return (
-                  <div className="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-3.5 flex flex-wrap items-center justify-between gap-3 text-xs">
+                  <div className="badge badge-sky">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-xl flex items-center justify-center font-black">
+                      <div className="badge badge-emerald">
                         👨‍🏫
                       </div>
                       <div>
-                        <div className="font-bold text-white flex items-center gap-1.5">
+                        <div className="font-bold flex items-center gap-1.5">
                           <div>{currentTch?.fullName || 'Docente Seleccionado'}</div>
                           {currentTch?.isEmailVerified && (
-                            <div className="text-[10px] bg-emerald-950 text-emerald-400 px-2 py-0.2 rounded-full border border-emerald-800">
+                            <div className="badge badge-emerald">
                               Docente Verificado ✅
                             </div>
                           )}
                         </div>
-                        <div className="text-[11px] text-slate-400">{currentTch?.specialty} • {currentTch?.email}</div>
+                        <div className="text-[11px] text-muted">{currentTch?.specialty} • {currentTch?.email}</div>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <div className="text-[11px] text-slate-400">Campo Formativo SEP:</div>
-                      <div className="bg-slate-900 border border-slate-700 text-sky-300 font-bold px-3 py-1 rounded-xl text-xs">
+                      <div className="text-[11px] text-muted">Campo Formativo SEP:</div>
+                      <div className="bg-surface border border-subtle text-sky-300 font-bold px-3 py-1 rounded-xl text-xs">
                         {currentSub?.campoFormativo || 'Lenguajes'}
                       </div>
                     </div>
@@ -7976,30 +7976,30 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               return (
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">Alumnos en Lista</div>
-                    <div className="text-2xl font-black text-white">{studentsInGroup.length}</div>
-                    <div className="text-[10px] text-slate-500 block mt-0.5">Grupo: {selectedGradeGroup}</div>
+                    <div className="stat-label">Alumnos en Lista</div>
+                    <div className="stat-value">{studentsInGroup.length}</div>
+                    <div className="stat-sub">Grupo: {selectedGradeGroup}</div>
                   </div>
 
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">Promedio de la Asignatura</div>
-                    <div className="text-2xl font-black text-amber-400">{avg}</div>
-                    <div className="text-[10px] text-slate-500 block mt-0.5">Escala oficial SEP (5 a 10)</div>
+                    <div className="stat-label">Promedio de la Asignatura</div>
+                    <div className="stat-value text-warning">{avg}</div>
+                    <div className="stat-sub">Escala oficial SEP (5 a 10)</div>
                   </div>
 
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">Aprobados / Riesgo</div>
+                    <div className="stat-label">Aprobados / Riesgo</div>
                     <div className="flex items-center gap-2 mt-1">
                       <div className="text-lg font-black text-emerald-400">{approvedCount} Aprobados</div>
                       {atRiskCount > 0 && <div className="text-xs font-bold text-rose-400">({atRiskCount} en riesgo)</div>}
                     </div>
-                    <div className="text-[10px] text-slate-500 block mt-0.5">Mínimo aprobatorio: 6.0</div>
+                    <div className="stat-sub">Mínimo aprobatorio: 6.0</div>
                   </div>
 
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">Inasistencias del Grupo</div>
-                    <div className="text-2xl font-black text-purple-400">{totalAbsences}</div>
-                    <div className="text-[10px] text-slate-500 block mt-0.5">Faltas acumuladas en la materia</div>
+                    <div className="stat-label">Inasistencias del Grupo</div>
+                    <div className="stat-value text-purple">{totalAbsences}</div>
+                    <div className="stat-sub">Faltas acumuladas en la materia</div>
                   </div>
                 </div>
               );
@@ -8012,16 +8012,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               if (studentsInGroup.length === 0) {
                 return (
                   <div className="dashboard-card p-12 text-center space-y-3">
-                    <div className="w-16 h-16 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded-3xl flex items-center justify-center mx-auto">
+                    <div className="badge badge-amber">
                       <GraduationCap className="w-8 h-8" />
                     </div>
                     <h3 className="modal-title">No hay alumnos inscritos en este grupo</h3>
-                    <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                    <p className="text-xs text-muted max-w-sm mx-auto">
                       Inscribe alumnos en la pestaña "Alumnos y Expedientes" asignándolos a <strong>{selectedGradeGroup}</strong> para habilitar su captura de notas.
                     </p>
                     <button
                       onClick={() => setShowNewStudentModal(true)}
-                      className="mt-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs px-5 py-2.5 rounded-2xl shadow-lg cursor-pointer"
+                      className="btn btn-primary btn-sm"
                     >
                       + Inscribir Primer Alumno en {selectedGradeGroup}
                     </button>
@@ -8031,13 +8031,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               return (
                 <div className="dashboard-table-card">
-                  <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
+                  <div className="px-6 py-4 border-b border-subtle flex items-center justify-between">
                     <div>
-                      <h3 className="text-base font-black text-white flex items-center gap-2">
+                      <h3 className="text-base font-black flex items-center gap-2">
                         <Edit3 className="w-4 h-4 text-amber-400" />
                         Registro de Evaluaciones Trimestrales
                       </h3>
-                      <p className="text-xs text-slate-400 mt-0.5">
+                      <p className="text-xs text-muted mt-0.5">
                         Captura individual por alumno. Los cambios se recalculan al instante.
                       </p>
                     </div>
@@ -8068,7 +8068,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <th className="py-3.5 px-4 text-center min-w-[120px]">Boleta SEP</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-800/80">
+                      <tbody className="table-body">
                         {studentsInGroup.map((std, idx) => {
                           const grade = gradesData.find(
                             (g) => g.studentId === std.id && g.subjectId === selectedSubjectId
@@ -8082,10 +8082,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                           return (
                             <tr key={std.id} className="table-row-hover">
-                              <td className="py-3 px-4 font-mono text-slate-500">{idx + 1}</td>
+                              <td className="py-3 px-4 font-mono text-muted">{idx + 1}</td>
                               <td className="py-3 px-4">
-                                <div className="font-bold text-white">{std.firstName} {std.lastName}</div>
-                                <div className="font-mono text-[10px] text-slate-400">
+                                <div className="font-bold">{std.firstName} {std.lastName}</div>
+                                <div className="font-mono text-[10px] text-muted">
                                   {std.studentCode} • {std.curp || 'Sin CURP'}
                                 </div>
                               </td>
@@ -8180,7 +8180,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                     {finalG.toFixed(1)}
                                   </div>
                                 ) : (
-                                  <div className="font-mono text-slate-500 text-xs">--</div>
+                                  <div className="font-mono text-muted text-xs">--</div>
                                 )}
                               </td>
 
@@ -8229,14 +8229,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   {/* Barra al pie de la tabla */}
                   <div className="table-footer flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-                    <div className="text-slate-400 flex items-center gap-2">
+                    <div className="text-muted flex items-center gap-2">
                       <Check className="w-4 h-4 text-emerald-400" />
                       <div>Todas las asignaturas y calificaciones cumplen la normativa y campos formativos oficiales de la SEP.</div>
                     </div>
 
                     <button
                       onClick={handleSaveGrades}
-                      className="bg-amber-400 hover:bg-amber-300 text-slate-950 px-6 py-2.5 rounded-2xl font-black text-xs shadow-lg shadow-amber-400/25 transition-all cursor-pointer flex items-center gap-2"
+                      className="btn btn-warning btn-sm"
                     >
                       <CheckCircle2 className="w-4 h-4" />
                       <div>Guardar y Confirmar Calificaciones</div>
@@ -8255,16 +8255,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                  <div className="badge badge-purple font-mono">
                     <Megaphone className="w-3 h-3" /> Comunicación Escolar Oficial
                   </div>
-                  <div className="text-slate-400 text-xs">• Ciclo Escolar 2026-2027</div>
+                  <div className="text-muted text-xs">• Ciclo Escolar 2026-2027</div>
                 </div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <Megaphone className="w-6 h-6 text-purple-400" />
                   Circulares, Citatorios y Avisos Institucionales
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="dashboard-section-desc">
                   Difusión segmentada de comunicados oficiales, citatorios urgentes a padres de familia y control digital de acuses de enterado.
                 </p>
               </div>
@@ -8272,7 +8272,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex items-center gap-2.5 flex-wrap">
                 <button
                   onClick={() => setShowCreateNoticeModal(true)}
-                  className="bg-purple-600 hover:bg-purple-500 text-white px-5 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-purple-600/20"
+                  className="btn btn-purple btn-sm"
                 >
                   <Megaphone className="w-4 h-4" />
                   <div>+ Redactar Comunicado</div>
@@ -8293,33 +8293,33 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               return (
                 <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">Total Publicados</div>
-                    <div className="text-2xl font-black text-white">{totalNotices}</div>
-                    <div className="text-[10px] text-slate-500 block mt-0.5">Comunicados activos</div>
+                    <div className="stat-label">Total Publicados</div>
+                    <div className="stat-value">{totalNotices}</div>
+                    <div className="stat-sub">Comunicados activos</div>
                   </div>
 
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">Circulares Generales</div>
-                    <div className="text-2xl font-black text-sky-400">{circularesCount}</div>
-                    <div className="text-[10px] text-slate-500 block mt-0.5">Eventos y avisos</div>
+                    <div className="stat-label">Circulares Generales</div>
+                    <div className="stat-value text-primary">{circularesCount}</div>
+                    <div className="stat-sub">Eventos y avisos</div>
                   </div>
 
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">Citatorios a Padres</div>
-                    <div className="text-2xl font-black text-amber-400">{citatoriosCount}</div>
-                    <div className="text-[10px] text-slate-500 block mt-0.5">Citas presenciales</div>
+                    <div className="stat-label">Citatorios a Padres</div>
+                    <div className="stat-value text-warning">{citatoriosCount}</div>
+                    <div className="stat-sub">Citas presenciales</div>
                   </div>
 
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">Avisos Urgentes</div>
-                    <div className="text-2xl font-black text-rose-400">{avisosUrgentes}</div>
-                    <div className="text-[10px] text-slate-500 block mt-0.5">Alta prioridad</div>
+                    <div className="stat-label">Avisos Urgentes</div>
+                    <div className="stat-value text-danger">{avisosUrgentes}</div>
+                    <div className="stat-sub">Alta prioridad</div>
                   </div>
 
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">% Acuses de Enterado</div>
-                    <div className="text-2xl font-black text-emerald-400">{avgAckRate}%</div>
-                    <div className="w-full bg-slate-950 h-1.5 rounded-full overflow-hidden mt-1.5 border border-slate-800">
+                    <div className="stat-label">% Acuses de Enterado</div>
+                    <div className="stat-value text-success">{avgAckRate}%</div>
+                    <div className="badge badge-sky">
                       <div
                         className="bg-emerald-400 h-full rounded-full transition-all"
                         style={{ width: `${avgAckRate}%` }}
@@ -8331,14 +8331,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             })()}
 
             {/* Filtros de la Bandeja */}
-            <div className="bg-slate-900 border border-slate-800 p-3 rounded-2xl flex items-center gap-2 overflow-x-auto">
-              <div className="text-xs font-bold text-slate-400 px-2 flex items-center gap-1">
+            <div className="bg-surface border border-subtle p-3 rounded-2xl flex items-center gap-2 overflow-x-auto">
+              <div className="text-xs font-bold text-muted px-2 flex items-center gap-1">
                 <Filter className="w-3.5 h-3.5" /> Filtrar:
               </div>
               <button
                 onClick={() => setNoticeFilter('ALL')}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
-                  noticeFilter === 'ALL' ? 'bg-purple-600 text-white' : 'bg-slate-950 text-slate-400 hover:text-white'
+                  noticeFilter === 'ALL' ? 'bg-purple-600 text-white' : 'bg-slate-950 text-muted hover:text-white'
                 }`}
               >
                 Todos ({notices.length})
@@ -8346,7 +8346,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <button
                 onClick={() => setNoticeFilter('CIRCULAR_GENERAL')}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
-                  noticeFilter === 'CIRCULAR_GENERAL' ? 'bg-sky-600 text-white' : 'bg-slate-950 text-slate-400 hover:text-white'
+                  noticeFilter === 'CIRCULAR_GENERAL' ? 'bg-sky-600 text-white' : 'bg-slate-950 text-muted hover:text-white'
                 }`}
               >
                 Circulares Generales
@@ -8354,7 +8354,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <button
                 onClick={() => setNoticeFilter('CITATORIO_PADRES')}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
-                  noticeFilter === 'CITATORIO_PADRES' ? 'bg-amber-500 text-slate-950 font-black' : 'bg-slate-950 text-slate-400 hover:text-white'
+                  noticeFilter === 'CITATORIO_PADRES' ? 'bg-amber-500 text-slate-950 font-black' : 'bg-slate-950 text-muted hover:text-white'
                 }`}
               >
                 Citatorios Presenciales
@@ -8362,7 +8362,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <button
                 onClick={() => setNoticeFilter('AVISO_URGENTE')}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
-                  noticeFilter === 'AVISO_URGENTE' ? 'bg-rose-600 text-white' : 'bg-slate-950 text-slate-400 hover:text-white'
+                  noticeFilter === 'AVISO_URGENTE' ? 'bg-rose-600 text-white' : 'bg-slate-950 text-muted hover:text-white'
                 }`}
               >
                 Avisos Urgentes
@@ -8387,16 +8387,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   return (
                     <div
                       key={notice.id}
-                      className={`bg-slate-900 border rounded-3xl p-6 shadow-xl transition-all space-y-4 ${
+                      className={`bg-surface border rounded-3xl p-6 shadow-xl transition-all space-y-4 ${
                         isUrgent
                           ? 'border-rose-700/80 shadow-rose-950/20'
                           : isCitatorio
                           ? 'border-amber-600/60 shadow-amber-950/20'
-                          : 'border-slate-800'
+                          : 'border-subtle'
                       }`}
                     >
                       {/* Cabecera del Comunicado */}
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-subtle pb-3">
                         <div className="flex items-center gap-2 flex-wrap">
                           <div className="font-mono text-xs font-black bg-purple-500/20 text-purple-300 border border-purple-500/30 px-2.5 py-0.5 rounded-lg">
                             {notice.folio}
@@ -8419,14 +8419,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           </div>
 
                           {isUrgent && (
-                            <div className="bg-rose-600 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse">
+                            <div className="bg-rose-600 text-[10px] font-black uppercase px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse">
                               <AlertTriangle className="w-3 h-3" /> Urgente
                             </div>
                           )}
 
-                          <div className="text-[11px] text-slate-400">
+                          <div className="text-[11px] text-muted">
                             • Destinatarios:{' '}
-                            <strong className="text-slate-200">
+                            <strong className="text-main">
                               {notice.targetAudience === 'TODOS'
                                 ? 'Todo el Colegio'
                                 : notice.targetAudience === 'GRUPO'
@@ -8436,7 +8436,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           </div>
                         </div>
 
-                        <div className="text-right text-xs text-slate-400 font-mono">
+                        <div className="text-right text-xs text-muted font-mono">
                           Publicado: <strong>{notice.publishDate}</strong> • Por: {notice.publishedBy}
                         </div>
                       </div>
@@ -8444,18 +8444,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {/* Título y Contenido */}
                       <div className="space-y-2">
                         <h3 className="modal-title">{notice.title}</h3>
-                        <p className="text-xs text-slate-300 leading-relaxed whitespace-pre-line">
+                        <p className="text-xs text-muted leading-relaxed whitespace-pre-line">
                           {notice.content}
                         </p>
                       </div>
 
                       {/* Cuadro destacado si es Citatorio Presencial */}
                       {isCitatorio && notice.appointmentDateTime && (
-                        <div className="bg-amber-950/40 border border-amber-700/60 rounded-2xl p-4 text-xs space-y-1 text-amber-200">
+                        <div className="badge badge-amber">
                           <div className="font-bold flex items-center gap-1.5 text-amber-300">
                             <Clock className="w-4 h-4" />
                             <div>Fecha y Hora de la Cita:</div>
-                            <strong className="text-white text-sm ml-1">{notice.appointmentDateTime}</strong>
+                            <strong className="text-sm ml-1">{notice.appointmentDateTime}</strong>
                           </div>
                           <div className="text-[11px] text-amber-300/80">
                             📍 Lugar: <strong>{notice.appointmentLocation || 'Dirección Técnica'}</strong>
@@ -8470,7 +8470,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {notice.requiresAcknowledgment && (
                         <div className="dashboard-subcard space-y-2">
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs">
-                            <div className="text-slate-400 flex items-center gap-1.5">
+                            <div className="text-muted flex items-center gap-1.5">
                               <CheckCheck className="w-4 h-4 text-emerald-400" />
                               <div>Control de Acuse de Enterado:</div>
                               <strong className="text-emerald-400">
@@ -8479,13 +8479,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             </div>
 
                             {notice.acknowledgmentDeadline && (
-                              <div className="text-[11px] text-slate-500 font-mono">
+                              <div className="text-[11px] text-muted font-mono">
                                 Límite de confirmación: {notice.acknowledgmentDeadline}
                               </div>
                             )}
                           </div>
 
-                          <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-slate-800">
+                          <div className="w-full bg-surface h-2 rounded-full overflow-hidden border border-subtle">
                             <div
                               className="bg-emerald-400 h-full rounded-full transition-all"
                               style={{ width: `${ackPercentage}%` }}
@@ -8495,11 +8495,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       )}
 
                       {/* Acciones de la Tarjeta */}
-                      <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-800/80">
+                      <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-subtle">
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => handleBroadcastWhatsApp(notice)}
-                            className="bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 cursor-pointer transition-all shadow-sm"
+                            className="btn btn-success btn-sm"
                           >
                             <Send className="w-3.5 h-3.5" />
                             <div>Difundir por WhatsApp</div>
@@ -8507,14 +8507,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                           <button
                             onClick={() => handleOpenPrintNotice(notice)}
-                            className="bg-slate-800 hover:bg-slate-750 text-slate-200 border border-slate-700 font-bold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 cursor-pointer transition-all"
+                            className="btn btn-secondary btn-sm"
                           >
                             <Printer className="w-3.5 h-3.5 text-purple-400" />
                             <div>Imprimir Formato Membretado</div>
                           </button>
                         </div>
 
-                        <div className="text-[11px] text-slate-500 font-mono">
+                        <div className="text-[11px] text-muted font-mono">
                           Estatus: <strong className="text-emerald-400">Activo en Portal Familiar</strong>
                         </div>
                       </div>
@@ -8532,16 +8532,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                  <div className="badge badge-sky font-mono">
                     <QrCode className="w-3 h-3" /> Control de Acceso & Identidad Escolar
                   </div>
-                  <div className="text-slate-400 text-xs">• Ciclo Escolar 2026-2027</div>
+                  <div className="text-muted text-xs">• Ciclo Escolar 2026-2027</div>
                 </div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <CreditCard className="w-6 h-6 text-cyan-400" />
                   Credenciales Escolares Digitales & Control de Accesos
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="dashboard-section-desc">
                   Generación de carnets oficiales con código QR estándar PVC, ficha de seguridad médica y bitácora de escaneo en torniquetes.
                 </p>
               </div>
@@ -8549,7 +8549,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex items-center gap-2.5 flex-wrap">
                 <button
                   onClick={() => setShowScannerModal(true)}
-                  className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-4 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-emerald-500/20"
+                  className="btn btn-success btn-sm"
                 >
                   <Scan className="w-4 h-4" />
                   <div>📷 Simulador de Torniquete QR</div>
@@ -8560,7 +8560,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     const first = credentials.find((c) => c.personType === 'STUDENT');
                     if (first) handleOpenPrintBadge(first);
                   }}
-                  className="bg-slate-800 hover:bg-slate-750 text-slate-200 border border-slate-700 px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   <Printer className="w-4 h-4 text-cyan-400" />
                   <div>Imprimir Todas ({credentials.length})</div>
@@ -8577,36 +8577,36 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               return (
                 <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">Total Carnets Emitidos</div>
-                    <div className="text-2xl font-black text-white">{credentials.length}</div>
-                    <div className="text-[10px] text-slate-500 block mt-0.5">Credenciales activas</div>
+                    <div className="stat-label">Total Carnets Emitidos</div>
+                    <div className="stat-value">{credentials.length}</div>
+                    <div className="stat-sub">Credenciales activas</div>
                   </div>
 
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">Carnets de Alumnos</div>
+                    <div className="stat-label">Carnets de Alumnos</div>
                     <div className="text-2xl font-black text-cyan-400">{studentCreds}</div>
-                    <div className="text-[10px] text-slate-500 block mt-0.5">Carnets activos</div>
+                    <div className="stat-sub">Carnets activos</div>
                   </div>
 
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">Docentes & Personal</div>
-                    <div className="text-2xl font-black text-purple-400">{teacherCreds}</div>
-                    <div className="text-[10px] text-slate-500 block mt-0.5">Gafetes institucionales</div>
+                    <div className="stat-label">Docentes & Personal</div>
+                    <div className="stat-value text-purple">{teacherCreds}</div>
+                    <div className="stat-sub">Gafetes institucionales</div>
                   </div>
 
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">Accesos Registrados Hoy</div>
-                    <div className="text-2xl font-black text-emerald-400">{totalScansToday}</div>
-                    <div className="text-[10px] text-slate-500 block mt-0.5">Pases por torniquete</div>
+                    <div className="stat-label">Accesos Registrados Hoy</div>
+                    <div className="stat-value text-success">{totalScansToday}</div>
+                    <div className="stat-sub">Pases por torniquete</div>
                   </div>
 
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">Torniquete & Puerta</div>
+                    <div className="stat-label">Torniquete & Puerta</div>
                     <div className="text-xs font-black text-emerald-400 flex items-center gap-1.5 mt-1">
                       <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></div>
                       EN LÍNEA (Sync)
                     </div>
-                    <div className="text-[10px] text-slate-500 block mt-1">Puerta Principal Activa</div>
+                    <div className="text-[10px] text-muted block mt-1">Puerta Principal Activa</div>
                   </div>
                 </div>
               );
@@ -8620,7 +8620,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                     credentialFilter === 'STUDENT'
                       ? 'bg-cyan-500 text-slate-950 font-black shadow-md shadow-cyan-500/20'
-                      : 'bg-slate-950 text-slate-400 hover:text-white'
+                      : 'bg-slate-950 text-muted hover:text-white'
                   }`}
                 >
                   Credenciales de Alumnos ({credentials.filter((c) => c.personType === 'STUDENT').length})
@@ -8630,7 +8630,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                     credentialFilter === 'TEACHER'
                       ? 'bg-purple-600 text-white font-black shadow-md shadow-purple-600/20'
-                      : 'bg-slate-950 text-slate-400 hover:text-white'
+                      : 'bg-slate-950 text-muted hover:text-white'
                   }`}
                 >
                   Credenciales de Docentes ({credentials.filter((c) => c.personType === 'TEACHER').length})
@@ -8639,7 +8639,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               {credentialFilter === 'STUDENT' && (
                 <div className="flex items-center gap-2 text-xs">
-                  <div className="text-slate-400 font-bold">Grupo:</div>
+                  <div className="text-muted font-bold">Grupo:</div>
                   <select
                     value={selectedGroupForCreds}
                     onChange={(e) => setSelectedGroupForCreds(e.target.value)}
@@ -8677,38 +8677,38 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {/* Cabecera de la Tarjeta */}
                       <div className="modal-header">
                         <div className="flex items-center gap-2">
-                          <div className="font-mono text-xs font-black bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-2.5 py-0.5 rounded-lg">
+                          <div className="badge badge-sky font-mono">
                             {cred.credentialCode}
                           </div>
-                          <div className="bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
+                          <div className="badge badge-emerald">
                             {cred.status}
                           </div>
                         </div>
 
-                        <div className="text-xs text-slate-400 font-mono">
+                        <div className="text-xs text-muted font-mono">
                           {cred.validThrough}
                         </div>
                       </div>
 
                       {/* VISTA PREVIA DEL GAFETE PVC (ANVERSO) */}
-                      <div className="bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950/40 border border-slate-700/80 rounded-2xl p-4 shadow-inner relative overflow-hidden">
+                      <div className="bg-gradient-to-br from-slate-900 via-slate-850 to-blue-950 text-white border border-subtle rounded-2xl p-4 shadow-inner relative overflow-hidden">
                         {/* Franja Superior Institucional */}
-                        <div className="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
+                        <div className="flex items-center justify-between border-b border-subtle pb-2 mb-3">
                           <div className="flex items-center gap-2">
                             <div className="w-8 h-8 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 flex items-center justify-center font-black text-xs">
                               {currentTenant.name.charAt(0)}
                             </div>
                             <div>
-                              <div className="text-[11px] font-black text-white uppercase tracking-wider leading-tight">
+                              <div className="text-[11px] font-black uppercase tracking-wider leading-tight">
                                 {currentTenant.name}
                               </div>
-                              <div className="text-[9px] text-slate-400 font-mono">
+                              <div className="text-[9px] text-muted font-mono">
                                 CCT: {cred.cct} • {cred.levelName}
                               </div>
                             </div>
                           </div>
 
-                          <div className="text-[9px] font-mono font-bold bg-slate-800 px-2 py-0.5 rounded text-cyan-300 border border-slate-700">
+                          <div className="text-[9px] font-mono font-bold bg-subtle px-2 py-0.5 rounded text-cyan-300 border border-subtle">
                             CREDENCIAL OFICIAL
                           </div>
                         </div>
@@ -8716,11 +8716,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {/* Datos del Portador */}
                         <div className="flex items-center gap-4">
                           {/* Foto del Portador */}
-                          <div className="w-20 h-24 rounded-xl bg-slate-800 border-2 border-slate-700 flex flex-col items-center justify-center text-slate-400 relative overflow-hidden shrink-0 shadow-md">
-                            <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-white font-bold text-sm">
+                          <div className="w-20 h-24 rounded-xl bg-subtle border-2 border-subtle flex flex-col items-center justify-center text-muted relative overflow-hidden shrink-0 shadow-md">
+                            <div className="w-10 h-10 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-sm">
                               {cred.fullName.charAt(0)}
                             </div>
-                            <div className="text-[8px] font-mono text-slate-400 mt-1 uppercase">
+                            <div className="text-[8px] font-mono text-muted mt-1 uppercase">
                               {isStudent ? 'ALUMNO' : 'DOCENTE'}
                             </div>
                             <div className="absolute bottom-0 inset-x-0 bg-cyan-500/20 text-cyan-300 text-[7px] text-center font-bold py-0.5 uppercase">
@@ -8730,17 +8730,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                           {/* Info */}
                           <div className="flex-1 min-w-0 space-y-1">
-                            <h4 className="text-sm font-black text-white truncate leading-tight">
+                            <h4 className="text-sm font-black truncate leading-tight">
                               {cred.fullName}
                             </h4>
                             <div className="text-xs font-bold text-cyan-400 truncate">
                               {cred.roleOrGrade}
                             </div>
-                            <div className="text-[11px] text-slate-300 font-mono">
-                              Matrícula: <strong className="text-white">{cred.matriculaOrCode}</strong>
+                            <div className="text-[11px] text-muted font-mono">
+                              Matrícula: <strong className="text-main">{cred.matriculaOrCode}</strong>
                             </div>
                             {cred.curp && (
-                              <div className="text-[10px] text-slate-400 font-mono truncate">
+                              <div className="text-[10px] text-muted font-mono truncate">
                                 CURP: {cred.curp}
                               </div>
                             )}
@@ -8752,21 +8752,21 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             className="w-20 h-20 bg-white p-1.5 rounded-xl flex flex-col items-center justify-center shrink-0 cursor-pointer shadow-md hover:ring-2 hover:ring-cyan-400 transition-all"
                             title="Haz clic para simular escaneo en torniquete"
                           >
-                            <div className="w-full h-full border border-slate-900 flex flex-col items-center justify-center text-slate-950 p-1">
+                            <div className="w-full h-full border border-slate-300 flex flex-col items-center justify-center text-slate-950 p-1">
                               <QrCode className="w-12 h-12 text-slate-900" />
                             </div>
                           </div>
                         </div>
 
                         {/* Reverso Informativo (Ficha Médica y de Emergencia) */}
-                        <div className="mt-3 pt-2.5 border-t border-slate-800 grid grid-cols-3 gap-2 text-[10px]">
-                          <div className="bg-slate-950/70 p-1.5 rounded-lg border border-slate-800">
-                            <div className="text-slate-500 block">Tipo Sangre:</div>
+                        <div className="mt-3 pt-2.5 border-t border-subtle grid grid-cols-3 gap-2 text-[10px]">
+                          <div className="badge badge-sky">
+                            <div className="text-muted block">Tipo Sangre:</div>
                             <strong className="text-rose-400 font-black">{cred.bloodType}</strong>
                           </div>
-                          <div className="bg-slate-950/70 p-1.5 rounded-lg border border-slate-800 col-span-2 truncate">
-                            <div className="text-slate-500 block">Contacto de Emergencia:</div>
-                            <strong className="text-slate-200 truncate">{cred.emergencyContactName} ({cred.emergencyContactPhone})</strong>
+                          <div className="badge badge-sky">
+                            <div className="text-muted block">Contacto de Emergencia:</div>
+                            <strong className="text-main truncate">{cred.emergencyContactName} ({cred.emergencyContactPhone})</strong>
                           </div>
                         </div>
                       </div>
@@ -8776,7 +8776,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <div className="flex items-center gap-1.5">
                           <button
                             onClick={() => handleQuickScan(cred, 'ENTRADA')}
-                            className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold px-3 py-1.5 rounded-xl flex items-center gap-1 cursor-pointer transition-colors"
+                            className="btn btn-success btn-sm"
                             title="Simular escaneo de entrada matutina"
                           >
                             <Check className="w-3.5 h-3.5" />
@@ -8785,7 +8785,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                           <button
                             onClick={() => handleQuickScan(cred, 'SALIDA')}
-                            className="bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 text-xs font-bold px-3 py-1.5 rounded-xl flex items-center gap-1 cursor-pointer transition-colors"
+                            className="btn btn-warning btn-sm"
                             title="Simular escaneo de salida de la jornada"
                           >
                             <LogOut className="w-3.5 h-3.5" />
@@ -8798,7 +8798,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 `📲 Credencial digital de ${cred.fullName} enviada por WhatsApp al teléfono ${cred.emergencyContactPhone}`
                               )
                             }
-                            className="bg-slate-800 hover:bg-slate-750 text-slate-300 text-xs font-bold px-2.5 py-1.5 rounded-xl flex items-center gap-1 cursor-pointer transition-colors"
+                            className="btn btn-secondary btn-sm"
                             title="Compartir por WhatsApp al tutor"
                           >
                             <Send className="w-3.5 h-3.5 text-emerald-400" />
@@ -8807,7 +8807,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                         <button
                           onClick={() => handleOpenPrintBadge(cred)}
-                          className="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 cursor-pointer shadow-md shadow-cyan-500/20 transition-all"
+                          className="btn btn-primary btn-sm"
                         >
                           <Printer className="w-3.5 h-3.5" />
                           <div>Imprimir Gafete PVC</div>
@@ -8820,20 +8820,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* BITÁCORA DE ACCESOS EN TIEMPO REAL (TORNIQUETES) */}
             <div className="dashboard-card space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-subtle pb-3">
                 <div>
-                  <h3 className="text-base font-black text-white flex items-center gap-2">
+                  <h3 className="text-base font-black flex items-center gap-2">
                     <Scan className="w-5 h-5 text-emerald-400" />
                     Bitácora de Accesos y Torniquetes en Tiempo Real
                   </h3>
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-muted">
                     Registro cronológico de entradas y salidas validadas mediante el lector de código QR.
                   </p>
                 </div>
 
                 <button
                   onClick={() => setAccessLogs([])}
-                  className="text-xs text-slate-400 hover:text-slate-200 flex items-center gap-1 cursor-pointer"
+                  className="text-xs text-muted hover:text-main flex items-center gap-1 cursor-pointer"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
                   <div>Limpiar bitácora</div>
@@ -8841,13 +8841,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               {accessLogs.length === 0 ? (
-                <div className="text-center py-8 text-slate-500 text-xs">
+                <div className="text-center py-8 text-muted text-xs">
                   Sin registros de acceso hoy. Prueba pasando una credencial con el botón "Entrada".
                 </div>
               ) : (
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs text-slate-300">
-                    <thead className="bg-slate-950/80 uppercase text-[10px] text-slate-400 border-b border-slate-800 font-mono">
+                  <table className="w-full text-left text-xs text-muted">
+                    <thead className="badge badge-sky font-mono">
                       <tr>
                         <th className="py-2.5 px-3">Hora</th>
                         <th className="py-2.5 px-3">Persona / Portador</th>
@@ -8858,15 +8858,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <th className="py-2.5 px-3">Estatus</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800/60 font-sans">
+                    <tbody className="table-body">
                       {accessLogs.map((log) => (
                         <tr key={log.id} className="hover:bg-slate-850/50 transition-colors">
                           <td className="py-2.5 px-3 font-mono text-cyan-400 font-bold whitespace-nowrap">
                             {log.timestamp}
                           </td>
-                          <td className="py-2.5 px-3 font-bold text-white whitespace-nowrap">
+                          <td className="py-2.5 px-3 font-bold whitespace-nowrap">
                             {log.personName}
-                            <div className="block text-[10px] text-slate-500 font-normal">{log.roleOrGrade}</div>
+                            <div className="block text-[10px] text-muted font-normal">{log.roleOrGrade}</div>
                           </td>
                           <td className="py-2.5 px-3">
                             <div className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
@@ -8877,7 +8877,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               {log.personType === 'STUDENT' ? 'Alumno' : 'Docente'}
                             </div>
                           </td>
-                          <td className="py-2.5 px-3 font-mono text-[11px] text-slate-400">
+                          <td className="py-2.5 px-3 font-mono text-[11px] text-muted">
                             {log.credentialCode}
                           </td>
                           <td className="py-2.5 px-3 whitespace-nowrap">
@@ -8889,7 +8889,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               {log.direction}
                             </div>
                           </td>
-                          <td className="py-2.5 px-3 font-mono text-slate-400">
+                          <td className="py-2.5 px-3 font-mono text-muted">
                             {log.scanPoint.replace('_', ' ')}
                           </td>
                           <td className="py-2.5 px-3 whitespace-nowrap">
@@ -8920,16 +8920,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                  <div className="badge badge-sky font-mono">
                     <ClipboardList className="w-3 h-3" /> Agenda y Deberes Académicos
                   </div>
-                  <div className="text-slate-400 text-xs">• Ciclo Escolar 2026-2027</div>
+                  <div className="text-muted text-xs">• Ciclo Escolar 2026-2027</div>
                 </div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <ClipboardList className="w-6 h-6 text-blue-400" />
                   Cuaderno Digital de Tareas y Entregas Extemporáneas
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="dashboard-section-desc">
                   Publicación de deberes por materia, vinculación con justificantes médicos para prórrogas oficiales y revisión docente.
                 </p>
               </div>
@@ -8937,7 +8937,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex items-center gap-2.5 flex-wrap">
                 <button
                   onClick={() => setShowCreateTaskModal(true)}
-                  className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-blue-600/20"
+                  className="btn btn-primary btn-sm"
                 >
                   <ClipboardList className="w-4 h-4" />
                   <div>+ Asignar Nueva Tarea o Proyecto</div>
@@ -8955,47 +8955,47 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               return (
                 <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">Total Asignaciones</div>
-                    <div className="text-2xl font-black text-white">{totalTasks}</div>
-                    <div className="text-[10px] text-slate-500 block mt-0.5">Actividades en curso</div>
+                    <div className="stat-label">Total Asignaciones</div>
+                    <div className="stat-value">{totalTasks}</div>
+                    <div className="stat-sub">Actividades en curso</div>
                   </div>
 
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">Tareas Diarias</div>
+                    <div className="stat-label">Tareas Diarias</div>
                     <div className="text-2xl font-black text-blue-400">{tareasCount}</div>
-                    <div className="text-[10px] text-slate-500 block mt-0.5">Ejercicios y lecturas</div>
+                    <div className="stat-sub">Ejercicios y lecturas</div>
                   </div>
 
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">Proyectos en Curso</div>
-                    <div className="text-2xl font-black text-purple-400">{proyectosCount}</div>
-                    <div className="text-[10px] text-slate-500 block mt-0.5">Evaluación formativa</div>
+                    <div className="stat-label">Proyectos en Curso</div>
+                    <div className="stat-value text-purple">{proyectosCount}</div>
+                    <div className="stat-sub">Evaluación formativa</div>
                   </div>
 
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">Entregas Recibidas</div>
-                    <div className="text-2xl font-black text-emerald-400">{totalSubmissions}</div>
-                    <div className="text-[10px] text-slate-500 block mt-0.5">Revisadas o en proceso</div>
+                    <div className="stat-label">Entregas Recibidas</div>
+                    <div className="stat-value text-success">{totalSubmissions}</div>
+                    <div className="stat-sub">Revisadas o en proceso</div>
                   </div>
 
                   <div className="dashboard-stat-card">
-                    <div className="text-[11px] font-bold text-slate-400 block">Prórrogas Médicas</div>
-                    <div className="text-2xl font-black text-amber-400">1 Alumno</div>
-                    <div className="text-[10px] text-slate-400 block mt-0.5">Carlos Mendoza Ruiz</div>
+                    <div className="stat-label">Prórrogas Médicas</div>
+                    <div className="stat-value text-warning">1 Alumno</div>
+                    <div className="text-[10px] text-muted block mt-0.5">Carlos Mendoza Ruiz</div>
                   </div>
                 </div>
               );
             })()}
 
             {/* Filtros de Tareas */}
-            <div className="bg-slate-900 border border-slate-800 p-3 rounded-2xl flex items-center gap-2 overflow-x-auto">
-              <div className="text-xs font-bold text-slate-400 px-2 flex items-center gap-1">
+            <div className="bg-surface border border-subtle p-3 rounded-2xl flex items-center gap-2 overflow-x-auto">
+              <div className="text-xs font-bold text-muted px-2 flex items-center gap-1">
                 <Filter className="w-3.5 h-3.5" /> Filtrar:
               </div>
               <button
                 onClick={() => setTaskFilter('ALL')}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
-                  taskFilter === 'ALL' ? 'bg-blue-600 text-white' : 'bg-slate-950 text-slate-400 hover:text-white'
+                  taskFilter === 'ALL' ? 'bg-blue-600 text-white' : 'bg-slate-950 text-muted hover:text-white'
                 }`}
               >
                 Todas ({assignments.length})
@@ -9003,7 +9003,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <button
                 onClick={() => setTaskFilter('TAREA')}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
-                  taskFilter === 'TAREA' ? 'bg-blue-600 text-white' : 'bg-slate-950 text-slate-400 hover:text-white'
+                  taskFilter === 'TAREA' ? 'bg-blue-600 text-white' : 'bg-slate-950 text-muted hover:text-white'
                 }`}
               >
                 Tareas Diarias
@@ -9011,7 +9011,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <button
                 onClick={() => setTaskFilter('PROYECTO')}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
-                  taskFilter === 'PROYECTO' ? 'bg-purple-600 text-white' : 'bg-slate-950 text-slate-400 hover:text-white'
+                  taskFilter === 'PROYECTO' ? 'bg-purple-600 text-white' : 'bg-slate-950 text-muted hover:text-white'
                 }`}
               >
                 Proyectos Formativos
@@ -9032,12 +9032,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   return (
                     <div
                       key={task.id}
-                      className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4 hover:border-slate-700 transition-all"
+                      className="bg-surface border border-subtle rounded-3xl p-6 shadow-xl space-y-4 hover:border-subtle transition-all"
                     >
                       {/* Cabecera de la Tarea */}
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-subtle pb-3">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <div className="font-mono text-xs font-black bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2.5 py-0.5 rounded-lg">
+                          <div className="badge badge-sky font-mono">
                             {task.folio}
                           </div>
                           <div
@@ -9049,53 +9049,53 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           >
                             {task.type}
                           </div>
-                          <div className="bg-slate-800 text-slate-200 text-xs font-bold px-2.5 py-0.5 rounded-lg border border-slate-700">
+                          <div className="bg-subtle text-main text-xs font-bold px-2.5 py-0.5 rounded-lg border border-subtle">
                             {task.subjectName}
                           </div>
-                          <div className="text-[11px] text-slate-400">
-                            • Grupo: <strong className="text-slate-200">{task.groupName}</strong>
+                          <div className="text-[11px] text-muted">
+                            • Grupo: <strong className="text-main">{task.groupName}</strong>
                           </div>
                         </div>
 
-                        <div className="text-right text-xs text-slate-400 font-mono">
-                          Docente: <strong className="text-slate-200">{task.teacherName}</strong>
+                        <div className="text-right text-xs text-muted font-mono">
+                          Docente: <strong className="text-main">{task.teacherName}</strong>
                         </div>
                       </div>
 
                       {/* Título y Descripción */}
                       <div className="space-y-1.5">
-                        <h3 className="text-base font-black text-white">{task.title}</h3>
-                        <p className="text-xs text-slate-300 leading-relaxed whitespace-pre-line">
+                        <h3 className="text-base font-black">{task.title}</h3>
+                        <p className="text-xs text-muted leading-relaxed whitespace-pre-line">
                           {task.description}
                         </p>
                       </div>
 
                       {/* Fechas y Plazos */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                        <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 flex items-center justify-between">
-                          <div className="text-slate-400">📅 Fecha Límite Oficial:</div>
+                        <div className="badge badge-sky">
+                          <div className="text-muted">📅 Fecha Límite Oficial:</div>
                           <strong className="text-rose-400 font-mono">{task.dueDate}</strong>
                         </div>
 
-                        <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 flex items-center justify-between">
-                          <div className="text-slate-400">⭐ Escala Máxima:</div>
+                        <div className="badge badge-sky">
+                          <div className="text-muted">⭐ Escala Máxima:</div>
                           <strong className="text-amber-400 font-mono">{task.maxScore} pts</strong>
                         </div>
                       </div>
 
                       {/* Banner de Prórroga Médica */}
                       {task.allowExtempWithJustification && (
-                        <div className="bg-amber-950/30 border border-amber-800/60 rounded-2xl p-3.5 text-xs text-amber-200 space-y-1">
+                        <div className="badge badge-amber">
                           <div className="font-bold flex items-center gap-1.5 text-amber-300">
                             <HeartPulse className="w-4 h-4 text-rose-400" />
                             <div>Prórroga Extemporánea por Justificante Médico Habilitada:</div>
                           </div>
                           <p className="text-[11px] text-amber-200/90 leading-relaxed">
                             Los alumnos con justificante médico oficial autorizado (como{' '}
-                            <strong className="text-white">Carlos Mendoza Ruiz</strong> con folio{' '}
+                            <strong className="text-main">Carlos Mendoza Ruiz</strong> con folio{' '}
                             <strong className="font-mono text-cyan-300">JUST-2026-001</strong>) disponen de prórroga
                             especial hasta el{' '}
-                            <strong className="text-white font-mono">{task.extempExtendedDueDate || '07/Sep/2026'}</strong> sin
+                            <strong className="font-mono">{task.extempExtendedDueDate || '07/Sep/2026'}</strong> sin
                             penalización en su calificación.
                           </p>
                         </div>
@@ -9104,17 +9104,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {/* Barra de Progreso de Entregas */}
                       <div className="dashboard-subcard space-y-2">
                         <div className="flex items-center justify-between text-xs">
-                          <div className="text-slate-400 flex items-center gap-1.5">
+                          <div className="text-muted flex items-center gap-1.5">
                             <FileCheck className="w-4 h-4 text-emerald-400" />
                             <div>Entregas de los alumnos:</div>
                             <strong className="text-emerald-400">
                               {task.submittedCount} de {task.totalStudents} entregaron ({submissionPercent}%)
                             </strong>
                           </div>
-                          <div className="text-[11px] font-mono text-slate-500">Estatus: Activa</div>
+                          <div className="text-[11px] font-mono text-muted">Estatus: Activa</div>
                         </div>
 
-                        <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-slate-800">
+                        <div className="w-full bg-surface h-2 rounded-full overflow-hidden border border-subtle">
                           <div
                             className="bg-emerald-400 h-full rounded-full transition-all"
                             style={{ width: `${submissionPercent}%` }}
@@ -9123,11 +9123,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </div>
 
                       {/* Acciones de la Tarea */}
-                      <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-800">
+                      <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-subtle">
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => handleOpenSubmissions(task)}
-                            className="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 cursor-pointer shadow-md shadow-blue-600/20 transition-all"
+                            className="btn btn-primary btn-sm"
                           >
                             <ClipboardList className="w-4 h-4" />
                             <div>Revisar Entregas & Calificar</div>
@@ -9139,14 +9139,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 `📲 Recordatorio de ${task.folio} enviado por WhatsApp a los tutores de ${task.groupName}.`
                               )
                             }
-                            className="bg-slate-800 hover:bg-slate-750 text-slate-300 text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 cursor-pointer transition-colors"
+                            className="btn btn-secondary btn-sm"
                           >
                             <Send className="w-3.5 h-3.5 text-emerald-400" />
                             <div>Recordatorio WhatsApp</div>
                           </button>
                         </div>
 
-                        <div className="text-[11px] text-slate-500 font-mono">
+                        <div className="text-[11px] text-muted font-mono">
                           Visible en el Portal Familiar
                         </div>
                       </div>
@@ -9164,16 +9164,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                  <div className="badge badge-sky font-mono">
                     <CalendarDays className="w-3 h-3" /> Parrilla Semanal SEP • 50 Minutos
                   </div>
-                  <div className="text-slate-400 text-xs">• Ciclo Escolar 2026-2027</div>
+                  <div className="text-muted text-xs">• Ciclo Escolar 2026-2027</div>
                 </div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <CalendarDays className="w-6 h-6 text-indigo-400" />
                   Horarios Escolares y Distribución Semanal de Aulas
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="dashboard-section-desc">
                   Distribución horaria por grupo, asignación de laboratorios/canchas y prevención de colisiones docentes.
                 </p>
               </div>
@@ -9184,7 +9184,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     setSlotConflictError(null);
                     setShowCreateSlotModal(true);
                   }}
-                  className="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-indigo-600/20"
+                  className="btn btn-purple btn-sm"
                 >
                   <CalendarDays className="w-4 h-4" />
                   <div>+ Asignar Bloque Horario</div>
@@ -9192,7 +9192,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <button
                   onClick={() => window.print()}
-                  className="bg-slate-800 hover:bg-slate-750 text-slate-200 border border-slate-700 px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   <Printer className="w-4 h-4 text-indigo-400" />
                   <div>Imprimir Horario</div>
@@ -9201,10 +9201,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             {/* Barra de Control, Selector de Grupo y Filtro de Día */}
-            <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="bg-surface border border-subtle p-4 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="flex items-center gap-3 flex-wrap">
                 <div className="flex items-center gap-2">
-                  <div className="text-xs font-bold text-slate-400">Grupo:</div>
+                  <div className="text-xs font-bold text-muted">Grupo:</div>
                   <select
                     value={selectedGroupForSchedule}
                     onChange={(e) => setSelectedGroupForSchedule(e.target.value)}
@@ -9215,7 +9215,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </select>
                 </div>
 
-                <div className="h-4 w-px bg-slate-800 hidden sm:block"></div>
+                <div className="h-4 w-px bg-subtle hidden sm:block"></div>
 
                 {/* Filtro de Días */}
                 <div className="flex items-center gap-1 overflow-x-auto">
@@ -9226,7 +9226,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                         selectedDayForSchedule === day
                           ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20'
-                          : 'bg-slate-950 text-slate-400 hover:text-white'
+                          : 'bg-slate-950 text-muted hover:text-white'
                       }`}
                     >
                       {day === 'ALL' ? 'Semana Completa' : day}
@@ -9236,7 +9236,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               {/* Indicador Anticolisión */}
-              <div className="flex items-center gap-2 text-xs font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-800/60 px-3 py-1.5 rounded-xl self-start md:self-auto">
+              <div className="badge badge-emerald">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
                 <div>0 Colisiones Detectadas • Matriz 100% Optimizada</div>
               </div>
@@ -9263,17 +9263,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="dashboard-table-card">
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs border-collapse">
-                      <thead className="bg-slate-950 text-slate-300 font-bold uppercase tracking-wider border-b border-slate-800">
+                      <thead className="badge badge-sky">
                         <tr>
-                          <th className="py-3.5 px-4 w-28 text-center bg-slate-950/80 border-r border-slate-800">
+                          <th className="badge badge-sky">
                             Hora / Módulo
                           </th>
                           {daysOfWeek.map((day) => (
                             <th
                               key={day}
-                              className="py-3.5 px-4 text-center border-r border-slate-800/80 last:border-r-0"
+                              className="py-3.5 px-4 text-center border-r border-subtle last:border-r-0"
                             >
-                              <div className="text-white text-xs font-black">{day}</div>
+                              <div className="text-xs font-black">{day}</div>
                               <div className="text-[10px] text-indigo-400 font-mono font-normal">
                                 {selectedGroupForSchedule}
                               </div>
@@ -9282,12 +9282,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </tr>
                       </thead>
 
-                      <tbody className="divide-y divide-slate-800/60 font-sans">
+                      <tbody className="table-body">
                         {timeBlocks.map((block) => {
                           if (block.isBreak) {
                             return (
-                              <tr key={block.id} className="bg-amber-950/20 border-y border-amber-800/40">
-                                <td className="py-2.5 px-3 font-mono font-black text-[11px] text-amber-400 text-center bg-slate-950/90 border-r border-slate-800">
+                              <tr key={block.id} className="badge badge-amber">
+                                <td className="badge badge-amber font-mono">
                                   {block.start} - {block.end}
                                 </td>
                                 <td
@@ -9303,7 +9303,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           return (
                             <tr key={block.id} className="hover:bg-slate-850/30 transition-colors">
                               {/* Columna Horario */}
-                              <td className="py-3 px-3 font-mono font-bold text-[11px] text-slate-300 text-center bg-slate-950/60 border-r border-slate-800 whitespace-nowrap">
+                              <td className="badge badge-sky font-mono">
                                 <div>{block.start} - {block.end}</div>
                                 <div className="text-[9px] text-indigo-400 font-sans block">{block.label}</div>
                               </td>
@@ -9320,7 +9320,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 return (
                                   <td
                                     key={day}
-                                    className="py-2.5 px-3 border-r border-slate-800/80 last:border-r-0 align-top min-w-[190px]"
+                                    className="py-2.5 px-3 border-r border-subtle last:border-r-0 align-top min-w-[190px]"
                                   >
                                     {slot ? (
                                       <div
@@ -9331,32 +9331,32 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                         }}
                                       >
                                         <div className="flex items-start justify-between gap-1 mb-1">
-                                          <strong className="text-xs font-black text-white leading-tight">
+                                          <strong className="text-xs font-black leading-tight">
                                             {slot.subjectName}
                                           </strong>
                                           <button
                                             onClick={() => handleDeleteScheduleSlot(slot.id)}
                                             title="Eliminar bloque"
-                                            className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-rose-400 transition-opacity p-0.5 cursor-pointer"
+                                            className="opacity-0 group-hover:opacity-100 text-muted hover:text-rose-400 transition-opacity p-0.5 cursor-pointer"
                                           >
                                             <Trash2 className="w-3 h-3" />
                                           </button>
                                         </div>
 
-                                        <div className="text-[11px] text-slate-300 flex items-center gap-1 mb-1">
+                                        <div className="text-[11px] text-muted flex items-center gap-1 mb-1">
                                           <UserCheck className="w-3 h-3 text-indigo-400 shrink-0" />
                                           <div className="truncate">{slot.teacherName}</div>
                                         </div>
 
-                                        <div className="flex items-center justify-between text-[10px] pt-1 border-t border-slate-800/60 text-slate-400">
+                                        <div className="flex items-center justify-between text-[10px] pt-1 border-t border-subtle/60 text-muted">
                                           <div className="flex items-center gap-1 font-mono">
                                             <MapPin className="w-3 h-3 text-cyan-400 shrink-0" />
-                                            <strong className="text-slate-300">{slot.classroom}</strong>
+                                            <strong className="text-muted">{slot.classroom}</strong>
                                           </div>
                                         </div>
                                       </div>
                                     ) : (
-                                      <div className="h-18 border-2 border-dashed border-slate-800/80 rounded-2xl flex items-center justify-center text-slate-600 text-[10px] hover:border-slate-700 transition-colors">
+                                      <div className="h-18 border-2 border-dashed border-subtle rounded-2xl flex items-center justify-center text-slate-600 text-[10px] hover:border-subtle transition-colors">
                                         <div>Sin asignar</div>
                                       </div>
                                     )}
@@ -9374,8 +9374,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             })()}
 
             {/* Código de Colores y Leyenda Pedagógica */}
-            <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl flex flex-wrap items-center justify-between gap-3 text-xs">
-              <div className="font-bold text-slate-300 flex items-center gap-1.5">
+            <div className="bg-surface border border-subtle p-4 rounded-3xl shadow-xl flex flex-wrap items-center justify-between gap-3 text-xs">
+              <div className="font-bold text-muted flex items-center gap-1.5">
                 🎨 Campos Formativos y Espacios:
               </div>
               <div className="flex items-center gap-3 flex-wrap text-[11px]">
@@ -9409,16 +9409,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                  <div className="badge badge-amber font-mono">
                     <UserPlus className="w-3 h-3" /> Convocatoria de Admisión 2026-2027
                   </div>
-                  <div className="text-slate-400 text-xs">• Control Escolar & Dirección</div>
+                  <div className="text-muted text-xs">• Control Escolar & Dirección</div>
                 </div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <UserPlus className="w-6 h-6 text-amber-400" />
                   Portal de Admisiones y Preinscripciones en Línea
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="dashboard-section-desc">
                   Gestión de aspirantes de nuevo ingreso, validación de documentos oficiales SEP, evaluaciones diagnósticas y formalización de matrícula.
                 </p>
               </div>
@@ -9426,7 +9426,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex items-center gap-2.5 flex-wrap">
                 <button
                   onClick={() => setShowNewApplicantModal(true)}
-                  className="bg-amber-500 hover:bg-amber-450 text-slate-950 px-5 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-amber-500/20"
+                  className="btn btn-warning btn-sm"
                 >
                   <UserPlus className="w-4 h-4" />
                   <div>+ Registrar Aspirante</div>
@@ -9437,7 +9437,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     setPublicSearchResult(null);
                     setShowPublicAdmissionModal(true);
                   }}
-                  className="bg-slate-800 hover:bg-slate-750 text-slate-200 border border-slate-700 px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   <Search className="w-4 h-4 text-amber-400" />
                   <div>🌐 Portal Público Web de Admisiones</div>
@@ -9447,39 +9447,39 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* Tarjetas KPI de Admisiones */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl">
-                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+              <div className="bg-surface border border-subtle p-4 rounded-3xl">
+                <div className="text-[10px] font-bold text-muted uppercase tracking-wider block mb-1">
                   Total Aspirantes
                 </div>
-                <div className="text-2xl font-black text-white">{applicants.length}</div>
+                <div className="stat-value">{applicants.length}</div>
                 <div className="text-[11px] text-amber-400">Ciclo Escolar 2026-2027</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl">
-                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+              <div className="bg-surface border border-subtle p-4 rounded-3xl">
+                <div className="text-[10px] font-bold text-muted uppercase tracking-wider block mb-1">
                   Revisión Documental
                 </div>
                 <div className="text-2xl font-black text-cyan-400">
                   {applicants.filter((a) => a.status === 'DOCUMENTACION_EN_REVISION' || a.status === 'REGISTRADO').length}
                 </div>
-                <div className="text-[11px] text-slate-400">Expedientes por cotejar</div>
+                <div className="text-[11px] text-muted">Expedientes por cotejar</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl">
-                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+              <div className="bg-surface border border-subtle p-4 rounded-3xl">
+                <div className="text-[10px] font-bold text-muted uppercase tracking-wider block mb-1">
                   Citas Agendadas
                 </div>
-                <div className="text-2xl font-black text-purple-400">
+                <div className="stat-value text-purple">
                   {applicants.filter((a) => a.status === 'EVALUACION_AGENDADA').length}
                 </div>
-                <div className="text-[11px] text-slate-400">Evaluación / Entrevista</div>
+                <div className="text-[11px] text-muted">Evaluación / Entrevista</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl">
-                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+              <div className="bg-surface border border-subtle p-4 rounded-3xl">
+                <div className="text-[10px] font-bold text-muted uppercase tracking-wider block mb-1">
                   Aceptados / Inscritos
                 </div>
-                <div className="text-2xl font-black text-emerald-400">
+                <div className="stat-value text-success">
                   {applicants.filter((a) => a.status === 'ACEPTADO' || a.status === 'INSCRITO').length}
                 </div>
                 <div className="text-[11px] text-emerald-400">Listos para matrícula</div>
@@ -9487,10 +9487,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             {/* Barra de Filtros */}
-            <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="bg-surface border border-subtle p-4 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="flex items-center gap-3 flex-wrap">
                 <div className="flex items-center gap-2">
-                  <div className="text-xs font-bold text-slate-400">Nivel:</div>
+                  <div className="text-xs font-bold text-muted">Nivel:</div>
                   <select
                     value={selectedApplicantLevelFilter}
                     onChange={(e) => setSelectedApplicantLevelFilter(e.target.value)}
@@ -9502,10 +9502,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </select>
                 </div>
 
-                <div className="h-4 w-px bg-slate-800 hidden sm:block"></div>
+                <div className="h-4 w-px bg-subtle hidden sm:block"></div>
 
                 <div className="flex items-center gap-2">
-                  <div className="text-xs font-bold text-slate-400">Estatus:</div>
+                  <div className="text-xs font-bold text-muted">Estatus:</div>
                   <select
                     value={selectedApplicantStatusFilter}
                     onChange={(e) => setSelectedApplicantStatusFilter(e.target.value)}
@@ -9522,7 +9522,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="text-xs text-slate-400 font-mono">
+              <div className="text-xs text-muted font-mono">
                 Mostrando {applicants.filter((a) => {
                   if (selectedApplicantLevelFilter !== 'ALL' && a.targetLevelId !== selectedApplicantLevelFilter) return false;
                   if (selectedApplicantStatusFilter !== 'ALL' && a.status !== selectedApplicantStatusFilter) return false;
@@ -9546,17 +9546,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   return (
                     <div
                       key={applicant.id}
-                      className="bg-slate-900 border border-slate-800 hover:border-slate-700 p-5 rounded-3xl shadow-xl transition-all space-y-4"
+                      className="bg-surface border border-subtle hover:border-subtle p-5 rounded-3xl shadow-xl transition-all space-y-4"
                     >
-                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-subtle pb-3">
                         <div className="flex items-center gap-2.5 flex-wrap">
-                          <div className="font-mono text-xs font-black text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-xl">
+                          <div className="badge badge-amber font-mono">
                             {applicant.folio}
                           </div>
-                          <div className="text-xs text-slate-400 font-mono">
+                          <div className="text-xs text-muted font-mono">
                             Registro: {applicant.appliedAt}
                           </div>
-                          <div className="bg-slate-800 text-slate-200 text-xs px-2.5 py-0.5 rounded-full font-bold">
+                          <div className="bg-subtle text-main text-xs px-2.5 py-0.5 rounded-full font-bold">
                             {applicant.targetGrade} ({applicant.targetLevelName})
                           </div>
                         </div>
@@ -9564,32 +9564,32 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {/* Estatus del Aspirante */}
                         <div>
                           {applicant.status === 'REGISTRADO' && (
-                            <div className="bg-slate-800 text-slate-300 text-xs font-bold px-3 py-1 rounded-xl border border-slate-700">
+                            <div className="bg-subtle text-muted text-xs font-bold px-3 py-1 rounded-xl border border-subtle">
                               📋 Registrado
                             </div>
                           )}
                           {applicant.status === 'DOCUMENTACION_EN_REVISION' && (
-                            <div className="bg-cyan-500/10 text-cyan-400 text-xs font-bold px-3 py-1 rounded-xl border border-cyan-500/20">
+                            <div className="badge badge-sky">
                               📑 Documentación en Revisión
                             </div>
                           )}
                           {applicant.status === 'EVALUACION_AGENDADA' && (
-                            <div className="bg-purple-500/10 text-purple-300 text-xs font-bold px-3 py-1 rounded-xl border border-purple-500/20">
+                            <div className="badge badge-purple">
                               📅 Evaluación Agendada
                             </div>
                           )}
                           {applicant.status === 'ACEPTADO' && (
-                            <div className="bg-emerald-500/10 text-emerald-400 text-xs font-bold px-3 py-1 rounded-xl border border-emerald-500/20 flex items-center gap-1.5">
+                            <div className="badge badge-emerald">
                               <CheckCircle2 className="w-3.5 h-3.5" /> Aceptado (Listo para Inscribir)
                             </div>
                           )}
                           {applicant.status === 'INSCRITO' && (
-                            <div className="bg-sky-500/10 text-sky-400 text-xs font-bold px-3 py-1 rounded-xl border border-sky-500/20 flex items-center gap-1.5">
+                            <div className="badge badge-sky">
                               <GraduationCap className="w-3.5 h-3.5" /> Alumno Inscrito Oficial
                             </div>
                           )}
                           {applicant.status === 'RECHAZADO' && (
-                            <div className="bg-rose-500/10 text-rose-400 text-xs font-bold px-3 py-1 rounded-xl border border-rose-500/20">
+                            <div className="badge badge-rose">
                               ❌ No Admitido
                             </div>
                           )}
@@ -9600,29 +9600,29 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         {/* Datos del Alumno y Tutor */}
                         <div className="space-y-1.5">
-                          <h4 className="text-base font-black text-white">
+                          <h4 className="text-base font-black">
                             {applicant.applicantFirstName} {applicant.applicantLastName}
                           </h4>
-                          <div className="text-xs text-slate-400 font-mono">
-                            CURP: <strong className="text-slate-200">{applicant.curp}</strong>
+                          <div className="text-xs text-muted font-mono">
+                            CURP: <strong className="text-main">{applicant.curp}</strong>
                           </div>
-                          <div className="text-xs text-slate-300">
-                            Tutor: <div className="text-slate-100 font-bold">{applicant.parentName}</div>
+                          <div className="text-xs text-muted">
+                            Tutor: <div className="text-main font-bold">{applicant.parentName}</div>
                           </div>
-                          <div className="text-xs text-slate-400">
-                            Tel: <div className="text-slate-300 font-mono">{applicant.parentPhone}</div> • Correo: <div className="text-slate-300 font-mono">{applicant.parentEmail}</div>
+                          <div className="text-xs text-muted">
+                            Tel: <div className="text-muted font-mono">{applicant.parentPhone}</div> • Correo: <div className="text-muted font-mono">{applicant.parentEmail}</div>
                           </div>
                           {applicant.notes && (
-                            <div className="text-[11px] text-slate-400 italic bg-slate-950 p-2 rounded-xl border border-slate-800 mt-2">
+                            <div className="badge badge-sky">
                               "{applicant.notes}"
                             </div>
                           )}
                         </div>
 
                         {/* Documentos y Requisitos */}
-                        <div className="space-y-2 bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800">
+                        <div className="badge badge-sky">
                           <div className="flex items-center justify-between text-xs">
-                            <div className="font-bold text-slate-300">Expediente Documental:</div>
+                            <div className="font-bold text-muted">Expediente Documental:</div>
                             <div className="font-mono text-amber-400 font-bold">
                               {validatedDocsCount} de {totalDocs} validados
                             </div>
@@ -9634,15 +9634,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 key={doc.id}
                                 onClick={() => handleToggleApplicantDocument(applicant.id, doc.id, doc.status)}
                                 title="Haz clic para cambiar estado (Pendiente -> Cargado -> Validado)"
-                                className="flex items-center justify-between text-[11px] p-1.5 rounded-xl hover:bg-slate-900 cursor-pointer transition-colors"
+                                className="flex items-center justify-between text-[11px] p-1.5 rounded-xl hover:bg-surface cursor-pointer transition-colors"
                               >
-                                <div className="text-slate-300 truncate max-w-[180px]">{doc.documentName}</div>
+                                <div className="text-muted truncate max-w-[180px]">{doc.documentName}</div>
                                 {doc.status === 'VALIDADO' ? (
                                   <div className="text-emerald-400 font-mono text-[10px] font-bold">✓ Validado</div>
                                 ) : doc.status === 'CARGADO' ? (
                                   <div className="text-cyan-400 font-mono text-[10px] font-bold">Cargado</div>
                                 ) : (
-                                  <div className="text-slate-500 font-mono text-[10px]">Pendiente</div>
+                                  <div className="text-muted font-mono text-[10px]">Pendiente</div>
                                 )}
                               </div>
                             ))}
@@ -9650,13 +9650,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
 
                         {/* Citas y Evaluación */}
-                        <div className="space-y-2 bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800">
-                          <div className="font-bold text-slate-300 text-xs block">
+                        <div className="badge badge-sky">
+                          <div className="font-bold text-muted text-xs block">
                             Evaluación Diagnóstica:
                           </div>
 
                           {applicant.evaluationDate ? (
-                            <div className="space-y-1.5 text-xs text-slate-300">
+                            <div className="space-y-1.5 text-xs text-muted">
                               <div className="flex items-center gap-1.5 text-purple-300 font-mono">
                                 <CalendarClock className="w-3.5 h-3.5" />
                                 <div>{applicant.evaluationDate} hrs</div>
@@ -9667,13 +9667,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 </div>
                               )}
                               {applicant.interviewNotes && (
-                                <p className="text-[11px] text-slate-400 line-clamp-2">
+                                <p className="text-[11px] text-muted line-clamp-2">
                                   {applicant.interviewNotes}
                                 </p>
                               )}
                             </div>
                           ) : (
-                            <div className="text-xs text-slate-500 italic py-2">
+                            <div className="text-xs text-muted italic py-2">
                               Sin fecha de examen o entrevista programada.
                             </div>
                           )}
@@ -9690,7 +9690,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               });
                               setShowScheduleEvalModal(true);
                             }}
-                            className="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold py-1.5 rounded-xl transition-colors cursor-pointer"
+                            className="btn btn-secondary btn-sm w-full"
                           >
                             📅 {applicant.evaluationDate ? 'Editar Cita / Calificar' : 'Agendar Examen & Entrevista'}
                           </button>
@@ -9698,11 +9698,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </div>
 
                       {/* Barra de Acciones del Aspirante */}
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-slate-800">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-subtle">
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => setShowAdmissionReceiptModal(applicant)}
-                            className="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold px-3 py-1.5 rounded-xl flex items-center gap-1.5 cursor-pointer transition-colors"
+                            className="btn btn-secondary btn-sm"
                           >
                             <Printer className="w-3.5 h-3.5 text-amber-400" />
                             <div>Imprimir Ficha Oficial</div>
@@ -9712,13 +9712,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             <>
                               <button
                                 onClick={() => handleUpdateApplicantStatus(applicant.id, 'ACEPTADO')}
-                                className="bg-emerald-600/10 hover:bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold px-3 py-1.5 rounded-xl cursor-pointer transition-colors"
+                                className="btn btn-success btn-sm"
                               >
                                 Aceptar Aspirante
                               </button>
                               <button
                                 onClick={() => handleUpdateApplicantStatus(applicant.id, 'RECHAZADO')}
-                                className="bg-rose-600/10 hover:bg-rose-600/20 text-rose-400 border border-rose-500/30 text-xs font-bold px-3 py-1.5 rounded-xl cursor-pointer transition-colors"
+                                className="btn btn-danger btn-sm"
                               >
                                 No Admitir
                               </button>
@@ -9730,7 +9730,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {applicant.status === 'ACEPTADO' && (
                           <button
                             onClick={() => handleEnrollApplicant(applicant.id)}
-                            className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-lg shadow-emerald-600/25 transition-all cursor-pointer"
+                            className="btn btn-success btn-sm"
                           >
                             <GraduationCap className="w-4 h-4" />
                             <div>Formalizar Inscripción Oficial & Generar Matrícula</div>
@@ -9751,16 +9751,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                  <div className="badge badge-rose font-mono">
                     <BookOpen className="w-3 h-3" /> Fomento a la Lectura & Acervo Escolar
                   </div>
-                  <div className="text-slate-400 text-xs">• Control de Inventario y Préstamos</div>
+                  <div className="text-muted text-xs">• Control de Inventario y Préstamos</div>
                 </div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <BookOpen className="w-6 h-6 text-rose-400" />
                   Biblioteca Escolar y Acervo Bibliográfico
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="dashboard-section-desc">
                   Catálogo de títulos y libros de texto SEP, control de préstamos a domicilio o sala, y solvencia de no adeudo para boletas.
                 </p>
               </div>
@@ -9768,7 +9768,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex items-center gap-2.5 flex-wrap">
                 <button
                   onClick={() => setShowNewBookModal(true)}
-                  className="bg-rose-500 hover:bg-rose-450 text-white px-4 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-rose-500/20"
+                  className="btn btn-danger btn-sm"
                 >
                   <PlusCircle className="w-4 h-4" />
                   <div>+ Registrar Libro</div>
@@ -9779,7 +9779,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     setSelectedBookForLoan(null);
                     setShowNewLoanModal(true);
                   }}
-                  className="bg-amber-500 hover:bg-amber-450 text-slate-950 px-4 py-2.5 rounded-2xl text-xs font-black flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-amber-500/20"
+                  className="btn btn-warning btn-sm"
                 >
                   <BookmarkCheck className="w-4 h-4" />
                   <div>+ Prestar Libro</div>
@@ -9790,7 +9790,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     setClearanceSearchStudentId('student-01');
                     setLibrarySubTab('clearance');
                   }}
-                  className="bg-slate-800 hover:bg-slate-750 text-slate-200 border border-slate-700 px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   <ShieldCheck className="w-4 h-4 text-emerald-400" />
                   <div>Validar No Adeudo</div>
@@ -9800,53 +9800,53 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* Tarjetas KPI de Biblioteca */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl">
-                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+              <div className="bg-surface border border-subtle p-4 rounded-3xl">
+                <div className="text-[10px] font-bold text-muted uppercase tracking-wider block mb-1">
                   Títulos en Acervo
                 </div>
-                <div className="text-2xl font-black text-white">{books.length}</div>
+                <div className="stat-value">{books.length}</div>
                 <div className="text-[11px] text-rose-400">Libros registrados</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl">
-                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+              <div className="bg-surface border border-subtle p-4 rounded-3xl">
+                <div className="text-[10px] font-bold text-muted uppercase tracking-wider block mb-1">
                   Ejemplares Disponibles
                 </div>
-                <div className="text-2xl font-black text-emerald-400">
+                <div className="stat-value text-success">
                   {books.reduce((acc, b) => acc + b.availableCopies, 0)} / {books.reduce((acc, b) => acc + b.totalCopies, 0)}
                 </div>
-                <div className="text-[11px] text-slate-400">Listos para entrega</div>
+                <div className="text-[11px] text-muted">Listos para entrega</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl">
-                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+              <div className="bg-surface border border-subtle p-4 rounded-3xl">
+                <div className="text-[10px] font-bold text-muted uppercase tracking-wider block mb-1">
                   Préstamos Activos
                 </div>
-                <div className="text-2xl font-black text-amber-400">
+                <div className="stat-value text-warning">
                   {bookLoans.filter((l) => l.status === 'ACTIVO').length}
                 </div>
-                <div className="text-[11px] text-slate-400">En poder de alumnos</div>
+                <div className="text-[11px] text-muted">En poder de alumnos</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl">
-                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+              <div className="bg-surface border border-subtle p-4 rounded-3xl">
+                <div className="text-[10px] font-bold text-muted uppercase tracking-wider block mb-1">
                   Devoluciones Completadas
                 </div>
-                <div className="text-2xl font-black text-sky-400">
+                <div className="stat-value text-primary">
                   {bookLoans.filter((l) => l.status === 'DEVUELTO').length}
                 </div>
-                <div className="text-[11px] text-slate-400">En estantería</div>
+                <div className="text-[11px] text-muted">En estantería</div>
               </div>
             </div>
 
             {/* Subpestañas del Módulo */}
-            <div className="flex items-center gap-2 border-b border-slate-800 pb-2 overflow-x-auto custom-scrollbar">
+            <div className="flex items-center gap-2 border-b border-subtle pb-2 overflow-x-auto custom-scrollbar">
               <button
                 onClick={() => setLibrarySubTab('catalog')}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                   librarySubTab === 'catalog'
                     ? 'bg-rose-500 text-white shadow-md shadow-rose-500/20'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    : 'text-muted hover:bg-slate-100 hover:text-main'
                 }`}
               >
                 <BookOpen className="w-4 h-4" />
@@ -9858,7 +9858,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                   librarySubTab === 'loans'
                     ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    : 'text-muted hover:bg-slate-100 hover:text-main'
                 }`}
               >
                 <BookmarkCheck className="w-4 h-4" />
@@ -9870,7 +9870,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                   librarySubTab === 'clearance'
                     ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    : 'text-muted hover:bg-slate-100 hover:text-main'
                 }`}
               >
                 <ShieldCheck className="w-4 h-4" />
@@ -9882,10 +9882,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {librarySubTab === 'catalog' && (
               <div className="space-y-4">
                 {/* Filtros y Buscador */}
-                <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="bg-surface border border-subtle p-4 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div className="flex items-center gap-3 flex-1">
                     <div className="relative flex-1 max-w-md">
-                      <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                      <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
                       <input
                         type="text"
                         placeholder="Buscar por título, autor, ISBN o estante..."
@@ -9910,7 +9910,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </select>
                   </div>
 
-                  <div className="text-xs text-slate-400 font-mono">
+                  <div className="text-xs text-muted font-mono">
                     {books.filter((b) => {
                       if (selectedBookCategoryFilter !== 'ALL' && b.category !== selectedBookCategoryFilter) return false;
                       if (bookSearchQuery.trim()) {
@@ -9936,51 +9936,51 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     .map((book) => (
                       <div
                         key={book.id}
-                        className="bg-slate-900 border border-slate-800 hover:border-slate-700 p-5 rounded-3xl shadow-xl flex flex-col justify-between space-y-4 transition-all"
+                        className="bg-surface border border-subtle hover:border-subtle p-5 rounded-3xl shadow-xl flex flex-col justify-between space-y-4 transition-all"
                       >
                         <div className="space-y-2.5">
                           <div className="flex items-center justify-between gap-2">
-                            <div className="bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-mono font-bold px-2 py-0.5 rounded-lg">
+                            <div className="badge badge-rose font-mono">
                               {book.category.replace('_', ' ')}
                             </div>
-                            <div className="bg-slate-800 text-slate-300 text-[10px] px-2 py-0.5 rounded-md font-bold">
+                            <div className="bg-subtle text-muted text-[10px] px-2 py-0.5 rounded-md font-bold">
                               Nivel: {book.targetLevel}
                             </div>
                           </div>
 
                           <div>
-                            <h4 className="text-base font-black text-white line-clamp-1">{book.title}</h4>
-                            <p className="text-xs text-slate-300">
-                              Por: <strong className="text-slate-100">{book.author}</strong>
+                            <h4 className="text-base font-black line-clamp-1">{book.title}</h4>
+                            <p className="text-xs text-muted">
+                              Por: <strong className="text-main">{book.author}</strong>
                             </p>
-                            <div className="text-[11px] text-slate-400 font-mono block">
+                            <div className="text-[11px] text-muted font-mono block">
                               {book.publisher} • Año {book.yearPublished} • ISBN: {book.isbn}
                             </div>
                           </div>
 
-                          <div className="bg-slate-950 p-2.5 rounded-xl border border-slate-800 text-xs flex items-center justify-between">
-                            <div className="text-slate-400">Ubicación:</div>
+                          <div className="badge badge-sky">
+                            <div className="text-muted">Ubicación:</div>
                             <div className="font-mono text-amber-300 font-bold">{book.shelfLocation}</div>
                           </div>
 
                           {book.summary && (
-                            <p className="text-[11px] text-slate-400 line-clamp-2 italic">
+                            <p className="text-[11px] text-muted line-clamp-2 italic">
                               "{book.summary}"
                             </p>
                           )}
                         </div>
 
                         {/* Disponibilidad y Acciones */}
-                        <div className="space-y-3 pt-3 border-t border-slate-800">
+                        <div className="space-y-3 pt-3 border-t border-subtle">
                           <div className="flex items-center justify-between text-xs">
-                            <div className="text-slate-400">Disponibilidad en sala:</div>
+                            <div className="text-muted">Disponibilidad en sala:</div>
                             <div className={`font-mono font-black ${book.availableCopies > 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                               {book.availableCopies} de {book.totalCopies} disponibles
                             </div>
                           </div>
 
                           {/* Barra de progreso de stock */}
-                          <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                          <div className="w-full bg-subtle rounded-full h-1.5 overflow-hidden">
                             <div
                               className={`h-full rounded-full transition-all ${
                                 book.availableCopies > 0 ? 'bg-emerald-400' : 'bg-rose-500'
@@ -10002,7 +10002,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             className={`w-full py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                               book.availableCopies > 0
                                 ? 'bg-rose-600 hover:bg-rose-500 text-white shadow-md shadow-rose-600/20'
-                                : 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                                : 'bg-subtle text-muted cursor-not-allowed'
                             }`}
                           >
                             <BookmarkCheck className="w-3.5 h-3.5" />
@@ -10018,9 +10018,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* SUBTAB 2: CONTROL DE PRÉSTAMOS */}
             {librarySubTab === 'loans' && (
               <div className="space-y-4">
-                <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl flex items-center justify-between gap-4">
+                <div className="bg-surface border border-subtle p-4 rounded-3xl shadow-xl flex items-center justify-between gap-4">
                   <div className="flex items-center gap-2">
-                    <div className="text-xs font-bold text-slate-400">Filtrar Estatus:</div>
+                    <div className="text-xs font-bold text-muted">Filtrar Estatus:</div>
                     <select
                       value={loanStatusFilter}
                       onChange={(e) => setLoanStatusFilter(e.target.value)}
@@ -10032,7 +10032,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </select>
                   </div>
 
-                  <div className="text-xs text-slate-400 font-mono">
+                  <div className="text-xs text-muted font-mono">
                     Total: {bookLoans.filter((l) => loanStatusFilter === 'ALL' || l.status === loanStatusFilter).length} préstamos
                   </div>
                 </div>
@@ -10043,48 +10043,48 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     .map((loan) => (
                       <div
                         key={loan.id}
-                        className="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4"
+                        className="bg-surface border border-subtle p-5 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4"
                       >
                         <div className="space-y-1.5 flex-1">
                           <div className="flex items-center gap-2.5 flex-wrap">
-                            <div className="font-mono text-xs font-black text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-0.5 rounded-lg">
+                            <div className="badge badge-amber font-mono">
                               {loan.folio}
                             </div>
-                            <div className="bg-slate-800 text-slate-200 text-xs px-2.5 py-0.5 rounded-full font-bold">
+                            <div className="bg-subtle text-main text-xs px-2.5 py-0.5 rounded-full font-bold">
                               {loan.loanType === 'DOMICILIO' ? '🏠 Préstamo a Domicilio' : '🏫 Préstamo en Sala'}
                             </div>
                             {loan.status === 'ACTIVO' ? (
-                              <div className="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs px-2.5 py-0.5 rounded-full font-bold">
+                              <div className="badge badge-amber">
                                 ⏳ Activo (En lectura)
                               </div>
                             ) : (
-                              <div className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-2.5 py-0.5 rounded-full font-bold flex items-center gap-1">
+                              <div className="badge badge-emerald">
                                 <CheckCircle2 className="w-3 h-3" /> Devuelto
                               </div>
                             )}
                           </div>
 
-                          <h4 className="text-base font-black text-white">{loan.bookTitle}</h4>
+                          <h4 className="text-base font-black">{loan.bookTitle}</h4>
 
-                          <div className="text-xs text-slate-300">
+                          <div className="text-xs text-muted">
                             Alumno:{' '}
-                            <strong className="text-white">
+                            <strong className="text-main">
                               {loan.studentName} ({loan.studentCode})
                             </strong>{' '}
                             • {loan.groupName}
                           </div>
 
-                          <div className="text-xs text-slate-400 font-mono flex items-center gap-3">
+                          <div className="text-xs text-muted font-mono flex items-center gap-3">
                             <div>Préstamo: {loan.loanDate}</div>
                             <div>•</div>
-                            <div className={loan.status === 'ACTIVO' ? 'text-amber-400 font-bold' : 'text-slate-400'}>
+                            <div className={loan.status === 'ACTIVO' ? 'text-amber-400 font-bold' : 'text-muted'}>
                               Fecha Límite: {loan.dueDate}
                             </div>
                             {loan.returnDate && <div>• Devuelto el: {loan.returnDate}</div>}
                           </div>
 
                           {loan.librarianNotes && (
-                            <p className="text-[11px] text-slate-400 italic bg-slate-950 p-2 rounded-xl border border-slate-800">
+                            <p className="badge badge-sky">
                               "{loan.librarianNotes}"
                             </p>
                           )}
@@ -10093,7 +10093,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {loan.status === 'ACTIVO' && (
                           <button
                             onClick={() => handleReturnBookLoan(loan.id)}
-                            className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2.5 rounded-2xl shadow-lg shadow-emerald-600/20 transition-all cursor-pointer flex items-center gap-1.5 self-start md:self-center shrink-0"
+                            className="btn btn-success btn-sm"
                           >
                             <CheckCircle2 className="w-4 h-4" />
                             <div>Registrar Devolución</div>
@@ -10107,13 +10107,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* SUBTAB 3: SOLVENCIA Y NO ADEUDO BIBLIOTECARIO */}
             {librarySubTab === 'clearance' && (
-              <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-6">
+              <div className="bg-surface border border-subtle p-6 rounded-3xl shadow-xl space-y-6">
                 <div>
-                  <h3 className="text-base font-black text-white flex items-center gap-2">
+                  <h3 className="text-base font-black flex items-center gap-2">
                     <ShieldCheck className="w-5 h-5 text-emerald-400" />
                     Validación de No Adeudo Bibliotecario para Entrega de Boletas
                   </h3>
-                  <p className="text-xs text-slate-400 mt-1">
+                  <p className="dashboard-section-desc">
                     Control Escolar debe verificar que el alumno no tenga libros de texto o literatura pendientes de devolución antes de liberar boletas oficiales o certificados de término de ciclo.
                   </p>
                 </div>
@@ -10142,24 +10142,24 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   const isCleared = activeLoans.length === 0;
 
                   return (
-                    <div className="bg-slate-950 p-6 rounded-3xl border border-slate-800 space-y-4">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+                    <div className="badge badge-sky">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-subtle pb-4">
                         <div>
-                          <div className="text-[10px] font-mono text-slate-400 block">Dictamen de Biblioteca:</div>
-                          <h4 className="text-lg font-black text-white">
+                          <div className="text-[10px] font-mono text-muted block">Dictamen de Biblioteca:</div>
+                          <h4 className="text-lg font-black">
                             {student.firstName} {student.lastName}
                           </h4>
-                          <div className="text-xs text-slate-400 font-mono">
+                          <div className="text-xs text-muted font-mono">
                             Matrícula: {student.studentCode} • {student.groupName}
                           </div>
                         </div>
 
                         {isCleared ? (
-                          <div className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-black px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 self-start sm:self-auto">
+                          <div className="badge badge-emerald">
                             <ShieldCheck className="w-4 h-4" /> ALUMNO SOLVENTE (Sin Adeudos)
                           </div>
                         ) : (
-                          <div className="bg-rose-500/10 text-rose-400 border border-rose-500/20 text-xs font-black px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 self-start sm:self-auto">
+                          <div className="badge badge-rose">
                             <AlertCircle className="w-4 h-4" /> ADEUDO ACTIVO ({activeLoans.length} libro(s) pendiente(s))
                           </div>
                         )}
@@ -10167,12 +10167,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                       {isCleared ? (
                         <div className="space-y-3">
-                          <p className="text-xs text-slate-300">
+                          <p className="text-xs text-muted">
                             El alumno no presenta ningún libro en préstamo activo ni adeudo de acervo bibliográfico. El expediente escolar cuenta con el sello de solvencia bibliotecaria para la expedición de documentación oficial SEP.
                           </p>
                           <button
                             onClick={() => setShowClearanceCertificateModal(true)}
-                            className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black px-4 py-2.5 rounded-2xl shadow-lg shadow-emerald-600/20 transition-all cursor-pointer flex items-center gap-2"
+                            className="btn btn-success btn-sm"
                           >
                             <Printer className="w-4 h-4" />
                             <div>Emitir Constancia Oficial de No Adeudo</div>
@@ -10187,17 +10187,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             {activeLoans.map((l) => (
                               <div
                                 key={l.id}
-                                className="bg-slate-900 p-3 rounded-2xl border border-rose-500/30 flex items-center justify-between text-xs"
+                                className="bg-surface p-3 rounded-2xl border border-rose-500/30 flex items-center justify-between text-xs"
                               >
                                 <div>
-                                  <strong className="text-white block">{l.bookTitle}</strong>
-                                  <div className="text-slate-400 font-mono text-[11px]">
+                                  <strong className="block">{l.bookTitle}</strong>
+                                  <div className="text-muted font-mono text-[11px]">
                                     Folio: {l.folio} • Fecha límite: {l.dueDate}
                                   </div>
                                 </div>
                                 <button
                                   onClick={() => handleReturnBookLoan(l.id)}
-                                  className="bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl transition-all cursor-pointer"
+                                  className="btn btn-success btn-sm"
                                 >
                                   Devolver Ahora
                                 </button>
@@ -10221,16 +10221,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="font-mono text-xs text-amber-400 font-bold bg-amber-500/10 px-2.5 py-0.5 rounded-lg border border-amber-500/20">
+                  <div className="badge badge-amber font-mono">
                     CUIDADO & SEGURIDAD EN TRASLADOS
                   </div>
-                  <div className="text-xs text-slate-400 font-bold">• Georutas y Check-in QR</div>
+                  <div className="text-xs text-muted font-bold">• Georutas y Check-in QR</div>
                 </div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <Bus className="w-6 h-6 text-amber-400" />
                   Transporte Escolar y Rutas Seguras
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="dashboard-section-desc">
                   Control de unidades con seguro escolar vigente, choferes certificados, monitoras de ruta y pase de lista de abordaje en tiempo real.
                 </p>
               </div>
@@ -10238,14 +10238,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   onClick={() => setShowEnrollStudentTransportModal(true)}
-                  className="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 border border-slate-700 transition-all cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   <UserPlus className="w-4 h-4 text-amber-400" />
                   <div>Asignar Alumno a Ruta</div>
                 </button>
                 <button
                   onClick={() => setShowNewRouteModal(true)}
-                  className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 shadow-lg shadow-amber-500/20 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   <Plus className="w-4 h-4" />
                   <div>Nueva Ruta Escolar</div>
@@ -10256,25 +10256,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* KPI Cards de Transporte */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Rutas en Circulación</div>
-                <div className="text-2xl font-black text-white mt-1">{transportRoutes.length}</div>
+                <div className="text-[11px] text-muted font-medium">Rutas en Circulación</div>
+                <div className="text-2xl font-black mt-1">{transportRoutes.length}</div>
                 <div className="text-[10px] text-amber-400 font-bold">100% Cobertura Urbana</div>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Unidades Vehiculares</div>
-                <div className="text-2xl font-black text-white mt-1">{transportRoutes.length} Vans</div>
+                <div className="text-[11px] text-muted font-medium">Unidades Vehiculares</div>
+                <div className="text-2xl font-black mt-1">{transportRoutes.length} Vans</div>
                 <div className="text-[10px] text-emerald-400 font-bold">Pólizas GNP / Axa Vigentes</div>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Alumnos con Servicio</div>
-                <div className="text-2xl font-black text-white mt-1">{transportEnrollments.length}</div>
+                <div className="text-[11px] text-muted font-medium">Alumnos con Servicio</div>
+                <div className="text-2xl font-black mt-1">{transportEnrollments.length}</div>
                 <div className="text-[10px] text-sky-400 font-bold">Paradas fijas geolocalizadas</div>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Abordajes y Entregas Hoy</div>
+                <div className="text-[11px] text-muted font-medium">Abordajes y Entregas Hoy</div>
                 <div className="text-2xl font-black text-emerald-400 mt-1">
                   {transportBoardingLogs.filter((l) => l.status === 'ENTREGADO_ESCUELA' || l.status === 'A_BORDO').length}
                 </div>
@@ -10283,13 +10283,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             {/* Subtabs de Transporte */}
-            <div className="flex border-b border-slate-800 gap-6 text-xs font-bold">
+            <div className="flex border-b border-subtle gap-6 text-xs font-bold">
               <button
                 onClick={() => setTransportSubTab('routes')}
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 ${
                   transportSubTab === 'routes'
                     ? 'border-amber-400 text-amber-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <Bus className="w-4 h-4" />
@@ -10300,7 +10300,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 ${
                   transportSubTab === 'boarding'
                     ? 'border-amber-400 text-amber-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <CheckCircle2 className="w-4 h-4" />
@@ -10311,7 +10311,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 ${
                   transportSubTab === 'enrollment'
                     ? 'border-amber-400 text-amber-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <Users className="w-4 h-4" />
@@ -10326,50 +10326,50 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   {transportRoutes.map((route) => (
                     <div
                       key={route.id}
-                      className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5"
+                      className="bg-surface border border-subtle rounded-3xl p-6 shadow-xl space-y-5"
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <div className="font-mono text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-lg border border-amber-500/20">
+                            <div className="badge badge-amber font-mono">
                               {route.code}
                             </div>
-                            <div className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">
+                            <div className="badge badge-emerald">
                               Activa • Turno {route.shift === 'AMBOS' ? 'Matutino & Vespertino' : route.shift}
                             </div>
                           </div>
-                          <h3 className="font-black text-white text-base">{route.name}</h3>
+                          <h3 className="font-black text-base">{route.name}</h3>
                         </div>
 
-                        <div className="bg-slate-800 text-slate-300 font-mono text-xs px-3 py-1 rounded-xl font-bold">
+                        <div className="bg-subtle text-muted font-mono text-xs px-3 py-1 rounded-xl font-bold">
                           {route.enrolledStudentsCount} alumnos
                         </div>
                       </div>
 
                       {/* Información de Unidad, Chofer y Monitora */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-950 p-4 rounded-2xl border border-slate-800/80 text-xs">
+                      <div className="badge badge-sky">
                         <div className="space-y-1">
-                          <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">
+                          <div className="text-[10px] text-muted font-bold uppercase tracking-wider block">
                             Chofer Certificado:
                           </div>
-                          <strong className="text-white block">{route.driverName}</strong>
-                          <div className="text-slate-400 font-mono text-[11px] block">{route.driverPhone}</div>
+                          <strong className="block">{route.driverName}</strong>
+                          <div className="text-muted font-mono text-[11px] block">{route.driverPhone}</div>
                           <div className="text-[10px] text-emerald-400 block font-bold">Lic. Mercantil CDMX</div>
                         </div>
 
                         <div className="space-y-1">
-                          <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">
+                          <div className="text-[10px] text-muted font-bold uppercase tracking-wider block">
                             Monitora de Ruta:
                           </div>
-                          <strong className="text-white block">{route.monitorName}</strong>
-                          <div className="text-slate-400 font-mono text-[11px] block">Unidad: {route.vehiclePlate}</div>
-                          <div className="text-[10px] text-slate-400 block">{route.vehicleModel}</div>
+                          <strong className="block">{route.monitorName}</strong>
+                          <div className="text-muted font-mono text-[11px] block">Unidad: {route.vehiclePlate}</div>
+                          <div className="text-[10px] text-muted block">{route.vehicleModel}</div>
                         </div>
                       </div>
 
                       {/* Paradas Programadas (Itinerario) */}
                       <div className="space-y-2">
-                        <div className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                        <div className="text-xs font-bold text-muted flex items-center gap-1.5">
                           <Navigation className="w-3.5 h-3.5 text-amber-400" />
                           <div>Itinerario y Paradas Programadas ({route.stops.length} Puntos)</div>
                         </div>
@@ -10377,21 +10377,21 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <div className="space-y-2 border-l-2 border-amber-500/30 pl-4 ml-1">
                           {route.stops.map((stop) => (
                             <div key={stop.id} className="relative text-xs space-y-0.5">
-                              <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-400 border-2 border-slate-900" />
+                              <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-amber-400 border-2 border-slate-300" />
                               <div className="flex items-center justify-between gap-2">
-                                <strong className="text-white text-[12px]">{stop.name}</strong>
-                                <div className="font-mono text-[11px] font-bold text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                                <strong className="text-[12px]">{stop.name}</strong>
+                                <div className="badge badge-amber font-mono">
                                   🌅 {stop.scheduledTimeMorning} | 🌇 {stop.scheduledTimeAfternoon}
                                 </div>
                               </div>
-                              <p className="text-[11px] text-slate-400">{stop.address}</p>
+                              <p className="text-[11px] text-muted">{stop.address}</p>
                             </div>
                           ))}
                         </div>
                       </div>
 
-                      <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
-                        <div className="text-[11px] text-slate-400">Póliza Escolar GNP vigente hasta 2027</div>
+                      <div className="pt-2 border-t border-subtle flex items-center justify-between">
+                        <div className="text-[11px] text-muted">Póliza Escolar GNP vigente hasta 2027</div>
                         <button
                           onClick={() => {
                             setSelectedTransportRouteId(route.id);
@@ -10413,9 +10413,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {transportSubTab === 'boarding' && (
               <div className="space-y-5">
                 {/* Selector de Ruta y Filtro de Turno */}
-                <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="bg-surface border border-subtle p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="flex items-center gap-3 flex-wrap">
-                    <div className="text-xs text-slate-400 font-bold">Seleccionar Ruta:</div>
+                    <div className="text-xs text-muted font-bold">Seleccionar Ruta:</div>
                     <select
                       value={selectedTransportRouteId}
                       onChange={(e) => setSelectedTransportRouteId(e.target.value)}
@@ -10428,13 +10428,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       ))}
                     </select>
 
-                    <div className="flex bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs">
+                    <div className="badge badge-sky">
                       <button
                         onClick={() => setBoardingShiftFilter('MATUTINO_RECOGIDA')}
                         className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
                           boardingShiftFilter === 'MATUTINO_RECOGIDA'
                             ? 'bg-amber-500 text-slate-950 shadow-sm'
-                            : 'text-slate-400 hover:text-white'
+                            : 'text-muted hover:text-white'
                         }`}
                       >
                         🌅 Turno Matutino (A la Escuela)
@@ -10444,7 +10444,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
                           boardingShiftFilter === 'VESPERTINO_ENTREGA'
                             ? 'bg-amber-500 text-slate-950 shadow-sm'
-                            : 'text-slate-400 hover:text-white'
+                            : 'text-muted hover:text-white'
                         }`}
                       >
                         🌇 Turno Vespertino (A Casa)
@@ -10452,7 +10452,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
                   </div>
 
-                  <div className="font-mono text-xs text-slate-400 bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800">
+                  <div className="badge badge-sky font-mono">
                     Fecha: <strong>{new Date().toISOString().split('T')[0]}</strong>
                   </div>
                 </div>
@@ -10475,45 +10475,45 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       return (
                         <div
                           key={enrollment.id}
-                          className="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-4"
+                          className="bg-surface border border-subtle p-5 rounded-3xl shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-4"
                         >
                           <div className="space-y-1.5">
                             <div className="flex items-center gap-2 flex-wrap">
-                              <div className="font-mono text-xs font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                              <div className="badge badge-amber font-mono">
                                 {enrollment.studentCode}
                               </div>
-                              <div className="text-xs text-slate-400 font-bold">{enrollment.groupName}</div>
+                              <div className="text-xs text-muted font-bold">{enrollment.groupName}</div>
 
                               {/* Badge de Estatus de Abordaje */}
                               {currentStatus === 'ENTREGADO_ESCUELA' && (
-                                <div className="bg-emerald-500/10 text-emerald-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-500/30 flex items-center gap-1">
+                                <div className="badge badge-emerald">
                                   <CheckCircle2 className="w-3 h-3" /> Entregado en el Colegio ({log?.checkOutTime || '07:45'})
                                 </div>
                               )}
                               {currentStatus === 'A_BORDO' && (
-                                <div className="bg-amber-500/10 text-amber-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-amber-500/30 flex items-center gap-1 animate-pulse">
+                                <div className="badge badge-amber">
                                   <Bus className="w-3 h-3" /> A Bordo de la Unidad ({log?.checkInTime || 'En camino'})
                                 </div>
                               )}
                               {currentStatus === 'ENTREGADO_CASA' && (
-                                <div className="bg-sky-500/10 text-sky-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-sky-500/30 flex items-center gap-1">
+                                <div className="badge badge-sky">
                                   <CheckCircle2 className="w-3 h-3" /> Entregado en Domicilio ({log?.checkOutTime})
                                 </div>
                               )}
                               {currentStatus === 'AUSENTE' && (
-                                <div className="bg-rose-500/10 text-rose-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-rose-500/30">
+                                <div className="badge badge-rose">
                                   No Tomará Transporte Hoy
                                 </div>
                               )}
                               {currentStatus === 'PENDIENTE' && (
-                                <div className="bg-slate-800 text-slate-400 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-slate-700">
+                                <div className="bg-subtle text-muted text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-subtle">
                                   Esperando en Parada
                                 </div>
                               )}
                             </div>
 
-                            <h4 className="text-base font-black text-white">{enrollment.studentName}</h4>
-                            <div className="text-xs text-slate-400 flex flex-wrap items-center gap-3">
+                            <h4 className="text-base font-black">{enrollment.studentName}</h4>
+                            <div className="text-xs text-muted flex flex-wrap items-center gap-3">
                               <div>
                                 Parada:{' '}
                                 <strong className="text-amber-300">{enrollment.stopName}</strong>
@@ -10522,7 +10522,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             </div>
 
                             {enrollment.emergencyNotes && (
-                              <p className="text-[11px] text-amber-200/90 italic bg-amber-950/20 px-2.5 py-1 rounded-lg border border-amber-500/20 max-w-xl">
+                              <p className="badge badge-amber">
                                 ℹ️ {enrollment.emergencyNotes}
                               </p>
                             )}
@@ -10537,7 +10537,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                                 currentStatus === 'A_BORDO'
                                   ? 'bg-amber-500 text-slate-950 font-black shadow-md shadow-amber-500/20'
-                                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white'
+                                  : 'bg-subtle text-muted hover:bg-slate-100 hover:text-main'
                               }`}
                             >
                               🚍 Subió a la Van
@@ -10555,7 +10555,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                                   currentStatus === 'ENTREGADO_ESCUELA'
                                     ? 'bg-emerald-600 text-white font-black shadow-md shadow-emerald-600/20'
-                                    : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white'
+                                    : 'bg-subtle text-muted hover:bg-slate-100 hover:text-main'
                                 }`}
                               >
                                 🏫 Entregado en Colegio
@@ -10572,7 +10572,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                                   currentStatus === 'ENTREGADO_CASA'
                                     ? 'bg-sky-600 text-white font-black shadow-md shadow-sky-600/20'
-                                    : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white'
+                                    : 'bg-subtle text-muted hover:bg-slate-100 hover:text-main'
                                 }`}
                               >
                                 🏠 Entregado en Casa
@@ -10586,7 +10586,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                                 currentStatus === 'AUSENTE'
                                   ? 'bg-rose-900/60 text-rose-200 border border-rose-500'
-                                  : 'bg-slate-800/80 text-slate-400 hover:text-rose-300'
+                                  : 'bg-subtle text-muted hover:text-rose-300'
                               }`}
                             >
                               Ausente
@@ -10597,10 +10597,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     })}
 
                   {transportEnrollments.filter((e) => e.routeId === selectedTransportRouteId).length === 0 && (
-                    <div className="bg-slate-900 border border-slate-800 rounded-3xl p-12 text-center text-slate-400 space-y-2">
+                    <div className="bg-surface border border-subtle rounded-3xl p-12 text-center text-muted space-y-2">
                       <Bus className="w-8 h-8 text-slate-600 mx-auto" />
-                      <h4 className="text-sm font-bold text-white">No hay alumnos asignados a esta ruta</h4>
-                      <p className="text-xs text-slate-400">Utiliza el botón "Asignar Alumno a Ruta" para agregar pasajeros.</p>
+                      <h4 className="text-sm font-bold">No hay alumnos asignados a esta ruta</h4>
+                      <p className="text-xs text-muted">Utiliza el botón "Asignar Alumno a Ruta" para agregar pasajeros.</p>
                     </div>
                   )}
                 </div>
@@ -10610,8 +10610,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* SUBTAB 3: PADRÓN DE ALUMNOS */}
             {transportSubTab === 'enrollment' && (
               <div className="dashboard-table-card">
-                <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-                  <div className="text-xs font-bold text-white">
+                <div className="p-4 border-b border-subtle flex items-center justify-between">
+                  <div className="text-xs font-bold">
                     Padrón General de Alumnos con Servicio de Transporte Escolar ({transportEnrollments.length})
                   </div>
                   <button
@@ -10623,7 +10623,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs text-slate-300">
+                  <table className="w-full text-left text-xs text-muted">
                     <thead className="table-header-row">
                       <tr>
                         <th className="py-3 px-4">Matrícula</th>
@@ -10634,27 +10634,27 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <th className="py-3 px-4">Notas de Seguridad</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800">
+                    <tbody className="table-body">
                       {transportEnrollments.map((enr) => (
-                        <tr key={enr.id} className="hover:bg-slate-800/40 transition-colors">
+                        <tr key={enr.id} className="hover:bg-subtle transition-colors">
                           <td className="py-3 px-4 font-mono font-bold text-amber-400">{enr.studentCode}</td>
                           <td className="py-3 px-4">
-                            <strong className="text-white block">{enr.studentName}</strong>
-                            <div className="text-[10px] text-slate-400">{enr.groupName}</div>
+                            <strong className="block">{enr.studentName}</strong>
+                            <div className="text-[10px] text-muted">{enr.groupName}</div>
                           </td>
                           <td className="py-3 px-4">
-                            <div className="font-bold text-white block">{enr.routeName}</div>
-                            <div className="text-[10px] text-slate-400 font-mono">Turno {enr.shift}</div>
+                            <div className="font-bold block">{enr.routeName}</div>
+                            <div className="text-[10px] text-muted font-mono">Turno {enr.shift}</div>
                           </td>
                           <td className="py-3 px-4">
                             <div className="text-amber-300 font-bold block">{enr.stopName}</div>
                           </td>
                           <td className="py-3 px-4">
-                            <div className="text-white block">{enr.tutorName}</div>
-                            <div className="text-[11px] font-mono text-slate-400">{enr.tutorPhone}</div>
+                            <div className="block">{enr.tutorName}</div>
+                            <div className="text-[11px] font-mono text-muted">{enr.tutorPhone}</div>
                           </td>
                           <td className="py-3 px-4">
-                            <div className="text-[11px] text-slate-400 italic">
+                            <div className="text-[11px] text-muted italic">
                               {enr.emergencyNotes || 'Ninguna especificación'}
                             </div>
                           </td>
@@ -10675,16 +10675,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="font-mono text-xs text-orange-400 font-bold bg-orange-500/10 px-2.5 py-0.5 rounded-lg border border-orange-500/20">
+                  <div className="badge badge-sky font-mono">
                     NUTRICIÓN & SEGURIDAD ALIMENTARIA
                   </div>
-                  <div className="text-xs text-slate-400 font-bold">• Tienditas Escolares SEP</div>
+                  <div className="text-xs text-muted font-bold">• Tienditas Escolares SEP</div>
                 </div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <Utensils className="w-6 h-6 text-orange-400" />
                   Cafetería Escolar y Monedero Digital
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="dashboard-section-desc">
                   Catálogo saludable bajo la norma SEP, punto de venta con bloqueo automático por alergias médicas, recargas prepagadas y límite diario de gasto.
                 </p>
               </div>
@@ -10695,14 +10695,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     setSelectedWalletForAction(studentWallets[0] || null);
                     setShowTopUpModal(true);
                   }}
-                  className="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 border border-slate-700 transition-all cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   <CircleDollarSign className="w-4 h-4 text-emerald-400" />
                   <div>Recargar Monedero</div>
                 </button>
                 <button
                   onClick={() => setShowNewProductModal(true)}
-                  className="bg-orange-500 hover:bg-orange-400 text-slate-950 font-black text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 shadow-lg shadow-orange-500/20 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   <Plus className="w-4 h-4" />
                   <div>Nuevo Alimento / Bebida</div>
@@ -10713,29 +10713,29 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* KPI Cards de Cafetería */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Alimentos Saludables SEP</div>
-                <div className="text-2xl font-black text-white mt-1">
+                <div className="text-[11px] text-muted font-medium">Alimentos Saludables SEP</div>
+                <div className="text-2xl font-black mt-1">
                   {cafeteriaProducts.filter((p) => p.isHealthySepApproved).length}/{cafeteriaProducts.length}
                 </div>
                 <div className="text-[10px] text-emerald-400 font-bold">Lineamientos de Nutrición SEP</div>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Monederos Activos</div>
-                <div className="text-2xl font-black text-white mt-1">{studentWallets.length} Alumnos</div>
+                <div className="text-[11px] text-muted font-medium">Monederos Activos</div>
+                <div className="text-2xl font-black mt-1">{studentWallets.length} Alumnos</div>
                 <div className="text-[10px] text-sky-400 font-bold">Cobro con credencial QR</div>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Saldo en Circulación</div>
+                <div className="text-[11px] text-muted font-medium">Saldo en Circulación</div>
                 <div className="text-2xl font-black text-emerald-400 mt-1">
                   ${studentWallets.reduce((sum, w) => sum + w.currentBalanceMXN, 0)} MXN
                 </div>
-                <div className="text-[10px] text-slate-400 font-bold">Fondos prepagados seguros</div>
+                <div className="text-[10px] text-muted font-bold">Fondos prepagados seguros</div>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Tickets de Consumo Hoy</div>
+                <div className="text-[11px] text-muted font-medium">Tickets de Consumo Hoy</div>
                 <div className="text-2xl font-black text-orange-400 mt-1">
                   {cafeteriaTransactions.filter((t) => t.type === 'CONSUMO').length}
                 </div>
@@ -10744,13 +10744,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             {/* Subtabs de Cafetería */}
-            <div className="flex border-b border-slate-800 gap-6 text-xs font-bold overflow-x-auto">
+            <div className="flex border-b border-subtle gap-6 text-xs font-bold overflow-x-auto">
               <button
                 onClick={() => setCafeteriaSubTab('menu')}
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 whitespace-nowrap ${
                   cafeteriaSubTab === 'menu'
                     ? 'border-orange-400 text-orange-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <Utensils className="w-4 h-4" />
@@ -10761,7 +10761,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 whitespace-nowrap ${
                   cafeteriaSubTab === 'pos'
                     ? 'border-orange-400 text-orange-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <CreditCard className="w-4 h-4" />
@@ -10772,7 +10772,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 whitespace-nowrap ${
                   cafeteriaSubTab === 'wallets'
                     ? 'border-orange-400 text-orange-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <CircleDollarSign className="w-4 h-4" />
@@ -10783,7 +10783,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 whitespace-nowrap ${
                   cafeteriaSubTab === 'history'
                     ? 'border-orange-400 text-orange-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <Receipt className="w-4 h-4" />
@@ -10796,7 +10796,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="space-y-4">
                 {/* Filtros de Categoría */}
                 <div className="flex items-center gap-2 flex-wrap text-xs">
-                  <div className="text-slate-400 font-bold">Categoría:</div>
+                  <div className="text-muted font-bold">Categoría:</div>
                   {[
                     { id: 'TODOS', label: 'Todos los Alimentos' },
                     { id: 'DESAYUNOS_SALUDABLES', label: '🥪 Desayunos' },
@@ -10811,7 +10811,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
                         cafeteriaCategoryFilter === cat.id
                           ? 'bg-orange-500 text-slate-950 shadow-md shadow-orange-500/20'
-                          : 'bg-slate-900 border border-slate-800 text-slate-400 hover:text-white'
+                          : 'bg-surface border border-subtle text-muted hover:text-white'
                       }`}
                     >
                       {cat.label}
@@ -10826,7 +10826,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     .map((product) => (
                       <div
                         key={product.id}
-                        className="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-4 flex flex-col justify-between"
+                        className="bg-surface border border-subtle rounded-3xl p-5 shadow-xl space-y-4 flex flex-col justify-between"
                       >
                         <div className="space-y-2">
                           <div className="flex items-start justify-between gap-2">
@@ -10834,38 +10834,38 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               <div className="text-[10px] font-mono text-orange-400 uppercase font-bold tracking-wider block">
                                 {product.category.replace('_', ' ')}
                               </div>
-                              <h3 className="font-black text-white text-base leading-tight mt-0.5">
+                              <h3 className="font-black text-base leading-tight mt-0.5">
                                 {product.name}
                               </h3>
                             </div>
                             <div className="text-lg font-black text-emerald-400 font-mono">
-                              ${product.priceMXN} <div className="text-xs text-slate-400">MXN</div>
+                              ${product.priceMXN} <div className="text-xs text-muted">MXN</div>
                             </div>
                           </div>
 
                           <div className="flex items-center gap-2 flex-wrap">
                             {product.isHealthySepApproved ? (
-                              <div className="bg-emerald-500/10 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/30 flex items-center gap-1">
+                              <div className="badge badge-emerald">
                                 <ShieldCheck className="w-3 h-3" /> Aprobado SEP
                               </div>
                             ) : (
-                              <div className="bg-amber-500/10 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-500/30">
+                              <div className="badge badge-amber">
                                 Consumo Ocasional
                               </div>
                             )}
                             {product.caloriesKcal && (
-                              <div className="bg-slate-950 text-slate-300 text-[10px] font-mono font-bold px-2 py-0.5 rounded-lg border border-slate-800">
+                              <div className="badge badge-sky font-mono">
                                 {product.caloriesKcal} kcal
                               </div>
                             )}
-                            <div className="bg-slate-950 text-slate-400 text-[10px] font-mono px-2 py-0.5 rounded-lg border border-slate-800">
+                            <div className="badge badge-sky font-mono">
                               Stock: {product.stockQuantity} pzas
                             </div>
                           </div>
 
                           {/* Ingredientes */}
-                          <p className="text-xs text-slate-400 leading-relaxed">
-                            <strong className="text-slate-300">Ingredientes:</strong> {product.ingredients.join(', ')}.
+                          <p className="text-xs text-muted leading-relaxed">
+                            <strong className="text-muted">Ingredientes:</strong> {product.ingredients.join(', ')}.
                           </p>
 
                           {/* Alérgenos */}
@@ -10878,7 +10878,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 {product.allergens.map((alg) => (
                                   <div
                                     key={alg}
-                                    className="bg-rose-950/40 text-rose-300 border border-rose-500/40 text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1"
+                                    className="badge badge-rose"
                                   >
                                     <AlertTriangle className="w-3 h-3 text-rose-400" />
                                     {alg}
@@ -10889,8 +10889,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           )}
                         </div>
 
-                        <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
-                          <div className="text-[11px] text-slate-400 font-mono">
+                        <div className="pt-3 border-t border-subtle flex items-center justify-between">
+                          <div className="text-[11px] text-muted font-mono">
                             {product.available ? '🟢 Disponible en Barra' : '🔴 Agotado'}
                           </div>
                           <button
@@ -10922,7 +10922,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <div className="text-[10px] font-mono text-orange-400 font-bold uppercase tracking-wider block">
                           Identificación del Alumno
                         </div>
-                        <h3 className="text-base font-black text-white flex items-center gap-2">
+                        <h3 className="text-base font-black flex items-center gap-2">
                           <Scan className="w-5 h-5 text-orange-400" />
                           Escanear Credencial QR / Buscar Alumno
                         </h3>
@@ -10950,31 +10950,31 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       const remainingDaily = Math.max(0, wallet.dailySpendingLimitMXN - wallet.spentTodayMXN);
 
                       return (
-                        <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-3">
+                        <div className="badge badge-sky">
                           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-                            <div className="bg-slate-900 p-3 rounded-xl border border-slate-800">
-                              <div className="text-[10px] text-slate-400 block">Saldo Disponible:</div>
+                            <div className="bg-surface p-3 rounded-xl border border-subtle">
+                              <div className="text-[10px] text-muted block">Saldo Disponible:</div>
                               <strong className="text-base font-black text-emerald-400 font-mono">
                                 ${wallet.currentBalanceMXN} <div className="text-xs">MXN</div>
                               </strong>
                             </div>
 
-                            <div className="bg-slate-900 p-3 rounded-xl border border-slate-800">
-                              <div className="text-[10px] text-slate-400 block">Límite Diario:</div>
-                              <strong className="text-base font-black text-white font-mono">
+                            <div className="bg-surface p-3 rounded-xl border border-subtle">
+                              <div className="text-[10px] text-muted block">Límite Diario:</div>
+                              <strong className="text-base font-black font-mono">
                                 ${wallet.dailySpendingLimitMXN} <div className="text-xs">MXN</div>
                               </strong>
                             </div>
 
-                            <div className="bg-slate-900 p-3 rounded-xl border border-slate-800">
-                              <div className="text-[10px] text-slate-400 block">Gastado Hoy:</div>
+                            <div className="bg-surface p-3 rounded-xl border border-subtle">
+                              <div className="text-[10px] text-muted block">Gastado Hoy:</div>
                               <strong className="text-base font-black text-amber-400 font-mono">
                                 ${wallet.spentTodayMXN} <div className="text-xs">MXN</div>
                               </strong>
                             </div>
 
-                            <div className="bg-slate-900 p-3 rounded-xl border border-slate-800">
-                              <div className="text-[10px] text-slate-400 block">Disponible Hoy:</div>
+                            <div className="bg-surface p-3 rounded-xl border border-subtle">
+                              <div className="text-[10px] text-muted block">Disponible Hoy:</div>
                               <strong className="text-base font-black text-sky-400 font-mono">
                                 ${remainingDaily} <div className="text-xs">MXN</div>
                               </strong>
@@ -10983,7 +10983,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                           {/* ALERTA DE ALERGIAS MÉDICAS */}
                           {wallet.allergies.length > 0 ? (
-                            <div className="p-3 bg-rose-950/40 border border-rose-500/60 rounded-xl flex items-center justify-between gap-3 text-xs">
+                            <div className="badge badge-rose">
                               <div className="flex items-center gap-2">
                                 <ShieldAlert className="w-5 h-5 text-rose-400 shrink-0" />
                                 <div>
@@ -10992,14 +10992,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   </strong>
                                   <div className="text-[11px] text-rose-300">
                                     Alergias médicas registradas:{' '}
-                                    <strong className="text-white">{wallet.allergies.join(', ')}</strong>.
+                                    <strong className="text-main">{wallet.allergies.join(', ')}</strong>.
                                     Los alimentos con estos alérgenos están bloqueados automáticamente en caja.
                                   </div>
                                 </div>
                               </div>
                             </div>
                           ) : (
-                            <div className="p-2.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl text-emerald-300 text-xs flex items-center gap-2">
+                            <div className="badge badge-emerald">
                               <ShieldCheck className="w-4 h-4 text-emerald-400" />
                               <div>Sin alergias alimentarias registradas en expediente médico.</div>
                             </div>
@@ -11011,7 +11011,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   {/* Grid de Productos para Agregar al Ticket */}
                   <div className="space-y-3">
-                    <div className="text-xs font-bold text-white block">Toca un producto para agregar al ticket:</div>
+                    <div className="text-xs font-bold block">Toca un producto para agregar al ticket:</div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {cafeteriaProducts.map((product) => {
                         const wallet = studentWallets.find((w) => w.studentId === posStudentId);
@@ -11027,17 +11027,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             className={`p-4 rounded-2xl border transition-all flex flex-col justify-between gap-2 ${
                               hasAllergyMatch
                                 ? 'bg-rose-950/10 border-rose-500/40 opacity-75'
-                                : 'bg-slate-900 border-slate-800 hover:border-slate-700'
+                                : 'bg-surface border-subtle hover:border-subtle'
                             }`}
                           >
                             <div>
                               <div className="flex items-start justify-between gap-2">
-                                <h4 className="font-bold text-white text-xs leading-snug">{product.name}</h4>
+                                <h4 className="font-bold text-xs leading-snug">{product.name}</h4>
                                 <div className="font-mono font-black text-emerald-400 text-xs whitespace-nowrap">
                                   ${product.priceMXN} MXN
                                 </div>
                               </div>
-                              <div className="text-[10px] text-slate-400 block mt-0.5">
+                              <div className="text-[10px] text-muted block mt-0.5">
                                 {product.category.replace('_', ' ')} • {product.caloriesKcal || 150} kcal
                               </div>
 
@@ -11049,7 +11049,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                       className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${
                                         wallet?.allergies.includes(alg)
                                           ? 'bg-rose-500 text-white animate-pulse'
-                                          : 'bg-slate-950 text-slate-400 border border-slate-800'
+                                          : 'bg-slate-950 text-muted border border-subtle'
                                       }`}
                                     >
                                       {alg}
@@ -11062,7 +11062,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             {hasAllergyMatch ? (
                               <button
                                 disabled
-                                className="w-full py-1.5 px-3 rounded-xl bg-rose-950/40 text-rose-300 border border-rose-500/30 text-[11px] font-black cursor-not-allowed flex items-center justify-center gap-1 mt-1"
+                                className="btn btn-danger btn-sm w-full"
                               >
                                 <AlertTriangle className="w-3.5 h-3.5" />
                                 <div>Bloqueado por Alergia Médica</div>
@@ -11070,7 +11070,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             ) : (
                               <button
                                 onClick={() => handleAddToCart(product)}
-                                className="w-full py-1.5 px-3 rounded-xl bg-slate-800 hover:bg-orange-500 hover:text-slate-950 text-slate-200 text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1 mt-1"
+                                className="btn btn-warning btn-sm w-full"
                               >
                                 <Plus className="w-3.5 h-3.5" />
                                 <div>Agregar al Ticket</div>
@@ -11084,19 +11084,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 {/* Columna Derecha: Carrito y Ticket de Venta POS */}
-                <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-5 flex flex-col justify-between h-fit sticky top-24">
+                <div className="bg-surface border border-subtle rounded-3xl p-6 shadow-2xl space-y-5 flex flex-col justify-between h-fit sticky top-24">
                   <div className="space-y-4">
                     <div className="modal-header">
                       <div>
                         <div className="text-[10px] font-mono text-orange-400 font-bold uppercase tracking-wider block">
                           Ticket de Consumo
                         </div>
-                        <h3 className="font-black text-white text-base flex items-center gap-2">
+                        <h3 className="font-black text-base flex items-center gap-2">
                           <ShoppingBag className="w-5 h-5 text-orange-400" />
                           Orden de Receso
                         </h3>
                       </div>
-                      <div className="bg-slate-800 text-slate-300 font-mono text-xs px-2.5 py-1 rounded-xl font-bold">
+                      <div className="bg-subtle text-muted font-mono text-xs px-2.5 py-1 rounded-xl font-bold">
                         {posCart.reduce((sum, item) => sum + item.quantity, 0)} items
                       </div>
                     </div>
@@ -11107,11 +11107,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {posCart.map(({ product, quantity }) => (
                           <div
                             key={product.id}
-                            className="bg-slate-950 p-3 rounded-2xl border border-slate-800 flex items-center justify-between gap-2 text-xs"
+                            className="badge badge-sky"
                           >
                             <div className="space-y-0.5">
-                              <strong className="text-white block text-[11px]">{product.name}</strong>
-                              <div className="text-slate-400 text-[10px] font-mono">
+                              <strong className="block text-[11px]">{product.name}</strong>
+                              <div className="text-muted text-[10px] font-mono">
                                 ${product.priceMXN} x {quantity} ={' '}
                                 <strong className="text-emerald-400">${product.priceMXN * quantity} MXN</strong>
                               </div>
@@ -11120,16 +11120,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             <div className="flex items-center gap-1.5">
                               <button
                                 onClick={() => handleRemoveFromCart(product.id)}
-                                className="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold flex items-center justify-center cursor-pointer text-xs"
+                                className="btn btn-secondary btn-sm"
                               >
                                 -
                               </button>
-                              <div className="font-mono font-bold text-white text-xs w-4 text-center">
+                              <div className="font-mono font-bold text-xs w-4 text-center">
                                 {quantity}
                               </div>
                               <button
                                 onClick={() => handleAddToCart(product)}
-                                className="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold flex items-center justify-center cursor-pointer text-xs"
+                                className="btn btn-secondary btn-sm"
                               >
                                 +
                               </button>
@@ -11138,16 +11138,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         ))}
                       </div>
                     ) : (
-                      <div className="py-8 text-center text-slate-500 space-y-1">
+                      <div className="py-8 text-center text-muted space-y-1">
                         <ShoppingBag className="w-8 h-8 mx-auto text-slate-600 mb-1" />
-                        <div className="text-xs font-bold block text-slate-400">El ticket está vacío</div>
+                        <div className="text-xs font-bold block text-muted">El ticket está vacío</div>
                         <div className="text-[11px] block">Selecciona alimentos o bebidas del menú.</div>
                       </div>
                     )}
 
                     {/* Resumen Financiero del Cobro */}
                     {posCart.length > 0 && (
-                      <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2 text-xs">
+                      <div className="badge badge-sky">
                         {(() => {
                           const wallet = studentWallets.find((w) => w.studentId === posStudentId);
                           const total = posCart.reduce((sum, item) => sum + item.product.priceMXN * item.quantity, 0);
@@ -11160,15 +11160,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                           return (
                             <>
-                              <div className="flex justify-between text-slate-400">
+                              <div className="flex justify-between text-muted">
                                 <div>Total a Cobrar:</div>
-                                <strong className="text-white text-sm font-mono font-black">${total} MXN</strong>
+                                <strong className="text-sm font-mono font-black">${total} MXN</strong>
                               </div>
-                              <div className="flex justify-between text-slate-400">
+                              <div className="flex justify-between text-muted">
                                 <div>Saldo Actual Alumno:</div>
                                 <div className="font-mono text-emerald-400 font-bold">${wallet?.currentBalanceMXN || 0} MXN</div>
                               </div>
-                              <div className="flex justify-between text-slate-400 border-t border-slate-800 pt-1.5">
+                              <div className="flex justify-between text-muted border-t border-subtle pt-1.5">
                                 <div>Saldo Restante:</div>
                                 <div
                                   className={`font-mono font-black ${
@@ -11180,13 +11180,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               </div>
 
                               {exceedsLimit && (
-                                <div className="p-2 bg-amber-950/40 border border-amber-500/50 rounded-xl text-amber-200 text-[11px] mt-2">
+                                <div className="badge badge-amber">
                                   ⚠️ Esta compra supera el límite diario autorizado (${wallet.dailySpendingLimitMXN} MXN).
                                 </div>
                               )}
 
                               {insufficientBalance && (
-                                <div className="p-2 bg-rose-950/40 border border-rose-500/50 rounded-xl text-rose-200 text-[11px] mt-2">
+                                <div className="badge badge-rose">
                                   ⚠️ Saldo insuficiente en el monedero digital. Realiza una recarga.
                                 </div>
                               )}
@@ -11203,7 +11203,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     className={`w-full py-3 rounded-2xl font-black text-xs flex items-center justify-center gap-2 shadow-xl transition-all ${
                       posCart.length > 0
                         ? 'bg-orange-500 hover:bg-orange-400 text-slate-950 shadow-orange-500/20 cursor-pointer'
-                        : 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                        : 'bg-subtle text-muted cursor-not-allowed'
                     }`}
                   >
                     <CreditCard className="w-4 h-4" />
@@ -11216,15 +11216,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* SUBTAB 3: GESTIÓN DE MONEDEROS */}
             {cafeteriaSubTab === 'wallets' && (
               <div className="dashboard-table-card">
-                <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-                  <div className="text-xs font-bold text-white">
+                <div className="p-4 border-b border-subtle flex items-center justify-between">
+                  <div className="text-xs font-bold">
                     Padrón de Monederos Escolares y Control de Fondos ({studentWallets.length})
                   </div>
-                  <div className="text-xs text-slate-400 font-mono">Actualizado en tiempo real</div>
+                  <div className="text-xs text-muted font-mono">Actualizado en tiempo real</div>
                 </div>
 
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs text-slate-300">
+                  <table className="w-full text-left text-xs text-muted">
                     <thead className="table-header-row">
                       <tr>
                         <th className="py-3 px-4">Matrícula</th>
@@ -11236,20 +11236,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <th className="py-3 px-4 text-right">Acciones</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800">
+                    <tbody className="table-body">
                       {studentWallets.map((wallet) => (
-                        <tr key={wallet.id} className="hover:bg-slate-800/40 transition-colors">
+                        <tr key={wallet.id} className="hover:bg-subtle transition-colors">
                           <td className="py-3 px-4 font-mono font-bold text-orange-400">{wallet.studentCode}</td>
                           <td className="py-3 px-4">
-                            <strong className="text-white block">{wallet.studentName}</strong>
-                            <div className="text-[10px] text-slate-400">{wallet.groupName}</div>
+                            <strong className="block">{wallet.studentName}</strong>
+                            <div className="text-[10px] text-muted">{wallet.groupName}</div>
                           </td>
                           <td className="py-3 px-4">
                             <div className="text-emerald-400 font-mono font-bold text-sm">
                               ${wallet.currentBalanceMXN} MXN
                             </div>
                           </td>
-                          <td className="py-3 px-4 font-mono text-slate-300">
+                          <td className="py-3 px-4 font-mono text-muted">
                             ${wallet.dailySpendingLimitMXN} MXN
                           </td>
                           <td className="py-3 px-4 font-mono text-amber-300">
@@ -11261,14 +11261,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 {wallet.allergies.map((alg) => (
                                   <div
                                     key={alg}
-                                    className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded"
+                                    className="badge badge-rose"
                                   >
                                     {alg}
                                   </div>
                                 ))}
                               </div>
                             ) : (
-                              <div className="text-[11px] text-slate-500">Ninguna</div>
+                              <div className="text-[11px] text-muted">Ninguna</div>
                             )}
                           </td>
                           <td className="py-3 px-4 text-right">
@@ -11278,7 +11278,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   setSelectedWalletForAction(wallet);
                                   setShowTopUpModal(true);
                                 }}
-                                className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] px-2.5 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1"
+                                className="btn btn-success btn-sm"
                               >
                                 <Plus className="w-3 h-3" /> Recargar
                               </button>
@@ -11288,7 +11288,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   setLimitForm({ dailySpendingLimitMXN: wallet.dailySpendingLimitMXN });
                                   setShowConfigureLimitModal(true);
                                 }}
-                                className="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-[11px] px-2.5 py-1 rounded-lg transition-all cursor-pointer"
+                                className="btn btn-secondary btn-sm"
                               >
                                 Límite
                               </button>
@@ -11305,15 +11305,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* SUBTAB 4: HISTORIAL DE TICKETS */}
             {cafeteriaSubTab === 'history' && (
               <div className="dashboard-table-card">
-                <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-                  <div className="text-xs font-bold text-white">
+                <div className="p-4 border-b border-subtle flex items-center justify-between">
+                  <div className="text-xs font-bold">
                     Historial de Recargas y Tickets de Consumo ({cafeteriaTransactions.length})
                   </div>
-                  <div className="text-xs text-slate-400 font-mono">Auditoría contable</div>
+                  <div className="text-xs text-muted font-mono">Auditoría contable</div>
                 </div>
 
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs text-slate-300">
+                  <table className="w-full text-left text-xs text-muted">
                     <thead className="table-header-row">
                       <tr>
                         <th className="py-3 px-4">Folio</th>
@@ -11325,29 +11325,29 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <th className="py-3 px-4 text-right">Ticket</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800">
+                    <tbody className="table-body">
                       {cafeteriaTransactions.map((tx) => (
-                        <tr key={tx.id} className="hover:bg-slate-800/40 transition-colors">
+                        <tr key={tx.id} className="hover:bg-subtle transition-colors">
                           <td className="py-3 px-4 font-mono font-bold text-orange-400">{tx.folio}</td>
-                          <td className="py-3 px-4 font-mono text-[11px] text-slate-400">
+                          <td className="py-3 px-4 font-mono text-[11px] text-muted">
                             {tx.date} • {tx.time}
                           </td>
                           <td className="py-3 px-4">
-                            <strong className="text-white block">{tx.studentName}</strong>
-                            <div className="text-[10px] font-mono text-slate-400">{tx.studentCode}</div>
+                            <strong className="block">{tx.studentName}</strong>
+                            <div className="text-[10px] font-mono text-muted">{tx.studentCode}</div>
                           </td>
                           <td className="py-3 px-4">
                             {tx.type === 'RECARGA_SALDO' ? (
-                              <div className="bg-emerald-500/10 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/30">
+                              <div className="badge badge-emerald">
                                 💰 Recarga Saldo ({tx.paymentMethod || 'Efectivo'})
                               </div>
                             ) : (
-                              <div className="bg-orange-500/10 text-orange-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-orange-500/30">
+                              <div className="badge badge-sky">
                                 🥪 Consumo Escolar
                               </div>
                             )}
                           </td>
-                          <td className="py-3 px-4 text-[11px] text-slate-300">
+                          <td className="py-3 px-4 text-[11px] text-muted">
                             {tx.items && tx.items.length > 0
                               ? tx.items.map((i) => `${i.quantity}x ${i.productName}`).join(', ')
                               : tx.cashierNotes || 'Operación en monedero'}
@@ -11386,16 +11386,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="font-mono text-xs text-rose-400 font-bold bg-rose-500/10 px-2.5 py-0.5 rounded-lg border border-rose-500/20">
+                  <div className="badge badge-rose font-mono">
                     SALUD INTEGRAL Y PRIMEROS AUXILIOS
                   </div>
-                  <div className="text-xs text-slate-400 font-bold">• Protocolo de Seguridad Médica</div>
+                  <div className="text-xs text-muted font-bold">• Protocolo de Seguridad Médica</div>
                 </div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <Stethoscope className="w-6 h-6 text-rose-400" />
                   Enfermería Escolar y Expediente de Salud
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="dashboard-section-desc">
                   Bitácora de atenciones en plantel, toma de signos vitales, administración de medicamentos bajo receta y notificación inmediata a padres.
                 </p>
               </div>
@@ -11403,14 +11403,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   onClick={() => setShowNewMedicationModal(true)}
-                  className="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 border border-slate-700 transition-all cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   <Pill className="w-4 h-4 text-sky-400" />
                   <div>Programar Medicamento</div>
                 </button>
                 <button
                   onClick={() => setShowNewConsultationModal(true)}
-                  className="bg-rose-600 hover:bg-rose-500 text-white font-black text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 shadow-lg shadow-rose-600/20 transition-all cursor-pointer"
+                  className="btn btn-danger btn-sm"
                 >
                   <HeartPulse className="w-4 h-4" />
                   <div>Nueva Atención Médica</div>
@@ -11421,27 +11421,27 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* KPI Cards de Enfermería */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Atenciones Registradas</div>
-                <div className="text-2xl font-black text-white mt-1">{medicalConsultations.length} Consultas</div>
+                <div className="text-[11px] text-muted font-medium">Atenciones Registradas</div>
+                <div className="text-2xl font-black mt-1">{medicalConsultations.length} Consultas</div>
                 <div className="text-[10px] text-emerald-400 font-bold">Registro clínico escolar</div>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Medicamentos Programados</div>
+                <div className="text-[11px] text-muted font-medium">Medicamentos Programados</div>
                 <div className="text-2xl font-black text-sky-400 mt-1">
                   {scheduledMedications.filter((m) => m.status === 'ACTIVO').length} Alumnos
                 </div>
-                <div className="text-[10px] text-slate-400 font-bold">Bajo prescripción médica</div>
+                <div className="text-[10px] text-muted font-bold">Bajo prescripción médica</div>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Insumos en Botiquín</div>
-                <div className="text-2xl font-black text-white mt-1">{firstAidSupplies.length} Artículos</div>
+                <div className="text-[11px] text-muted font-medium">Insumos en Botiquín</div>
+                <div className="text-2xl font-black mt-1">{firstAidSupplies.length} Artículos</div>
                 <div className="text-[10px] text-emerald-400 font-bold">Stock de primeros auxilios</div>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Avisos a Padres Enviados</div>
+                <div className="text-[11px] text-muted font-medium">Avisos a Padres Enviados</div>
                 <div className="text-2xl font-black text-rose-400 mt-1">
                   {medicalConsultations.filter((c) => c.parentNotified).length}
                 </div>
@@ -11450,13 +11450,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             {/* Subtabs de Enfermería */}
-            <div className="flex border-b border-slate-800 gap-6 text-xs font-bold overflow-x-auto">
+            <div className="flex border-b border-subtle gap-6 text-xs font-bold overflow-x-auto">
               <button
                 onClick={() => setInfirmarySubTab('consultations')}
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 whitespace-nowrap ${
                   infirmarySubTab === 'consultations'
                     ? 'border-rose-400 text-rose-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <Stethoscope className="w-4 h-4" />
@@ -11467,7 +11467,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 whitespace-nowrap ${
                   infirmarySubTab === 'medications'
                     ? 'border-rose-400 text-rose-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <Pill className="w-4 h-4" />
@@ -11478,7 +11478,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 whitespace-nowrap ${
                   infirmarySubTab === 'supplies'
                     ? 'border-rose-400 text-rose-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <Bandage className="w-4 h-4" />
@@ -11490,15 +11490,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {infirmarySubTab === 'consultations' && (
               <div className="space-y-4">
                 <div className="dashboard-table-card">
-                  <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-                    <div className="text-xs font-bold text-white">
+                  <div className="p-4 border-b border-subtle flex items-center justify-between">
+                    <div className="text-xs font-bold">
                       Bitácora de Atenciones Médicas Escolares ({medicalConsultations.length})
                     </div>
-                    <div className="text-xs text-slate-400 font-mono">Enfermería General</div>
+                    <div className="text-xs text-muted font-mono">Enfermería General</div>
                   </div>
 
                   <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs text-slate-300">
+                    <table className="w-full text-left text-xs text-muted">
                       <thead className="table-header-row">
                         <tr>
                           <th className="py-3 px-4">Folio</th>
@@ -11511,20 +11511,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <th className="py-3 px-4 text-right">Acciones</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-800">
+                      <tbody className="table-body">
                         {medicalConsultations.map((consultation) => (
-                          <tr key={consultation.id} className="hover:bg-slate-800/40 transition-colors">
+                          <tr key={consultation.id} className="hover:bg-subtle transition-colors">
                             <td className="py-3 px-4 font-mono font-bold text-rose-400">{consultation.folio}</td>
-                            <td className="py-3 px-4 font-mono text-[11px] text-slate-400">
+                            <td className="py-3 px-4 font-mono text-[11px] text-muted">
                               {consultation.date} • {consultation.time} hrs
                             </td>
                             <td className="py-3 px-4">
-                              <strong className="text-white block">{consultation.studentName}</strong>
-                              <div className="text-[10px] text-slate-400 font-mono">{consultation.studentCode}</div>
+                              <strong className="block">{consultation.studentName}</strong>
+                              <div className="text-[10px] text-muted font-mono">{consultation.studentCode}</div>
                             </td>
                             <td className="py-3 px-4">
                               <div className="space-y-1">
-                                <div className="bg-slate-800 text-slate-200 text-[10px] font-bold px-2 py-0.5 rounded-full border border-slate-700 inline-block">
+                                <div className="bg-subtle text-main text-[10px] font-bold px-2 py-0.5 rounded-full border border-subtle inline-block">
                                   {consultation.reason.replace('_', ' ')}
                                 </div>
                                 <div>
@@ -11547,40 +11547,40 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 </div>
                               )}
                               {consultation.vitalSigns.bloodPressure && (
-                                <div className="text-slate-400 block text-[10px]">
+                                <div className="text-muted block text-[10px]">
                                   PA: {consultation.vitalSigns.bloodPressure}
                                 </div>
                               )}
                               {consultation.vitalSigns.heartRateBpm && (
-                                <div className="text-slate-400 block text-[10px]">
+                                <div className="text-muted block text-[10px]">
                                   FC: {consultation.vitalSigns.heartRateBpm} bpm
                                 </div>
                               )}
                             </td>
-                            <td className="py-3 px-4 max-w-xs text-[11px] text-slate-300">
+                            <td className="py-3 px-4 max-w-xs text-[11px] text-muted">
                               <p className="line-clamp-2">{consultation.treatmentGiven}</p>
-                              <div className="text-[10px] text-slate-500 block mt-0.5">
+                              <div className="stat-sub">
                                 {consultation.nurseInCharge}
                               </div>
                             </td>
                             <td className="py-3 px-4">
                               {consultation.status === 'ALTA_A_CLASES' && (
-                                <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                <div className="badge badge-emerald">
                                   ✓ En Clases
                                 </div>
                               )}
                               {consultation.status === 'EN_OBSERVACION' && (
-                                <div className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse">
+                                <div className="badge badge-amber">
                                   En Observación
                                 </div>
                               )}
                               {consultation.status === 'RETIRADO_CON_TUTOR' && (
-                                <div className="bg-orange-500/10 text-orange-300 border border-orange-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                <div className="badge badge-sky">
                                   Retirado con Tutor
                                 </div>
                               )}
                               {consultation.status === 'DERIVADO_HOSPITAL' && (
-                                <div className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                <div className="badge badge-rose">
                                   Derivado Hospital
                                 </div>
                               )}
@@ -11590,7 +11590,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 {consultation.status === 'EN_OBSERVACION' && (
                                   <button
                                     onClick={() => handleUpdateConsultationStatus(consultation.id, 'ALTA_A_CLASES')}
-                                    className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px] px-2 py-1 rounded-lg transition-all cursor-pointer"
+                                    className="btn btn-success btn-sm"
                                   >
                                     Dar Alta
                                   </button>
@@ -11623,16 +11623,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   {scheduledMedications.map((med) => (
                     <div
                       key={med.id}
-                      className="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-4 flex flex-col justify-between"
+                      className="bg-surface border border-subtle rounded-3xl p-5 shadow-xl space-y-4 flex flex-col justify-between"
                     >
                       <div className="space-y-3">
-                        <div className="flex items-start justify-between gap-2 border-b border-slate-800 pb-3">
+                        <div className="flex items-start justify-between gap-2 border-b border-subtle pb-3">
                           <div>
                             <div className="text-[10px] font-mono text-sky-400 uppercase font-bold tracking-wider block">
                               HORARIO PROGRAMADO: {med.scheduledTime} HRS
                             </div>
-                            <h3 className="font-black text-white text-base mt-0.5">{med.medicationName}</h3>
-                            <div className="text-xs text-slate-300 font-mono font-bold block mt-0.5">
+                            <h3 className="font-black text-base mt-0.5">{med.medicationName}</h3>
+                            <div className="text-xs text-muted font-mono font-bold block mt-0.5">
                               Dosis: {med.dosage}
                             </div>
                           </div>
@@ -11649,25 +11649,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                         <div className="grid grid-cols-2 gap-2 text-xs">
                           <div className="dashboard-subcard">
-                            <div className="text-[10px] text-slate-400 block font-bold">Alumno Asignado:</div>
-                            <strong className="text-white block mt-0.5">{med.studentName}</strong>
-                            <div className="text-[10px] font-mono text-slate-400">{med.groupName}</div>
+                            <div className="text-[10px] text-muted block font-bold">Alumno Asignado:</div>
+                            <strong className="block mt-0.5">{med.studentName}</strong>
+                            <div className="text-[10px] font-mono text-muted">{med.groupName}</div>
                           </div>
 
                           <div className="dashboard-subcard">
-                            <div className="text-[10px] text-slate-400 block font-bold">Vigencia del Tratamiento:</div>
-                            <strong className="text-slate-200 block text-[11px] mt-0.5">
+                            <div className="text-[10px] text-muted block font-bold">Vigencia del Tratamiento:</div>
+                            <strong className="text-main block text-[11px] mt-0.5">
                               {med.startDate} al {med.endDate}
                             </strong>
                           </div>
                         </div>
 
-                        <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-1 text-xs">
-                          <div className="text-[10px] text-slate-400 font-mono block font-bold">
+                        <div className="badge badge-sky">
+                          <div className="text-[10px] text-muted font-mono block font-bold">
                             PRESCRIPCIÓN MÉDICA OFICIAL:
                           </div>
-                          <p className="text-white font-bold">{med.prescriptionDoctorName}</p>
-                          <p className="text-slate-400 text-[11px] font-mono">{med.doctorLicense}</p>
+                          <p className="font-bold">{med.prescriptionDoctorName}</p>
+                          <p className="text-muted text-[11px] font-mono">{med.doctorLicense}</p>
                           <div className="flex items-center gap-1.5 text-emerald-400 text-[10px] font-bold pt-1">
                             <ShieldCheck className="w-3.5 h-3.5" />
                             <div>Consentimiento firmado por: {med.parentName}</div>
@@ -11675,14 +11675,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
                       </div>
 
-                      <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
-                        <div className="text-[11px] text-slate-400 font-mono">
+                      <div className="pt-3 border-t border-subtle flex items-center justify-between">
+                        <div className="text-[11px] text-muted font-mono">
                           {med.lastAdministeredAt ? `Última toma: ${med.lastAdministeredAt}` : 'Sin toma hoy'}
                         </div>
                         {!med.administeredToday ? (
                           <button
                             onClick={() => handleAdministerMedication(med.id)}
-                            className="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-md shadow-sky-500/20 transition-all cursor-pointer"
+                            className="btn btn-primary btn-sm"
                           >
                             <Check className="w-3.5 h-3.5" />
                             <div>Suministrar Dosis</div>
@@ -11702,15 +11702,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* SUBTAB 3: BOTIQUÍN DE PRIMEROS AUXILIOS */}
             {infirmarySubTab === 'supplies' && (
               <div className="dashboard-table-card">
-                <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-                  <div className="text-xs font-bold text-white">
+                <div className="p-4 border-b border-subtle flex items-center justify-between">
+                  <div className="text-xs font-bold">
                     Inventario de Botiquín Escolar e Insumos Sanitarios ({firstAidSupplies.length})
                   </div>
-                  <div className="text-xs text-slate-400 font-mono">Monitoreo de stock mínimo</div>
+                  <div className="text-xs text-muted font-mono">Monitoreo de stock mínimo</div>
                 </div>
 
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs text-slate-300">
+                  <table className="w-full text-left text-xs text-muted">
                     <thead className="table-header-row">
                       <tr>
                         <th className="py-3 px-4">Insumo / Medicamento</th>
@@ -11722,18 +11722,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <th className="py-3 px-4 text-right">Ajuste Rápido</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800">
+                    <tbody className="table-body">
                       {firstAidSupplies.map((supply) => {
                         const isLowStock = supply.stockQuantity <= supply.minStockAlert;
 
                         return (
-                          <tr key={supply.id} className="hover:bg-slate-800/40 transition-colors">
+                          <tr key={supply.id} className="hover:bg-subtle transition-colors">
                             <td className="py-3 px-4">
-                              <strong className="text-white block">{supply.name}</strong>
-                              <div className="text-[10px] text-slate-500 font-mono">Unidad: {supply.unit}</div>
+                              <strong className="block">{supply.name}</strong>
+                              <div className="text-[10px] text-muted font-mono">Unidad: {supply.unit}</div>
                             </td>
                             <td className="py-3 px-4">
-                              <div className="bg-slate-950 text-slate-300 border border-slate-800 text-[10px] font-bold px-2 py-0.5 rounded-md">
+                              <div className="badge badge-sky">
                                 {supply.category.replace(/_/g, ' ')}
                               </div>
                             </td>
@@ -11742,19 +11742,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 {supply.stockQuantity} {supply.unit}
                               </div>
                             </td>
-                            <td className="py-3 px-4 font-mono text-slate-400">
+                            <td className="py-3 px-4 font-mono text-muted">
                               {supply.minStockAlert} {supply.unit}
                             </td>
-                            <td className="py-3 px-4 font-mono text-slate-400">
+                            <td className="py-3 px-4 font-mono text-muted">
                               {supply.expiryDate || 'N/A (Equipo)'}
                             </td>
                             <td className="py-3 px-4">
                               {isLowStock ? (
-                                <div className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 w-fit">
+                                <div className="badge badge-rose">
                                   <AlertTriangle className="w-3 h-3" /> Resurtir
                                 </div>
                               ) : (
-                                <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full w-fit block">
+                                <div className="badge badge-emerald">
                                   Óptimo
                                 </div>
                               )}
@@ -11771,7 +11771,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                       )
                                     )
                                   }
-                                  className="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold flex items-center justify-center cursor-pointer"
+                                  className="btn btn-secondary"
                                 >
                                   -
                                 </button>
@@ -11783,7 +11783,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                       )
                                     )
                                   }
-                                  className="px-2 h-7 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-300 font-bold text-[11px] flex items-center justify-center cursor-pointer"
+                                  className="btn btn-success btn-sm"
                                 >
                                   +5
                                 </button>
@@ -11807,16 +11807,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="font-mono text-xs text-amber-400 font-bold bg-amber-500/10 px-2.5 py-0.5 rounded-lg border border-amber-500/20">
+                  <div className="badge badge-amber font-mono">
                     OFERTA EDUCATIVA INTEGRAL • TURNO VESPERTINO
                   </div>
-                  <div className="text-xs text-slate-400 font-bold">• 14:30 a 16:30 hrs</div>
+                  <div className="text-xs text-muted font-bold">• 14:30 a 16:30 hrs</div>
                 </div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <Trophy className="w-6 h-6 text-amber-400" />
                   Talleres Extracurriculares y Academias Vespertinas
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="dashboard-section-desc">
                   Clubes formativos, STEAM, deportes, artes y regularización académica con control de cupos, instructores acreditados y pase de lista vespertino.
                 </p>
               </div>
@@ -11824,14 +11824,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   onClick={() => setShowEnrollWorkshopModal(true)}
-                  className="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 border border-slate-700 transition-all cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   <Users className="w-4 h-4 text-amber-400" />
                   <div>Inscribir Alumno</div>
                 </button>
                 <button
                   onClick={() => setShowNewWorkshopModal(true)}
-                  className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 shadow-lg shadow-amber-500/20 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   <Plus className="w-4 h-4" />
                   <div>Nueva Academia / Taller</div>
@@ -11842,13 +11842,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* KPI Cards de Talleres */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Academias Ofertadas</div>
-                <div className="text-2xl font-black text-white mt-1">{extracurricularWorkshops.length} Talleres</div>
+                <div className="text-[11px] text-muted font-medium">Academias Ofertadas</div>
+                <div className="text-2xl font-black mt-1">{extracurricularWorkshops.length} Talleres</div>
                 <div className="text-[10px] text-amber-400 font-bold">STEAM, Deportes & Arte</div>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Alumnos en Turno Vespertino</div>
+                <div className="text-[11px] text-muted font-medium">Alumnos en Turno Vespertino</div>
                 <div className="text-2xl font-black text-amber-400 mt-1">
                   {workshopEnrollments.filter((e) => e.status === 'ACTIVO').length} Inscritos
                 </div>
@@ -11856,15 +11856,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Capacidad Total Instalada</div>
-                <div className="text-2xl font-black text-white mt-1">
+                <div className="text-[11px] text-muted font-medium">Capacidad Total Instalada</div>
+                <div className="text-2xl font-black mt-1">
                   {extracurricularWorkshops.reduce((acc, w) => acc + w.maxCapacity, 0)} Lugares
                 </div>
-                <div className="text-[10px] text-slate-400 font-bold">Distribuidos en 5 aulas</div>
+                <div className="text-[10px] text-muted font-bold">Distribuidos en 5 aulas</div>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Ocupación Promedio</div>
+                <div className="text-[11px] text-muted font-medium">Ocupación Promedio</div>
                 <div className="text-2xl font-black text-emerald-400 mt-1">
                   {Math.round(
                     (extracurricularWorkshops.reduce((acc, w) => acc + w.enrolledCount, 0) /
@@ -11878,13 +11878,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             {/* Subtabs de Talleres */}
-            <div className="flex border-b border-slate-800 gap-6 text-xs font-bold overflow-x-auto">
+            <div className="flex border-b border-subtle gap-6 text-xs font-bold overflow-x-auto">
               <button
                 onClick={() => setWorkshopsSubTab('catalog')}
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 whitespace-nowrap ${
                   workshopsSubTab === 'catalog'
                     ? 'border-amber-400 text-amber-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <Trophy className="w-4 h-4" />
@@ -11895,7 +11895,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 whitespace-nowrap ${
                   workshopsSubTab === 'attendance'
                     ? 'border-amber-400 text-amber-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <ClipboardCheck className="w-4 h-4" />
@@ -11906,7 +11906,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 whitespace-nowrap ${
                   workshopsSubTab === 'enrollments'
                     ? 'border-amber-400 text-amber-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <Users className="w-4 h-4" />
@@ -11933,7 +11933,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       className={`text-xs font-bold px-3 py-1.5 rounded-xl transition-all whitespace-nowrap cursor-pointer ${
                         selectedWorkshopCategoryFilter === cat.id
                           ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                          : 'bg-slate-900 border border-slate-800 text-slate-400 hover:text-white'
+                          : 'bg-surface border border-subtle text-muted hover:text-white'
                       }`}
                     >
                       {cat.label}
@@ -11954,11 +11954,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       return (
                         <div
                           key={workshop.id}
-                          className="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-4 flex flex-col justify-between hover:border-slate-700 transition-all"
+                          className="bg-surface border border-subtle rounded-3xl p-5 shadow-xl space-y-4 flex flex-col justify-between hover:border-subtle transition-all"
                         >
                           <div className="space-y-3">
                             <div className="flex items-start justify-between gap-2">
-                              <div className="text-[10px] font-mono text-amber-400 uppercase font-bold bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/20">
+                              <div className="badge badge-amber font-mono">
                                 {workshop.category.replace(/_/g, ' ')}
                               </div>
                               <div
@@ -11973,28 +11973,28 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             </div>
 
                             <div>
-                              <div className="font-mono text-[10px] text-slate-400 block">{workshop.code}</div>
-                              <h3 className="font-black text-white text-base leading-snug mt-0.5">{workshop.name}</h3>
-                              <p className="text-xs text-slate-400 mt-1 line-clamp-2">{workshop.description}</p>
+                              <div className="font-mono text-[10px] text-muted block">{workshop.code}</div>
+                              <h3 className="font-black text-base leading-snug mt-0.5">{workshop.name}</h3>
+                              <p className="text-xs text-muted mt-1 line-clamp-2">{workshop.description}</p>
                             </div>
 
-                            <div className="space-y-1.5 text-xs bg-slate-950 p-3 rounded-2xl border border-slate-800">
-                              <div className="flex items-center justify-between text-slate-300">
-                                <div className="text-slate-400">Instructor:</div>
-                                <strong className="text-white">{workshop.instructorName}</strong>
+                            <div className="badge badge-sky">
+                              <div className="flex items-center justify-between text-muted">
+                                <div className="text-muted">Instructor:</div>
+                                <strong className="text-main">{workshop.instructorName}</strong>
                               </div>
-                              <div className="flex items-center justify-between text-slate-300">
-                                <div className="text-slate-400">Instalación:</div>
-                                <div className="text-slate-200">{workshop.classroom}</div>
+                              <div className="flex items-center justify-between text-muted">
+                                <div className="text-muted">Instalación:</div>
+                                <div className="text-main">{workshop.classroom}</div>
                               </div>
-                              <div className="flex items-center justify-between text-slate-300">
-                                <div className="text-slate-400">Horario:</div>
+                              <div className="flex items-center justify-between text-muted">
+                                <div className="text-muted">Horario:</div>
                                 <strong className="text-amber-400 font-mono text-[11px]">
                                   {workshop.scheduleDays.join(', ')} • {workshop.scheduleTime}
                                 </strong>
                               </div>
-                              <div className="flex items-center justify-between text-slate-300 pt-1 border-t border-slate-800">
-                                <div className="text-slate-400">Cuota Mensual:</div>
+                              <div className="flex items-center justify-between text-muted pt-1 border-t border-subtle">
+                                <div className="text-muted">Cuota Mensual:</div>
                                 <strong className="text-emerald-400 text-sm font-mono font-black">
                                   ${workshop.monthlyFeeMXN}.00 MXN
                                 </strong>
@@ -12004,12 +12004,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             {/* Barra de Ocupación */}
                             <div className="space-y-1">
                               <div className="flex justify-between text-[11px]">
-                                <div className="text-slate-400">Cupo Ocupado:</div>
-                                <div className="text-slate-200 font-mono font-bold">
+                                <div className="text-muted">Cupo Ocupado:</div>
+                                <div className="text-main font-mono font-bold">
                                   {workshop.enrolledCount} / {workshop.maxCapacity} alumnos ({occupancyPercent}%)
                                 </div>
                               </div>
-                              <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                              <div className="w-full h-2 bg-subtle rounded-full overflow-hidden">
                                 <div
                                   className={`h-full transition-all ${
                                     isFull ? 'bg-rose-500' : occupancyPercent > 80 ? 'bg-amber-500' : 'bg-emerald-500'
@@ -12020,13 +12020,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             </div>
                           </div>
 
-                          <div className="pt-3 border-t border-slate-800 flex items-center gap-2">
+                          <div className="pt-3 border-t border-subtle flex items-center gap-2">
                             <button
                               onClick={() => {
                                 setSelectedWorkshopForAttendance(workshop.id);
                                 setWorkshopsSubTab('attendance');
                               }}
-                              className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs py-2 rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                              className="btn btn-secondary btn-sm flex-1"
                             >
                               <ClipboardCheck className="w-3.5 h-3.5" />
                               <div>Pase de Lista</div>
@@ -12039,7 +12039,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               }}
                               className={`flex-1 font-black text-xs py-2 rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                                 isFull
-                                  ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                                  ? 'bg-subtle text-muted cursor-not-allowed'
                                   : 'bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md shadow-amber-500/20'
                               }`}
                             >
@@ -12056,8 +12056,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* SUBTAB 2: PASE DE LISTA EN VIVO */}
             {workshopsSubTab === 'attendance' && (
-              <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-6">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+              <div className="bg-surface border border-subtle rounded-3xl p-6 shadow-xl space-y-6">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-subtle pb-4">
                   <div className="space-y-1">
                     <div className="text-[10px] font-mono text-amber-400 uppercase font-bold">
                       SESIÓN VESPERTINA EN CURSO
@@ -12094,21 +12094,21 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   return (
                     <div className="space-y-4">
-                      <div className="flex items-center justify-between bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs">
+                      <div className="badge badge-sky">
                         <div>
-                          <strong className="text-white text-sm block">{workshop?.name}</strong>
-                          <div className="text-slate-400 font-mono">
+                          <strong className="text-sm block">{workshop?.name}</strong>
+                          <div className="text-muted font-mono">
                             {workshop?.scheduleDays.join(', ')} • {workshop?.classroom} • {workshop?.instructorName}
                           </div>
                         </div>
                         <div className="text-right">
                           <div className="text-amber-400 font-mono font-bold block">Fecha: {today}</div>
-                          <div className="text-slate-400">{enrolledInThis.length} Alumnos en Lista</div>
+                          <div className="text-muted">{enrolledInThis.length} Alumnos en Lista</div>
                         </div>
                       </div>
 
                       <div className="overflow-x-auto">
-                        <table className="w-full text-left text-xs text-slate-300">
+                        <table className="w-full text-left text-xs text-muted">
                           <thead className="table-header-row">
                             <tr>
                               <th className="py-3 px-4">Alumno</th>
@@ -12118,7 +12118,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               <th className="py-3 px-4 text-right">Marcar Asistencia</th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-slate-800">
+                          <tbody className="table-body">
                             {enrolledInThis.map((enr) => {
                               const currentLog = workshopAttendanceLogs.find(
                                 (l) =>
@@ -12129,28 +12129,28 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               const status = currentLog?.status || 'PRESENTE';
 
                               return (
-                                <tr key={enr.id} className="hover:bg-slate-800/40 transition-colors">
-                                  <td className="py-3 px-4 font-bold text-white">{enr.studentName}</td>
-                                  <td className="py-3 px-4 font-mono text-slate-400">{enr.studentCode}</td>
+                                <tr key={enr.id} className="hover:bg-subtle transition-colors">
+                                  <td className="py-3 px-4 font-bold">{enr.studentName}</td>
+                                  <td className="py-3 px-4 font-mono text-muted">{enr.studentCode}</td>
                                   <td className="py-3 px-4">{enr.groupName}</td>
                                   <td className="py-3 px-4">
                                     {status === 'PRESENTE' && (
-                                      <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                      <div className="badge badge-emerald">
                                         🟢 Presente
                                       </div>
                                     )}
                                     {status === 'RETARDO' && (
-                                      <div className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                      <div className="badge badge-amber">
                                         🟡 Retardo
                                       </div>
                                     )}
                                     {status === 'FALTA' && (
-                                      <div className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                      <div className="badge badge-rose">
                                         🔴 Falta
                                       </div>
                                     )}
                                     {status === 'JUSTIFICADA' && (
-                                      <div className="bg-sky-500/10 text-sky-300 border border-sky-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                      <div className="badge badge-sky">
                                         🔵 Justificada
                                       </div>
                                     )}
@@ -12169,7 +12169,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                         className={`px-2 py-1 rounded-lg text-[10px] font-bold cursor-pointer transition-all ${
                                           status === 'PRESENTE'
                                             ? 'bg-emerald-500 text-slate-950'
-                                            : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                                            : 'bg-subtle text-muted hover:bg-slate-100'
                                         }`}
                                       >
                                         Presente
@@ -12186,7 +12186,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                         className={`px-2 py-1 rounded-lg text-[10px] font-bold cursor-pointer transition-all ${
                                           status === 'RETARDO'
                                             ? 'bg-amber-500 text-slate-950'
-                                            : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                                            : 'bg-subtle text-muted hover:bg-slate-100'
                                         }`}
                                       >
                                         Retardo
@@ -12203,7 +12203,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                         className={`px-2 py-1 rounded-lg text-[10px] font-bold cursor-pointer transition-all ${
                                           status === 'FALTA'
                                             ? 'bg-rose-500 text-white'
-                                            : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                                            : 'bg-subtle text-muted hover:bg-slate-100'
                                         }`}
                                       >
                                         Falta
@@ -12225,15 +12225,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* SUBTAB 3: PADRÓN DE ALUMNOS INSCRITOS */}
             {workshopsSubTab === 'enrollments' && (
               <div className="dashboard-table-card">
-                <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-                  <div className="text-xs font-bold text-white">
+                <div className="p-4 border-b border-subtle flex items-center justify-between">
+                  <div className="text-xs font-bold">
                     Padrón General de Inscripciones Extracurriculares ({workshopEnrollments.length})
                   </div>
-                  <div className="text-xs text-slate-400 font-mono">Ciclo Escolar 2026-2027</div>
+                  <div className="text-xs text-muted font-mono">Ciclo Escolar 2026-2027</div>
                 </div>
 
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs text-slate-300">
+                  <table className="w-full text-left text-xs text-muted">
                     <thead className="table-header-row">
                       <tr>
                         <th className="py-3 px-4">Alumno</th>
@@ -12245,22 +12245,22 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <th className="py-3 px-4 text-right">Estatus</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800">
+                    <tbody className="table-body">
                       {workshopEnrollments.map((enr) => (
-                        <tr key={enr.id} className="hover:bg-slate-800/40 transition-colors">
+                        <tr key={enr.id} className="hover:bg-subtle transition-colors">
                           <td className="py-3 px-4">
-                            <strong className="text-white block">{enr.studentName}</strong>
-                            <div className="text-[10px] text-slate-400">{enr.groupName}</div>
+                            <strong className="block">{enr.studentName}</strong>
+                            <div className="text-[10px] text-muted">{enr.groupName}</div>
                           </td>
-                          <td className="py-3 px-4 font-mono text-slate-400">{enr.studentCode}</td>
+                          <td className="py-3 px-4 font-mono text-muted">{enr.studentCode}</td>
                           <td className="py-3 px-4 font-bold text-amber-300">{enr.workshopName}</td>
-                          <td className="py-3 px-4 font-mono text-[11px] text-slate-400">{enr.workshopCode}</td>
-                          <td className="py-3 px-4 font-mono text-slate-400">{enr.enrollmentDate}</td>
+                          <td className="py-3 px-4 font-mono text-[11px] text-muted">{enr.workshopCode}</td>
+                          <td className="py-3 px-4 font-mono text-muted">{enr.enrollmentDate}</td>
                           <td className="py-3 px-4 font-mono font-bold text-emerald-400">
                             ${enr.monthlyFeeMXN}.00 MXN
                           </td>
                           <td className="py-3 px-4 text-right">
-                            <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                            <div className="badge badge-emerald">
                               ✓ Activo
                             </div>
                           </td>
@@ -12281,16 +12281,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="font-mono text-xs text-teal-400 font-bold bg-teal-500/10 px-2.5 py-0.5 rounded-lg border border-teal-500/20">
+                  <div className="badge badge-sky font-mono">
                     CONTROL PATRIMONIAL, ALMACÉN & DOTACIONES SEP
                   </div>
-                  <div className="text-xs text-slate-400 font-bold">• Libros CONALITEG, Uniformes y Activos</div>
+                  <div className="text-xs text-muted font-bold">• Libros CONALITEG, Uniformes y Activos</div>
                 </div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <Box className="w-6 h-6 text-teal-400" />
                   Almacén Escolar, Dotaciones CONALITEG & Control de Activos
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="dashboard-section-desc">
                   Recepción de Libros de Texto Gratuitos (CONALITEG/SEP), bitácora de acuses firmados por tutores, inventario de uniformes escolares y padrón patrimonial.
                 </p>
               </div>
@@ -12298,35 +12298,35 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   onClick={() => setShowNewConalitegPackageModal(true)}
-                  className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-lg shadow-amber-500/20 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   <BookOpenCheck className="w-4 h-4" />
                   <div>+ Remesa CONALITEG</div>
                 </button>
                 <button
                   onClick={() => setShowNewConalitegReceiptModal(true)}
-                  className="bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold text-xs px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 border border-slate-700 transition-all cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   <FileBadge className="w-4 h-4" />
                   <div>+ Acuse de Entrega</div>
                 </button>
                 <button
                   onClick={() => setShowNewUniformItemModal(true)}
-                  className="bg-slate-800 hover:bg-slate-700 text-teal-300 font-bold text-xs px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 border border-slate-700 transition-all cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   <Shirt className="w-4 h-4" />
                   <div>+ Alta Prenda</div>
                 </button>
                 <button
                   onClick={() => setShowNewAssetModal(true)}
-                  className="bg-teal-600 hover:bg-teal-500 text-white font-black text-xs px-3.5 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-lg shadow-teal-600/20 transition-all cursor-pointer"
+                  className="btn btn-success btn-sm"
                 >
                   <Plus className="w-4 h-4" />
                   <div>+ Activo Fijo</div>
                 </button>
                 <button
                   onClick={() => setShowNewTicketModal(true)}
-                  className="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-3 py-2.5 rounded-2xl flex items-center gap-1.5 border border-slate-700 transition-all cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   <Wrench className="w-4 h-4 text-amber-400" />
                   <div>Avería</div>
@@ -12337,22 +12337,22 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* KPI Cards de Inventario y CONALITEG */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Libros CONALITEG SEP</div>
+                <div className="text-[11px] text-muted font-medium">Libros CONALITEG SEP</div>
                 <div className="text-2xl font-black text-amber-400 mt-1">
                   {conalitegPackages.reduce((acc, p) => acc + p.receivedPackagesCount, 0)} Paquetes
                 </div>
-                <div className="text-[10px] text-slate-400 font-bold">
+                <div className="text-[10px] text-muted font-bold">
                   {conalitegPackages.reduce((acc, p) => acc + p.deliveredPackagesCount, 0)} entregados •{' '}
                   <strong className="text-emerald-400">{conalitegReceipts.length} acuses firmados</strong>
                 </div>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Almacén de Uniformes</div>
+                <div className="text-[11px] text-muted font-medium">Almacén de Uniformes</div>
                 <div className="text-2xl font-black text-teal-400 mt-1">
                   {schoolUniforms.reduce((acc, u) => acc + u.stockQuantity, 0)} Prendas
                 </div>
-                <div className="text-[10px] text-slate-400 font-bold">
+                <div className="text-[10px] text-muted font-bold">
                   {schoolUniforms.filter((u) => u.stockQuantity <= u.minStockAlert).length > 0 ? (
                     <strong className="text-rose-400">
                       ⚠️ {schoolUniforms.filter((u) => u.stockQuantity <= u.minStockAlert).length} prendas con stock bajo
@@ -12364,34 +12364,34 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Valor Patrimonial Activos</div>
+                <div className="text-[11px] text-muted font-medium">Valor Patrimonial Activos</div>
                 <div className="text-2xl font-black text-emerald-400 mt-1">
                   ${schoolAssets.reduce((acc, a) => acc + a.purchaseValueMXN, 0).toLocaleString()} MXN
                 </div>
-                <div className="text-[10px] text-slate-400 font-bold">
+                <div className="text-[10px] text-muted font-bold">
                   {schoolAssets.length} activos inventariados
                 </div>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Tickets de Mantenimiento</div>
+                <div className="text-[11px] text-muted font-medium">Tickets de Mantenimiento</div>
                 <div className="text-2xl font-black text-amber-400 mt-1">
                   {assetMaintenanceTickets.filter((t) => t.status !== 'RESUELTO').length} Abiertos
                 </div>
-                <div className="text-[10px] text-slate-400 font-bold">
+                <div className="text-[10px] text-muted font-bold">
                   {assetMaintenanceTickets.filter((t) => t.status === 'RESUELTO').length} resueltos
                 </div>
               </div>
             </div>
 
             {/* Subtabs de Inventario y Almacén */}
-            <div className="flex border-b border-slate-800 gap-6 text-xs font-bold overflow-x-auto">
+            <div className="flex border-b border-subtle gap-6 text-xs font-bold overflow-x-auto">
               <button
                 onClick={() => setInventorySubTab('conaliteg')}
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 whitespace-nowrap ${
                   inventorySubTab === 'conaliteg'
                     ? 'border-amber-400 text-amber-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <BookOpenCheck className="w-4 h-4" />
@@ -12402,7 +12402,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 whitespace-nowrap ${
                   inventorySubTab === 'uniforms'
                     ? 'border-teal-400 text-teal-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <Shirt className="w-4 h-4" />
@@ -12413,7 +12413,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 whitespace-nowrap ${
                   inventorySubTab === 'assets'
                     ? 'border-teal-400 text-teal-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <Box className="w-4 h-4" />
@@ -12424,7 +12424,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 whitespace-nowrap ${
                   inventorySubTab === 'tickets'
                     ? 'border-teal-400 text-teal-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <Wrench className="w-4 h-4" />
@@ -12435,7 +12435,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 whitespace-nowrap ${
                   inventorySubTab === 'audit'
                     ? 'border-teal-400 text-teal-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <ShieldCheck className="w-4 h-4" />
@@ -12462,7 +12462,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       className={`text-xs font-bold px-3 py-1.5 rounded-xl transition-all whitespace-nowrap cursor-pointer ${
                         selectedAssetCategoryFilter === cat.id
                           ? 'bg-teal-600 text-white shadow-md shadow-teal-600/20'
-                          : 'bg-slate-900 border border-slate-800 text-slate-400 hover:text-white'
+                          : 'bg-surface border border-subtle text-muted hover:text-white'
                       }`}
                     >
                       {cat.label}
@@ -12471,15 +12471,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="dashboard-table-card">
-                  <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-                    <div className="text-xs font-bold text-white">
+                  <div className="p-4 border-b border-subtle flex items-center justify-between">
+                    <div className="text-xs font-bold">
                       Listado Oficial de Activos y Equipamiento Institucional ({schoolAssets.length})
                     </div>
-                    <div className="text-xs text-slate-400 font-mono">Control Patrimonial ASM</div>
+                    <div className="text-xs text-muted font-mono">Control Patrimonial ASM</div>
                   </div>
 
                   <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs text-slate-300">
+                    <table className="w-full text-left text-xs text-muted">
                       <thead className="table-header-row">
                         <tr>
                           <th className="py-3 px-4">Placa / Tag</th>
@@ -12491,7 +12491,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <th className="py-3 px-4 text-right">Acciones</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-800">
+                      <tbody className="table-body">
                         {schoolAssets
                           .filter((a) =>
                             selectedAssetCategoryFilter === 'ALL'
@@ -12499,49 +12499,49 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               : a.category === selectedAssetCategoryFilter
                           )
                           .map((asset) => (
-                            <tr key={asset.id} className="hover:bg-slate-800/40 transition-colors">
+                            <tr key={asset.id} className="hover:bg-subtle transition-colors">
                               <td className="py-3 px-4 font-mono font-bold text-teal-400">{asset.assetTag}</td>
                               <td className="py-3 px-4">
-                                <strong className="text-white block">{asset.name}</strong>
-                                <div className="text-[10px] text-slate-400 block font-mono">
+                                <strong className="block">{asset.name}</strong>
+                                <div className="text-[10px] text-muted block font-mono">
                                   {asset.serialNumber ? `Serie: ${asset.serialNumber}` : asset.brandModel || 'Genérico'}
                                 </div>
                               </td>
                               <td className="py-3 px-4">
-                                <div className="bg-slate-950 border border-slate-800 text-[10px] font-bold px-2 py-0.5 rounded-md text-slate-300">
+                                <div className="badge badge-sky">
                                   {asset.category.replace(/_/g, ' ')}
                                 </div>
                               </td>
                               <td className="py-3 px-4 text-[11px]">
-                                <div className="text-slate-200 block font-bold">{asset.assignedLocation}</div>
-                                <div className="text-[10px] text-slate-400 block">{asset.responsiblePerson}</div>
+                                <div className="text-main block font-bold">{asset.assignedLocation}</div>
+                                <div className="text-[10px] text-muted block">{asset.responsiblePerson}</div>
                               </td>
                               <td className="py-3 px-4 font-mono font-bold text-emerald-400">
                                 ${asset.purchaseValueMXN.toLocaleString()}.00 MXN
                               </td>
                               <td className="py-3 px-4">
                                 {asset.condition === 'EXCELENTE' && (
-                                  <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                  <div className="badge badge-emerald">
                                     🟢 Excelente
                                   </div>
                                 )}
                                 {asset.condition === 'BUENO' && (
-                                  <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                  <div className="badge badge-emerald">
                                     🟢 Bueno
                                   </div>
                                 )}
                                 {asset.condition === 'REGULAR_REQUIERE_SERVICIO' && (
-                                  <div className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse">
+                                  <div className="badge badge-amber">
                                     🟡 Requiere Servicio
                                   </div>
                                 )}
                                 {asset.condition === 'EN_REPARACION' && (
-                                  <div className="bg-orange-500/10 text-orange-300 border border-orange-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                  <div className="badge badge-sky">
                                     🟠 En Reparación
                                   </div>
                                 )}
                                 {asset.condition === 'DADO_DE_BAJA' && (
-                                  <div className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                  <div className="badge badge-rose">
                                     🔴 Baja
                                   </div>
                                 )}
@@ -12557,7 +12557,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                       });
                                       setShowNewTicketModal(true);
                                     }}
-                                    className="text-[10px] font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1 cursor-pointer bg-slate-800 px-2 py-1 rounded-lg hover:bg-slate-700 transition-colors"
+                                    className="btn btn-secondary btn-sm"
                                   >
                                     <Wrench className="w-3 h-3" />
                                     <div>Ticket</div>
@@ -12567,7 +12567,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                       setSelectedAssetForDetail(asset);
                                       setShowAssetDetailModal(true);
                                     }}
-                                    className="text-[10px] font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 cursor-pointer bg-slate-800 px-2 py-1 rounded-lg hover:bg-slate-700 transition-colors"
+                                    className="btn btn-secondary btn-sm"
                                   >
                                     <FileText className="w-3 h-3" />
                                     <div>Ficha</div>
@@ -12587,15 +12587,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {inventorySubTab === 'tickets' && (
               <div className="space-y-4">
                 <div className="dashboard-table-card">
-                  <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-                    <div className="text-xs font-bold text-white">
+                  <div className="p-4 border-b border-subtle flex items-center justify-between">
+                    <div className="text-xs font-bold">
                       Bitácora de Tickets de Mantenimiento Preventivo y Correctivo ({assetMaintenanceTickets.length})
                     </div>
-                    <div className="text-xs text-slate-400 font-mono">Soporte Escolar</div>
+                    <div className="text-xs text-muted font-mono">Soporte Escolar</div>
                   </div>
 
                   <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs text-slate-300">
+                    <table className="w-full text-left text-xs text-muted">
                       <thead className="table-header-row">
                         <tr>
                           <th className="py-3 px-4">Ticket</th>
@@ -12607,65 +12607,65 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <th className="py-3 px-4 text-right">Acciones</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-800">
+                      <tbody className="table-body">
                         {assetMaintenanceTickets.map((ticket) => (
-                          <tr key={ticket.id} className="hover:bg-slate-800/40 transition-colors">
+                          <tr key={ticket.id} className="hover:bg-subtle transition-colors">
                             <td className="py-3 px-4">
                               <div className="font-mono font-bold text-amber-400 block">{ticket.ticketNumber}</div>
-                              <div className="text-[10px] text-slate-500 font-mono">{ticket.reportedAt}</div>
+                              <div className="text-[10px] text-muted font-mono">{ticket.reportedAt}</div>
                             </td>
                             <td className="py-3 px-4">
-                              <strong className="text-white block">{ticket.assetName}</strong>
+                              <strong className="block">{ticket.assetName}</strong>
                               <div className="text-[10px] text-teal-400 font-mono">{ticket.assetTag} • {ticket.location}</div>
                             </td>
                             <td className="py-3 px-4 max-w-xs text-[11px]">
-                              <strong className="text-slate-200 block">{ticket.title}</strong>
-                              <p className="text-slate-400 line-clamp-2 mt-0.5">{ticket.description}</p>
+                              <strong className="text-main block">{ticket.title}</strong>
+                              <p className="text-muted line-clamp-2 mt-0.5">{ticket.description}</p>
                               {ticket.resolutionNotes && (
-                                <p className="text-emerald-400 text-[10px] mt-1 bg-emerald-950/30 p-1.5 rounded border border-emerald-500/20">
+                                <p className="badge badge-emerald">
                                   ✓ Resolución: {ticket.resolutionNotes}
                                 </p>
                               )}
                             </td>
                             <td className="py-3 px-4">
                               {ticket.priority === 'URGENTE' && (
-                                <div className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse">
+                                <div className="badge badge-rose">
                                   🔴 Urgente
                                 </div>
                               )}
                               {ticket.priority === 'ALTA' && (
-                                <div className="bg-orange-500/10 text-orange-300 border border-orange-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                <div className="badge badge-sky">
                                   🟠 Alta
                                 </div>
                               )}
                               {ticket.priority === 'MEDIA' && (
-                                <div className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                <div className="badge badge-amber">
                                   🟡 Media
                                 </div>
                               )}
                               {ticket.priority === 'BAJA' && (
-                                <div className="bg-slate-800 text-slate-300 border border-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                <div className="bg-subtle text-muted border border-subtle text-[10px] font-bold px-2 py-0.5 rounded-full">
                                   ⚪ Baja
                                 </div>
                               )}
                             </td>
                             <td className="py-3 px-4 text-[11px]">
-                              <strong className="text-slate-200 block">{ticket.assignedTo || 'Sin asignar'}</strong>
-                              <div className="text-[10px] text-slate-500">Por: {ticket.reportedBy}</div>
+                              <strong className="text-main block">{ticket.assignedTo || 'Sin asignar'}</strong>
+                              <div className="text-[10px] text-muted">Por: {ticket.reportedBy}</div>
                             </td>
                             <td className="py-3 px-4">
                               {ticket.status === 'RESUELTO' && (
-                                <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                <div className="badge badge-emerald">
                                   ✓ Resuelto
                                 </div>
                               )}
                               {ticket.status === 'EN_REPARACION' && (
-                                <div className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse">
+                                <div className="badge badge-amber">
                                   En Reparación
                                 </div>
                               )}
                               {ticket.status === 'ABIERTO_REPORTADO' && (
-                                <div className="bg-sky-500/10 text-sky-300 border border-sky-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                                <div className="badge badge-sky">
                                   Abierto
                                 </div>
                               )}
@@ -12674,7 +12674,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               {ticket.status !== 'RESUELTO' && (
                                 <button
                                   onClick={() => handleResolveMaintenanceTicket(ticket.id)}
-                                  className="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-[10px] px-3 py-1.5 rounded-xl transition-all cursor-pointer shadow-md shadow-emerald-600/20"
+                                  className="btn btn-success btn-sm"
                                 >
                                   Marcar Resuelto
                                 </button>
@@ -12693,7 +12693,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {inventorySubTab === 'audit' && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="dashboard-card space-y-4">
-                  <h3 className="text-sm font-black text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                  <h3 className="text-sm font-black flex items-center gap-2 border-b border-subtle pb-3">
                     <ShieldCheck className="w-5 h-5 text-teal-400" />
                     Valor Patrimonial por Categoría de Activos
                   </h3>
@@ -12713,11 +12713,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       return (
                         <div
                           key={item.cat}
-                          className="flex items-center justify-between p-3 bg-slate-950 rounded-2xl border border-slate-800"
+                          className="badge badge-sky"
                         >
                           <div>
-                            <strong className="text-white block">{item.name}</strong>
-                            <div className="text-[10px] text-slate-500">
+                            <strong className="block">{item.name}</strong>
+                            <div className="text-[10px] text-muted">
                               {schoolAssets.filter((a) => a.category === item.cat).length} piezas inventariadas
                             </div>
                           </div>
@@ -12731,7 +12731,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="dashboard-card space-y-4">
-                  <h3 className="text-sm font-black text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                  <h3 className="text-sm font-black flex items-center gap-2 border-b border-subtle pb-3">
                     <Calendar className="w-5 h-5 text-sky-400" />
                     Vigencia de Pólizas y Garantías Oficiales
                   </h3>
@@ -12742,16 +12742,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       .map((asset) => (
                         <div
                           key={asset.id}
-                          className="p-3 bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-between gap-3"
+                          className="badge badge-sky"
                         >
                           <div>
-                            <strong className="text-white block">{asset.name}</strong>
+                            <strong className="block">{asset.name}</strong>
                             <div className="text-[10px] text-teal-400 font-mono">
                               {asset.assetTag} • {asset.brandModel || 'Equipo'}
                             </div>
                           </div>
                           <div className="text-right">
-                            <div className="text-[10px] text-slate-400 block font-bold">Vence Garantía:</div>
+                            <div className="text-[10px] text-muted block font-bold">Vence Garantía:</div>
                             <div className="font-mono text-sky-300 font-bold">{asset.warrantyExpiry}</div>
                           </div>
                         </div>
@@ -12767,20 +12767,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 {/* Banner Oficial SEP CONALITEG */}
                 <div className="bg-gradient-to-r from-amber-950/40 via-slate-900 to-slate-900 border border-amber-500/20 rounded-3xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                   <div className="flex items-center gap-3.5">
-                    <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
+                    <div className="badge badge-amber">
                       <BookOpenCheck className="w-6 h-6 text-amber-400" />
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <div className="text-[10px] font-mono uppercase font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                        <div className="badge badge-amber font-mono">
                           COMISIÓN NACIONAL DE LIBROS DE TEXTO GRATUITOS (CONALITEG)
                         </div>
-                        <div className="text-xs text-slate-400 font-bold">• Ciclo Escolar 2026-2027</div>
+                        <div className="text-xs text-muted font-bold">• Ciclo Escolar 2026-2027</div>
                       </div>
-                      <h3 className="text-base font-black text-white mt-1">
+                      <h3 className="text-base font-black mt-1">
                         Control de Paquetes NEM por Grado y Bitácora de Acuses con Firma de Tutores
                       </h3>
-                      <p className="text-xs text-slate-400 mt-0.5">
+                      <p className="text-xs text-muted mt-0.5">
                         Conforme al Art. 3º Constitucional y lineamientos SEP, cada alumno matriculado recibe sin costo su paquete oficial de libros del Plan de Estudio Nueva Escuela Mexicana.
                       </p>
                     </div>
@@ -12788,14 +12788,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="flex items-center gap-2 shrink-0">
                     <button
                       onClick={() => setShowNewConalitegReceiptModal(true)}
-                      className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-4 py-2.5 rounded-xl flex items-center gap-1.5 shadow-md shadow-amber-500/20 transition-all cursor-pointer"
+                      className="btn btn-warning btn-sm"
                     >
                       <FileBadge className="w-4 h-4" />
                       <div>Registrar Acuse Firmado</div>
                     </button>
                     <button
                       onClick={() => setShowNewConalitegPackageModal(true)}
-                      className="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-4 py-2.5 rounded-xl flex items-center gap-1.5 border border-slate-700 transition-all cursor-pointer"
+                      className="btn btn-secondary btn-sm"
                     >
                       <Plus className="w-4 h-4" />
                       <div>Ingresar Remesa SEP</div>
@@ -12806,11 +12806,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 {/* Grid de Paquetes por Grado Escolar */}
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <h4 className="text-xs font-mono uppercase tracking-wider font-bold text-slate-400 flex items-center gap-2">
+                    <h4 className="text-xs font-mono uppercase tracking-wider font-bold text-muted flex items-center gap-2">
                       <BookOpen className="w-4 h-4 text-amber-400" />
                       Remesas Recibidas y Libros Incluidos por Grado ({conalitegPackages.length})
                     </h4>
-                    <div className="text-xs text-slate-400 font-mono">
+                    <div className="text-xs text-muted font-mono">
                       Total Recibidos: {conalitegPackages.reduce((acc, p) => acc + p.receivedPackagesCount, 0)} paquetes
                     </div>
                   </div>
@@ -12824,16 +12824,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       return (
                         <div
                           key={pkg.id}
-                          className="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-4 hover:border-slate-700 transition-all flex flex-col justify-between"
+                          className="bg-surface border border-subtle rounded-3xl p-5 shadow-xl space-y-4 hover:border-subtle transition-all flex flex-col justify-between"
                         >
                           <div className="space-y-3">
                             <div className="flex items-start justify-between gap-2">
                               <div>
-                                <div className="font-mono text-[10px] text-amber-400 uppercase font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20 block w-max">
+                                <div className="badge badge-amber font-mono">
                                   {pkg.remesaFolio}
                                 </div>
-                                <h4 className="font-black text-white text-base leading-tight mt-1.5">{pkg.grade}</h4>
-                                <div className="text-[11px] text-slate-400 block font-medium">{pkg.level}</div>
+                                <h4 className="font-black text-base leading-tight mt-1.5">{pkg.grade}</h4>
+                                <div className="text-[11px] text-muted block font-medium">{pkg.level}</div>
                               </div>
                               <div
                                 className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
@@ -12853,17 +12853,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             </div>
 
                             {/* Cifras de Entrega */}
-                            <div className="grid grid-cols-3 gap-2 bg-slate-950 p-2.5 rounded-2xl border border-slate-800 text-center">
+                            <div className="badge badge-sky">
                               <div>
-                                <div className="text-[9px] text-slate-500 uppercase font-mono block">Recibidos</div>
-                                <strong className="text-white text-xs font-mono">{pkg.receivedPackagesCount}</strong>
+                                <div className="text-[9px] text-muted uppercase font-mono block">Recibidos</div>
+                                <strong className="text-xs font-mono">{pkg.receivedPackagesCount}</strong>
                               </div>
                               <div>
-                                <div className="text-[9px] text-slate-500 uppercase font-mono block">Entregados</div>
+                                <div className="text-[9px] text-muted uppercase font-mono block">Entregados</div>
                                 <strong className="text-emerald-400 text-xs font-mono">{pkg.deliveredPackagesCount}</strong>
                               </div>
                               <div>
-                                <div className="text-[9px] text-slate-500 uppercase font-mono block">Reserva</div>
+                                <div className="text-[9px] text-muted uppercase font-mono block">Reserva</div>
                                 <strong className="text-amber-400 text-xs font-mono">{pkg.warehouseReserveCount}</strong>
                               </div>
                             </div>
@@ -12871,12 +12871,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             {/* Barra de Progreso de Entregas */}
                             <div className="space-y-1">
                               <div className="flex justify-between text-[11px]">
-                                <div className="text-slate-400">Progreso de Entrega a Tutores:</div>
-                                <div className="text-white font-mono font-bold">
+                                <div className="text-muted">Progreso de Entrega a Tutores:</div>
+                                <div className="font-mono font-bold">
                                   {pkg.deliveredPackagesCount}/{pkg.enrolledStudentsCount} ({percentDelivered}%)
                                 </div>
                               </div>
-                              <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                              <div className="w-full h-2 bg-subtle rounded-full overflow-hidden">
                                 <div
                                   className={`h-full transition-all ${
                                     percentDelivered >= 100 ? 'bg-emerald-500' : 'bg-amber-500'
@@ -12888,14 +12888,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                             {/* Títulos Oficiales Incluidos */}
                             <div className="space-y-1.5 pt-1">
-                              <div className="text-[10px] font-mono text-slate-400 uppercase font-bold block">
+                              <div className="text-[10px] font-mono text-muted uppercase font-bold block">
                                 Libros Oficiales Incluidos ({pkg.includedBooks.length}):
                               </div>
                               <div className="flex flex-wrap gap-1">
                                 {pkg.includedBooks.map((bk, i) => (
                                   <div
                                     key={i}
-                                    className="bg-slate-950 border border-slate-800 text-slate-300 text-[10px] px-2 py-0.5 rounded-md flex items-center gap-1"
+                                    className="badge badge-sky"
                                   >
                                     <BookOpenCheck className="w-3 h-3 text-amber-400/80" />
                                     <div>{bk.title}</div>
@@ -12904,7 +12904,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               </div>
                             </div>
 
-                            <div className="text-[10px] text-slate-500 flex items-center justify-between pt-1 border-t border-slate-800/80">
+                            <div className="text-[10px] text-muted flex items-center justify-between pt-1 border-t border-subtle">
                               <div>Recibido: {pkg.receptionDate}</div>
                               <div className="truncate max-w-[170px]" title={pkg.zoneSupervisorOffice}>
                                 {pkg.zoneSupervisorOffice}
@@ -12912,7 +12912,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             </div>
                           </div>
 
-                          <div className="pt-3 border-t border-slate-800 mt-2">
+                          <div className="pt-3 border-t border-subtle mt-2">
                             <button
                               onClick={() => {
                                 setNewConalitegReceiptForm({
@@ -12923,7 +12923,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 });
                                 setShowNewConalitegReceiptModal(true);
                               }}
-                              className="w-full bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold text-xs py-2 rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                              className="btn btn-secondary btn-sm w-full"
                             >
                               <FileBadge className="w-3.5 h-3.5" />
                               <div>+ Generar Acuse para {pkg.grade}</div>
@@ -12937,23 +12937,23 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 {/* Bitácora de Acuses de Entrega a Tutores */}
                 <div className="dashboard-table-card">
-                  <div className="p-4 border-b border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                  <div className="p-4 border-b border-subtle flex flex-col md:flex-row md:items-center justify-between gap-3">
                     <div>
-                      <h4 className="text-sm font-black text-white flex items-center gap-2">
+                      <h4 className="text-sm font-black flex items-center gap-2">
                         <FileCheck className="w-4 h-4 text-emerald-400" />
                         Bitácora Oficial de Acuses de Entrega a Padres de Familia ({conalitegReceipts.length})
                       </h4>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-muted">
                         Registro foliado con firma de conformidad para auditoría de Supervisión Escolar de Zona SEP.
                       </p>
                     </div>
-                    <div className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 font-bold w-max">
+                    <div className="badge badge-emerald font-mono">
                       ✓ 100% Acuses con Resguardo Físico
                     </div>
                   </div>
 
                   <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs text-slate-300">
+                    <table className="w-full text-left text-xs text-muted">
                       <thead className="table-header-row">
                         <tr>
                           <th className="py-3 px-4">Folio Acuse</th>
@@ -12965,32 +12965,32 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <th className="py-3 px-4 text-right">Estatus</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-800">
+                      <tbody className="table-body">
                         {conalitegReceipts.map((rec) => (
-                          <tr key={rec.id} className="hover:bg-slate-800/40 transition-colors">
+                          <tr key={rec.id} className="hover:bg-subtle transition-colors">
                             <td className="py-3 px-4 font-mono font-bold text-amber-400">{rec.folio}</td>
                             <td className="py-3 px-4">
-                              <strong className="text-white block">{rec.studentName}</strong>
-                              <div className="text-[10px] text-slate-400 font-mono">{rec.studentCode}</div>
+                              <strong className="block">{rec.studentName}</strong>
+                              <div className="text-[10px] text-muted font-mono">{rec.studentCode}</div>
                             </td>
                             <td className="py-3 px-4">{rec.grade}</td>
                             <td className="py-3 px-4">
-                              <div className="text-white font-medium block">{rec.parentName}</div>
+                              <div className="font-medium block">{rec.parentName}</div>
                               {rec.parentPhone && (
-                                <div className="text-[10px] text-slate-400 font-mono">Tel: {rec.parentPhone}</div>
+                                <div className="text-[10px] text-muted font-mono">Tel: {rec.parentPhone}</div>
                               )}
                             </td>
                             <td className="py-3 px-4 max-w-[240px]">
-                              <div className="text-[11px] text-slate-300 line-clamp-1" title={rec.titlesDelivered.join(', ')}>
+                              <div className="text-[11px] text-muted line-clamp-1" title={rec.titlesDelivered.join(', ')}>
                                 {rec.titlesDelivered.length} libros: {rec.titlesDelivered.slice(0, 2).join(', ')}...
                               </div>
                             </td>
                             <td className="py-3 px-4">
-                              <div className="font-mono text-slate-300 block">{rec.deliveryDate}</div>
-                              <div className="text-[10px] text-slate-500">{rec.deliveredByStaff}</div>
+                              <div className="font-mono text-muted block">{rec.deliveryDate}</div>
+                              <div className="text-[10px] text-muted">{rec.deliveredByStaff}</div>
                             </td>
                             <td className="py-3 px-4 text-right">
-                              <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1">
+                              <div className="badge badge-emerald">
                                 <FileCheck className="w-3 h-3" />
                                 <div>Firmado</div>
                               </div>
@@ -13008,29 +13008,29 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {inventorySubTab === 'uniforms' && (
               <div className="space-y-6">
                 {/* Banner Almacén Uniformes */}
-                <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
+                <div className="bg-surface border border-subtle rounded-3xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
                   <div className="flex items-center gap-3.5">
-                    <div className="w-12 h-12 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center shrink-0">
+                    <div className="badge badge-sky">
                       <Shirt className="w-6 h-6 text-teal-400" />
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <div className="text-[10px] font-mono uppercase font-bold text-teal-400 bg-teal-500/10 px-2 py-0.5 rounded border border-teal-500/20">
+                        <div className="badge badge-sky font-mono">
                           ALMACÉN INSTITUCIONAL DE INDUMENTARIA & MATERIALES
                         </div>
-                        <div className="text-xs text-slate-400 font-bold">• Venta y Dotación Escolar</div>
+                        <div className="text-xs text-muted font-bold">• Venta y Dotación Escolar</div>
                       </div>
-                      <h3 className="text-base font-black text-white mt-1">
+                      <h3 className="text-base font-black mt-1">
                         Control de Existencias por Talla, Alertas de Stock Mínimo y Despacho a Familias
                       </h3>
-                      <p className="text-xs text-slate-400 mt-0.5">
+                      <p className="text-xs text-muted mt-0.5">
                         Resguardo y suministro de playeras polo oficiales, pantalones de gala, pants térmicos deportivos, batas STEAM y mochilas escolares.
                       </p>
                     </div>
                   </div>
                   <button
                     onClick={() => setShowNewUniformItemModal(true)}
-                    className="bg-teal-600 hover:bg-teal-500 text-white font-black text-xs px-4 py-2.5 rounded-xl flex items-center gap-1.5 shadow-lg shadow-teal-600/20 transition-all cursor-pointer shrink-0"
+                    className="btn btn-success btn-sm"
                   >
                     <Plus className="w-4 h-4" />
                     <div>Dar de Alta Prenda / Artículo</div>
@@ -13039,18 +13039,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 {/* Catálogo de Uniformes */}
                 <div className="dashboard-table-card">
-                  <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-                    <h4 className="text-sm font-black text-white flex items-center gap-2">
+                  <div className="p-4 border-b border-subtle flex items-center justify-between">
+                    <h4 className="text-sm font-black flex items-center gap-2">
                       <Tag className="w-4 h-4 text-teal-400" />
                       Inventario en Bodega Escolar ({schoolUniforms.length} Artículos)
                     </h4>
-                    <div className="text-xs font-mono text-slate-400">
+                    <div className="text-xs font-mono text-muted">
                       Total Piezas Físicas: {schoolUniforms.reduce((acc, u) => acc + u.stockQuantity, 0)} prendas
                     </div>
                   </div>
 
                   <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs text-slate-300">
+                    <table className="w-full text-left text-xs text-muted">
                       <thead className="table-header-row">
                         <tr>
                           <th className="py-3 px-4">SKU / Clave</th>
@@ -13063,24 +13063,24 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <th className="py-3 px-4 text-right">Acciones</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-800">
+                      <tbody className="table-body">
                         {schoolUniforms.map((item) => {
                           const isLowStock = item.stockQuantity <= item.minStockAlert;
                           return (
-                            <tr key={item.id} className="hover:bg-slate-800/40 transition-colors">
+                            <tr key={item.id} className="hover:bg-subtle transition-colors">
                               <td className="py-3 px-4 font-mono font-bold text-teal-400">{item.sku}</td>
                               <td className="py-3 px-4">
-                                <strong className="text-white block">{item.name}</strong>
-                                <div className="text-[10px] text-slate-400">Prov: {item.supplierName}</div>
+                                <strong className="block">{item.name}</strong>
+                                <div className="text-[10px] text-muted">Prov: {item.supplierName}</div>
                               </td>
                               <td className="py-3 px-4">
-                                <div className="text-[10px] font-mono text-slate-300 block font-bold">
+                                <div className="text-[10px] font-mono text-muted block font-bold">
                                   {item.category.replace(/_/g, ' ')}
                                 </div>
-                                <div className="text-[10px] text-slate-500">{item.level}</div>
+                                <div className="text-[10px] text-muted">{item.level}</div>
                               </td>
                               <td className="py-3 px-4">
-                                <div className="bg-slate-950 border border-slate-800 text-slate-200 px-2.5 py-1 rounded-lg font-mono font-bold text-[11px]">
+                                <div className="badge badge-sky font-mono">
                                   {item.size.replace('TALLA_', 'T-')}
                                 </div>
                               </td>
@@ -13094,16 +13094,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                     {item.stockQuantity} pzs
                                   </div>
                                   {isLowStock && (
-                                    <div className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[9px] font-bold px-1.5 py-0.5 rounded">
+                                    <div className="badge badge-rose">
                                       Bajo Mínimo ({item.minStockAlert})
                                     </div>
                                   )}
                                 </div>
                               </td>
-                              <td className="py-3 px-4 font-mono font-bold text-slate-200">
+                              <td className="py-3 px-4 font-mono font-bold text-main">
                                 ${item.salePriceMXN}.00 MXN
                               </td>
-                              <td className="py-3 px-4 font-mono text-slate-400 text-[11px]">
+                              <td className="py-3 px-4 font-mono text-muted text-[11px]">
                                 {item.warehouseShelf}
                               </td>
                               <td className="py-3 px-4 text-right">
@@ -13112,7 +13112,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                     setSelectedUniformForStock(item);
                                     setShowAdjustUniformStockModal(true);
                                   }}
-                                  className="bg-slate-800 hover:bg-slate-700 text-teal-300 font-bold text-[11px] px-3 py-1.5 rounded-xl border border-slate-700 transition-all cursor-pointer inline-flex items-center gap-1"
+                                  className="btn btn-secondary btn-sm"
                                 >
                                   <Box className="w-3.5 h-3.5" />
                                   <div>Ajustar Stock</div>
@@ -13137,16 +13137,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="font-mono text-xs text-rose-400 font-bold bg-rose-500/10 px-2.5 py-0.5 rounded-lg border border-rose-500/20">
+                  <div className="badge badge-rose font-mono">
                     CALIDAD EDUCATIVA Y EVALUACIÓN INSTITUCIONAL
                   </div>
-                  <div className="text-xs text-slate-400 font-bold">• Clima Escolar y Satisfacción Familiar</div>
+                  <div className="text-xs text-muted font-bold">• Clima Escolar y Satisfacción Familiar</div>
                 </div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <MessageSquareQuote className="w-6 h-6 text-rose-400" />
                   Encuestas Institucionales y Clima Escolar
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="dashboard-section-desc">
                   Cuestionarios de calidad docente, instalaciones, cafetería y transporte con cálculo de NPS institucional y buzón confidencial para Dirección.
                 </p>
               </div>
@@ -13154,14 +13154,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   onClick={() => setShowNewSuggestionModal(true)}
-                  className="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 border border-slate-700 transition-all cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   <Send className="w-4 h-4 text-amber-400" />
                   <div>Buzón de Sugerencias</div>
                 </button>
                 <button
                   onClick={() => setShowNewSurveyModal(true)}
-                  className="bg-rose-600 hover:bg-rose-500 text-white font-black text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 shadow-lg shadow-rose-600/20 transition-all cursor-pointer"
+                  className="btn btn-danger btn-sm"
                 >
                   <Plus className="w-4 h-4" />
                   <div>Nueva Encuesta</div>
@@ -13172,29 +13172,29 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* KPI Cards de Clima Escolar */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">NPS Institucional Global</div>
+                <div className="text-[11px] text-muted font-medium">NPS Institucional Global</div>
                 <div className="text-2xl font-black text-emerald-400 mt-1">+82</div>
                 <div className="text-[10px] text-emerald-400 font-bold">Nivel de Excelencia y Lealtad</div>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Encuestas Activas</div>
-                <div className="text-2xl font-black text-white mt-1">
+                <div className="text-[11px] text-muted font-medium">Encuestas Activas</div>
+                <div className="text-2xl font-black mt-1">
                   {institutionalSurveys.filter((s) => s.status === 'ACTIVA').length}
                 </div>
                 <div className="text-[10px] text-rose-400 font-bold">En periodo de recepción</div>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Respuestas Acumuladas</div>
+                <div className="text-[11px] text-muted font-medium">Respuestas Acumuladas</div>
                 <div className="text-2xl font-black text-sky-400 mt-1">
                   {institutionalSurveys.reduce((acc, s) => acc + s.responsesCount, 0)}
                 </div>
-                <div className="text-[10px] text-slate-400 font-bold">Padres y docentes evaluados</div>
+                <div className="text-[10px] text-muted font-bold">Padres y docentes evaluados</div>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Sugerencias Atendidas</div>
+                <div className="text-[11px] text-muted font-medium">Sugerencias Atendidas</div>
                 <div className="text-2xl font-black text-amber-400 mt-1">
                   {confidentialSuggestions.filter((s) => s.status === 'ATENDIDO' || s.status === 'EN_ACCION').length} / {confidentialSuggestions.length}
                 </div>
@@ -13203,13 +13203,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             {/* Subtabs de Encuestas */}
-            <div className="flex border-b border-slate-800 gap-6 text-xs font-bold overflow-x-auto">
+            <div className="flex border-b border-subtle gap-6 text-xs font-bold overflow-x-auto">
               <button
                 onClick={() => setSurveysSubTab('catalog')}
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 whitespace-nowrap ${
                   surveysSubTab === 'catalog'
                     ? 'border-rose-400 text-rose-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <FileText className="w-4 h-4" />
@@ -13220,7 +13220,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 whitespace-nowrap ${
                   surveysSubTab === 'nps'
                     ? 'border-rose-400 text-rose-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <ThumbsUp className="w-4 h-4" />
@@ -13231,7 +13231,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 whitespace-nowrap ${
                   surveysSubTab === 'suggestions'
                     ? 'border-rose-400 text-rose-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <Send className="w-4 h-4" />
@@ -13245,63 +13245,63 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 {institutionalSurveys.map((survey) => (
                   <div
                     key={survey.id}
-                    className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4 hover:border-slate-700 transition-all flex flex-col justify-between"
+                    className="bg-surface border border-subtle rounded-3xl p-6 shadow-xl space-y-4 hover:border-subtle transition-all flex flex-col justify-between"
                   >
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <div className="font-mono text-xs font-bold text-rose-400 bg-rose-500/10 px-2.5 py-0.5 rounded-lg border border-rose-500/20">
+                        <div className="badge badge-rose font-mono">
                           {survey.code}
                         </div>
-                        <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                        <div className="badge badge-emerald">
                           ● {survey.status}
                         </div>
                       </div>
 
                       <div>
-                        <h3 className="text-base font-black text-white">{survey.title}</h3>
-                        <p className="text-xs text-slate-400 mt-1">{survey.description}</p>
+                        <h3 className="text-base font-black">{survey.title}</h3>
+                        <p className="dashboard-section-desc">{survey.description}</p>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-2 text-[11px] pt-1 border-t border-slate-800">
+                      <div className="grid grid-cols-2 gap-2 text-[11px] pt-1 border-t border-subtle">
                         <div>
-                          <div className="text-slate-500 block">Audiencia:</div>
-                          <strong className="text-slate-300">{survey.targetAudience.replace(/_/g, ' ')}</strong>
+                          <div className="text-muted block">Audiencia:</div>
+                          <strong className="text-muted">{survey.targetAudience.replace(/_/g, ' ')}</strong>
                         </div>
                         <div>
-                          <div className="text-slate-500 block">Vigencia:</div>
-                          <div className="text-slate-300 font-mono">{survey.startDate} al {survey.endDate}</div>
+                          <div className="text-muted block">Vigencia:</div>
+                          <div className="text-muted font-mono">{survey.startDate} al {survey.endDate}</div>
                         </div>
                       </div>
 
                       {/* Métricas de la Encuesta */}
-                      <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-between text-xs">
+                      <div className="badge badge-sky">
                         <div>
-                          <div className="text-slate-400 block text-[10px]">Respuestas:</div>
-                          <strong className="text-white font-mono text-sm">{survey.responsesCount}</strong>
+                          <div className="text-muted block text-[10px]">Respuestas:</div>
+                          <strong className="font-mono text-sm">{survey.responsesCount}</strong>
                         </div>
                         {survey.npsScore !== undefined && (
                           <div>
-                            <div className="text-slate-400 block text-[10px]">Score NPS:</div>
+                            <div className="text-muted block text-[10px]">Score NPS:</div>
                             <strong className="text-emerald-400 font-mono text-sm">+{survey.npsScore}</strong>
                           </div>
                         )}
                         {survey.averageRating && (
                           <div>
-                            <div className="text-slate-400 block text-[10px]">Satisfacción:</div>
+                            <div className="text-muted block text-[10px]">Satisfacción:</div>
                             <strong className="text-amber-400 font-mono text-sm">⭐ {survey.averageRating} / 5.0</strong>
                           </div>
                         )}
                       </div>
                     </div>
 
-                    <div className="pt-3 border-t border-slate-800 flex items-center justify-between gap-2">
-                      <div className="text-[11px] text-slate-500">{survey.questions.length} preguntas diseñadas</div>
+                    <div className="pt-3 border-t border-subtle flex items-center justify-between gap-2">
+                      <div className="text-[11px] text-muted">{survey.questions.length} preguntas diseñadas</div>
                       <button
                         onClick={() => {
                           setSelectedSurveyForRespond(survey);
                           setShowRespondSurveyModal(true);
                         }}
-                        className="bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs px-4 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-md shadow-rose-600/20"
+                        className="btn btn-danger btn-sm"
                       >
                         <ThumbsUp className="w-3.5 h-3.5" />
                         <div>Responder Encuesta</div>
@@ -13317,19 +13317,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Desglose NPS */}
                 <div className="dashboard-card space-y-4">
-                  <h3 className="text-sm font-black text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                  <h3 className="text-sm font-black flex items-center gap-2 border-b border-subtle pb-3">
                     <ThumbsUp className="w-5 h-5 text-rose-400" />
                     Termómetro Net Promoter Score (NPS) del Instituto
                   </h3>
 
-                  <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-around text-center">
+                  <div className="badge badge-sky">
                     <div>
                       <div className="text-3xl font-black text-emerald-400 block">+82</div>
-                      <div className="text-[11px] text-slate-400 font-bold uppercase">NPS Score General</div>
+                      <div className="text-[11px] text-muted font-bold uppercase">NPS Score General</div>
                     </div>
-                    <div className="h-12 w-px bg-slate-800" />
+                    <div className="h-12 w-px bg-subtle" />
                     <div>
-                      <div className="text-xl font-black text-white block">Excelente</div>
+                      <div className="text-xl font-black block">Excelente</div>
                       <div className="text-[11px] text-emerald-400 font-medium">Recomendación Activa</div>
                     </div>
                   </div>
@@ -13338,9 +13338,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <div className="space-y-1">
                       <div className="flex items-center justify-between text-[11px]">
                         <div className="text-emerald-400 font-bold">🟢 Promotores (Calificación 9 - 10):</div>
-                        <div className="font-mono text-white font-bold">86% (24 familias)</div>
+                        <div className="font-mono font-bold">86% (24 familias)</div>
                       </div>
-                      <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+                      <div className="h-2 w-full bg-subtle rounded-full overflow-hidden">
                         <div className="h-full bg-emerald-500 rounded-full" style={{ width: '86%' }} />
                       </div>
                     </div>
@@ -13348,9 +13348,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <div className="space-y-1">
                       <div className="flex items-center justify-between text-[11px]">
                         <div className="text-amber-400 font-bold">🟡 Pasivos o Neutros (Calificación 7 - 8):</div>
-                        <div className="font-mono text-white font-bold">10% (3 familias)</div>
+                        <div className="font-mono font-bold">10% (3 familias)</div>
                       </div>
-                      <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+                      <div className="h-2 w-full bg-subtle rounded-full overflow-hidden">
                         <div className="h-full bg-amber-500 rounded-full" style={{ width: '10%' }} />
                       </div>
                     </div>
@@ -13358,9 +13358,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <div className="space-y-1">
                       <div className="flex items-center justify-between text-[11px]">
                         <div className="text-rose-400 font-bold">🔴 Detractores (Calificación 0 - 6):</div>
-                        <div className="font-mono text-white font-bold">4% (1 familia)</div>
+                        <div className="font-mono font-bold">4% (1 familia)</div>
                       </div>
-                      <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+                      <div className="h-2 w-full bg-subtle rounded-full overflow-hidden">
                         <div className="h-full bg-rose-500 rounded-full" style={{ width: '4%' }} />
                       </div>
                     </div>
@@ -13369,7 +13369,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 {/* Dimensiones de Calidad */}
                 <div className="dashboard-card space-y-4">
-                  <h3 className="text-sm font-black text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                  <h3 className="text-sm font-black flex items-center gap-2 border-b border-subtle pb-3">
                     <Award className="w-5 h-5 text-amber-400" />
                     Evaluación por Áreas y Dimensiones Institucionales
                   </h3>
@@ -13383,12 +13383,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       { area: 'Talleres Extracurriculares y Deportes', score: 4.9, pct: 98 },
                       { area: 'Servicio de Cafetería y Nutrición', score: 4.4, pct: 88 },
                     ].map((dim) => (
-                      <div key={dim.area} className="p-2.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
+                      <div key={dim.area} className="badge badge-sky">
                         <div className="flex items-center justify-between text-[11px]">
-                          <div className="text-slate-300 font-medium">{dim.area}</div>
+                          <div className="text-muted font-medium">{dim.area}</div>
                           <div className="font-mono text-amber-400 font-bold">⭐ {dim.score} / 5.0</div>
                         </div>
-                        <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+                        <div className="h-1.5 w-full bg-subtle rounded-full overflow-hidden">
                           <div className="h-full bg-rose-500 rounded-full" style={{ width: `${dim.pct}%` }} />
                         </div>
                       </div>
@@ -13402,15 +13402,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {surveysSubTab === 'suggestions' && (
               <div className="space-y-4">
                 <div className="dashboard-table-card">
-                  <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-                    <div className="text-xs font-bold text-white">
+                  <div className="p-4 border-b border-subtle flex items-center justify-between">
+                    <div className="text-xs font-bold">
                       Buzón Directivo de Sugerencias y Mejora Continua ({confidentialSuggestions.length})
                     </div>
-                    <div className="text-xs text-slate-400 font-mono">Confidencialidad Garantizada</div>
+                    <div className="text-xs text-muted font-mono">Confidencialidad Garantizada</div>
                   </div>
 
                   <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs text-slate-300">
+                    <table className="w-full text-left text-xs text-muted">
                       <thead className="table-header-row">
                         <tr>
                           <th className="py-3 px-4">Folio</th>
@@ -13421,46 +13421,46 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <th className="py-3 px-4 text-right">Acciones Directivas</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-800">
+                      <tbody className="table-body">
                         {confidentialSuggestions.map((sug) => (
-                          <tr key={sug.id} className="hover:bg-slate-800/40 transition-colors">
+                          <tr key={sug.id} className="hover:bg-subtle transition-colors">
                             <td className="py-3 px-4 font-mono font-bold text-amber-400">
                               {sug.folio}
-                              <div className="text-[10px] text-slate-500 block font-mono">{sug.submittedAt}</div>
+                              <div className="text-[10px] text-muted block font-mono">{sug.submittedAt}</div>
                             </td>
                             <td className="py-3 px-4">
-                              <div className="bg-slate-950 border border-slate-800 text-[10px] font-bold px-2 py-0.5 rounded text-rose-300 block w-max">
+                              <div className="badge badge-rose">
                                 {sug.category}
                               </div>
-                              <strong className="text-white block mt-1">{sug.subject}</strong>
+                              <strong className="block mt-1">{sug.subject}</strong>
                             </td>
                             <td className="py-3 px-4 max-w-sm text-[11px]">
-                              <p className="text-slate-300">{sug.message}</p>
+                              <p className="text-muted">{sug.message}</p>
                               {sug.directorResolutionNotes && (
-                                <p className="text-emerald-400 text-[10px] mt-1.5 bg-emerald-950/30 p-2 rounded border border-emerald-500/20">
+                                <p className="badge badge-emerald">
                                   ✓ Resolución Directiva: {sug.directorResolutionNotes}
                                 </p>
                               )}
                             </td>
                             <td className="py-3 px-4 text-[11px]">
-                              <div className="text-slate-200 block font-bold">
+                              <div className="text-main block font-bold">
                                 {sug.senderName || (sug.senderRole === 'ANONIMO' ? '👤 Anónimo' : 'Padre de Familia')}
                               </div>
-                              <div className="text-[10px] text-slate-500">{sug.senderRole}</div>
+                              <div className="text-[10px] text-muted">{sug.senderRole}</div>
                             </td>
                             <td className="py-3 px-4">
                               {sug.status === 'ATENDIDO' && (
-                                <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                                <div className="badge badge-emerald">
                                   ✓ Atendido
                                 </div>
                               )}
                               {sug.status === 'EN_ACCION' && (
-                                <div className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full animate-pulse">
+                                <div className="badge badge-amber">
                                   En Acción
                                 </div>
                               )}
                               {sug.status === 'RECIBIDO' && (
-                                <div className="bg-sky-500/10 text-sky-300 border border-sky-500/30 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                                <div className="badge badge-sky">
                                   Recibido
                                 </div>
                               )}
@@ -13475,7 +13475,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                       'Turnado a la coordinación correspondiente para su resolución inmediata.'
                                     )
                                   }
-                                  className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-[10px] px-3 py-1 rounded-xl transition-all cursor-pointer"
+                                  className="btn btn-warning btn-sm"
                                 >
                                   Tomar Acción
                                 </button>
@@ -13489,7 +13489,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                       'Acción completada e incorporada a los procesos escolares.'
                                     )
                                   }
-                                  className="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-[10px] px-3 py-1 rounded-xl transition-all cursor-pointer shadow-md shadow-emerald-600/20"
+                                  className="btn btn-success btn-sm"
                                 >
                                   Marcar Atendido
                                 </button>
@@ -13513,16 +13513,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="font-mono text-xs text-amber-400 font-bold bg-amber-500/10 px-2.5 py-0.5 rounded-lg border border-amber-500/20">
+                  <div className="badge badge-amber font-mono">
                     CALENDARIO CÍVICO SEP, CTE Y GESTIÓN DE EVENTOS
                   </div>
-                  <div className="text-xs text-slate-400 font-bold">• Ciclo Escolar 2026-2027</div>
+                  <div className="text-xs text-muted font-bold">• Ciclo Escolar 2026-2027</div>
                 </div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <PartyPopper className="w-6 h-6 text-amber-400" />
                   Calendario Escolar Oficial, Sesiones CTE y Comisiones Docentes
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="dashboard-section-desc">
                   Control institucional de efemérides SEP, suspensiones cívicas, minutas colegiadas de Consejo Técnico Escolar y asignación de tareas operativas para festivales.
                 </p>
               </div>
@@ -13530,7 +13530,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   onClick={() => setShowNewEventModal(true)}
-                  className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-4 py-2.5 rounded-2xl flex items-center gap-2 shadow-lg shadow-amber-500/20 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   <Plus className="w-4 h-4" />
                   <div>Programar Evento</div>
@@ -13541,13 +13541,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* KPI Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Eventos Programados</div>
-                <div className="text-2xl font-black text-white mt-1">{schoolEvents.length}</div>
+                <div className="text-[11px] text-muted font-medium">Eventos Programados</div>
+                <div className="text-2xl font-black mt-1">{schoolEvents.length}</div>
                 <div className="text-[10px] text-amber-400 font-bold">Actos cívicos y festivales</div>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Suspensiones SEP</div>
+                <div className="text-[11px] text-muted font-medium">Suspensiones SEP</div>
                 <div className="text-2xl font-black text-rose-400 mt-1">
                   {schoolEvents.filter((e) => e.classesSuspended).length}
                 </div>
@@ -13555,15 +13555,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Sesiones CTE</div>
+                <div className="text-[11px] text-muted font-medium">Sesiones CTE</div>
                 <div className="text-2xl font-black text-sky-400 mt-1">
                   {schoolEvents.filter((e) => e.type === 'CONSEJO_TECNICO_CTE').length}
                 </div>
-                <div className="text-[10px] text-slate-400 font-bold">Consejos Técnicos Escolares</div>
+                <div className="text-[10px] text-muted font-bold">Consejos Técnicos Escolares</div>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="text-[11px] text-slate-400 font-medium">Comisiones Asignadas</div>
+                <div className="text-[11px] text-muted font-medium">Comisiones Asignadas</div>
                 <div className="text-2xl font-black text-emerald-400 mt-1">
                   {schoolEvents.reduce((acc, e) => acc + e.commissions.length, 0)}
                 </div>
@@ -13572,13 +13572,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             {/* Subtabs */}
-            <div className="flex border-b border-slate-800 gap-6 text-xs font-bold overflow-x-auto">
+            <div className="flex border-b border-subtle gap-6 text-xs font-bold overflow-x-auto">
               <button
                 onClick={() => setEventsSubTab('calendar')}
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 whitespace-nowrap ${
                   eventsSubTab === 'calendar'
                     ? 'border-amber-400 text-amber-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <CalendarDays className="w-4 h-4" />
@@ -13589,7 +13589,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 whitespace-nowrap ${
                   eventsSubTab === 'cte'
                     ? 'border-amber-400 text-amber-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <FileText className="w-4 h-4" />
@@ -13600,7 +13600,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-all border-b-2 whitespace-nowrap ${
                   eventsSubTab === 'festivals'
                     ? 'border-amber-400 text-amber-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <Flag className="w-4 h-4" />
@@ -13615,57 +13615,57 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   {schoolEvents.map((evt) => (
                     <div
                       key={evt.id}
-                      className="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-3 hover:border-slate-700 transition-all flex flex-col justify-between"
+                      className="bg-surface border border-subtle rounded-3xl p-5 shadow-xl space-y-3 hover:border-subtle transition-all flex flex-col justify-between"
                     >
                       <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                          <div className="font-mono text-[10px] text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                          <div className="badge badge-amber font-mono">
                             {evt.code}
                           </div>
                           {evt.classesSuspended ? (
-                            <div className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                            <div className="badge badge-rose">
                               ● Sin Clases
                             </div>
                           ) : (
-                            <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                            <div className="badge badge-emerald">
                               ● Con Clases
                             </div>
                           )}
                         </div>
 
                         <div>
-                          <div className="text-[10px] font-mono text-slate-400 font-bold block">
+                          <div className="text-[10px] font-mono text-muted font-bold block">
                             {evt.type.replace(/_/g, ' ')}
                           </div>
-                          <h3 className="text-sm font-black text-white mt-0.5">{evt.title}</h3>
+                          <h3 className="text-sm font-black mt-0.5">{evt.title}</h3>
                         </div>
 
-                        <p className="text-[11px] text-slate-400 line-clamp-2">{evt.description}</p>
+                        <p className="text-[11px] text-muted line-clamp-2">{evt.description}</p>
 
-                        <div className="p-2.5 bg-slate-950 rounded-xl border border-slate-800 space-y-1 text-[11px]">
+                        <div className="badge badge-sky">
                           <div className="flex items-center justify-between">
-                            <div className="text-slate-500">Fecha:</div>
+                            <div className="text-muted">Fecha:</div>
                             <div className="font-mono text-amber-300 font-bold">
                               {evt.date} {evt.endDate ? `al ${evt.endDate}` : ''}
                             </div>
                           </div>
                           {evt.time && (
                             <div className="flex items-center justify-between">
-                              <div className="text-slate-500">Horario:</div>
-                              <div className="font-mono text-slate-300">{evt.time}</div>
+                              <div className="text-muted">Horario:</div>
+                              <div className="font-mono text-muted">{evt.time}</div>
                             </div>
                           )}
                           {evt.location && (
                             <div className="flex items-center justify-between">
-                              <div className="text-slate-500">Lugar:</div>
-                              <div className="text-slate-300 truncate max-w-[150px]">{evt.location}</div>
+                              <div className="text-muted">Lugar:</div>
+                              <div className="text-muted truncate max-w-[150px]">{evt.location}</div>
                             </div>
                           )}
                         </div>
                       </div>
 
-                      <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
-                        <div className="text-[10px] text-slate-500">
+                      <div className="pt-2 border-t border-subtle flex items-center justify-between">
+                        <div className="text-[10px] text-muted">
                           {evt.commissions.length} comisiones asignadas
                         </div>
                         <button
@@ -13696,48 +13696,48 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   .map((cte) => (
                     <div
                       key={cte.id}
-                      className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5"
+                      className="bg-surface border border-subtle rounded-3xl p-6 shadow-xl space-y-5"
                     >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-subtle pb-4">
                         <div>
                           <div className="flex items-center gap-2">
-                            <div className="font-mono text-xs text-sky-400 font-bold bg-sky-500/10 px-2.5 py-0.5 rounded border border-sky-500/20">
+                            <div className="badge badge-sky font-mono">
                               {cte.code}
                             </div>
-                            <div className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-xs font-bold px-2.5 py-0.5 rounded-full">
+                            <div className="badge badge-rose">
                               ● Suspensión de Clases para Alumnos
                             </div>
                           </div>
                           <h3 className="modal-title">{cte.title}</h3>
-                          <p className="text-xs text-slate-400 mt-0.5">{cte.description}</p>
+                          <p className="text-xs text-muted mt-0.5">{cte.description}</p>
                         </div>
 
                         <div className="text-right">
-                          <div className="text-xs text-slate-400 block font-mono">Fecha de Sesión:</div>
+                          <div className="text-xs text-muted block font-mono">Fecha de Sesión:</div>
                           <div className="text-base font-black text-amber-300 font-mono">{cte.date}</div>
-                          <div className="text-xs text-slate-400 block font-mono">{cte.time}</div>
+                          <div className="text-xs text-muted block font-mono">{cte.time}</div>
                         </div>
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Agenda de la Sesión */}
-                        <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-3">
+                        <div className="badge badge-sky">
                           <strong className="text-xs font-bold text-sky-400 flex items-center gap-2">
                             <FileText className="w-4 h-4" />
                             Agenda de Trabajo Colegiado NEM
                           </strong>
-                          <ul className="space-y-2 text-xs text-slate-300">
+                          <ul className="space-y-2 text-xs text-muted">
                             {cte.cteAgenda?.map((item, idx) => (
                               <li key={idx} className="flex items-start gap-2">
                                 <div className="text-sky-400 font-bold font-mono">{idx + 1}.</div>
                                 <div>{item}</div>
                               </li>
-                            )) || <li className="text-slate-500">Sin puntos de agenda especificados.</li>}
+                            )) || <li className="text-muted">Sin puntos de agenda especificados.</li>}
                           </ul>
                         </div>
 
                         {/* Acuerdos Colegiados Asentados */}
-                        <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-3">
+                        <div className="badge badge-sky">
                           <div className="flex items-center justify-between">
                             <strong className="text-xs font-bold text-emerald-400 flex items-center gap-2">
                               <Check className="w-4 h-4" />
@@ -13753,31 +13753,31 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               + Agregar Acuerdo
                             </button>
                           </div>
-                          <div className="space-y-2 text-xs text-slate-300">
+                          <div className="space-y-2 text-xs text-muted">
                             {cte.cteAgreements?.map((agr, idx) => (
                               <div
                                 key={idx}
-                                className="p-2.5 bg-slate-900 rounded-xl border border-slate-800 text-[11px] text-emerald-300"
+                                className="p-2.5 bg-surface rounded-xl border border-subtle text-[11px] text-emerald-300"
                               >
                                 {agr}
                               </div>
-                            )) || <p className="text-slate-500 text-xs">Aún no se asientan acuerdos.</p>}
+                            )) || <p className="text-muted text-xs">Aún no se asientan acuerdos.</p>}
                           </div>
                         </div>
                       </div>
 
                       {/* Relatoría y Comisiones de la Sesión */}
-                      <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-between flex-wrap gap-2 text-xs">
+                      <div className="badge badge-sky">
                         <div>
-                          <div className="text-slate-400">Responsable de Minuta Colegiada: </div>
-                          <strong className="text-white">
+                          <div className="text-muted">Responsable de Minuta Colegiada: </div>
+                          <strong className="text-main">
                             {cte.commissions[0]?.teacherName || 'Profra. Laura Gómez Gómez'}
                           </strong>
-                          <div className="text-slate-500 ml-1 font-mono text-[11px]">
+                          <div className="text-muted ml-1 font-mono text-[11px]">
                             ({cte.commissions[0]?.role || 'Relatora Oficial'})
                           </div>
                         </div>
-                        <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded">
+                        <div className="badge badge-emerald">
                           ✓ Minuta Lista para Firma Directiva
                         </div>
                       </div>
@@ -13796,32 +13796,32 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       key={fest.id}
                       className="dashboard-card space-y-4"
                     >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-subtle pb-4">
                         <div>
                           <div className="flex items-center gap-2">
-                            <div className="font-mono text-xs text-amber-400 font-bold bg-amber-500/10 px-2.5 py-0.5 rounded border border-amber-500/20">
+                            <div className="badge badge-amber font-mono">
                               {fest.code}
                             </div>
-                            <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-xs font-bold px-2.5 py-0.5 rounded-full">
+                            <div className="badge badge-emerald">
                               ● Festival Escolar
                             </div>
                           </div>
                           <h3 className="modal-title">{fest.title}</h3>
-                          <p className="text-xs text-slate-400 mt-0.5">{fest.description}</p>
+                          <p className="text-xs text-muted mt-0.5">{fest.description}</p>
                         </div>
 
                         <div className="flex items-center gap-3">
                           <div className="text-right">
-                            <div className="text-xs text-slate-400 block font-mono">Fecha & Lugar:</div>
-                            <div className="text-sm font-black text-white font-mono">{fest.date}</div>
-                            <div className="text-[11px] text-slate-400 block">{fest.location}</div>
+                            <div className="text-xs text-muted block font-mono">Fecha & Lugar:</div>
+                            <div className="text-sm font-black font-mono">{fest.date}</div>
+                            <div className="text-[11px] text-muted block">{fest.location}</div>
                           </div>
                           <button
                             onClick={() => {
                               setSelectedEventForDetail(fest);
                               setShowAssignCommissionModal(true);
                             }}
-                            className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-3.5 py-2 rounded-xl transition-all cursor-pointer shadow-md shadow-amber-500/20 flex items-center gap-1.5"
+                            className="btn btn-warning btn-sm"
                           >
                             <Plus className="w-3.5 h-3.5" />
                             <div>Asignar Docente</div>
@@ -13831,7 +13831,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                       {/* Lista de Comisiones Asignadas */}
                       <div className="space-y-2">
-                        <strong className="text-xs font-bold text-white block">
+                        <strong className="text-xs font-bold block">
                           Comisiones Docentes Operativas ({fest.commissions.length})
                         </strong>
 
@@ -13839,11 +13839,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           {fest.commissions.map((comm) => (
                             <div
                               key={comm.id}
-                              className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-2 flex flex-col justify-between"
+                              className="badge badge-sky"
                             >
                               <div>
                                 <div className="flex items-center justify-between">
-                                  <strong className="text-xs text-white block">{comm.teacherName}</strong>
+                                  <strong className="text-xs block">{comm.teacherName}</strong>
                                   <button
                                     onClick={() => {
                                       const nextStatus =
@@ -13859,7 +13859,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                         ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
                                         : comm.status === 'EN_PROCESO'
                                         ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                                        : 'bg-slate-800 text-slate-400 border border-slate-700'
+                                        : 'bg-subtle text-muted border border-subtle'
                                     }`}
                                   >
                                     {comm.status === 'COMPLETADA'
@@ -13873,7 +13873,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   {comm.role}
                                 </div>
                                 {comm.notes && (
-                                  <p className="text-[10px] text-slate-400 mt-1">{comm.notes}</p>
+                                  <p className="text-[10px] text-muted mt-1">{comm.notes}</p>
                                 )}
                               </div>
                             </div>
@@ -13893,11 +13893,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* Header del Módulo */}
             <div className="dashboard-card dashboard-section-header">
               <div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <Briefcase className="w-6 h-6 text-emerald-400" />
                   Bolsa de Trabajo y Reclutamiento Docente (RH Escolar)
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="dashboard-section-desc">
                   Publicación de plazas, evaluación pedagógica conforme a la NEM, cotejo de cédulas DGP/SEP y contrataciones.
                 </p>
               </div>
@@ -13905,14 +13905,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   onClick={() => setShowNewVacancyModal(true)}
-                  className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all shadow-md shadow-emerald-500/20 cursor-pointer"
+                  className="btn btn-success btn-sm"
                 >
                   <Briefcase className="w-4 h-4" />
                   + Publicar Plaza Vacante
                 </button>
                 <button
                   onClick={() => setShowNewCandidateModal(true)}
-                  className="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/30 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   <UserPlus className="w-4 h-4" />
                   + Registrar Postulación
@@ -13923,62 +13923,62 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* KPI Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="dashboard-stat-card flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                <div className="badge badge-emerald">
                   <Briefcase className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xl font-black text-white">
+                  <div className="text-xl font-black">
                     {jobVacancies.filter((v) => v.status === 'ABIERTA' || v.status === 'EN_ENTREVISTAS').length}
                   </div>
-                  <div className="text-[11px] text-slate-400">Plazas Abiertas</div>
+                  <div className="text-[11px] text-muted">Plazas Abiertas</div>
                 </div>
               </div>
 
               <div className="dashboard-stat-card flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
+                <div className="badge badge-sky">
                   <UserPlus className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xl font-black text-white">
+                  <div className="text-xl font-black">
                     {teacherCandidates.filter((c) => c.status !== 'CONTRATADO' && c.status !== 'NO_SELECCIONADO').length}
                   </div>
-                  <div className="text-[11px] text-slate-400">Candidatos en Proceso</div>
+                  <div className="text-[11px] text-muted">Candidatos en Proceso</div>
                 </div>
               </div>
 
               <div className="dashboard-stat-card flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                <div className="badge badge-amber">
                   <FileBadge className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xl font-black text-white">
+                  <div className="text-xl font-black">
                     {teacherCandidates.filter((c) => c.sepAccreditation === 'VALIDADA_DGP').length}
                   </div>
-                  <div className="text-[11px] text-slate-400">Cédulas DGP Validadas</div>
+                  <div className="text-[11px] text-muted">Cédulas DGP Validadas</div>
                 </div>
               </div>
 
               <div className="dashboard-stat-card flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400">
+                <div className="badge badge-sky">
                   <CheckCircle2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xl font-black text-white">
+                  <div className="text-xl font-black">
                     {teacherCandidates.filter((c) => c.status === 'CONTRATADO').length}
                   </div>
-                  <div className="text-[11px] text-slate-400">Contratados del Ciclo</div>
+                  <div className="text-[11px] text-muted">Contratados del Ciclo</div>
                 </div>
               </div>
             </div>
 
             {/* Subtabs Reclutamiento */}
-            <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
+            <div className="flex items-center gap-2 border-b border-subtle pb-3">
               <button
                 onClick={() => setRecruitmentSubTab('vacancies')}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   recruitmentSubTab === 'vacancies'
                     ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    : 'text-muted hover:bg-slate-100 hover:text-main'
                 }`}
               >
                 💼 Plazas y Convocatorias ({jobVacancies.length})
@@ -13989,7 +13989,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   recruitmentSubTab === 'pipeline'
                     ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    : 'text-muted hover:bg-slate-100 hover:text-main'
                 }`}
               >
                 👥 Pipeline de Selección ({teacherCandidates.length})
@@ -14000,7 +14000,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   recruitmentSubTab === 'credentials'
                     ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    : 'text-muted hover:bg-slate-100 hover:text-main'
                 }`}
               >
                 📜 Acreditaciones SEP / Cédulas DGP
@@ -14013,11 +14013,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 {jobVacancies.map((vac) => (
                   <div
                     key={vac.id}
-                    className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between hover:border-emerald-500/40 transition-all space-y-4"
+                    className="bg-surface border border-subtle rounded-2xl p-5 flex flex-col justify-between hover:border-emerald-500/40 transition-all space-y-4"
                   >
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-2">
-                        <div className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700">
+                        <div className="badge badge-secondary font-mono text-[10px]">
                           {vac.code}
                         </div>
                         <div
@@ -14026,7 +14026,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
                               : vac.status === 'EN_ENTREVISTAS'
                               ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
-                              : 'bg-slate-700 text-slate-300'
+                              : 'bg-slate-200 text-slate-700 text-muted'
                           }`}
                         >
                           {vac.status === 'ABIERTA'
@@ -14037,12 +14037,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
                       </div>
 
-                      <h3 className="text-sm font-bold text-white mb-1.5 leading-snug">
+                      <h3 className="text-sm font-bold mb-1.5 leading-snug">
                         {vac.title}
                       </h3>
 
                       <div className="flex flex-wrap items-center gap-2 mb-3">
-                        <div className="text-[10px] font-semibold bg-emerald-950/40 text-emerald-300 border border-emerald-800/40 px-2 py-0.5 rounded">
+                        <div className="badge badge-emerald">
                           {vac.department === 'INGLES_BILINGUE'
                             ? 'Bilingüe / Inglés'
                             : vac.department === 'DOCENCIA_PRIMARIA'
@@ -14053,7 +14053,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             ? 'Deportes y Talleres'
                             : 'Servicios Médicos'}
                         </div>
-                        <div className="text-[10px] text-slate-400">
+                        <div className="text-[10px] text-muted">
                           {vac.type === 'TIEMPO_COMPLETO'
                             ? 'Tiempo Completo'
                             : vac.type === 'MEDIO_TIEMPO'
@@ -14062,17 +14062,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
                       </div>
 
-                      <p className="text-xs text-slate-300 mb-3 leading-relaxed">
+                      <p className="text-xs text-muted mb-3 leading-relaxed">
                         {vac.description}
                       </p>
 
-                      <div className="bg-slate-950/60 rounded-xl p-3 border border-slate-800/80 mb-3">
-                        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+                      <div className="badge badge-sky">
+                        <div className="text-[10px] font-bold text-muted uppercase tracking-wider mb-1.5">
                           Requisitos SEP / Institucionales:
                         </div>
                         <ul className="space-y-1">
                           {vac.requirements.map((req, i) => (
-                            <li key={i} className="text-[11px] text-slate-300 flex items-start gap-1.5">
+                            <li key={i} className="text-[11px] text-muted flex items-start gap-1.5">
                               <div className="text-emerald-400 font-bold">✓</div>
                               <div>{req}</div>
                             </li>
@@ -14082,14 +14082,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                       {vac.salaryRangeMXN && (
                         <div className="text-[11px] text-emerald-400 font-medium">
-                          💰 Rango Salarial: <div className="font-bold text-white">{vac.salaryRangeMXN}</div>
+                          💰 Rango Salarial: <div className="font-bold">{vac.salaryRangeMXN}</div>
                         </div>
                       )}
                     </div>
 
-                    <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
-                      <div className="text-[11px] text-slate-400">
-                        👥 Postulantes: <div className="text-white font-bold">{vac.applicationsCount}</div>
+                    <div className="pt-3 border-t border-subtle flex items-center justify-between">
+                      <div className="text-[11px] text-muted">
+                        👥 Postulantes: <div className="font-bold">{vac.applicationsCount}</div>
                       </div>
                       <button
                         onClick={() => {
@@ -14099,7 +14099,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           });
                           setShowNewCandidateModal(true);
                         }}
-                        className="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer"
+                        className="btn btn-success btn-sm"
                       >
                         + Postular Candidato
                       </button>
@@ -14113,35 +14113,35 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {recruitmentSubTab === 'pipeline' && (
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-2">
-                  <div className="bg-slate-900/60 border border-slate-800 p-3 rounded-xl">
-                    <div className="text-xs font-bold text-slate-400 mb-1">1. Postulación / CV</div>
-                    <div className="text-lg font-black text-white">
+                  <div className="dashboard-subcard p-3">
+                    <div className="text-xs font-bold text-muted mb-1">1. Postulación / CV</div>
+                    <div className="text-lg font-black">
                       {teacherCandidates.filter((c) => c.status === 'POSTULADO').length}
                     </div>
                   </div>
-                  <div className="bg-slate-900/60 border border-slate-800 p-3 rounded-xl">
+                  <div className="dashboard-subcard p-3">
                     <div className="text-xs font-bold text-amber-400 mb-1">2. Entrevista Inicial</div>
-                    <div className="text-lg font-black text-white">
+                    <div className="text-lg font-black">
                       {teacherCandidates.filter((c) => c.status === 'ENTREVISTA_INICIAL').length}
                     </div>
                   </div>
-                  <div className="bg-slate-900/60 border border-slate-800 p-3 rounded-xl">
+                  <div className="dashboard-subcard p-3">
                     <div className="text-xs font-bold text-purple-400 mb-1">3. Clase Muestra NEM</div>
-                    <div className="text-lg font-black text-white">
+                    <div className="text-lg font-black">
                       {teacherCandidates.filter((c) => c.status === 'CLASE_MUESTRA_PEDAGOGICA').length}
                     </div>
                   </div>
-                  <div className="bg-slate-900/60 border border-slate-800 p-3 rounded-xl">
+                  <div className="dashboard-subcard p-3">
                     <div className="text-xs font-bold text-emerald-400 mb-1">4. Contratados</div>
-                    <div className="text-lg font-black text-white">
+                    <div className="text-lg font-black">
                       {teacherCandidates.filter((c) => c.status === 'CONTRATADO').length}
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
-                  <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-                    <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <div className="dashboard-table-card">
+                  <div className="p-4 border-b border-subtle flex items-center justify-between">
+                    <h3 className="text-sm font-bold flex items-center gap-2">
                       <UserPlus className="w-4 h-4 text-emerald-400" />
                       Padrón de Docentes y Candidatos en Proceso de Evaluación
                     </h3>
@@ -14149,7 +14149,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs">
-                      <thead className="bg-slate-950 text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-800">
+                      <thead className="badge badge-sky">
                         <tr>
                           <th className="p-3">Folio</th>
                           <th className="p-3">Docente / Candidato</th>
@@ -14160,20 +14160,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <th className="p-3 text-right">Acción</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-800/60">
+                      <tbody className="table-body">
                         {teacherCandidates.map((cand) => (
                           <tr key={cand.id} className="table-row-hover">
                             <td className="p-3 font-mono font-bold text-emerald-400">{cand.folio}</td>
                             <td className="p-3">
-                              <div className="font-bold text-white">{cand.fullName}</div>
-                              <div className="text-[11px] text-slate-400">{cand.email} • {cand.phone}</div>
+                              <div className="font-bold">{cand.fullName}</div>
+                              <div className="text-[11px] text-muted">{cand.email} • {cand.phone}</div>
                             </td>
                             <td className="p-3">
-                              <div className="font-medium text-slate-300">{cand.vacancyTitle}</div>
+                              <div className="font-medium text-muted">{cand.vacancyTitle}</div>
                             </td>
                             <td className="p-3">
-                              <div className="text-slate-200">{cand.degree}</div>
-                              <div className="text-[10px] text-slate-400">
+                              <div className="text-main">{cand.degree}</div>
+                              <div className="text-[10px] text-muted">
                                 Cédula:{' '}
                                 <div className="font-mono text-emerald-400 font-bold">
                                   {cand.professionalLicense || 'Pendiente'}
@@ -14183,18 +14183,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             <td className="p-3">
                               {cand.pedagogicalDemoScore ? (
                                 <div className="flex items-center gap-2">
-                                  <div className="w-16 bg-slate-800 rounded-full h-2 overflow-hidden">
+                                  <div className="w-16 progress-bar-bg h-2">
                                     <div
                                       className="bg-emerald-400 h-full rounded-full"
                                       style={{ width: `${cand.pedagogicalDemoScore}%` }}
                                     />
                                   </div>
-                                  <div className="font-bold text-white text-[11px]">
+                                  <div className="font-bold text-[11px]">
                                     {cand.pedagogicalDemoScore}/100
                                   </div>
                                 </div>
                               ) : (
-                                <div className="text-[10px] text-slate-500 italic">No evaluada</div>
+                                <div className="text-[10px] text-muted italic">No evaluada</div>
                               )}
                             </td>
                             <td className="p-3">
@@ -14208,7 +14208,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                     ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
                                     : cand.status === 'OFERTA_ACEPTADA'
                                     ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                                    : 'bg-slate-800 text-slate-300'
+                                    : 'bg-subtle text-muted'
                                 }`}
                               >
                                 {cand.status.replace(/_/g, ' ')}
@@ -14226,7 +14226,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   });
                                   setShowCandidateDetailModal(true);
                                 }}
-                                className="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border border-slate-700 cursor-pointer"
+                                className="btn btn-secondary btn-sm"
                               >
                                 Evaluar / Avanzar ➔
                               </button>
@@ -14243,14 +14243,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* SUBTAB 3: COTEJO DE CÉDULAS SEP / DGP */}
             {recruitmentSubTab === 'credentials' && (
               <div className="space-y-4">
-                <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+                <div className="dashboard-subcard p-5">
                   <div className="flex items-center gap-3 mb-4">
                     <FileBadge className="w-6 h-6 text-amber-400" />
                     <div>
-                      <h3 className="text-sm font-bold text-white">
+                      <h3 className="text-sm font-bold">
                         Validación Oficial ante la Dirección General de Profesiones (SEP / DGP)
                       </h3>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-muted">
                         Cotejo de idoneidad legal para asignación frente a grupo de preescolar, primaria y materias complementarias.
                       </p>
                     </div>
@@ -14260,11 +14260,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     {teacherCandidates.map((cand) => (
                       <div
                         key={cand.id}
-                        className="bg-slate-950/70 border border-slate-800 rounded-xl p-4 flex flex-col justify-between space-y-3"
+                        className="badge badge-sky"
                       >
                         <div>
                           <div className="flex items-center justify-between mb-2">
-                            <div className="font-bold text-white text-sm">{cand.fullName}</div>
+                            <div className="font-bold text-sm">{cand.fullName}</div>
                             <div
                               className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                                 cand.sepAccreditation === 'VALIDADA_DGP'
@@ -14282,11 +14282,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             </div>
                           </div>
 
-                          <div className="text-xs text-slate-300 font-medium mb-1">
+                          <div className="text-xs text-muted font-medium mb-1">
                             🎓 {cand.degree}
                           </div>
 
-                          <div className="text-xs text-slate-400">
+                          <div className="text-xs text-muted">
                             Número de Cédula DGP:{' '}
                             <div className="font-mono text-amber-400 font-bold">
                               {cand.professionalLicense || 'Sin registro'}
@@ -14294,14 +14294,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           </div>
 
                           {cand.resumeSummary && (
-                            <p className="text-[11px] text-slate-400 mt-2 bg-slate-900/50 p-2 rounded-lg border border-slate-800/60">
+                            <p className="text-[11px] text-muted mt-2 bg-surface p-2 rounded-lg border border-subtle/60">
                               {cand.resumeSummary}
                             </p>
                           )}
                         </div>
 
-                        <div className="text-[11px] text-slate-400 flex items-center justify-between pt-2 border-t border-slate-800/80">
-                          <div>Años de Experiencia: <strong className="text-white">{cand.yearsOfExperience} años</strong></div>
+                        <div className="text-[11px] text-muted flex items-center justify-between pt-2 border-t border-subtle">
+                          <div>Años de Experiencia: <strong className="text-main">{cand.yearsOfExperience} años</strong></div>
                           <div>Plaza: <strong className="text-emerald-400">{cand.vacancyTitle}</strong></div>
                         </div>
                       </div>
@@ -14320,18 +14320,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                  <div className="badge badge-rose">
                     Programa Interno de Protección Civil (PIPC / SEP)
                   </div>
-                  <div className="bg-slate-800 text-slate-300 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                  <div className="badge badge-secondary text-[10px]">
                     Norma Oficial Mexicana & CENAPRED
                   </div>
                 </div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <ShieldAlert className="w-6 h-6 text-rose-500" />
                   Protección Civil Escolar, Bitácora de Simulacros y Brigadas
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="dashboard-section-desc">
                   Registro cronometrado de evacuación, simulacros sísmicos/incendio, brigadistas docentes y zonas de menor riesgo.
                 </p>
               </div>
@@ -14339,7 +14339,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   onClick={() => setShowNewDrillModal(true)}
-                  className="bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all shadow-md shadow-rose-600/20 cursor-pointer"
+                  className="btn btn-danger btn-sm"
                 >
                   <Siren className="w-4 h-4" />
                   + Registrar Simulacro
@@ -14349,7 +14349,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     setSelectedBrigadeForAdd(emergencyBrigades[0] || null);
                     setShowAddBrigadeMemberModal(true);
                   }}
-                  className="bg-slate-800 hover:bg-slate-700 text-rose-400 border border-rose-500/30 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   <UserPlus className="w-4 h-4" />
                   + Asignar Brigadista
@@ -14360,21 +14360,21 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* KPI Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="dashboard-stat-card flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400">
+                <div className="badge badge-rose">
                   <Siren className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xl font-black text-white">{civilProtectionDrills.length}</div>
-                  <div className="text-[11px] text-slate-400">Simulacros en Ciclo</div>
+                  <div className="text-xl font-black">{civilProtectionDrills.length}</div>
+                  <div className="text-[11px] text-muted">Simulacros en Ciclo</div>
                 </div>
               </div>
 
               <div className="dashboard-stat-card flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                <div className="badge badge-emerald">
                   <Clock className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xl font-black text-white">
+                  <div className="text-xl font-black">
                     {civilProtectionDrills.length > 0
                       ? `${Math.round(
                           civilProtectionDrills.reduce((a, b) => a + b.evacuationTimeSeconds, 0) /
@@ -14382,46 +14382,46 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         )}s`
                       : '0s'}
                   </div>
-                  <div className="text-[11px] text-slate-400">Tiempo Promedio Evac.</div>
+                  <div className="text-[11px] text-muted">Tiempo Promedio Evac.</div>
                 </div>
               </div>
 
               <div className="dashboard-stat-card flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
+                <div className="badge badge-sky">
                   <Users className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xl font-black text-white">
+                  <div className="text-xl font-black">
                     {civilProtectionDrills[0]?.participants.total || 0}
                   </div>
-                  <div className="text-[11px] text-slate-400">Personas Último Desalojo</div>
+                  <div className="text-[11px] text-muted">Personas Último Desalojo</div>
                 </div>
               </div>
 
               <div className="dashboard-stat-card flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                <div className="badge badge-amber">
                   <ShieldCheck className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xl font-black text-white">
+                  <div className="text-xl font-black">
                     {emergencyBrigades.reduce(
                       (acc, b) => acc + b.members.filter((m) => m.certified).length,
                       0
                     )}
                   </div>
-                  <div className="text-[11px] text-slate-400">Brigadistas Certificados</div>
+                  <div className="text-[11px] text-muted">Brigadistas Certificados</div>
                 </div>
               </div>
             </div>
 
             {/* Subtabs Protección Civil */}
-            <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
+            <div className="flex items-center gap-2 border-b border-subtle pb-3">
               <button
                 onClick={() => setSafetySubTab('drills')}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   safetySubTab === 'drills'
                     ? 'bg-rose-500 text-white shadow-md shadow-rose-500/20'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    : 'text-muted hover:bg-slate-100 hover:text-main'
                 }`}
               >
                 🚨 Bitácora de Simulacros ({civilProtectionDrills.length})
@@ -14432,7 +14432,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   safetySubTab === 'brigades'
                     ? 'bg-rose-500 text-white shadow-md shadow-rose-500/20'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    : 'text-muted hover:bg-slate-100 hover:text-main'
                 }`}
               >
                 🦺 Brigadas de Emergencia ({emergencyBrigades.length})
@@ -14443,7 +14443,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   safetySubTab === 'zones'
                     ? 'bg-rose-500 text-white shadow-md shadow-rose-500/20'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    : 'text-muted hover:bg-slate-100 hover:text-main'
                 }`}
               >
                 📍 Puntos de Reunión & Zonas Seguras
@@ -14457,11 +14457,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   {civilProtectionDrills.map((drill) => (
                     <div
                       key={drill.id}
-                      className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between hover:border-rose-500/40 transition-all space-y-4"
+                      className="bg-surface border border-subtle rounded-2xl p-5 flex flex-col justify-between hover:border-rose-500/40 transition-all space-y-4"
                     >
                       <div>
                         <div className="flex items-center justify-between gap-2 mb-2">
-                          <div className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700">
+                          <div className="badge badge-secondary font-mono text-[10px]">
                             {drill.code}
                           </div>
                           <div
@@ -14477,31 +14477,31 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           </div>
                         </div>
 
-                        <h3 className="text-sm font-bold text-white mb-1.5 leading-snug">
+                        <h3 className="text-sm font-bold mb-1.5 leading-snug">
                           {drill.title}
                         </h3>
 
-                        <div className="flex items-center gap-2 text-[11px] text-slate-400 mb-3">
+                        <div className="flex items-center gap-2 text-[11px] text-muted mb-3">
                           <div>📅 {drill.date}</div>
                           <div>•</div>
                           <div>⏰ {drill.time}</div>
                         </div>
 
-                        <p className="text-xs text-slate-300 mb-3 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/80 leading-relaxed">
+                        <p className="badge badge-sky">
                           <strong>Hipótesis:</strong> {drill.hypothesis}
                         </p>
 
                         {/* Indicador de Tiempo de Evacuación */}
-                        <div className="bg-slate-950 rounded-xl p-3 border border-slate-800 mb-3">
+                        <div className="badge badge-sky">
                           <div className="flex items-center justify-between mb-1">
-                            <div className="text-[11px] font-bold text-slate-400">
+                            <div className="text-[11px] font-bold text-muted">
                               Tiempo Total de Desalojo:
                             </div>
                             <div className="text-sm font-black font-mono text-emerald-400">
                               {Math.floor(drill.evacuationTimeSeconds / 60)}m {drill.evacuationTimeSeconds % 60}s ({drill.evacuationTimeSeconds} seg)
                             </div>
                           </div>
-                          <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                          <div className="w-full progress-bar-bg h-1.5">
                             <div
                               className={`h-full rounded-full ${
                                 drill.evacuationTimeSeconds <= 120
@@ -14518,36 +14518,36 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
 
                         {/* Personas Evacuadas */}
-                        <div className="grid grid-cols-4 gap-1 text-center bg-slate-950/40 p-2 rounded-xl border border-slate-800/60 mb-3 text-[10px]">
+                        <div className="badge badge-sky">
                           <div>
-                            <div className="text-slate-400">Alumnos</div>
-                            <div className="font-bold text-white">{drill.participants.students}</div>
+                            <div className="text-muted">Alumnos</div>
+                            <div className="font-bold">{drill.participants.students}</div>
                           </div>
                           <div>
-                            <div className="text-slate-400">Docentes</div>
-                            <div className="font-bold text-white">{drill.participants.teachers}</div>
+                            <div className="text-muted">Docentes</div>
+                            <div className="font-bold">{drill.participants.teachers}</div>
                           </div>
                           <div>
-                            <div className="text-slate-400">Personal</div>
-                            <div className="font-bold text-white">{drill.participants.staff}</div>
+                            <div className="text-muted">Personal</div>
+                            <div className="font-bold">{drill.participants.staff}</div>
                           </div>
                           <div>
-                            <div className="text-slate-400">Total</div>
+                            <div className="text-muted">Total</div>
                             <div className="font-bold text-emerald-400">{drill.participants.total}</div>
                           </div>
                         </div>
 
-                        <div className="text-[11px] text-slate-300 mb-2">
+                        <div className="text-[11px] text-muted mb-2">
                           📍 <strong>Punto de Reunión:</strong> {drill.assemblyPoint}
                         </div>
 
                         {drill.incidentsReported.length > 0 && (
                           <div className="space-y-1 mb-2">
-                            <div className="text-[10px] font-bold text-slate-400 uppercase">
+                            <div className="text-[10px] font-bold text-muted uppercase">
                               Incidentes y Atenciones Reportadas:
                             </div>
                             {drill.incidentsReported.map((inc, i) => (
-                              <div key={i} className="text-[11px] text-slate-300 flex items-start gap-1">
+                              <div key={i} className="text-[11px] text-muted flex items-start gap-1">
                                 <div className="text-rose-400">•</div>
                                 <div>{inc}</div>
                               </div>
@@ -14556,7 +14556,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         )}
                       </div>
 
-                      <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
+                      <div className="pt-3 border-t border-subtle flex items-center justify-between">
                         <div
                           className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${
                             drill.evaluation === 'EXCELENTE'
@@ -14579,7 +14579,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             });
                             setShowDrillDetailModal(true);
                           }}
-                          className="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1 rounded-lg text-xs font-bold transition-all border border-slate-700 cursor-pointer"
+                          className="btn btn-secondary btn-sm"
                         >
                           Editar Dictamen ➔
                         </button>
@@ -14596,12 +14596,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 {emergencyBrigades.map((brigade) => (
                   <div
                     key={brigade.id}
-                    className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4"
+                    className="dashboard-subcard p-5 space-y-4"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <div className="flex items-center gap-2 mb-1">
-                          <div className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-300">
+                          <div className="badge badge-secondary font-mono text-[10px]">
                             {brigade.code}
                           </div>
                           <div
@@ -14616,8 +14616,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           </div>
                         </div>
                         <h3 className="modal-title">{brigade.name}</h3>
-                        <p className="text-xs text-slate-400 mt-0.5">
-                          Jefe(a) Responsable: <strong className="text-white">{brigade.leaderName}</strong>
+                        <p className="text-xs text-muted mt-0.5">
+                          Jefe(a) Responsable: <strong className="text-main">{brigade.leaderName}</strong>
                         </p>
                       </div>
 
@@ -14626,14 +14626,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           setSelectedBrigadeForAdd(brigade);
                           setShowAddBrigadeMemberModal(true);
                         }}
-                        className="bg-slate-800 hover:bg-slate-700 text-rose-400 border border-rose-500/30 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0"
+                        className="btn btn-secondary btn-sm"
                       >
                         + Asignar Miembro
                       </button>
                     </div>
 
-                    <div className="space-y-2 pt-2 border-t border-slate-800">
-                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    <div className="space-y-2 pt-2 border-t border-subtle">
+                      <div className="text-[10px] font-bold text-muted uppercase tracking-wider">
                         Personal y Docentes Asignados ({brigade.members.length}):
                       </div>
 
@@ -14641,15 +14641,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {brigade.members.map((m) => (
                           <div
                             key={m.id}
-                            className="bg-slate-950/70 p-3 rounded-xl border border-slate-800/80 flex items-center justify-between gap-3"
+                            className="badge badge-sky"
                           >
                             <div>
-                              <div className="font-bold text-white text-xs">{m.fullName}</div>
-                              <div className="text-[11px] text-slate-400">
-                                {m.role} • <div className="text-slate-300">{m.buildingZone}</div>
+                              <div className="font-bold text-xs">{m.fullName}</div>
+                              <div className="text-[11px] text-muted">
+                                {m.role} • <div className="text-muted">{m.buildingZone}</div>
                               </div>
                             </div>
-                            <div className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
+                            <div className="badge badge-emerald">
                               ✓ Certificado PC
                             </div>
                           </div>
@@ -14665,15 +14665,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {safetySubTab === 'zones' && (
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-3">
+                  <div className="bg-surface border border-subtle p-5 rounded-2xl space-y-3">
                     <div className="flex items-center justify-between">
-                      <div className="text-xs font-mono font-bold bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20">
+                      <div className="badge badge-emerald font-mono">
                         ZONA S-1
                       </div>
-                      <div className="text-[10px] text-slate-400">Capacidad: 350 personas</div>
+                      <div className="text-[10px] text-muted">Capacidad: 350 personas</div>
                     </div>
-                    <h4 className="font-bold text-white text-sm">Patio Cívico Central</h4>
-                    <p className="text-xs text-slate-300">
+                    <h4 className="font-bold text-sm">Patio Cívico Central</h4>
+                    <p className="text-xs text-muted">
                       Punto de reunión primario para el Edificio A (Primaria) y Dirección General. Área abierta libre de cableado eléctrico y marquesinas.
                     </p>
                     <div className="text-[11px] text-emerald-400 font-semibold">
@@ -14681,15 +14681,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-3">
+                  <div className="bg-surface border border-subtle p-5 rounded-2xl space-y-3">
                     <div className="flex items-center justify-between">
-                      <div className="text-xs font-mono font-bold bg-sky-500/10 text-sky-400 px-2 py-0.5 rounded border border-sky-500/20">
+                      <div className="badge badge-sky font-mono">
                         ZONA S-2
                       </div>
-                      <div className="text-[10px] text-slate-400">Capacidad: 250 personas</div>
+                      <div className="text-[10px] text-muted">Capacidad: 250 personas</div>
                     </div>
-                    <h4 className="font-bold text-white text-sm">Canchas Deportivas Techadas</h4>
-                    <p className="text-xs text-slate-300">
+                    <h4 className="font-bold text-sm">Canchas Deportivas Techadas</h4>
+                    <p className="text-xs text-muted">
                       Zona secundaria para actividades vespertinas, academias deportivas y contingencias climáticas con estructura certificada.
                     </p>
                     <div className="text-[11px] text-sky-400 font-semibold">
@@ -14697,15 +14697,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-3">
+                  <div className="bg-surface border border-subtle p-5 rounded-2xl space-y-3">
                     <div className="flex items-center justify-between">
-                      <div className="text-xs font-mono font-bold bg-purple-500/10 text-purple-400 px-2 py-0.5 rounded border border-purple-500/20">
+                      <div className="badge badge-purple font-mono">
                         ZONA S-3
                       </div>
-                      <div className="text-[10px] text-slate-400">Capacidad: 100 personas</div>
+                      <div className="text-[10px] text-muted">Capacidad: 100 personas</div>
                     </div>
-                    <h4 className="font-bold text-white text-sm">Explanada de Aulas de Ciencias</h4>
-                    <p className="text-xs text-slate-300">
+                    <h4 className="font-bold text-sm">Explanada de Aulas de Ciencias</h4>
+                    <p className="text-xs text-muted">
                       Zona exterior adyacente a Laboratorios STEAM y Enfermería Escolar, con acceso inmediato a tomas de hidrante y camillas.
                     </p>
                     <div className="text-[11px] text-purple-400 font-semibold">
@@ -14714,7 +14714,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
                 </div>
 
-                <div className="bg-slate-900/60 border border-slate-800 p-4 rounded-2xl flex items-center justify-between text-xs text-slate-400">
+                <div className="bg-surface border border-subtle p-4 rounded-2xl flex items-center justify-between text-xs text-muted">
                   <div className="flex items-center gap-2">
                     <Flame className="w-4 h-4 text-orange-400" />
                     <div>Equipamiento: <strong>14 extintores PQS (tipo ABC)</strong> y <strong>4 extintores de CO2</strong> con recarga vigente hasta Diciembre 2026.</div>
@@ -14733,18 +14733,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                  <div className="badge badge-amber">
                     Acuerdo Secretarial 716 / SEP
                   </div>
-                  <div className="bg-slate-800 text-slate-300 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                  <div className="badge badge-secondary text-[10px]">
                     Ley General de Educación • APF & CEPS
                   </div>
                 </div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <HeartHandshake className="w-6 h-6 text-amber-400" />
                   Consejo Escolar de Participación (CEPS) y Asociación de Padres (APF)
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="dashboard-section-desc">
                   Corresponsabilidad familia-escuela, comités temáticos, contraloría social, mesa directiva y actas de asamblea.
                 </p>
               </div>
@@ -14752,14 +14752,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   onClick={() => setShowNewAssemblyModal(true)}
-                  className="bg-amber-500 hover:bg-amber-400 text-slate-950 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all shadow-md shadow-amber-500/20 cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   <FileText className="w-4 h-4" />
                   + Convocar Asamblea
                 </button>
                 <button
                   onClick={() => setShowNewBoardMemberModal(true)}
-                  className="bg-slate-800 hover:bg-slate-700 text-amber-400 border border-amber-500/30 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   <UserPlus className="w-4 h-4" />
                   + Integrante APF
@@ -14770,58 +14770,58 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* KPI Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="dashboard-stat-card flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                <div className="badge badge-amber">
                   <Scale className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xl font-black text-white">{cepsCommittees.length}</div>
-                  <div className="text-[11px] text-slate-400">Comités CEPS Activos</div>
+                  <div className="text-xl font-black">{cepsCommittees.length}</div>
+                  <div className="text-[11px] text-muted">Comités CEPS Activos</div>
                 </div>
               </div>
 
               <div className="dashboard-stat-card flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
+                <div className="badge badge-sky">
                   <Users className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xl font-black text-white">{apfBoardMembers.length}</div>
-                  <div className="text-[11px] text-slate-400">Mesa Directiva APF</div>
+                  <div className="text-xl font-black">{apfBoardMembers.length}</div>
+                  <div className="text-[11px] text-muted">Mesa Directiva APF</div>
                 </div>
               </div>
 
               <div className="dashboard-stat-card flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                <div className="badge badge-emerald">
                   <CheckCircle2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xl font-black text-white">
+                  <div className="text-xl font-black">
                     {schoolAssemblies.filter((a) => a.status === 'REALIZADA_CON_ACTA').length}
                   </div>
-                  <div className="text-[11px] text-slate-400">Asambleas con Acta Formal</div>
+                  <div className="text-[11px] text-muted">Asambleas con Acta Formal</div>
                 </div>
               </div>
 
               <div className="dashboard-stat-card flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+                <div className="badge badge-purple">
                   <HeartHandshake className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xl font-black text-white">
+                  <div className="text-xl font-black">
                     {schoolAssemblies.reduce((acc, a) => acc + a.quorumCount, 0)}
                   </div>
-                  <div className="text-[11px] text-slate-400">Tutores Asistentes Acumulados</div>
+                  <div className="text-[11px] text-muted">Tutores Asistentes Acumulados</div>
                 </div>
               </div>
             </div>
 
             {/* Subtabs CEPS & APF */}
-            <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
+            <div className="flex items-center gap-2 border-b border-subtle pb-3">
               <button
                 onClick={() => setCommunitySubTab('committees')}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   communitySubTab === 'committees'
                     ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    : 'text-muted hover:bg-slate-100 hover:text-main'
                 }`}
               >
                 🤝 Comités de Corresponsabilidad CEPS ({cepsCommittees.length})
@@ -14832,7 +14832,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   communitySubTab === 'apf_board'
                     ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    : 'text-muted hover:bg-slate-100 hover:text-main'
                 }`}
               >
                 👥 Mesa Directiva APF ({apfBoardMembers.length})
@@ -14843,7 +14843,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   communitySubTab === 'assemblies'
                     ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    : 'text-muted hover:bg-slate-100 hover:text-main'
                 }`}
               >
                 📜 Bitácora de Asambleas & Actas ({schoolAssemblies.length})
@@ -14856,47 +14856,47 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 {cepsCommittees.map((comm) => (
                   <div
                     key={comm.id}
-                    className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between hover:border-amber-500/40 transition-all space-y-4"
+                    className="bg-surface border border-subtle rounded-2xl p-5 flex flex-col justify-between hover:border-amber-500/40 transition-all space-y-4"
                   >
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-2">
-                        <div className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                        <div className="badge badge-amber font-mono">
                           {comm.type}
                         </div>
-                        <div className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        <div className="badge badge-emerald">
                           {comm.status}
                         </div>
                       </div>
 
-                      <h3 className="text-sm font-bold text-white mb-2 leading-snug">
+                      <h3 className="text-sm font-bold mb-2 leading-snug">
                         {comm.name}
                       </h3>
 
-                      <p className="text-xs text-slate-300 mb-3 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/80 leading-relaxed">
+                      <p className="badge badge-sky">
                         {comm.objective}
                       </p>
 
-                      <div className="bg-slate-950/40 p-2.5 rounded-xl border border-slate-800/60 space-y-1.5 text-xs mb-3">
-                        <div className="flex items-center justify-between text-slate-400 text-[11px]">
+                      <div className="badge badge-sky">
+                        <div className="flex items-center justify-between text-muted text-[11px]">
                           <div>Líder Tutor:</div>
-                          <strong className="text-white">{comm.leaderTutorName}</strong>
+                          <strong className="text-main">{comm.leaderTutorName}</strong>
                         </div>
-                        <div className="flex items-center justify-between text-slate-400 text-[11px]">
+                        <div className="flex items-center justify-between text-muted text-[11px]">
                           <div>Líder Docente:</div>
-                          <strong className="text-white">{comm.leaderTeacherName}</strong>
+                          <strong className="text-main">{comm.leaderTeacherName}</strong>
                         </div>
-                        <div className="flex items-center justify-between text-slate-400 text-[11px]">
+                        <div className="flex items-center justify-between text-muted text-[11px]">
                           <div>Miembros Voluntarios:</div>
                           <div className="font-bold text-amber-400">{comm.membersCount} integrantes</div>
                         </div>
                       </div>
 
                       <div className="space-y-1.5">
-                        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                        <div className="text-[10px] font-bold text-muted uppercase tracking-wider">
                           Proyectos e Iniciativas Prioritarias:
                         </div>
                         {comm.activeProjects.map((proj, i) => (
-                          <div key={i} className="text-[11px] text-slate-300 flex items-start gap-1.5">
+                          <div key={i} className="text-[11px] text-muted flex items-start gap-1.5">
                             <div className="text-amber-400">✓</div>
                             <div>{proj}</div>
                           </div>
@@ -14904,7 +14904,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </div>
                     </div>
 
-                    <div className="pt-3 border-t border-slate-800 text-[10px] text-slate-500 text-right">
+                    <div className="pt-3 border-t border-subtle text-[10px] text-muted text-right">
                       Marco Normativo: Art. 131 Ley General de Educación
                     </div>
                   </div>
@@ -14918,7 +14918,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 {apfBoardMembers.map((member) => (
                   <div
                     key={member.id}
-                    className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3 hover:border-amber-500/40 transition-all"
+                    className="dashboard-subcard p-5 space-y-3 hover:border-amber-500/40 transition-all"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div
@@ -14934,31 +14934,31 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       >
                         {member.role.replace('_', ' ')}
                       </div>
-                      <div className="text-[10px] text-slate-500 font-mono">
+                      <div className="text-[10px] text-muted font-mono">
                         Electo: {member.appointedDate}
                       </div>
                     </div>
 
                     <div>
-                      <h4 className="font-bold text-white text-base">{member.fullName}</h4>
+                      <h4 className="font-bold text-base">{member.fullName}</h4>
                       <p className="text-xs text-amber-400/90 mt-0.5">
                         Tutor(a) de: <strong>{member.studentName}</strong> ({member.studentGrade})
                       </p>
                     </div>
 
-                    <div className="bg-slate-950/70 p-3 rounded-xl border border-slate-800/80 space-y-1 text-xs">
-                      <div className="flex items-center justify-between text-slate-400">
+                    <div className="badge badge-sky">
+                      <div className="flex items-center justify-between text-muted">
                         <div>Correo Electrónico:</div>
-                        <div className="text-slate-200 font-mono text-[11px]">{member.email}</div>
+                        <div className="text-main font-mono text-[11px]">{member.email}</div>
                       </div>
-                      <div className="flex items-center justify-between text-slate-400">
+                      <div className="flex items-center justify-between text-muted">
                         <div>Teléfono / WhatsApp:</div>
-                        <div className="text-slate-200 font-mono text-[11px]">{member.phone}</div>
+                        <div className="text-main font-mono text-[11px]">{member.phone}</div>
                       </div>
                     </div>
 
-                    <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px]">
-                      <div className="text-slate-500">Mesa Directiva 2026-2027</div>
+                    <div className="pt-2 border-t border-subtle flex items-center justify-between text-[11px]">
+                      <div className="text-muted">Mesa Directiva 2026-2027</div>
                       <div className="text-emerald-400 font-semibold">Toma de Protesta Oficial ✓</div>
                     </div>
                   </div>
@@ -14973,11 +14973,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   {schoolAssemblies.map((asemb) => (
                     <div
                       key={asemb.id}
-                      className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between space-y-4 hover:border-amber-500/40 transition-all"
+                      className="bg-surface border border-subtle rounded-2xl p-5 flex flex-col justify-between space-y-4 hover:border-amber-500/40 transition-all"
                     >
                       <div>
                         <div className="flex items-center justify-between gap-2 mb-2">
-                          <div className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
+                          <div className="badge badge-secondary font-mono text-xs">
                             {asemb.code}
                           </div>
                           <div
@@ -14995,28 +14995,28 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           {asemb.title}
                         </h3>
 
-                        <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-400 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/80 mb-3">
-                          <div>📅 Fecha: <strong className="text-white">{asemb.date}</strong></div>
-                          <div>⏰ Horario: <strong className="text-white">{asemb.time}</strong></div>
-                          <div className="col-span-2">📍 Sede: <strong className="text-white">{asemb.location}</strong></div>
+                        <div className="badge badge-sky">
+                          <div>📅 Fecha: <strong className="text-main">{asemb.date}</strong></div>
+                          <div>⏰ Horario: <strong className="text-main">{asemb.time}</strong></div>
+                          <div className="col-span-2">📍 Sede: <strong className="text-main">{asemb.location}</strong></div>
                           <div className="col-span-2 text-emerald-400 font-bold">
                             👥 Quórum Registrado: {asemb.quorumCount} tutores y representantes
                           </div>
                         </div>
 
                         <div className="space-y-1.5 mb-3">
-                          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                          <div className="text-[10px] font-bold text-muted uppercase tracking-wider">
                             Acuerdos Asentados en el Acta ({asemb.agreements.length}):
                           </div>
                           {asemb.agreements.map((agr, i) => (
-                            <div key={i} className="text-xs text-slate-300 flex items-start gap-1.5 bg-slate-950/40 p-2 rounded-lg border border-slate-800/60">
+                            <div key={i} className="badge badge-sky">
                               <div className="text-amber-400 font-bold">§{i + 1}</div>
                               <div>{agr}</div>
                             </div>
                           ))}
                         </div>
 
-                        <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800 text-[10px]">
+                        <div className="grid grid-cols-2 gap-2 pt-2 border-t border-subtle text-[10px]">
                           <div className="flex items-center gap-1 text-emerald-400 font-semibold">
                             <div>✓</div> Firmado por Dirección
                           </div>
@@ -15026,14 +15026,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
                       </div>
 
-                      <div className="pt-3 border-t border-slate-800 flex items-center justify-end">
+                      <div className="pt-3 border-t border-subtle flex items-center justify-end">
                         <button
                           onClick={() => {
                             setSelectedAssemblyForAgreement(asemb);
                             setNewAgreementInput('');
                             setShowAddAgreementModal(true);
                           }}
-                          className="bg-slate-800 hover:bg-slate-700 text-amber-400 border border-amber-500/30 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5"
+                          className="btn btn-secondary btn-sm"
                         >
                           <FileText className="w-3.5 h-3.5" />
                           + Asentar Acuerdo en Acta
@@ -15054,18 +15054,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                  <div className="badge badge-amber">
                     Normatividad INIFED / COFEPRIS / Protección Civil
                   </div>
-                  <div className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-sky-500/10 text-sky-400 border border-sky-500/20">
+                  <div className="badge badge-sky">
                     Plantel Seguro
                   </div>
                 </div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <Hammer className="w-6 h-6 text-amber-400" />
                   Infraestructura Escolar, Mantenimiento y Obra Civil
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="dashboard-section-desc">
                   Bitácora preventiva de cisternas, subestación eléctrica, impermeabilización y gestión de órdenes de trabajo para intendencia.
                 </p>
               </div>
@@ -15073,14 +15073,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   onClick={() => setShowNewWorkOrderModal(true)}
-                  className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-4 py-2.5 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   <Wrench className="w-4 h-4" />
                   <div>+ Nueva Orden de Trabajo</div>
                 </button>
                 <button
                   onClick={() => setShowNewInspectionModal(true)}
-                  className="bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl flex items-center justify-center gap-2 border border-slate-700 transition-all cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   <FileText className="w-4 h-4" />
                   <div>+ Registrar Inspección Técnica</div>
@@ -15091,60 +15091,60 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* KPIs de Mantenimiento */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="dashboard-stat-card flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                <div className="badge badge-amber">
                   <Wrench className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xl font-black text-white">
+                  <div className="text-xl font-black">
                     {facilityWorkOrders.filter((o) => o.status !== 'FINALIZADA_CON_VB' && o.status !== 'CANCELADA').length}
                   </div>
-                  <div className="text-[11px] text-slate-400">Órdenes Activas / En Curso</div>
+                  <div className="text-[11px] text-muted">Órdenes Activas / En Curso</div>
                 </div>
               </div>
 
               <div className="dashboard-stat-card flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                <div className="badge badge-emerald">
                   <CheckCircle2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xl font-black text-white">
+                  <div className="text-xl font-black">
                     {facilityInspections.filter((i) => i.overallStatus === 'CONFORME').length} / {facilityInspections.length}
                   </div>
-                  <div className="text-[11px] text-slate-400">Inspecciones Conformes</div>
+                  <div className="text-[11px] text-muted">Inspecciones Conformes</div>
                 </div>
               </div>
 
               <div className="dashboard-stat-card flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
+                <div className="badge badge-sky">
                   <DollarSign className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xl font-black text-white">
+                  <div className="text-xl font-black">
                     ${facilityWorkOrders.reduce((acc, curr) => acc + curr.totalCostMXN, 0).toLocaleString('es-MX')} MXN
                   </div>
-                  <div className="text-[11px] text-slate-400">Inversión en Mantenimiento</div>
+                  <div className="text-[11px] text-muted">Inversión en Mantenimiento</div>
                 </div>
               </div>
 
               <div className="dashboard-stat-card flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+                <div className="badge badge-purple">
                   <Building2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xl font-black text-white">5 Sistemas</div>
-                  <div className="text-[11px] text-slate-400">Redes Críticas Monitoreadas</div>
+                  <div className="text-xl font-black">5 Sistemas</div>
+                  <div className="text-[11px] text-muted">Redes Críticas Monitoreadas</div>
                 </div>
               </div>
             </div>
 
             {/* Selector de Subtabs */}
-            <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
+            <div className="flex items-center gap-2 border-b border-subtle pb-3">
               <button
                 onClick={() => setMaintenanceSubTab('work_orders')}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   maintenanceSubTab === 'work_orders'
                     ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                    : 'text-muted hover:bg-slate-100 hover:text-main'
                 }`}
               >
                 🛠️ Órdenes de Trabajo & Reparaciones ({facilityWorkOrders.length})
@@ -15155,7 +15155,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   maintenanceSubTab === 'inspections'
                     ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                    : 'text-muted hover:bg-slate-100 hover:text-main'
                 }`}
               >
                 📋 Bitácora de Inspecciones Periódicas ({facilityInspections.length})
@@ -15166,7 +15166,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   maintenanceSubTab === 'systems'
                     ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                    : 'text-muted hover:bg-slate-100 hover:text-main'
                 }`}
               >
                 🏢 Sistemas Críticos del Plantel (5)
@@ -15182,11 +15182,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       PENDIENTE: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
                       EN_EJECUCION: 'bg-sky-500/10 text-sky-400 border-sky-500/20 animate-pulse',
                       FINALIZADA_CON_VB: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-                      CANCELADA: 'bg-slate-500/10 text-slate-400 border-slate-500/20',
+                      CANCELADA: 'bg-slate-500/10 text-muted border-slate-500/20',
                     }[order.status];
 
                     const priorityColors = {
-                      BAJA: 'text-slate-400 border-slate-700 bg-slate-800/50',
+                      BAJA: 'text-muted border-subtle bg-subtle',
                       MEDIA: 'text-blue-400 border-blue-500/30 bg-blue-950/30',
                       ALTA: 'text-amber-400 border-amber-500/30 bg-amber-950/30 font-bold',
                       URGENTE: 'text-rose-400 border-rose-500/30 bg-rose-950/30 font-black animate-pulse',
@@ -15203,11 +15203,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     return (
                       <div
                         key={order.id}
-                        className="bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-slate-700 transition-all flex flex-col justify-between space-y-4 shadow-lg"
+                        className="bg-surface border border-subtle rounded-2xl p-5 hover:border-subtle transition-all flex flex-col justify-between space-y-4 shadow-lg"
                       >
                         <div className="space-y-3">
                           <div className="flex items-center justify-between gap-2">
-                            <div className="font-mono text-xs font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                            <div className="badge badge-amber font-mono">
                               {order.folio}
                             </div>
                             <div className="flex items-center gap-1.5">
@@ -15221,35 +15221,35 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           </div>
 
                           <div>
-                            <div className="text-[11px] text-slate-400 font-medium">
+                            <div className="text-[11px] text-muted font-medium">
                               {systemLabels[order.systemType] || order.systemType}
                             </div>
-                            <h3 className="text-sm font-bold text-white leading-snug mt-0.5">
+                            <h3 className="text-sm font-bold leading-snug mt-0.5">
                               {order.title}
                             </h3>
                           </div>
 
-                          <div className="bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 space-y-1.5 text-xs">
-                            <div className="flex items-center gap-2 text-slate-300">
-                              <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                          <div className="badge badge-sky">
+                            <div className="flex items-center gap-2 text-muted">
+                              <MapPin className="w-3.5 h-3.5 text-muted shrink-0" />
                               <div className="truncate">{order.areaLocation}</div>
                             </div>
-                            <div className="flex items-center gap-2 text-slate-300">
-                              <UserCheck className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                            <div className="flex items-center gap-2 text-muted">
+                              <UserCheck className="w-3.5 h-3.5 text-muted shrink-0" />
                               <div>{order.assignedWorker}</div>
                             </div>
-                            <div className="flex items-center gap-2 text-slate-400 text-[11px]">
-                              <Calendar className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                            <div className="flex items-center gap-2 text-muted text-[11px]">
+                              <Calendar className="w-3.5 h-3.5 text-muted shrink-0" />
                               <div>Compromiso: {order.targetCompletionDate}</div>
                             </div>
                           </div>
 
-                          <p className="text-xs text-slate-400 line-clamp-2">
+                          <p className="text-xs text-muted line-clamp-2">
                             {order.description}
                           </p>
 
                           {order.completionNotes && (
-                            <div className="bg-emerald-950/30 border border-emerald-500/20 p-2.5 rounded-xl text-xs text-emerald-300">
+                            <div className="badge badge-emerald">
                               <div className="font-bold text-[10px] uppercase text-emerald-400 mb-0.5">
                                 Notas de Ejecución:
                               </div>
@@ -15258,10 +15258,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           )}
                         </div>
 
-                        <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
+                        <div className="pt-3 border-t border-subtle flex items-center justify-between">
                           <div>
-                            <div className="text-[10px] text-slate-400">Inversión Total:</div>
-                            <div className="text-sm font-black text-white">
+                            <div className="text-[10px] text-muted">Inversión Total:</div>
+                            <div className="text-sm font-black">
                               ${order.totalCostMXN.toLocaleString('es-MX')} MXN
                             </div>
                           </div>
@@ -15276,7 +15276,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               });
                               setShowUpdateWorkOrderModal(true);
                             }}
-                            className="bg-slate-800 hover:bg-slate-700 text-amber-400 border border-amber-500/30 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5"
+                            className="btn btn-secondary btn-sm"
                           >
                             <Edit3 className="w-3.5 h-3.5" />
                             Actualizar Estatus
@@ -15303,15 +15303,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     return (
                       <div
                         key={insp.id}
-                        className="bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-slate-700 transition-all flex flex-col justify-between space-y-4 shadow-lg"
+                        className="bg-surface border border-subtle rounded-2xl p-5 hover:border-subtle transition-all flex flex-col justify-between space-y-4 shadow-lg"
                       >
                         <div className="space-y-3">
                           <div className="flex items-center justify-between gap-2">
-                            <div className="font-mono text-xs font-bold text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/20">
+                            <div className="badge badge-sky font-mono">
                               {insp.code}
                             </div>
                             <div className="flex items-center gap-1.5">
-                              <div className="text-[10px] px-2 py-0.5 rounded border border-slate-700 text-slate-300 bg-slate-800">
+                              <div className="badge badge-secondary text-[10px]">
                                 {insp.frequency}
                               </div>
                               <div className={`text-[10px] px-2 py-0.5 rounded border ${statusBadge}`}>
@@ -15322,8 +15322,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                           <div>
                             <h3 className="modal-title">{insp.title}</h3>
-                            <div className="text-xs text-slate-400 mt-0.5 flex items-center gap-2">
-                              <div>Inspector: <strong className="text-slate-200">{insp.inspectorName}</strong></div>
+                            <div className="text-xs text-muted mt-0.5 flex items-center gap-2">
+                              <div>Inspector: <strong className="text-main">{insp.inspectorName}</strong></div>
                               <div>•</div>
                               <div>Fecha: {insp.inspectionDate}</div>
                             </div>
@@ -15331,7 +15331,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                           {/* Checklist Verificado */}
                           <div className="space-y-1.5">
-                            <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                            <div className="text-[11px] font-bold text-muted uppercase tracking-wider">
                               Puntos de Verificación Normativa:
                             </div>
                             <div className="space-y-1">
@@ -15345,12 +15345,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 return (
                                   <div
                                     key={idx}
-                                    className="bg-slate-950/60 p-2 rounded-lg border border-slate-800 text-xs flex items-start justify-between gap-2"
+                                    className="badge badge-sky"
                                   >
                                     <div className="space-y-0.5">
-                                      <div className="text-slate-200 font-medium">{item.name}</div>
+                                      <div className="text-main font-medium">{item.name}</div>
                                       {item.notes && (
-                                        <div className="text-[11px] text-slate-400 italic">
+                                        <div className="text-[11px] text-muted italic">
                                           {item.notes}
                                         </div>
                                       )}
@@ -15365,17 +15365,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           </div>
 
                           {insp.evidenceNotes && (
-                            <div className="text-xs text-slate-400 bg-slate-800/40 p-2.5 rounded-xl border border-slate-800">
-                              <strong className="text-slate-300">Evidencia / Dictamen:</strong> {insp.evidenceNotes}
+                            <div className="dashboard-subcard text-xs p-2.5">
+                              <strong className="text-muted">Evidencia / Dictamen:</strong> {insp.evidenceNotes}
                             </div>
                           )}
                         </div>
 
-                        <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
-                          <div className="text-slate-400">
+                        <div className="pt-3 border-t border-subtle flex items-center justify-between text-xs">
+                          <div className="text-muted">
                             Próxima Revisión Programada:
                           </div>
-                          <div className="font-bold text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/20">
+                          <div className="badge badge-sky">
                             {insp.nextScheduledDate}
                           </div>
                         </div>
@@ -15390,15 +15390,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {maintenanceSubTab === 'systems' && (
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
-                    <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
+                  <div className="dashboard-subcard p-5 space-y-3">
+                    <div className="badge badge-sky">
                       <Droplets className="w-5 h-5" />
                     </div>
-                    <h3 className="text-sm font-bold text-white">Red Hidráulica, Cisternas y Tinacos</h3>
-                    <p className="text-xs text-slate-400">
+                    <h3 className="text-sm font-bold">Red Hidráulica, Cisternas y Tinacos</h3>
+                    <p className="text-xs text-muted">
                       Almacenamiento total de 50,000 litros en 2 cisternas con bombas sumergibles alternadas e hidroneumático a 42 PSI.
                     </p>
-                    <div className="space-y-1.5 text-xs text-slate-300 bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <div className="badge badge-sky">
                       <div className="flex justify-between">
                         <div>Cloración residual libre:</div>
                         <strong className="text-emerald-400">1.0 ppm (Óptimo)</strong>
@@ -15414,15 +15414,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
-                    <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                  <div className="dashboard-subcard p-5 space-y-3">
+                    <div className="badge badge-amber">
                       <Zap className="w-5 h-5" />
                     </div>
-                    <h3 className="text-sm font-bold text-white">Subestación Eléctrica y Alumbrado</h3>
-                    <p className="text-xs text-slate-400">
+                    <h3 className="text-sm font-bold">Subestación Eléctrica y Alumbrado</h3>
+                    <p className="text-xs text-muted">
                       Transformador trifásico, centros de carga balanceados e iluminación 100% LED de bajo consumo.
                     </p>
-                    <div className="space-y-1.5 text-xs text-slate-300 bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <div className="badge badge-sky">
                       <div className="flex justify-between">
                         <div>Termografía tableros:</div>
                         <strong className="text-emerald-400">Sin Puntos Calientes</strong>
@@ -15438,15 +15438,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
-                    <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                  <div className="dashboard-subcard p-5 space-y-3">
+                    <div className="badge badge-emerald">
                       <Building2 className="w-5 h-5" />
                     </div>
-                    <h3 className="text-sm font-bold text-white">Estructura e Impermeabilización</h3>
-                    <p className="text-xs text-slate-400">
+                    <h3 className="text-sm font-bold">Estructura e Impermeabilización</h3>
+                    <p className="text-xs text-muted">
                       Cubiertas de losa maciza en Edificios A y B, techumbre de canchas y malla sombra en preescolar.
                     </p>
-                    <div className="space-y-1.5 text-xs text-slate-300 bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <div className="badge badge-sky">
                       <div className="flex justify-between">
                         <div>Impermeabilizante:</div>
                         <strong className="text-emerald-400">Garantía 5 años (2025-2030)</strong>
@@ -15462,15 +15462,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
-                    <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+                  <div className="dashboard-subcard p-5 space-y-3">
+                    <div className="badge badge-purple">
                       <Key className="w-5 h-5" />
                     </div>
-                    <h3 className="text-sm font-bold text-white">Cerrajería y Salidas de Emergencia</h3>
-                    <p className="text-xs text-slate-400">
+                    <h3 className="text-sm font-bold">Cerrajería y Salidas de Emergencia</h3>
+                    <p className="text-xs text-muted">
                       Barras antipánico de apertura rápida, cerraduras de alta seguridad y control de llave maestra institucional.
                     </p>
-                    <div className="space-y-1.5 text-xs text-slate-300 bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <div className="badge badge-sky">
                       <div className="flex justify-between">
                         <div>Barras antipánico:</div>
                         <strong className="text-emerald-400">Auditorio y Puerta Norte</strong>
@@ -15486,15 +15486,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
-                    <div className="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400">
+                  <div className="dashboard-subcard p-5 space-y-3">
+                    <div className="badge badge-sky">
                       <TreePine className="w-5 h-5" />
                     </div>
-                    <h3 className="text-sm font-bold text-white">Áreas Verdes y Patios Deportivos</h3>
-                    <p className="text-xs text-slate-400">
+                    <h3 className="text-sm font-bold">Áreas Verdes y Patios Deportivos</h3>
+                    <p className="text-xs text-muted">
                       Jardines arbolados, canchas de usos múltiples y área de juegos infantiles de preescolar con caucho amortiguante.
                     </p>
-                    <div className="space-y-1.5 text-xs text-slate-300 bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <div className="badge badge-sky">
                       <div className="flex justify-between">
                         <div>Poda preventiva de árboles:</div>
                         <strong className="text-emerald-400">Trimestral</strong>
@@ -15521,18 +15521,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* Header & Acciones */}
             <div className="dashboard-card dashboard-section-header">
               <div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <Percent className="w-6 h-6 text-amber-400" />
                   Comité de Becas Institucionales y Exenciones SEP
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="dashboard-section-desc">
                   Artículo 149 Fracc. III de la Ley General de Educación (LGE) y Acuerdo 243 SEP: Cumplimiento del 5% obligatorio en exenciones sobre colegiaturas.
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-3">
                 <button
                   onClick={() => setShowNewScholarshipModal(true)}
-                  className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl transition-all flex items-center gap-2 shadow-lg shadow-amber-500/20 cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   <Percent className="w-4 h-4" />
                   + Nueva Solicitud de Beca
@@ -15558,29 +15558,29 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               return (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 font-black text-xl">
+                  <div className="dashboard-subcard p-4 flex items-center gap-4">
+                    <div className="badge badge-sky">
                       {totalEnrolled}
                     </div>
                     <div>
-                      <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Matriculados</p>
-                      <p className="text-sm font-black text-white">Alumnado Oficial Activo</p>
-                      <div className="text-[10px] text-slate-400">Base para cálculo del 5%</div>
+                      <p className="text-[11px] font-bold text-muted uppercase tracking-wider">Total Matriculados</p>
+                      <p className="text-sm font-black">Alumnado Oficial Activo</p>
+                      <div className="text-[10px] text-muted">Base para cálculo del 5%</div>
                     </div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 font-black text-xl">
+                  <div className="dashboard-subcard p-4 flex items-center gap-4">
+                    <div className="badge badge-amber">
                       {minRequired}
                     </div>
                     <div>
-                      <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Meta SEP (5% Min)</p>
-                      <p className="text-sm font-black text-white">Becas Totales Requeridas</p>
+                      <p className="text-[11px] font-bold text-muted uppercase tracking-wider">Meta SEP (5% Min)</p>
+                      <p className="text-sm font-black">Becas Totales Requeridas</p>
                       <div className="text-[10px] text-amber-400 font-semibold">Art. 149 Fracc. III LGE</div>
                     </div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center gap-4">
+                  <div className="dashboard-subcard p-4 flex items-center gap-4">
                     <div className={`w-12 h-12 rounded-xl border flex items-center justify-center font-black text-xl ${
                       isCompliant
                         ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
@@ -15589,29 +15589,29 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {fullEquivalent.toFixed(2)}
                     </div>
                     <div>
-                      <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Equivalente Otorgado</p>
+                      <p className="text-[11px] font-bold text-muted uppercase tracking-wider">Equivalente Otorgado</p>
                       <div className="flex items-center gap-2">
-                        <p className="text-sm font-black text-white">{approvedApps.length} Becados</p>
+                        <p className="text-sm font-black">{approvedApps.length} Becados</p>
                         <div className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${
                           isCompliant ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'
                         }`}>
                           {compliancePct}%
                         </div>
                       </div>
-                      <div className="text-[10px] text-slate-400">Suma ponderada de %</div>
+                      <div className="text-[10px] text-muted">Suma ponderada de %</div>
                     </div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 font-black text-lg">
+                  <div className="dashboard-subcard p-4 flex items-center gap-4">
+                    <div className="badge badge-purple">
                       $
                     </div>
                     <div>
-                      <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Subsidio Mensual</p>
+                      <p className="text-[11px] font-bold text-muted uppercase tracking-wider">Subsidio Mensual</p>
                       <p className="text-sm font-black text-purple-300">
                         ${totalSavings.toLocaleString('es-MX')} MXN
                       </p>
-                      <div className="text-[10px] text-slate-400">Exención en colegiaturas</div>
+                      <div className="text-[10px] text-muted">Exención en colegiaturas</div>
                     </div>
                   </div>
                 </div>
@@ -15619,13 +15619,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             })()}
 
             {/* Subtabs de Navegación */}
-            <div className="flex gap-2 border-b border-slate-800 pb-2 overflow-x-auto">
+            <div className="flex gap-2 border-b border-subtle pb-2 overflow-x-auto">
               <button
                 onClick={() => setScholarshipSubTab('applications')}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   scholarshipSubTab === 'applications'
                     ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    : 'text-muted hover:bg-slate-100 hover:text-main'
                 }`}
               >
                 Padrón de Solicitudes & Dictámenes ({scholarshipApplications.length})
@@ -15635,7 +15635,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   scholarshipSubTab === 'compliance'
                     ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    : 'text-muted hover:bg-slate-100 hover:text-main'
                 }`}
               >
                 Monitor Legal del 5% SEP & Fórmulas
@@ -15645,7 +15645,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   scholarshipSubTab === 'criteria'
                     ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    : 'text-muted hover:bg-slate-100 hover:text-main'
                 }`}
               >
                 Convocatoria & Tabulador Institucional
@@ -15659,20 +15659,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   {scholarshipApplications.map((app) => (
                     <div
                       key={app.id}
-                      className="bg-slate-900 border border-slate-800 hover:border-slate-700 p-5 rounded-2xl shadow-lg transition-all space-y-4"
+                      className="bg-surface border border-subtle hover:border-subtle p-5 rounded-2xl shadow-lg transition-all space-y-4"
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div>
                           <div className="flex items-center gap-2">
-                            <div className="px-2 py-0.5 rounded text-[10px] font-black bg-slate-800 text-amber-400 border border-amber-500/30">
+                            <div className="px-2 py-0.5 rounded text-[10px] font-black bg-subtle text-amber-400 border border-amber-500/30">
                               {app.folio}
                             </div>
-                            <div className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-300">
+                            <div className="badge badge-secondary text-[10px]">
                               {app.level} • {app.grade}
                             </div>
                           </div>
                           <h3 className="modal-title">{app.studentName}</h3>
-                          <p className="text-xs text-slate-400">Matrícula: {app.studentCode}</p>
+                          <p className="text-xs text-muted">Matrícula: {app.studentCode}</p>
                         </div>
                         <div
                           className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
@@ -15689,9 +15689,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 text-xs">
+                      <div className="badge badge-sky">
                         <div>
-                          <div className="text-[10px] text-slate-500 block">Tipo de Beca</div>
+                          <div className="stat-sub">Tipo de Beca</div>
                           <div className="font-bold text-amber-300">
                             {app.type === 'BECA_SEP_OBLIGATORIA'
                               ? 'SEP Obligatoria'
@@ -15705,20 +15705,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           </div>
                         </div>
                         <div>
-                          <div className="text-[10px] text-slate-500 block">Promedio Ant.</div>
-                          <div className={`font-black ${app.previousGpa >= 9.0 ? 'text-emerald-400' : 'text-slate-300'}`}>
+                          <div className="stat-sub">Promedio Ant.</div>
+                          <div className={`font-black ${app.previousGpa >= 9.0 ? 'text-emerald-400' : 'text-muted'}`}>
                             {app.previousGpa.toFixed(1)} / 10.0
                           </div>
                         </div>
                         <div>
-                          <div className="text-[10px] text-slate-500 block">Ingreso Familiar</div>
-                          <div className="font-bold text-slate-300">
+                          <div className="stat-sub">Ingreso Familiar</div>
+                          <div className="font-bold text-muted">
                             ${app.monthlyFamilyIncomeMXN.toLocaleString('es-MX')} ({app.dependentsCount} dep.)
                           </div>
                         </div>
                         <div>
-                          <div className="text-[10px] text-slate-500 block">Descuento</div>
-                          <div className="font-black text-white">
+                          <div className="stat-sub">Descuento</div>
+                          <div className="font-black">
                             {app.approvedDiscountPercentage !== undefined
                               ? `${app.approvedDiscountPercentage}% Aprobado`
                               : `${app.requestedDiscountPercentage}% Solicitado`}
@@ -15727,9 +15727,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </div>
 
                       {/* Cuota estándar vs final */}
-                      <div className="flex items-center justify-between text-xs bg-slate-800/40 px-3 py-2 rounded-xl">
-                        <div className="text-slate-400">
-                          Colegiatura regular: <strong className="text-slate-200">${app.standardTuitionMXN.toLocaleString('es-MX')} MXN</strong>
+                      <div className="dashboard-subcard flex items-center justify-between text-xs px-3 py-2">
+                        <div className="text-muted">
+                          Colegiatura regular: <strong className="text-main">${app.standardTuitionMXN.toLocaleString('es-MX')} MXN</strong>
                         </div>
                         {app.finalTuitionMXN !== undefined && (
                           <div className="text-emerald-400 font-bold">
@@ -15743,13 +15743,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <div className="bg-amber-500/5 border border-amber-500/10 p-3 rounded-xl text-xs space-y-1">
                           <div className="flex items-center justify-between text-[11px] font-bold text-amber-400">
                             <div>Dictamen: {app.reviewerName || 'Comité de Becas'}</div>
-                            <div className="text-slate-500">{app.resolutionDate}</div>
+                            <div className="text-muted">{app.resolutionDate}</div>
                           </div>
-                          <p className="text-slate-300 italic">"{app.resolutionNotes}"</p>
+                          <p className="text-muted italic">"{app.resolutionNotes}"</p>
                         </div>
                       )}
 
-                      <div className="flex items-center justify-between pt-2 border-t border-slate-800 text-[11px] text-slate-500">
+                      <div className="flex items-center justify-between pt-2 border-t border-subtle text-[11px] text-muted">
                         <div>Recepción: {app.submissionDate}</div>
                         <button
                           onClick={() => {
@@ -15762,7 +15762,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             });
                             setShowEvaluateScholarshipModal(true);
                           }}
-                          className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold rounded-lg transition-colors cursor-pointer"
+                          className="btn btn-secondary btn-sm"
                         >
                           ⚖️ Dictaminar Solicitud
                         </button>
@@ -15776,21 +15776,21 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* Subtab 2: Monitor Legal 5% SEP */}
             {scholarshipSubTab === 'compliance' && (
               <div className="space-y-6">
-                <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-6">
+                <div className="dashboard-card p-6 space-y-6">
                   <div>
                     <h3 className="modal-title">
                       <Scale className="w-5 h-5 text-amber-400" />
                       Marco Jurídico de Exenciones: Artículo 149 Fracc. III de la LGE
                     </h3>
-                    <p className="text-xs text-slate-400 mt-1">
+                    <p className="dashboard-section-desc">
                       "Otorgar becas que cubran la totalidad de las cuotas de inscripción y de colegiaturas que hayan sido autorizadas, a por lo menos un 5% del total de alumnos inscritos en cada plan de estudios con RVOE. Las becas podrán distribuirse en becas parciales no menores al 25%."
                     </p>
                   </div>
 
                   {/* Tabla de Equivalencias de Becas Parciales */}
                   <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs text-slate-300">
-                      <thead className="bg-slate-950 text-slate-400 uppercase text-[10px] font-bold border-b border-slate-800">
+                    <table className="w-full text-left text-xs text-muted">
+                      <thead className="badge badge-sky">
                         <tr>
                           <th className="p-3">Porcentaje de Beca</th>
                           <th className="p-3">Equivalencia Unitaria</th>
@@ -15799,7 +15799,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <th className="p-3">Ahorro Mensual Total</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-800/60">
+                      <tbody className="table-body">
                         {[100, 75, 50, 25].map((pct) => {
                           const matching = scholarshipApplications.filter(
                             (s) => s.status === 'APROBADA' && s.approvedDiscountPercentage === pct
@@ -15813,12 +15813,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                           return (
                             <tr key={pct} className="table-row-hover">
-                              <td className="p-3 font-bold text-white">
-                                <div className="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                              <td className="p-3 font-bold">
+                                <div className="badge badge-amber">
                                   {pct}% de Descuento
                                 </div>
                               </td>
-                              <td className="p-3 text-slate-400">
+                              <td className="p-3 text-muted">
                                 {pct === 100 ? '1.0 beca completa' : `${(pct / 100).toFixed(2)} de beca completa`}
                               </td>
                               <td className="p-3 font-black text-sky-400">{count} alumnos</td>
@@ -15832,23 +15832,23 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
 
                   {/* Garantías y Prohibiciones de Ley */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-800">
-                    <div className="bg-slate-950/80 p-4 rounded-xl border border-emerald-500/20">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-subtle">
+                    <div className="badge badge-emerald">
                       <h4 className="text-xs font-bold text-emerald-400 flex items-center gap-1.5 mb-1.5">
                         <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                         Garantía de Derechos del Alumno Becario
                       </h4>
-                      <p className="text-[11px] text-slate-300 leading-relaxed">
+                      <p className="text-[11px] text-muted leading-relaxed">
                         Queda terminantemente prohibido condicionar el otorgamiento o la conservación de la beca a la realización de contraprestaciones laborales, donaciones voluntarias forzosas o venta de boletos de rifas. El becario goza de todos los derechos de cualquier alumno regular.
                       </p>
                     </div>
 
-                    <div className="bg-slate-950/80 p-4 rounded-xl border border-amber-500/20">
+                    <div className="badge badge-amber">
                       <h4 className="text-xs font-bold text-amber-400 flex items-center gap-1.5 mb-1.5">
                         <Scale className="w-4 h-4 text-amber-400" />
                         Integración Colegiada del Comité de Becas
                       </h4>
-                      <p className="text-[11px] text-slate-300 leading-relaxed">
+                      <p className="text-[11px] text-muted leading-relaxed">
                         El dictamen de asignación es emitido por el Comité Mixto integrado por el Director General del Plantel, un representante de la Mesa Directiva APF/CEPS electo en asamblea, y la Dirección Administrativa.
                       </p>
                     </div>
@@ -15862,34 +15862,34 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Convocatoria Vigente */}
-                  <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-4">
+                  <div className="dashboard-card p-6 space-y-4">
                     <h3 className="modal-title">
                       <FileBadge className="w-5 h-5 text-amber-400" />
                       Bases de la Convocatoria Anual 2026-2027
                     </h3>
-                    <div className="space-y-3 text-xs text-slate-300">
+                    <div className="space-y-3 text-xs text-muted">
                       <div className="dashboard-subcard">
-                        <strong className="text-white block mb-1">1. Requisitos Académicos:</strong>
+                        <strong className="block mb-1">1. Requisitos Académicos:</strong>
                         <div>Haber cursado al menos un ciclo escolar previo en la institución y contar con promedio mínimo general de 8.5 en escala de 10 sin materias reprobadas.</div>
                       </div>
                       <div className="dashboard-subcard">
-                        <strong className="text-white block mb-1">2. Estudio Socioeconómico:</strong>
+                        <strong className="block mb-1">2. Estudio Socioeconómico:</strong>
                         <div>Presentar comprobantes de ingresos familiares de los últimos 3 meses, carta de ingresos no comprobables bajo protesta de decir verdad y recibo de luz CFE reciente.</div>
                       </div>
                       <div className="dashboard-subcard">
-                        <strong className="text-white block mb-1">3. Criterios de Ponderación:</strong>
+                        <strong className="block mb-1">3. Criterios de Ponderación:</strong>
                         <div>Prioridad a familias con dos o más hijos matriculados simultáneamente, orfandad parcial/total o disminución intempestiva de ingresos por causas médicas graves.</div>
                       </div>
                     </div>
                   </div>
 
                   {/* Tabulador y Causales de Pérdida */}
-                  <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-4">
+                  <div className="dashboard-card p-6 space-y-4">
                     <h3 className="modal-title">
                       <AlertCircle className="w-5 h-5 text-rose-400" />
                       Causales de Pérdida o Cancelación de Beca
                     </h3>
-                    <div className="space-y-3 text-xs text-slate-300">
+                    <div className="space-y-3 text-xs text-muted">
                       <div className="dashboard-subcard">
                         <strong className="text-rose-400 block mb-1">Baja de Promedio:</strong>
                         <div>Obtener un promedio trimestral inferior a 8.5 en Primaria o presentar reportes por indisciplina grave que contravengan el Reglamento Escolar.</div>
@@ -15920,13 +15920,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">
                     CONTROL ESCOLAR & VALIDEZ SEP
                   </div>
-                  <div className="text-xs text-slate-400">CCT: 09PPR1849X • RVOE SEP-2022-0498</div>
+                  <div className="text-xs text-muted">CCT: 09PPR1849X • RVOE SEP-2022-0498</div>
                 </div>
-                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                <h2 className="text-xl font-bold flex items-center gap-2">
                   <ScrollText className="w-6 h-6 text-sky-400" />
                   Certificación Digital de Documentos, Kárdex & Validador QR
                 </h2>
-                <p className="text-xs text-slate-400 mt-1 max-w-2xl">
+                <p className="text-xs text-muted mt-1 max-w-2xl">
                   Emisión automatizada de constancias de estudio con sello digital criptográfico SHA-256 y código QR de cotejo en línea.
                   Historial académico multigrado para traslados y trámites ante SEP, pasaportes y becas.
                 </p>
@@ -15935,14 +15935,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setCertificatesSubTab('validator')}
-                  className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-sky-300 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border border-slate-700 shadow-md cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   <QrCode className="w-4 h-4" />
                   <div>Cotejar Código QR</div>
                 </button>
                 <button
                   onClick={() => setShowNewCertificateModal(true)}
-                  className="px-4 py-2.5 bg-sky-500 hover:bg-sky-400 text-slate-950 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-lg shadow-sky-500/20 cursor-pointer"
+                  className="btn btn-primary btn-sm"
                 >
                   <FileText className="w-4 h-4" />
                   <div>+ Emitir Constancia</div>
@@ -15953,36 +15953,36 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* KPI Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="dashboard-stat-card">
-                <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
+                <div className="flex items-center justify-between text-muted text-xs mb-1">
                   <div>Documentos Emitidos</div>
                   <FileCheck className="w-4 h-4 text-sky-400" />
                 </div>
-                <div className="text-2xl font-black text-white">{officialCertificates.length}</div>
+                <div className="stat-value">{officialCertificates.length}</div>
                 <p className="text-[11px] text-sky-400/90 mt-1">Con sello criptográfico oficial</p>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
+                <div className="flex items-center justify-between text-muted text-xs mb-1">
                   <div>Descargas & Consultas QR</div>
                   <QrCode className="w-4 h-4 text-emerald-400" />
                 </div>
-                <div className="text-2xl font-black text-emerald-400">
+                <div className="stat-value text-success">
                   {officialCertificates.reduce((acc, c) => acc + c.downloadCount, 0)}
                 </div>
                 <p className="text-[11px] text-emerald-400/90 mt-1">Verificaciones exitosas</p>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
+                <div className="flex items-center justify-between text-muted text-xs mb-1">
                   <div>Vigencia Reglamentaria</div>
                   <Clock className="w-4 h-4 text-amber-400" />
                 </div>
-                <div className="text-2xl font-black text-white">90 Días</div>
+                <div className="stat-value">90 Días</div>
                 <p className="text-[11px] text-amber-400/90 mt-1">Validez legal en dependencias</p>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
+                <div className="flex items-center justify-between text-muted text-xs mb-1">
                   <div>Sello de Autenticidad</div>
                   <ShieldCheck className="w-4 h-4 text-indigo-400" />
                 </div>
@@ -15992,13 +15992,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             {/* Subtabs Selector */}
-            <div className="flex items-center gap-2 border-b border-slate-800 pb-3 overflow-x-auto">
+            <div className="flex items-center gap-2 border-b border-subtle pb-3 overflow-x-auto">
               <button
                 onClick={() => setCertificatesSubTab('certificates')}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                   certificatesSubTab === 'certificates'
                     ? 'bg-sky-500 text-slate-950 shadow-md shadow-sky-500/20'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    : 'text-muted hover:bg-slate-100 hover:text-main'
                 }`}
               >
                 <ScrollText className="w-4 h-4" />
@@ -16010,7 +16010,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                   certificatesSubTab === 'kardex'
                     ? 'bg-sky-500 text-slate-950 shadow-md shadow-sky-500/20'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    : 'text-muted hover:bg-slate-100 hover:text-main'
                 }`}
               >
                 <GraduationCap className="w-4 h-4" />
@@ -16022,7 +16022,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                   certificatesSubTab === 'validator'
                     ? 'bg-sky-500 text-slate-950 shadow-md shadow-sky-500/20'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    : 'text-muted hover:bg-slate-100 hover:text-main'
                 }`}
               >
                 <QrCode className="w-4 h-4" />
@@ -16034,9 +16034,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {certificatesSubTab === 'certificates' && (
               <div className="space-y-4">
                 {/* Filters */}
-                <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex flex-wrap items-center justify-between gap-4">
+                <div className="dashboard-subcard p-4 flex flex-wrap items-center justify-between gap-4">
                   <div className="flex items-center gap-2">
-                    <div className="text-xs text-slate-400 font-medium">Filtrar por tipo:</div>
+                    <div className="text-xs text-muted font-medium">Filtrar por tipo:</div>
                     <select
                       value={selectedCertTypeFilter}
                       onChange={(e) => setSelectedCertTypeFilter(e.target.value)}
@@ -16050,8 +16050,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <option value="KARDEX_HISTORICO">Kárdex Histórico</option>
                     </select>
                   </div>
-                  <div className="text-xs text-slate-400">
-                    Mostrando <strong className="text-white">
+                  <div className="text-xs text-muted">
+                    Mostrando <strong className="text-main">
                       {officialCertificates.filter((c) => selectedCertTypeFilter === 'ALL' || c.type === selectedCertTypeFilter).length}
                     </strong> documentos
                   </div>
@@ -16064,13 +16064,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     .map((cert) => (
                       <div
                         key={cert.id}
-                        className="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-xl flex flex-col justify-between hover:border-slate-700 transition-all space-y-4"
+                        className="bg-surface border border-subtle p-5 rounded-2xl shadow-xl flex flex-col justify-between hover:border-subtle transition-all space-y-4"
                       >
                         <div className="space-y-3">
                           <div className="flex items-start justify-between gap-2">
                             <div>
                               <div className="flex items-center gap-2 mb-1">
-                                <div className="font-mono text-xs font-bold text-sky-400 bg-sky-950/80 border border-sky-800/60 px-2 py-0.5 rounded-lg">
+                                <div className="badge badge-sky font-mono">
                                   {cert.folio}
                                 </div>
                                 <div className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${
@@ -16082,7 +16082,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 </div>
                               </div>
                               <h3 className="modal-title">{cert.studentName}</h3>
-                              <p className="text-xs text-slate-400 font-mono">
+                              <p className="text-xs text-muted font-mono">
                                 Matrícula: {cert.studentCode} • CURP: {cert.curp}
                               </p>
                             </div>
@@ -16093,17 +16093,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 setSelectedCertForDetail(cert);
                                 setShowCertificateDetailModal(true);
                               }}
-                              className="p-2.5 bg-slate-950 border border-slate-800 rounded-xl hover:border-sky-500/50 hover:bg-slate-800 transition-all cursor-pointer group"
+                              className="btn btn-secondary"
                               title="Ver Código QR Oficial"
                             >
                               <QrCode className="w-7 h-7 text-sky-400 group-hover:scale-105 transition-transform" />
                             </button>
                           </div>
 
-                          <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs space-y-1.5">
-                            <div className="flex justify-between text-slate-400">
+                          <div className="badge badge-sky">
+                            <div className="flex justify-between text-muted">
                               <div>Tipo de Constancia:</div>
-                              <div className="font-semibold text-white">
+                              <div className="font-semibold">
                                 {cert.type === 'CONSTANCIA_ESTUDIOS_SIMPLE'
                                   ? 'Estudios Simple'
                                   : cert.type === 'CONSTANCIA_INSCRIPCION'
@@ -16115,38 +16115,38 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   : 'Kárdex Histórico'}
                               </div>
                             </div>
-                            <div className="flex justify-between text-slate-400">
+                            <div className="flex justify-between text-muted">
                               <div>Grado / Grupo:</div>
-                              <div className="font-semibold text-slate-200">{cert.grade} ({cert.groupName})</div>
+                              <div className="font-semibold text-main">{cert.grade} ({cert.groupName})</div>
                             </div>
                             {cert.averageGrade && (
-                              <div className="flex justify-between text-slate-400">
+                              <div className="flex justify-between text-muted">
                                 <div>Promedio Registrado:</div>
                                 <div className="font-bold text-amber-400">{cert.averageGrade.toFixed(1)}</div>
                               </div>
                             )}
-                            <div className="flex justify-between text-slate-400">
+                            <div className="flex justify-between text-muted">
                               <div>Emisión / Vence:</div>
-                              <div className="text-slate-300 font-mono">{cert.issueDate} / {cert.validUntil}</div>
+                              <div className="text-muted font-mono">{cert.issueDate} / {cert.validUntil}</div>
                             </div>
                           </div>
 
-                          <div className="text-[11px] text-slate-400">
-                            <div className="text-slate-500 block mb-0.5">Sello Digital Criptográfico (SHA-256):</div>
-                            <div className="font-mono text-slate-400 bg-slate-950 px-2 py-1 rounded-md block truncate border border-slate-800">
+                          <div className="text-[11px] text-muted">
+                            <div className="text-muted block mb-0.5">Sello Digital Criptográfico (SHA-256):</div>
+                            <div className="badge badge-sky font-mono">
                               {cert.digitalSeal}
                             </div>
                           </div>
 
                           {cert.notes && (
-                            <p className="text-xs text-slate-400 italic bg-slate-950/40 p-2 rounded-lg border border-slate-800/40">
+                            <p className="badge badge-sky">
                               "{cert.notes}"
                             </p>
                           )}
                         </div>
 
-                        <div className="flex items-center justify-between pt-3 border-t border-slate-800/80">
-                          <div className="text-[11px] text-slate-500">
+                        <div className="flex items-center justify-between pt-3 border-t border-subtle">
+                          <div className="text-[11px] text-muted">
                             Firma: {cert.issuedByDirector} ({cert.directorCedula})
                           </div>
 
@@ -16154,7 +16154,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             {cert.status === 'EMITIDA' && (
                               <button
                                 onClick={() => handleRevokeCertificate(cert.id)}
-                                className="px-2.5 py-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded-lg text-xs font-semibold transition-all cursor-pointer"
+                                className="btn btn-danger btn-sm"
                                 title="Revocar Documento"
                               >
                                 Revocar
@@ -16165,7 +16165,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 setSelectedCertForDetail(cert);
                                 setShowCertificateDetailModal(true);
                               }}
-                              className="px-3 py-1.5 bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+                              className="btn btn-primary btn-sm"
                             >
                               <FileCheck className="w-3.5 h-3.5" />
                               <div>Ver Documento</div>
@@ -16182,10 +16182,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {certificatesSubTab === 'kardex' && (
               <div className="space-y-6">
                 {/* Header Selector */}
-                <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="bg-surface border border-subtle p-6 rounded-2xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div>
-                    <div className="text-xs text-slate-400 block mb-1">Historial Escolar Consolidado</div>
-                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                    <div className="text-xs text-muted block mb-1">Historial Escolar Consolidado</div>
+                    <h3 className="text-lg font-bold flex items-center gap-2">
                       <GraduationCap className="w-5 h-5 text-sky-400" />
                       Trayectoria Curricular & Evaluaciones por Ciclo Escolar
                     </h3>
@@ -16194,7 +16194,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="flex items-center gap-3">
                     <button
                       onClick={() => window.print()}
-                      className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer"
+                      className="btn btn-secondary btn-sm"
                     >
                       <Printer className="w-4 h-4" />
                       <div>Imprimir Kárdex Oficial</div>
@@ -16203,22 +16203,22 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 {/* Kardex Sheet */}
-                <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-6">
+                <div className="dashboard-card p-6 space-y-6">
                   {/* Official Institutional Banner */}
-                  <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div className="badge badge-sky">
                     <div>
                       <div className="text-xs font-bold text-sky-400 uppercase tracking-wide">
                         COLEGIO HIDALGO DE MÉXICO • CONTROL ESCOLAR
                       </div>
-                      <div className="text-base font-black text-white mt-0.5">{kardexRecord.studentName}</div>
-                      <div className="text-xs text-slate-400 font-mono mt-1">
+                      <div className="text-base font-black mt-0.5">{kardexRecord.studentName}</div>
+                      <div className="text-xs text-muted font-mono mt-1">
                         Matrícula: {kardexRecord.studentCode} • CURP: {kardexRecord.curp} • Nivel: {kardexRecord.level}
                       </div>
                     </div>
 
                     <div className="text-right">
-                      <div className="text-xs text-slate-400">{kardexRecord.cctSchoolCode}</div>
-                      <div className="text-xs text-slate-400">{kardexRecord.officialRvoe}</div>
+                      <div className="text-xs text-muted">{kardexRecord.cctSchoolCode}</div>
+                      <div className="text-xs text-muted">{kardexRecord.officialRvoe}</div>
                       <div className="mt-1.5 inline-flex items-center gap-1.5 bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-lg text-xs font-bold border border-emerald-500/30">
                         Promedio Ponderado General: {kardexRecord.cumulativeAverage.toFixed(1)}
                       </div>
@@ -16228,11 +16228,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   {/* Cycles Breakdown */}
                   <div className="space-y-4">
                     {kardexRecord.cyclesHistory.map((cycle, idx) => (
-                      <div key={idx} className="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-3">
-                        <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                      <div key={idx} className="badge badge-sky">
+                        <div className="flex items-center justify-between border-b border-subtle pb-2">
                           <div>
-                            <div className="text-xs font-bold text-white">{cycle.cycleName}</div>
-                            <div className="text-xs text-slate-400 ml-2">({cycle.gradeLevel})</div>
+                            <div className="text-xs font-bold">{cycle.cycleName}</div>
+                            <div className="text-xs text-muted ml-2">({cycle.gradeLevel})</div>
                           </div>
                           <div className="flex items-center gap-2">
                             <div className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">
@@ -16248,13 +16248,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           {cycle.subjects.map((sub, sIdx) => (
                             <div
                               key={sIdx}
-                              className="p-2.5 bg-slate-900 border border-slate-800/80 rounded-lg flex items-center justify-between text-xs"
+                              className="dashboard-subcard p-2.5 flex items-center justify-between text-xs"
                             >
                               <div>
-                                <div className="text-slate-200 font-medium">{sub.name}</div>
-                                <div className="text-[10px] text-slate-500">{sub.field.replace(/_/g, ' ')}</div>
+                                <div className="text-main font-medium">{sub.name}</div>
+                                <div className="text-[10px] text-muted">{sub.field.replace(/_/g, ' ')}</div>
                               </div>
-                              <div className="font-bold text-white bg-slate-950 px-2 py-1 rounded border border-slate-800 font-mono">
+                              <div className="badge badge-sky font-mono">
                                 {sub.finalGrade.toFixed(1)}
                               </div>
                             </div>
@@ -16265,12 +16265,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
 
                   {/* Security Footer */}
-                  <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs">
+                  <div className="badge badge-sky">
                     <div className="space-y-1">
-                      <div className="text-slate-400 font-medium">Sello Digital Criptográfico de Certificación:</div>
-                      <div className="font-mono text-[11px] text-slate-500 break-all">{kardexRecord.digitalSeal}</div>
+                      <div className="text-muted font-medium">Sello Digital Criptográfico de Certificación:</div>
+                      <div className="font-mono text-[11px] text-muted break-all">{kardexRecord.digitalSeal}</div>
                     </div>
-                    <div className="text-right whitespace-nowrap text-slate-400 text-[11px]">
+                    <div className="text-right whitespace-nowrap text-muted text-[11px]">
                       Token: <div className="font-mono text-sky-400">{kardexRecord.verificationToken}</div>
                       <br />
                       Actualizado: {new Date(kardexRecord.lastUpdated).toLocaleDateString()}
@@ -16283,14 +16283,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* Subtab 3: Validador Público de QR & Folio */}
             {certificatesSubTab === 'validator' && (
               <div className="space-y-6">
-                <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-4">
+                <div className="dashboard-card p-6 space-y-4">
                   <div className="flex items-center gap-3">
                     <div className="p-3 bg-sky-500/20 text-sky-400 rounded-xl border border-sky-500/30">
                       <QrCode className="w-6 h-6" />
                     </div>
                     <div>
                       <h3 className="modal-title">Módulo de Cotejo Público y Verificación de Autenticidad</h3>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-muted">
                         Permite a embajadas, dependencias oficiales (SEP, IMSS, Bienestar) y otras instituciones cotejar la validez de un documento oficial emitido por este plantel.
                       </p>
                     </div>
@@ -16311,7 +16311,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         />
                         <button
                           type="submit"
-                          className="px-5 py-2.5 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs rounded-xl transition-all shadow-md shadow-sky-500/20 cursor-pointer flex items-center justify-center gap-2"
+                          className="btn btn-primary btn-sm"
                         >
                           <ShieldCheck className="w-4 h-4" />
                           <div>Validar Autenticidad</div>
@@ -16320,19 +16320,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
 
                     {/* Quick Demo Chips */}
-                    <div className="flex flex-wrap items-center gap-2 pt-1 text-xs text-slate-400">
+                    <div className="flex flex-wrap items-center gap-2 pt-1 text-xs text-muted">
                       <div>Probar token de ejemplo:</div>
                       <button
                         type="button"
                         onClick={() => setVerifierQueryToken('tok-ce-7f9a1b2c3d4e')}
-                        className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-sky-300 rounded-lg font-mono text-[11px] border border-slate-700 cursor-pointer"
+                        className="btn btn-secondary btn-sm"
                       >
                         tok-ce-7f9a1b2c3d4e (Carlos - Válido)
                       </button>
                       <button
                         type="button"
                         onClick={() => setVerifierQueryToken('CI-2026-PRI-014')}
-                        className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-sky-300 rounded-lg font-mono text-[11px] border border-slate-700 cursor-pointer"
+                        className="btn btn-secondary btn-sm"
                       >
                         CI-2026-PRI-014 (Sofía - Folio)
                       </button>
@@ -16353,32 +16353,32 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <AlertCircle className="w-6 h-6 text-rose-400 flex-shrink-0 mt-0.5" />
                         )}
                         <div className="space-y-2 flex-1">
-                          <div className="font-bold text-sm text-white">{verifierResult.message}</div>
+                          <div className="font-bold text-sm">{verifierResult.message}</div>
 
                           {verifierResult.certificate && (
-                            <div className="p-4 bg-slate-950/80 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1.5">
+                            <div className="badge badge-sky">
                               <div className="flex justify-between">
-                                <div className="text-slate-400">Alumno:</div>
-                                <div className="font-bold text-white">{verifierResult.certificate.studentName}</div>
+                                <div className="text-muted">Alumno:</div>
+                                <div className="font-bold">{verifierResult.certificate.studentName}</div>
                               </div>
                               <div className="flex justify-between">
-                                <div className="text-slate-400">Folio Oficial SEP:</div>
+                                <div className="text-muted">Folio Oficial SEP:</div>
                                 <div className="font-mono text-sky-400 font-bold">{verifierResult.certificate.folio}</div>
                               </div>
                               <div className="flex justify-between">
-                                <div className="text-slate-400">Tipo de Documento:</div>
-                                <div className="font-semibold text-white">{verifierResult.certificate.type.replace(/_/g, ' ')}</div>
+                                <div className="text-muted">Tipo de Documento:</div>
+                                <div className="font-semibold">{verifierResult.certificate.type.replace(/_/g, ' ')}</div>
                               </div>
                               <div className="flex justify-between">
-                                <div className="text-slate-400">Nivel y Grado:</div>
+                                <div className="text-muted">Nivel y Grado:</div>
                                 <div>{verifierResult.certificate.grade} ({verifierResult.certificate.groupName})</div>
                               </div>
                               <div className="flex justify-between">
-                                <div className="text-slate-400">Fecha de Expedición / Caducidad:</div>
+                                <div className="text-muted">Fecha de Expedición / Caducidad:</div>
                                 <div className="font-mono">{verifierResult.certificate.issueDate} / {verifierResult.certificate.validUntil}</div>
                               </div>
                               <div className="flex justify-between">
-                                <div className="text-slate-400">Emisor Autorizado:</div>
+                                <div className="text-muted">Emisor Autorizado:</div>
                                 <div>{verifierResult.certificate.issuedByDirector} ({verifierResult.certificate.directorCedula})</div>
                               </div>
                             </div>
@@ -16403,13 +16403,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">
                     SUPERVISIÓN DE ZONA 14 • SECTOR 05
                   </div>
-                  <div className="text-xs text-slate-400">CCT: 09PPR1849X • RVOE SEP-2022-0498</div>
+                  <div className="text-xs text-muted">CCT: 09PPR1849X • RVOE SEP-2022-0498</div>
                 </div>
-                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                <h2 className="text-xl font-bold flex items-center gap-2">
                   <ShieldCheck className="w-6 h-6 text-sky-400" />
                   Auditoría Forense, Trazabilidad Inmutable & Supervisión SEP
                 </h2>
-                <p className="text-xs text-slate-400 mt-1 max-w-2xl">
+                <p className="text-xs text-muted mt-1 max-w-2xl">
                   Registro criptográfico inmutable con sellado SHA-256 encadenado y no-repudio. Trazabilidad rigurosa de
                   rectificaciones de calificaciones, movimientos de matrícula, becas de ley (Art. 149 LGE) e inspecciones escolares.
                 </p>
@@ -16418,7 +16418,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setShowNewSupervisionModal(true)}
-                  className="px-4 py-2.5 bg-sky-500 hover:bg-sky-400 text-slate-950 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-lg shadow-sky-500/20 cursor-pointer"
+                  className="btn btn-primary btn-sm"
                 >
                   <FileCheck className="w-4 h-4" />
                   <div>+ Registrar Visita de Supervisión</div>
@@ -16429,50 +16429,50 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* KPI Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="dashboard-stat-card">
-                <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
+                <div className="flex items-center justify-between text-muted text-xs mb-1">
                   <div>Cumplimiento Normativo</div>
                   <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                 </div>
-                <div className="text-2xl font-black text-emerald-400">99.2%</div>
-                <div className="text-[10px] text-slate-400 mt-1">Conforme SEP • Zona Escolar 14</div>
+                <div className="stat-value text-success">99.2%</div>
+                <div className="text-[10px] text-muted mt-1">Conforme SEP • Zona Escolar 14</div>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
+                <div className="flex items-center justify-between text-muted text-xs mb-1">
                   <div>Eventos Inmutables</div>
                   <ShieldAlert className="w-4 h-4 text-sky-400" />
                 </div>
-                <div className="text-2xl font-black text-white">{auditLogs.length}</div>
-                <div className="text-[10px] text-slate-400 mt-1">Bloques encadenados SHA-256</div>
+                <div className="stat-value">{auditLogs.length}</div>
+                <div className="text-[10px] text-muted mt-1">Bloques encadenados SHA-256</div>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
+                <div className="flex items-center justify-between text-muted text-xs mb-1">
                   <div>Visitas de Supervisión</div>
                   <FileText className="w-4 h-4 text-indigo-400" />
                 </div>
-                <div className="text-2xl font-black text-white">{supervisionInspections.length}</div>
-                <div className="text-[10px] text-slate-400 mt-1">Actas oficiales rubricadas</div>
+                <div className="stat-value">{supervisionInspections.length}</div>
+                <div className="text-[10px] text-muted mt-1">Actas oficiales rubricadas</div>
               </div>
 
               <div className="dashboard-stat-card">
-                <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
+                <div className="flex items-center justify-between text-muted text-xs mb-1">
                   <div>Integridad Criptográfica</div>
                   <Lock className="w-4 h-4 text-purple-400" />
                 </div>
-                <div className="text-2xl font-black text-purple-400">Tamper-Free</div>
-                <div className="text-[10px] text-slate-400 mt-1">Cero alteraciones de historial</div>
+                <div className="stat-value text-purple">Tamper-Free</div>
+                <div className="text-[10px] text-muted mt-1">Cero alteraciones de historial</div>
               </div>
             </div>
 
             {/* Subtabs Selector */}
-            <div className="flex border-b border-slate-800 gap-6 text-sm font-bold">
+            <div className="flex border-b border-subtle gap-6 text-sm font-bold">
               <button
                 onClick={() => setAuditSubTab('logs')}
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-colors border-b-2 ${
                   auditSubTab === 'logs'
                     ? 'border-sky-500 text-sky-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <ShieldCheck className="w-4 h-4" />
@@ -16484,7 +16484,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-colors border-b-2 ${
                   auditSubTab === 'inspections'
                     ? 'border-sky-500 text-sky-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <FileCheck className="w-4 h-4" />
@@ -16496,7 +16496,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`pb-3 flex items-center gap-2 cursor-pointer transition-colors border-b-2 ${
                   auditSubTab === 'dossier'
                     ? 'border-sky-500 text-sky-400'
-                    : 'border-transparent text-slate-400 hover:text-white'
+                    : 'border-transparent text-muted hover:text-white'
                 }`}
               >
                 <CheckCircle2 className="w-4 h-4" />
@@ -16508,7 +16508,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {auditSubTab === 'logs' && (
               <div className="space-y-4">
                 {/* Filtros */}
-                <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex flex-col md:flex-row gap-4 items-center justify-between">
+                <div className="dashboard-subcard p-4 flex flex-col md:flex-row gap-4 items-center justify-between">
                   <div className="flex-1 w-full">
                     <input
                       type="text"
@@ -16567,26 +16567,26 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         CRITICO: 'bg-rose-500/20 text-rose-300 border-rose-500/30',
                         ALERTA_NORMATIVA: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
                         AVISO: 'bg-sky-500/20 text-sky-300 border-sky-500/30',
-                        INFO: 'bg-slate-700/40 text-slate-300 border-slate-600/40',
+                        INFO: 'bg-slate-200 text-slate-700/40 text-muted border-slate-600/40',
                       }[log.severity];
 
                       return (
                         <div
                           key={log.id}
-                          className="bg-slate-900 border border-slate-800 hover:border-slate-700 p-5 rounded-2xl shadow-lg transition-all space-y-3"
+                          className="bg-surface border border-subtle hover:border-subtle p-5 rounded-2xl shadow-lg transition-all space-y-3"
                         >
-                          <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
+                          <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-subtle pb-3">
                             <div className="flex items-center gap-2 flex-wrap">
-                              <div className="font-mono text-xs font-bold text-sky-400 bg-sky-950/60 px-2 py-0.5 rounded border border-sky-800">
+                              <div className="badge badge-sky font-mono">
                                 {log.folio}
                               </div>
                               <div className={`px-2 py-0.5 rounded text-[10px] font-bold border ${severityBadge}`}>
                                 {log.severity}
                               </div>
-                              <div className="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-800 text-slate-300 border border-slate-700">
+                              <div className="badge badge-secondary text-[10px]">
                                 {log.category.replace(/_/g, ' ')}
                               </div>
-                              <div className="text-[11px] text-slate-400">
+                              <div className="text-[11px] text-muted">
                                 {new Date(log.timestamp).toLocaleString('es-MX', {
                                   year: 'numeric',
                                   month: 'short',
@@ -16599,7 +16599,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                             <button
                               onClick={() => handleVerifyLogIntegrity(log)}
-                              className="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold flex items-center gap-1.5 border border-slate-700 cursor-pointer self-start md:self-auto"
+                              className="btn btn-secondary btn-sm"
                             >
                               <Lock className="w-3.5 h-3.5 text-emerald-400" />
                               <div>Verificar Hash SHA-256</div>
@@ -16607,11 +16607,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           </div>
 
                           <div>
-                            <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                            <h4 className="text-sm font-bold flex items-center gap-2">
                               {log.actionName}
                               {log.studentName && (
-                                <div className="text-xs font-normal text-slate-400">
-                                  — Alumno: <strong className="text-white">{log.studentName}</strong> ({log.entityIdentifier})
+                                <div className="text-xs font-normal text-muted">
+                                  — Alumno: <strong className="text-main">{log.studentName}</strong> ({log.entityIdentifier})
                                 </div>
                               )}
                             </h4>
@@ -16621,7 +16621,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           {(log.previousValue || log.newValue) && (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                               {log.previousValue && (
-                                <div className="p-2.5 rounded-xl bg-rose-950/30 border border-rose-900/40 text-rose-200">
+                                <div className="badge badge-rose">
                                   <div className="font-bold text-[10px] text-rose-400 uppercase tracking-wider mb-0.5">
                                     Valor Previo Registrado:
                                   </div>
@@ -16629,7 +16629,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 </div>
                               )}
                               {log.newValue && (
-                                <div className="p-2.5 rounded-xl bg-emerald-950/30 border border-emerald-900/40 text-emerald-200">
+                                <div className="badge badge-emerald">
                                   <div className="font-bold text-[10px] text-emerald-400 uppercase tracking-wider mb-0.5">
                                     Nuevo Valor Asentado Oficial:
                                   </div>
@@ -16640,13 +16640,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           )}
 
                           {/* Motivo de justificación y acuerdo oficial */}
-                          <div className="p-3 bg-slate-950 rounded-xl border border-slate-800/80 text-xs space-y-1">
-                            <div className="text-slate-300">
-                              <strong className="text-slate-200">Justificación Normativa: </strong>
+                          <div className="badge badge-sky">
+                            <div className="text-muted">
+                              <strong className="text-main">Justificación Normativa: </strong>
                               {log.justificationReason}
                             </div>
                             {log.officialAgreementRef && (
-                              <div className="text-slate-400 text-[11px] flex items-center gap-1.5">
+                              <div className="text-muted text-[11px] flex items-center gap-1.5">
                                 <FileText className="w-3.5 h-3.5 text-sky-400" />
                                 <div>Referencia Institucional: <strong>{log.officialAgreementRef}</strong></div>
                               </div>
@@ -16654,11 +16654,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           </div>
 
                           {/* Pie con actor y hash */}
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between text-[11px] text-slate-500 gap-1 pt-1">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between text-[11px] text-muted gap-1 pt-1">
                             <div>
-                              Asentado por: <strong className="text-slate-300">{log.performedByName}</strong> ({log.performedByRole}) • IP: <div className="font-mono text-slate-400">{log.ipAddress}</div>
+                              Asentado por: <strong className="text-muted">{log.performedByName}</strong> ({log.performedByRole}) • IP: <div className="font-mono text-muted">{log.ipAddress}</div>
                             </div>
-                            <div className="font-mono text-[10px] text-slate-400 truncate max-w-xs">
+                            <div className="font-mono text-[10px] text-muted truncate max-w-xs">
                               SHA-256: {log.integrityHash.substring(0, 20)}...
                             </div>
                           </div>
@@ -16672,19 +16672,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* SUBTAB 2: INSPECCIONES DE ZONA ESCOLAR & ACTAS SEP */}
             {auditSubTab === 'inspections' && (
               <div className="space-y-4">
-                <div className="bg-sky-950/20 border border-sky-800/40 p-4 rounded-2xl flex items-center justify-between">
+                <div className="badge badge-sky">
                   <div className="flex items-center gap-3">
                     <ShieldCheck className="w-6 h-6 text-sky-400 shrink-0" />
                     <div>
-                      <h4 className="text-xs font-bold text-white">Supervisión Escolar de Zona SEP</h4>
-                      <p className="text-[11px] text-slate-400">
+                      <h4 className="text-xs font-bold">Supervisión Escolar de Zona SEP</h4>
+                      <p className="text-[11px] text-muted">
                         Inspecciones de verificación técnico-pedagógica y administrativa de la Zona Escolar 14, Sector 05.
                       </p>
                     </div>
                   </div>
                   <button
                     onClick={() => setShowNewSupervisionModal(true)}
-                    className="px-3 py-1.5 bg-sky-500 hover:bg-sky-400 text-slate-950 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+                    className="btn btn-primary btn-sm"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <div>Nueva Acta</div>
@@ -16697,35 +16697,35 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       key={insp.id}
                       className="dashboard-card space-y-4"
                     >
-                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-800 pb-4">
+                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-subtle pb-4">
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <div className="font-mono text-xs font-bold text-sky-400 bg-sky-950/60 px-2.5 py-0.5 rounded border border-sky-800">
+                            <div className="badge badge-sky font-mono">
                               {insp.officialNoticeNumber}
                             </div>
                             <div className="px-2.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                               {insp.status}
                             </div>
-                            <div className="text-xs text-slate-400 font-medium">
+                            <div className="text-xs text-muted font-medium">
                               Fecha: {insp.inspectionDate}
                             </div>
                           </div>
                           <h3 className="modal-title">{insp.purpose}</h3>
-                          <div className="text-xs text-slate-400 mt-0.5">
-                            {insp.supervisionZone} • Inspectora Comisionada: <strong className="text-white">{insp.inspectorName}</strong>
+                          <div className="text-xs text-muted mt-0.5">
+                            {insp.supervisionZone} • Inspectora Comisionada: <strong className="text-main">{insp.inspectorName}</strong>
                           </div>
                         </div>
 
-                        <div className="bg-slate-950 px-4 py-2 rounded-2xl border border-slate-800 text-center shrink-0">
-                          <div className="text-[10px] text-slate-400 uppercase tracking-wider">Calificación SEP</div>
+                        <div className="badge badge-sky">
+                          <div className="text-[10px] text-muted uppercase tracking-wider">Calificación SEP</div>
                           <div className="text-xl font-black text-emerald-400">{insp.complianceScorePercent}%</div>
-                          <div className="text-[9px] text-slate-500">{insp.sampleAuditedCount} expedientes revisados</div>
+                          <div className="text-[9px] text-muted">{insp.sampleAuditedCount} expedientes revisados</div>
                         </div>
                       </div>
 
                       {/* Hallazgos oficiales */}
                       <div className="space-y-2">
-                        <h4 className="text-xs font-bold text-slate-200 flex items-center gap-2">
+                        <h4 className="text-xs font-bold text-main flex items-center gap-2">
                           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                           Hallazgos y Observaciones Técnico-Administrativas
                         </h4>
@@ -16733,7 +16733,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           {insp.findings.map((f, idx) => (
                             <div
                               key={idx}
-                              className="p-3 bg-slate-950 rounded-xl border border-slate-800/80 text-xs text-slate-300 flex items-start gap-2"
+                              className="badge badge-sky"
                             >
                               <div className="text-sky-400 font-bold">•</div>
                               <div>{f}</div>
@@ -16743,8 +16743,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </div>
 
                       {/* Acuerdos y compromisos */}
-                      <div className="space-y-2 pt-2 border-t border-slate-800/60">
-                        <h4 className="text-xs font-bold text-slate-200 flex items-center gap-2">
+                      <div className="space-y-2 pt-2 border-t border-subtle/60">
+                        <h4 className="text-xs font-bold text-main flex items-center gap-2">
                           <FileText className="w-4 h-4 text-sky-400" />
                           Compromisos y Acuerdos de Seguimiento Institucional
                         </h4>
@@ -16752,7 +16752,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           {insp.agreedActions.map((a, idx) => (
                             <div
                               key={idx}
-                              className="p-3 bg-slate-950 rounded-xl border border-slate-800/80 text-xs text-slate-300 flex items-start gap-2"
+                              className="badge badge-sky"
                             >
                               <div className="text-emerald-400 font-bold">✓</div>
                               <div>{a}</div>
@@ -16762,14 +16762,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </div>
 
                       {/* Firmas de conformidad */}
-                      <div className="bg-slate-950/70 p-4 rounded-2xl border border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-3">
+                      <div className="badge badge-sky">
                         <div className="flex items-center gap-2">
                           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                           <div>Acta rubricada por la Autoridad Educativa de Zona y Dirección General</div>
                         </div>
                         <div className="flex items-center gap-4 text-[11px] font-mono">
-                          <div className="text-slate-300">Rubricado: {insp.inspectorName}</div>
-                          <div className="text-slate-300">Dirección: Dra. Elena Vázquez</div>
+                          <div className="text-muted">Rubricado: {insp.inspectorName}</div>
+                          <div className="text-muted">Dirección: Dra. Elena Vázquez</div>
                         </div>
                       </div>
                     </div>
@@ -16788,7 +16788,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <CheckCircle2 className="w-5 h-5 text-emerald-400" />
                         Matriz de Cumplimiento Regulatorio Obligatorio SEP
                       </h3>
-                      <p className="text-xs text-slate-400 mt-1">
+                      <p className="dashboard-section-desc">
                         Cotejo de los requerimientos estatutarios para escuelas particulares incorporadas ante la SEP.
                       </p>
                     </div>
@@ -16802,12 +16802,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                     <div className="dashboard-subcard space-y-2">
                       <div className="flex items-center justify-between">
-                        <div className="font-bold text-white">1. Acuerdos de Incorporación RVOE</div>
+                        <div className="font-bold">1. Acuerdos de Incorporación RVOE</div>
                         <div className="text-emerald-400 font-bold flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" /> Vigente
                         </div>
                       </div>
-                      <p className="text-slate-400 text-[11px]">
+                      <p className="text-muted text-[11px]">
                         Preescolar (RVOE-SEP-2020-0112) y Primaria (RVOE-SEP-2022-0498) ratificados ante la Dirección General de Incorporación.
                       </p>
                       <div className="font-mono text-[10px] text-sky-400">CCT: 09PPR1849X • Zona 14</div>
@@ -16815,12 +16815,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                     <div className="dashboard-subcard space-y-2">
                       <div className="flex items-center justify-between">
-                        <div className="font-bold text-white">2. Expedientes y Cotejo CURP (RENAPO)</div>
+                        <div className="font-bold">2. Expedientes y Cotejo CURP (RENAPO)</div>
                         <div className="text-emerald-400 font-bold flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" /> 100% Validados
                         </div>
                       </div>
-                      <p className="text-slate-400 text-[11px]">
+                      <p className="text-muted text-[11px]">
                         Expedientes físicos y digitales completos con acta de nacimiento certificada y CURP validada en el Registro Nacional de Población.
                       </p>
                       <div className="font-mono text-[10px] text-sky-400">45 expedientes muestreados sin anomalías</div>
@@ -16828,12 +16828,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                     <div className="dashboard-subcard space-y-2">
                       <div className="flex items-center justify-between">
-                        <div className="font-bold text-white">3. Padrón Obligatorio de Becas SEP (Art. 149 LGE)</div>
+                        <div className="font-bold">3. Padrón Obligatorio de Becas SEP (Art. 149 LGE)</div>
                         <div className="text-emerald-400 font-bold flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" /> 7.8% (Mínimo 5%)
                         </div>
                       </div>
-                      <p className="text-slate-400 text-[11px]">
+                      <p className="text-muted text-[11px]">
                         Convocatoria pública anual emitida en julio y comité de becas constituido formalmente con representantes del cuerpo docente.
                       </p>
                       <div className="font-mono text-[10px] text-sky-400">14 alumnos exentos con porcentajes de 25% al 100%</div>
@@ -16841,12 +16841,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                     <div className="dashboard-subcard space-y-2">
                       <div className="flex items-center justify-between">
-                        <div className="font-bold text-white">4. Dotaciones de Libros Gratuitos CONALITEG</div>
+                        <div className="font-bold">4. Dotaciones de Libros Gratuitos CONALITEG</div>
                         <div className="text-emerald-400 font-bold flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" /> 100% Entregado
                         </div>
                       </div>
-                      <p className="text-slate-400 text-[11px]">
+                      <p className="text-muted text-[11px]">
                         Paquetes completos de la Nueva Escuela Mexicana entregados a la totalidad de los alumnos con acuse de firma resguardado.
                       </p>
                       <div className="font-mono text-[10px] text-sky-400">Remesa SEP-CONALITEG-2026-PRI-14 distribuida</div>
@@ -16854,12 +16854,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                     <div className="dashboard-subcard space-y-2">
                       <div className="flex items-center justify-between">
-                        <div className="font-bold text-white">5. Consejos Técnicos Escolares (CTE)</div>
+                        <div className="font-bold">5. Consejos Técnicos Escolares (CTE)</div>
                         <div className="text-emerald-400 font-bold flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" /> Al Corriente
                         </div>
                       </div>
-                      <p className="text-slate-400 text-[11px]">
+                      <p className="text-muted text-[11px]">
                         Minutas foliadas de Fase Intensiva y sesiones ordinarias mensuales con registro colegiado de acuerdos pedagógicos.
                       </p>
                       <div className="font-mono text-[10px] text-sky-400">Libro de actas de CTE disponible para inspección</div>
@@ -16867,12 +16867,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                     <div className="dashboard-subcard space-y-2">
                       <div className="flex items-center justify-between">
-                        <div className="font-bold text-white">6. Protección Civil & Seguridad Escolar</div>
+                        <div className="font-bold">6. Protección Civil & Seguridad Escolar</div>
                         <div className="text-emerald-400 font-bold flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" /> Certificado
                         </div>
                       </div>
-                      <p className="text-slate-400 text-[11px]">
+                      <p className="text-muted text-[11px]">
                         Programa interno avalado, señalética reglamentaria y calendario de simulacros bimestrales de sismo e incendio.
                       </p>
                       <div className="font-mono text-[10px] text-sky-400">Próximo simulacro: 19 de Septiembre 2026</div>
@@ -16889,18 +16889,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="space-y-6 animate-in fade-in">
             <div className="dashboard-card dashboard-section-header">
               <div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <GraduationCap className="w-6 h-6 text-sky-400" />
                   Control Escolar y Expedientes Estudiantiles
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="dashboard-section-desc">
                   Matrículas vitalicias, expedientes médicos y control de cartas compromiso.
                 </p>
               </div>
 
               <button
                 onClick={() => setShowNewStudentModal(true)}
-                className="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs px-4 py-3 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-sky-500/20 transition-all cursor-pointer shrink-0"
+                className="btn btn-primary btn-sm"
               >
                 <UserPlus className="w-4 h-4" />
                 <div>+ Inscribir Nuevo Alumno</div>
@@ -16908,20 +16908,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             {filteredStudents.length === 0 ? (
-              <div className="bg-slate-900 border border-slate-800 rounded-3xl p-10 text-center shadow-xl space-y-4">
-                <div className="w-16 h-16 bg-sky-500/10 text-sky-400 border border-sky-500/20 rounded-3xl flex items-center justify-center mx-auto">
+              <div className="dashboard-card p-10 text-center space-y-4">
+                <div className="badge badge-sky">
                   <GraduationCap className="w-8 h-8" />
                 </div>
                 <div className="max-w-md mx-auto space-y-1">
                   <h3 className="modal-title">Sin alumnos registrados aún</h3>
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-muted">
                     Comienza inscribiendo al primer alumno para generar su matrícula oficial vitalicia.
                   </p>
                 </div>
                 <div className="pt-2">
                   <button
                     onClick={() => setShowNewStudentModal(true)}
-                    className="bg-sky-500 hover:bg-sky-400 text-slate-950 font-black text-xs px-6 py-3.5 rounded-2xl shadow-xl shadow-sky-500/20 inline-flex items-center gap-2 transition-all cursor-pointer"
+                    className="btn btn-primary btn-sm"
                   >
                     <UserPlus className="w-4 h-4" />
                     <div>Inscribir Primer Alumno</div>
@@ -16932,7 +16932,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="dashboard-table-card">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-slate-950 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-800">
+                    <thead className="badge badge-sky">
                       <tr>
                         <th className="py-3.5 px-4">Matrícula Vitalicia</th>
                         <th className="py-3.5 px-4">Nombre del Alumno</th>
@@ -16942,15 +16942,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <th className="py-3.5 px-4 text-center">Acciones</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800/60">
+                    <tbody className="table-body">
                       {filteredStudents.map((st) => (
                         <tr key={st.id} className="hover:bg-slate-850/50 transition-colors">
                           <td className="py-3.5 px-4 font-mono font-black text-sky-400">{st.studentCode}</td>
-                          <td className="py-3.5 px-4 font-bold text-white text-sm">{st.firstName} {st.lastName}</td>
-                          <td className="py-3.5 px-4 text-slate-300">{st.groupName}</td>
-                          <td className="py-3.5 px-4 text-slate-400">{st.tutorName}</td>
+                          <td className="py-3.5 px-4 font-bold text-sm">{st.firstName} {st.lastName}</td>
+                          <td className="py-3.5 px-4 text-muted">{st.groupName}</td>
+                          <td className="py-3.5 px-4 text-muted">{st.tutorName}</td>
                           <td className="py-3.5 px-4">
-                            <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-950/80 text-emerald-400 border border-emerald-800">
+                            <div className="badge badge-emerald">
                               <CheckCircle2 className="w-3.5 h-3.5" /> Inscrito Regular
                             </div>
                           </td>
@@ -16960,7 +16960,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 setSelectedStudent(st);
                                 setShowDossierModal(true);
                               }}
-                              className="bg-slate-800 hover:bg-slate-700 text-sky-300 px-3 py-1.5 rounded-xl font-bold text-xs transition-colors flex items-center gap-1.5 mx-auto cursor-pointer"
+                              className="btn btn-secondary btn-sm"
                             >
                               <FileText className="w-3.5 h-3.5" /> Ver Expediente
                             </button>
@@ -16980,16 +16980,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="space-y-6 animate-in fade-in">
             <div className="dashboard-card dashboard-section-header">
               <div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <Layers className="w-6 h-6 text-indigo-400" />
                   Estructura de Grupos por Nivel
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">Grupos escolares asignados con sus profesores titulares.</p>
+                <p className="dashboard-section-desc">Grupos escolares asignados con sus profesores titulares.</p>
               </div>
 
               <button
                 onClick={() => setShowNewGroupModal(true)}
-                className="bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs px-4 py-3 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/20 transition-all cursor-pointer shrink-0"
+                className="btn btn-purple btn-sm"
               >
                 <PlusCircle className="w-4 h-4" />
                 <div>+ Crear Grupo</div>
@@ -16998,15 +16998,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {filteredGroups.map((grp) => (
-                <div key={grp.id} className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col justify-between">
+                <div key={grp.id} className="dashboard-card p-6 flex flex-col justify-between">
                   <div>
                     <div className="text-[10px] font-bold uppercase px-2.5 py-1 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40">
                       {grp.level}
                     </div>
                     <h3 className="modal-title">{grp.name}</h3>
-                    <p className="text-xs text-slate-400 mb-3">Turno: {grp.shift}</p>
-                    <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 text-xs">
-                      Docente: <strong className="text-white">{grp.leadTeacher}</strong>
+                    <p className="text-xs text-muted mb-3">Turno: {grp.shift}</p>
+                    <div className="badge badge-sky">
+                      Docente: <strong className="text-main">{grp.leadTeacher}</strong>
                     </div>
                   </div>
                 </div>
@@ -17020,11 +17020,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="space-y-6 animate-in fade-in">
             <div className="dashboard-card dashboard-section-header">
               <div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <DollarSign className="w-6 h-6 text-emerald-400" />
                   Caja Escolar y Cobros en Tiempo Real
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">Efectivo en recepción física y cobros digitales CoDi® 0% comisión.</p>
+                <p className="dashboard-section-desc">Efectivo en recepción física y cobros digitales CoDi® 0% comisión.</p>
               </div>
 
               <button
@@ -17035,7 +17035,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     setShowNewChargeModal(true);
                   }
                 }}
-                className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs px-4 py-3 rounded-2xl flex items-center justify-center gap-2 cursor-pointer"
+                className="btn btn-success btn-sm"
               >
                 <PlusCircle className="w-4 h-4" />
                 <div>+ Emitir Nuevo Cobro</div>
@@ -17043,20 +17043,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-amber-950/40 border border-amber-800/80 p-5 rounded-3xl">
+              <div className="badge badge-amber">
                 <div className="text-xs font-bold text-amber-400">💵 Efectivo en Bóveda</div>
-                <div className="text-2xl font-black font-mono text-white mt-1">${cashSummary.totalCashInVault.toLocaleString()} MXN</div>
+                <div className="text-2xl font-black font-mono mt-1">${cashSummary.totalCashInVault.toLocaleString()} MXN</div>
               </div>
-              <div className="bg-emerald-950/40 border border-emerald-800/80 p-5 rounded-3xl">
+              <div className="badge badge-emerald">
                 <div className="text-xs font-bold text-emerald-400">📲 CoDi Banxico (0%)</div>
-                <div className="text-2xl font-black font-mono text-white mt-1">${cashSummary.totalCodiBanxico.toLocaleString()} MXN</div>
+                <div className="text-2xl font-black font-mono mt-1">${cashSummary.totalCodiBanxico.toLocaleString()} MXN</div>
               </div>
-              <div className="bg-sky-950/40 border border-sky-800/80 p-5 rounded-3xl">
+              <div className="badge badge-sky">
                 <div className="text-xs font-bold text-sky-400">🏦 Transferencias SPEI</div>
-                <div className="text-2xl font-black font-mono text-white mt-1">${cashSummary.totalBankTransfers.toLocaleString()} MXN</div>
+                <div className="text-2xl font-black font-mono mt-1">${cashSummary.totalBankTransfers.toLocaleString()} MXN</div>
               </div>
-              <div className="bg-slate-900 border border-slate-700 p-5 rounded-3xl">
-                <div className="text-xs font-bold text-slate-300">💰 Recaudación Total</div>
+              <div className="dashboard-card p-5">
+                <div className="text-xs font-bold text-muted">💰 Recaudación Total</div>
                 <div className="text-2xl font-black font-mono text-sky-400 mt-1">${cashSummary.grandTotal.toLocaleString()} MXN</div>
               </div>
             </div>
@@ -17068,11 +17068,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="space-y-6 animate-in fade-in">
             <div className="dashboard-card dashboard-section-header">
               <div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
+                <h2 className="dashboard-section-title">
                   <Users className="w-6 h-6 text-indigo-400" />
                   Portal Familiar & Tutor Titular
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="dashboard-section-desc">
                   Bienvenido, <strong>Ing. Carlos Mendoza</strong>. Consulta el avance académico de tu hijo y las boletas oficiales SEP.
                 </p>
               </div>
@@ -17080,7 +17080,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {students[0] && (
                 <button
                   onClick={() => handleOpenReportCard(students[0])}
-                  className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs px-5 py-3 rounded-2xl flex items-center gap-2 shadow-xl shadow-amber-400/20 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   <Award className="w-4 h-4" />
                   <div>Consultar Boleta Oficial SEP de Carlos</div>
@@ -17091,15 +17091,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* Ficha del Alumno para el Tutor */}
             {students[0] && (
               <div className="dashboard-card space-y-4">
-                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-subtle pb-4">
                   <div>
                     <div className="text-[10px] font-mono text-sky-400 uppercase font-bold tracking-wider">Hijo Registrado</div>
                     <h3 className="modal-title">{students[0].firstName} {students[0].lastName}</h3>
-                    <p className="text-xs text-slate-400">{students[0].groupName} • Matrícula: <strong className="font-mono text-slate-200">{students[0].studentCode}</strong></p>
+                    <p className="text-xs text-muted">{students[0].groupName} • Matrícula: <strong className="font-mono text-main">{students[0].studentCode}</strong></p>
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <div className="bg-emerald-950 text-emerald-300 border border-emerald-800 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                    <div className="badge badge-emerald">
                       <CheckCircle2 className="w-3.5 h-3.5" /> Alumno Regular Acreditado
                     </div>
                     <button
@@ -17114,61 +17114,61 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs pt-1">
                   <div className="dashboard-subcard space-y-1">
-                    <div className="text-slate-500 font-bold block text-[11px]">Promedio General del Ciclo:</div>
-                    <div className="text-2xl font-black text-amber-400">9.3</div>
-                    <div className="text-[10px] text-slate-500 block">Evaluado por maestros titulares</div>
+                    <div className="text-muted font-bold block text-[11px]">Promedio General del Ciclo:</div>
+                    <div className="stat-value text-warning">9.3</div>
+                    <div className="stat-sub">Evaluado por maestros titulares</div>
                   </div>
 
                   <div className="dashboard-subcard space-y-1">
-                    <div className="text-slate-500 font-bold block text-[11px]">Inasistencias Acumuladas:</div>
-                    <div className="text-2xl font-black text-purple-400">4 faltas</div>
-                    <div className="text-[10px] text-slate-500 block">97.8% de asistencia escolar</div>
+                    <div className="text-muted font-bold block text-[11px]">Inasistencias Acumuladas:</div>
+                    <div className="stat-value text-purple">4 faltas</div>
+                    <div className="stat-sub">97.8% de asistencia escolar</div>
                   </div>
 
                   <div className="dashboard-subcard space-y-1">
-                    <div className="text-slate-500 font-bold block text-[11px]">Colegiatura Vigente:</div>
-                    <div className="text-2xl font-black text-emerald-400">Al Corriente</div>
-                    <div className="text-[10px] text-slate-500 block">Pagos validados con CoDi®</div>
+                    <div className="text-muted font-bold block text-[11px]">Colegiatura Vigente:</div>
+                    <div className="stat-value text-success">Al Corriente</div>
+                    <div className="stat-sub">Pagos validados con CoDi®</div>
                   </div>
                 </div>
 
                 {/* Estatus del Pase de Lista de Hoy para el Padre de Familia */}
-                <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                <div className="badge badge-sky">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center font-bold shrink-0">
+                    <div className="badge badge-emerald">
                       <CalendarCheck className="w-5 h-5" />
                     </div>
                     <div>
-                      <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Pase de Lista de Hoy</div>
-                      <div className="text-white font-black text-sm flex items-center gap-2 flex-wrap">
+                      <div className="text-[11px] font-bold text-muted uppercase tracking-wider block">Pase de Lista de Hoy</div>
+                      <div className="font-black text-sm flex items-center gap-2 flex-wrap">
                         <div>Estatus Diario:</div>
-                        <div className="text-emerald-400 font-bold bg-emerald-950 px-2.5 py-0.5 rounded-lg border border-emerald-800 text-xs">
+                        <div className="badge badge-emerald">
                           ✅ PRESENTE (Puntual en aula)
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="text-xs text-slate-400 font-mono">
+                  <div className="text-xs text-muted font-mono">
                     Registrado por Prof. Roberto Salazar • Primaria 1º "A"
                   </div>
                 </div>
 
                 {/* Justificantes Oficiales del Alumno en el Portal Familiar */}
                 {justifications.filter((j) => j.studentId === students[0]?.id).length > 0 && (
-                  <div className="bg-slate-950 p-4 rounded-2xl border border-indigo-900/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                  <div className="badge badge-sky">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center font-bold shrink-0">
+                      <div className="badge badge-sky">
                         <FileText className="w-5 h-5" />
                       </div>
                       <div>
                         <div className="text-[11px] font-bold text-indigo-400 uppercase tracking-wider block">
                           Justificante Escolar Autorizado
                         </div>
-                        <div className="text-white font-black text-sm">
+                        <div className="font-black text-sm">
                           Folio {justifications[0].folio}: {justifications[0].reasonDescription}
                         </div>
-                        <div className="text-slate-400 text-[11px]">
+                        <div className="text-muted text-[11px]">
                           Vigencia: {justifications[0].startDate} al {justifications[0].endDate} • Autorizado por {justifications[0].authorizedBy}
                         </div>
                       </div>
@@ -17179,7 +17179,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         setActiveJustificationForPrint(justifications[0]);
                         setShowPrintJustificationModal(true);
                       }}
-                      className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 cursor-pointer shadow-md shadow-indigo-600/20 transition-all shrink-0"
+                      className="btn btn-purple btn-sm"
                     >
                       <Printer className="w-3.5 h-3.5" />
                       <div>Ver Volante Oficial</div>
@@ -17188,18 +17188,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 )}
 
                 {/* Bandeja de Circulares y Citatorios del Alumno en el Portal Familiar */}
-                <div className="bg-slate-950 p-6 rounded-2xl border border-slate-800 space-y-4">
+                <div className="badge badge-sky">
                   <div className="modal-header">
                     <div>
-                      <h4 className="text-base font-black text-white flex items-center gap-2">
+                      <h4 className="text-base font-black flex items-center gap-2">
                         <Megaphone className="w-5 h-5 text-purple-400" />
                         Bandeja de Circulares y Citatorios Oficiales
                       </h4>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-muted">
                         Comunicados institucionales, convocatorias y citatorios presenciales dirigidos a ti como tutor legal.
                       </p>
                     </div>
-                    <div className="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-xs font-mono font-bold px-3 py-1 rounded-xl">
+                    <div className="badge badge-purple font-mono">
                       {notices.length} Comunicados
                     </div>
                   </div>
@@ -17215,12 +17215,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           className={`p-4 rounded-2xl border transition-all space-y-3 ${
                             isCitatorio && !notice.isAcknowledgedByCurrentTutor
                               ? 'bg-amber-950/20 border-amber-500/70 shadow-lg shadow-amber-950/20'
-                              : 'bg-slate-900 border-slate-800'
+                              : 'bg-surface border-subtle'
                           }`}
                         >
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                             <div className="flex items-center gap-2 flex-wrap">
-                              <div className="font-mono text-[11px] font-bold bg-slate-950 px-2 py-0.5 rounded-lg border border-slate-800 text-purple-300">
+                              <div className="badge badge-purple font-mono">
                                 {notice.folio}
                               </div>
                               <div
@@ -17233,31 +17233,31 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 {isCitatorio ? 'Citatorio Presencial Urgente' : 'Circular General'}
                               </div>
                               {isUrgent && (
-                                <div className="bg-rose-600 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-full animate-pulse">
+                                <div className="bg-rose-600 text-[9px] font-black uppercase px-2 py-0.5 rounded-full animate-pulse">
                                   Acción Requerida
                                 </div>
                               )}
                             </div>
 
-                            <div className="text-[11px] text-slate-400 font-mono">
+                            <div className="text-[11px] text-muted font-mono">
                               {notice.publishDate} • {notice.publishedBy}
                             </div>
                           </div>
 
                           <div>
-                            <h5 className="text-sm font-black text-white">{notice.title}</h5>
-                            <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                            <h5 className="text-sm font-black">{notice.title}</h5>
+                            <p className="text-xs text-muted mt-1 leading-relaxed">
                               {notice.content}
                             </p>
                           </div>
 
                           {/* Si es citatorio, detalle de la cita */}
                           {isCitatorio && notice.appointmentDateTime && (
-                            <div className="bg-amber-950/50 border border-amber-700/60 p-3 rounded-xl text-xs space-y-1 text-amber-200">
+                            <div className="badge badge-amber">
                               <div className="font-bold flex items-center gap-1.5 text-amber-300">
                                 <Clock className="w-4 h-4" />
                                 <div>Cita Programada:</div>
-                                <strong className="text-white text-xs">{notice.appointmentDateTime}</strong>
+                                <strong className="text-xs">{notice.appointmentDateTime}</strong>
                               </div>
                               <div className="text-[11px] text-amber-200/90">
                                 📍 Lugar: {notice.appointmentLocation || 'Dirección Técnica'}
@@ -17266,10 +17266,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           )}
 
                           {/* Barra de Acuse y Botón de Firma */}
-                          <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-800">
+                          <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-subtle">
                             <div>
                               {notice.isAcknowledgedByCurrentTutor ? (
-                                <div className="bg-emerald-950 text-emerald-300 border border-emerald-800 text-xs font-bold px-3 py-1 rounded-xl flex items-center gap-1.5">
+                                <div className="badge badge-emerald">
                                   <CheckCheck className="w-4 h-4 text-emerald-400" />
                                   <div>Acuse de Enterado Confirmado ({notice.acknowledgedToken || 'ACK-2026-OK'})</div>
                                 </div>
@@ -17279,7 +17279,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   <div>Pendiente de confirmar lectura y enterado</div>
                                 </div>
                               ) : (
-                                <div className="text-slate-400 text-xs font-mono">Informativo</div>
+                                <div className="text-muted text-xs font-mono">Informativo</div>
                               )}
                             </div>
 
@@ -17287,7 +17287,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               {notice.requiresAcknowledgment && !notice.isAcknowledgedByCurrentTutor && (
                                 <button
                                   onClick={() => handleAcknowledgeNotice(notice.id)}
-                                  className="bg-purple-600 hover:bg-purple-500 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 cursor-pointer shadow-lg shadow-purple-600/25 transition-all"
+                                  className="btn btn-purple btn-sm"
                                 >
                                   <CheckCheck className="w-4 h-4" />
                                   <div>Firmar Acuse de Enterado</div>
@@ -17296,7 +17296,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                               <button
                                 onClick={() => handleOpenPrintNotice(notice)}
-                                className="bg-slate-800 hover:bg-slate-750 text-slate-300 border border-slate-700 text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1 cursor-pointer transition-colors"
+                                className="btn btn-secondary btn-sm"
                               >
                                 <Printer className="w-3.5 h-3.5 text-purple-400" />
                                 <div>Ver Formato Oficial</div>
@@ -17315,17 +17315,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   if (!carlosCred) return null;
 
                   return (
-                    <div className="bg-slate-950 p-6 rounded-2xl border border-cyan-500/40 shadow-xl space-y-4">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                    <div className="badge badge-sky">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-subtle pb-3">
                         <div>
-                          <div className="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+                          <div className="badge badge-sky font-mono">
                             <QrCode className="w-3 h-3" /> Carnet Oficial del Alumno
                           </div>
-                          <h4 className="text-base font-black text-white flex items-center gap-2 mt-1">
+                          <h4 className="text-base font-black flex items-center gap-2 mt-1">
                             <CreditCard className="w-5 h-5 text-cyan-400" />
                             Credencial Escolar Digital de Carlos
                           </h4>
-                          <p className="text-xs text-slate-400">
+                          <p className="text-xs text-muted">
                             Presenta este código QR en el lector de puerta/torniquete para registrar el ingreso seguro al plantel.
                           </p>
                         </div>
@@ -17333,7 +17333,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => handleQuickScan(carlosCred, 'ENTRADA')}
-                            className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold text-xs px-3 py-2 rounded-xl flex items-center gap-1.5 cursor-pointer transition-colors"
+                            className="btn btn-success btn-sm"
                           >
                             <Scan className="w-3.5 h-3.5" />
                             <div>Probar Pase en Puerta</div>
@@ -17341,7 +17341,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                           <button
                             onClick={() => handleOpenPrintBadge(carlosCred)}
-                            className="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 cursor-pointer shadow-md shadow-cyan-500/20 transition-all"
+                            className="btn btn-primary btn-sm"
                           >
                             <Printer className="w-3.5 h-3.5" />
                             <div>Descargar Gafete PVC</div>
@@ -17350,35 +17350,35 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </div>
 
                       {/* Gafete Digital del Alumno */}
-                      <div className="max-w-md mx-auto bg-gradient-to-br from-slate-900 via-slate-950 to-indigo-950 border border-cyan-500/30 rounded-3xl p-5 shadow-2xl relative overflow-hidden">
-                        <div className="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
+                      <div className="max-w-md mx-auto bg-gradient-to-br from-slate-900 via-slate-850 to-blue-950 text-white border border-cyan-500/30 rounded-3xl p-5 shadow-2xl relative overflow-hidden">
+                        <div className="flex items-center justify-between border-b border-subtle pb-2 mb-3">
                           <div className="flex items-center gap-2">
                             <div className="w-7 h-7 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-black text-xs">
                               {currentTenant.name.charAt(0)}
                             </div>
                             <div>
-                              <div className="text-[11px] font-black text-white uppercase">{currentTenant.name}</div>
-                              <div className="text-[9px] text-slate-400 font-mono">CCT: {carlosCred.cct}</div>
+                              <div className="text-[11px] font-black uppercase">{currentTenant.name}</div>
+                              <div className="text-[9px] text-muted font-mono">CCT: {carlosCred.cct}</div>
                             </div>
                           </div>
-                          <div className="text-[9px] font-mono text-emerald-400 font-bold bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">
+                          <div className="badge badge-emerald font-mono">
                             ● ACTIVA
                           </div>
                         </div>
 
                         <div className="flex items-center gap-4">
-                          <div className="w-18 h-22 rounded-xl bg-slate-800 border border-slate-700 flex flex-col items-center justify-center text-slate-400 shrink-0 relative overflow-hidden">
-                            <div className="w-9 h-9 rounded-full bg-slate-700 flex items-center justify-center text-white font-bold text-sm">
+                          <div className="w-18 h-22 rounded-xl bg-subtle border border-subtle flex flex-col items-center justify-center text-muted shrink-0 relative overflow-hidden">
+                            <div className="w-9 h-9 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-sm">
                               C
                             </div>
                             <div className="text-[8px] font-mono text-cyan-300 mt-1">ALUMNO</div>
                           </div>
 
                           <div className="flex-1 min-w-0 space-y-0.5">
-                            <h5 className="text-sm font-black text-white truncate">{carlosCred.fullName}</h5>
+                            <h5 className="text-sm font-black truncate">{carlosCred.fullName}</h5>
                             <div className="text-xs font-bold text-cyan-400">{carlosCred.roleOrGrade}</div>
-                            <div className="text-[11px] text-slate-300 font-mono">Matrícula: {carlosCred.matriculaOrCode}</div>
-                            <div className="text-[10px] text-slate-400 font-mono">CURP: {carlosCred.curp}</div>
+                            <div className="text-[11px] text-muted font-mono">Matrícula: {carlosCred.matriculaOrCode}</div>
+                            <div className="text-[10px] text-muted font-mono">CURP: {carlosCred.curp}</div>
                           </div>
 
                           <div className="w-18 h-18 bg-white p-1 rounded-xl shrink-0 flex items-center justify-center shadow-md">
@@ -17386,9 +17386,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           </div>
                         </div>
 
-                        <div className="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-400">
+                        <div className="mt-3 pt-2 border-t border-subtle flex items-center justify-between text-[10px] text-muted">
                           <div>Sangre: <strong className="text-rose-400">{carlosCred.bloodType}</strong></div>
-                          <div>Emergencia: <strong className="text-slate-200">{carlosCred.emergencyContactPhone}</strong></div>
+                          <div>Emergencia: <strong className="text-main">{carlosCred.emergencyContactPhone}</strong></div>
                           <div className="font-mono text-cyan-300">{carlosCred.validThrough}</div>
                         </div>
                       </div>
@@ -17397,22 +17397,22 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 })()}
 
                 {/* Cuaderno y Agenda de Tareas de Carlos en el Portal Familiar */}
-                <div className="bg-slate-950 p-6 rounded-2xl border border-blue-500/40 shadow-xl space-y-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                <div className="badge badge-sky">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-subtle pb-3">
                     <div>
-                      <div className="bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+                      <div className="badge badge-sky font-mono">
                         <ClipboardList className="w-3 h-3" /> Agenda de Actividades
                       </div>
-                      <h4 className="text-base font-black text-white flex items-center gap-2 mt-1">
+                      <h4 className="text-base font-black flex items-center gap-2 mt-1">
                         <ClipboardList className="w-5 h-5 text-blue-400" />
                         Cuaderno Digital de Tareas de Carlos
                       </h4>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-muted">
                         Consulta los deberes asignados por sus maestros y el estatus de entrega.
                       </p>
                     </div>
 
-                    <div className="text-xs font-mono text-slate-400">
+                    <div className="text-xs font-mono text-muted">
                       Ciclo Escolar 2026-2027 • 1º "A"
                     </div>
                   </div>
@@ -17428,17 +17428,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       return (
                         <div
                           key={task.id}
-                          className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3"
+                          className="dashboard-subcard p-4 space-y-3"
                         >
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                             <div className="flex items-center gap-2 flex-wrap">
-                              <div className="font-mono text-[11px] font-bold bg-slate-950 px-2 py-0.5 rounded-lg border border-slate-800 text-blue-300">
+                              <div className="badge badge-sky font-mono">
                                 {task.folio}
                               </div>
-                              <div className="text-[10px] font-bold bg-slate-850 text-slate-300 px-2 py-0.5 rounded-full border border-slate-700">
+                              <div className="text-[10px] font-bold bg-slate-850 text-muted px-2 py-0.5 rounded-full border border-subtle">
                                 {task.subjectName}
                               </div>
-                              <div className="text-[10px] font-bold bg-blue-950 text-blue-300 px-2 py-0.5 rounded-full border border-blue-800">
+                              <div className="badge badge-sky">
                                 {task.type}
                               </div>
                             </div>
@@ -17449,13 +17449,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           </div>
 
                           <div>
-                            <h5 className="text-sm font-black text-white">{task.title}</h5>
-                            <p className="text-xs text-slate-300 mt-1 leading-relaxed">{task.description}</p>
+                            <h5 className="text-sm font-black">{task.title}</h5>
+                            <p className="text-xs text-muted mt-1 leading-relaxed">{task.description}</p>
                           </div>
 
                           {/* Aviso especial de prórroga médica para Carlos */}
                           {isExtemp && !isDelivered && (
-                            <div className="bg-amber-950/40 border border-amber-500/50 rounded-xl p-3 text-xs text-amber-200 space-y-1">
+                            <div className="badge badge-amber">
                               <div className="font-bold flex items-center gap-1.5 text-amber-300">
                                 <HeartPulse className="w-3.5 h-3.5 text-rose-400" />
                                 <div>Prórroga Médica Oficial Autorizada (Folio: JUST-2026-001)</div>
@@ -17463,13 +17463,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               <p className="text-[11px] text-amber-100/90 leading-relaxed">
                                 Por motivos de reposo clínico de Carlos, la Dirección Técnica autorizó entrega
                                 extemporánea hasta el{' '}
-                                <strong className="text-white font-mono">{task.extempExtendedDueDate || '07/Sep/2026'}</strong> sin
+                                <strong className="font-mono">{task.extempExtendedDueDate || '07/Sep/2026'}</strong> sin
                                 ninguna deducción en su calificación.
                               </p>
                             </div>
                           )}
 
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-slate-800/80">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-subtle">
                             <div>
                               {carlosSub?.status === 'CALIFICADO' ? (
                                 <div className="text-xs font-bold text-emerald-400 flex items-center gap-1">
@@ -17484,7 +17484,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   <Clock className="w-3.5 h-3.5" /> Prórroga Médica Vigente
                                 </div>
                               ) : (
-                                <div className="text-xs font-bold text-slate-400 flex items-center gap-1">
+                                <div className="text-xs font-bold text-muted flex items-center gap-1">
                                   <Clock className="w-3.5 h-3.5" /> Pendiente de Entrega
                                 </div>
                               )}
@@ -17499,7 +17499,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                     'Tarea completada en libreta y confirmada digitalmente por el tutor'
                                   )
                                 }
-                                className="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 cursor-pointer shadow-md shadow-blue-600/20 transition-all self-start sm:self-auto"
+                                className="btn btn-primary btn-sm"
                               >
                                 <FileCheck className="w-3.5 h-3.5" />
                                 <div>Confirmar Entrega de Tarea</div>
@@ -17517,22 +17517,22 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 {/* Horario Escolar de Carlos en el Portal Familiar */}
-                <div className="bg-slate-950 p-6 rounded-2xl border border-indigo-500/40 shadow-xl space-y-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                <div className="badge badge-sky">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-subtle pb-3">
                     <div>
-                      <div className="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+                      <div className="badge badge-sky font-mono">
                         <CalendarDays className="w-3 h-3" /> Cronograma de Asignaturas
                       </div>
-                      <h4 className="text-base font-black text-white flex items-center gap-2 mt-1">
+                      <h4 className="text-base font-black flex items-center gap-2 mt-1">
                         <CalendarDays className="w-5 h-5 text-indigo-400" />
                         Horario Semanal de Clases de Carlos
                       </h4>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-muted">
                         Consulta la distribución de materias por día para preparar la mochila y uniforme adecuado.
                       </p>
                     </div>
 
-                    <div className="text-xs text-amber-300 font-bold bg-amber-950/60 border border-amber-800/80 px-3 py-1.5 rounded-xl self-start sm:self-auto flex items-center gap-1.5">
+                    <div className="badge badge-amber">
                       <div>👟 Uniforme Deportivo: Lunes, Miércoles y Viernes</div>
                     </div>
                   </div>
@@ -17547,10 +17547,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       return (
                         <div
                           key={day}
-                          className="bg-slate-900 border border-slate-800 rounded-2xl p-3 space-y-2.5"
+                          className="dashboard-subcard p-3 space-y-2.5"
                         >
-                          <div className="text-center border-b border-slate-800 pb-1.5">
-                            <div className="text-xs font-black text-white">{day}</div>
+                          <div className="text-center border-b border-subtle pb-1.5">
+                            <div className="text-xs font-black">{day}</div>
                             <div className="text-[10px] text-indigo-400 font-mono block">
                               {daySlots.length} Módulos
                             </div>
@@ -17566,11 +17566,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   backgroundColor: `${slot.colorHex || '#3b82f6'}10`,
                                 }}
                               >
-                                <div className="font-mono text-[9px] text-slate-400 block mb-0.5">
+                                <div className="font-mono text-[9px] text-muted block mb-0.5">
                                   {slot.startTime} - {slot.endTime}
                                 </div>
-                                <strong className="text-white block truncate">{slot.subjectName}</strong>
-                                <div className="text-[9px] text-slate-400 truncate block mt-0.5">
+                                <strong className="block truncate">{slot.subjectName}</strong>
+                                <div className="text-[9px] text-muted truncate block mt-0.5">
                                   {slot.classroom}
                                 </div>
                               </div>
@@ -17589,12 +17589,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <div className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
                         Control de Acervo y Lectura en Casa
                       </div>
-                      <h3 className="text-base font-black text-white flex items-center gap-2">
+                      <h3 className="text-base font-black flex items-center gap-2">
                         <BookOpen className="w-5 h-5 text-rose-400" />
                         Biblioteca Escolar: Préstamos de Carlos
                       </h3>
                     </div>
-                    <div className="bg-slate-800 text-slate-300 text-xs px-3 py-1 rounded-xl font-bold font-mono">
+                    <div className="badge badge-secondary font-mono text-xs">
                       {bookLoans.filter((l) => l.studentId === 'student-01' && l.status === 'ACTIVO').length} en lectura
                     </div>
                   </div>
@@ -17605,36 +17605,36 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       .map((loan) => (
                         <div
                           key={loan.id}
-                          className="bg-slate-950 p-4 rounded-2xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
+                          className="badge badge-sky"
                         >
                           <div className="space-y-1">
                             <div className="flex items-center gap-2">
-                              <div className="font-mono text-[11px] font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-lg border border-amber-500/20">
+                              <div className="badge badge-amber font-mono">
                                 {loan.folio}
                               </div>
                               {loan.status === 'ACTIVO' ? (
-                                <div className="bg-amber-500/10 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-500/30">
+                                <div className="badge badge-amber">
                                   Préstamo Activo
                                 </div>
                               ) : (
-                                <div className="bg-emerald-500/10 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/30 flex items-center gap-1">
+                                <div className="badge badge-emerald">
                                   <CheckCircle2 className="w-3 h-3" /> Devuelto
                                 </div>
                               )}
                             </div>
-                            <h4 className="text-sm font-black text-white">{loan.bookTitle}</h4>
-                            <div className="text-slate-400 text-[11px]">
+                            <h4 className="text-sm font-black">{loan.bookTitle}</h4>
+                            <div className="text-muted text-[11px]">
                               Modalidad: {loan.loanType === 'DOMICILIO' ? '🏠 Lectura en Casa' : '🏫 En Sala'} • Fecha Límite:{' '}
                               <strong className="text-amber-300 font-mono">{loan.dueDate}</strong>
                             </div>
                             {loan.librarianNotes && (
-                              <p className="text-[11px] text-slate-400 italic">"{loan.librarianNotes}"</p>
+                              <p className="text-[11px] text-muted italic">"{loan.librarianNotes}"</p>
                             )}
                           </div>
 
                           {loan.status === 'ACTIVO' && (
                             <div className="text-right sm:self-center">
-                              <div className="text-[10px] text-slate-400 block">Recordatorio escolar:</div>
+                              <div className="text-[10px] text-muted block">Recordatorio escolar:</div>
                               <div className="text-[11px] text-rose-300 font-bold">
                                 Traer en mochila para devolución el martes
                               </div>
@@ -17652,7 +17652,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                         Seguridad & Traslado Escolar en Vivo
                       </div>
-                      <h3 className="text-base font-black text-white flex items-center gap-2">
+                      <h3 className="text-base font-black flex items-center gap-2">
                         <Bus className="w-5 h-5 text-amber-400" />
                         Transporte Escolar: Ruta de Carlos
                       </h3>
@@ -17667,7 +17667,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                       if (status === 'ENTREGADO_ESCUELA') {
                         return (
-                          <div className="bg-emerald-500/10 text-emerald-300 font-bold text-xs px-3 py-1 rounded-xl border border-emerald-500/30 flex items-center gap-1.5 self-start sm:self-auto">
+                          <div className="badge badge-emerald">
                             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                             <div>Entregado Seguro en Colegio ({carlosLog?.checkOutTime || '07:45'} hrs)</div>
                           </div>
@@ -17675,48 +17675,48 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       }
                       if (status === 'A_BORDO') {
                         return (
-                          <div className="bg-amber-500/10 text-amber-300 font-bold text-xs px-3 py-1 rounded-xl border border-amber-500/30 flex items-center gap-1.5 animate-pulse self-start sm:self-auto">
+                          <div className="badge badge-amber">
                             <Bus className="w-4 h-4 text-amber-400" />
                             <div>A Bordo de la Unidad (En Camino)</div>
                           </div>
                         );
                       }
                       return (
-                        <div className="bg-slate-800 text-slate-300 font-bold text-xs px-3 py-1 rounded-xl self-start sm:self-auto">
+                        <div className="badge badge-secondary text-xs self-start sm:self-auto">
                           Turno Matutino Concluido
                         </div>
                       );
                     })()}
                   </div>
 
-                  <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
-                    <div className="flex items-center justify-between flex-wrap gap-2 border-b border-slate-800/80 pb-3">
+                  <div className="badge badge-sky">
+                    <div className="flex items-center justify-between flex-wrap gap-2 border-b border-subtle pb-3">
                       <div>
                         <div className="text-[10px] font-mono text-amber-400 font-bold uppercase">Ruta Oficial</div>
-                        <h4 className="text-sm font-black text-white">Ruta Norte - Lindavista / Vallejo</h4>
+                        <h4 className="text-sm font-black">Ruta Norte - Lindavista / Vallejo</h4>
                       </div>
-                      <div className="text-xs text-slate-400 font-mono bg-slate-900 px-2.5 py-1 rounded-lg border border-slate-800">
+                      <div className="badge badge-secondary font-mono text-xs">
                         Unidad: <strong>Mercedes-Benz Sprinter (Placas: 84-RB-29)</strong>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                       <div>
-                        <div className="text-[10px] text-slate-400 block font-bold">Parada Asignada:</div>
-                        <strong className="text-white block">Residencial Lindavista</strong>
-                        <div className="text-[11px] text-slate-400">Eje 5 Nte #204</div>
+                        <div className="text-[10px] text-muted block font-bold">Parada Asignada:</div>
+                        <strong className="block">Residencial Lindavista</strong>
+                        <div className="text-[11px] text-muted">Eje 5 Nte #204</div>
                       </div>
 
                       <div>
-                        <div className="text-[10px] text-slate-400 block font-bold">Horarios Programados:</div>
+                        <div className="text-[10px] text-muted block font-bold">Horarios Programados:</div>
                         <div className="text-amber-300 font-mono block">🌅 Recogida: 07:05 hrs</div>
                         <div className="text-amber-300 font-mono block">🌇 Entrega: 14:45 hrs</div>
                       </div>
 
                       <div>
-                        <div className="text-[10px] text-slate-400 block font-bold">Monitora a Cargo:</div>
-                        <strong className="text-white block">Profra. Martha Morales</strong>
-                        <div className="text-slate-400 font-mono text-[11px] block">+52 55 2211 4433</div>
+                        <div className="text-[10px] text-muted block font-bold">Monitora a Cargo:</div>
+                        <strong className="block">Profra. Martha Morales</strong>
+                        <div className="text-muted font-mono text-[11px] block">+52 55 2211 4433</div>
                       </div>
                     </div>
 
@@ -17724,7 +17724,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <div>
                         ℹ️ <strong>Asiento Asignado:</strong> Asiento delantero preferencial por recomendación pediátrica.
                       </div>
-                      <div className="text-[10px] text-slate-400 font-mono">
+                      <div className="text-[10px] text-muted font-mono">
                         Póliza GNP #9948271-B
                       </div>
                     </div>
@@ -17732,12 +17732,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   {/* Tarjeta de Monedero Escolar y Cafetería de Carlos */}
                   <div className="dashboard-filter-card space-y-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-subtle pb-3">
                       <div>
                         <div className="text-[10px] font-mono text-orange-400 font-bold uppercase tracking-wider block">
                           Nutrición y Control de Gastos
                         </div>
-                        <h4 className="text-base font-black text-white flex items-center gap-2">
+                        <h4 className="text-base font-black flex items-center gap-2">
                           <Utensils className="w-5 h-5 text-orange-400" />
                           Monedero Digital de Carlos & Cafetería
                         </h4>
@@ -17750,7 +17750,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             setShowTopUpModal(true);
                           }
                         }}
-                        className="bg-orange-500 hover:bg-orange-400 text-slate-950 font-black text-xs px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 shadow-md shadow-orange-500/20 cursor-pointer transition-all"
+                        className="btn btn-warning btn-sm"
                       >
                         <CircleDollarSign className="w-3.5 h-3.5" />
                         <div>Recargar Saldo</div>
@@ -17759,16 +17759,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                       <div className="dashboard-subcard">
-                        <div className="text-[10px] text-slate-400 block font-bold">Saldo Disponible:</div>
+                        <div className="text-[10px] text-muted block font-bold">Saldo Disponible:</div>
                         <strong className="text-2xl font-black text-emerald-400 font-mono block mt-0.5">
                           ${studentWallets.find((w) => w.studentId === 'student-01')?.currentBalanceMXN || 162} MXN
                         </strong>
-                        <div className="text-[10px] text-slate-400 font-mono">Fondos recargados en caja</div>
+                        <div className="text-[10px] text-muted font-mono">Fondos recargados en caja</div>
                       </div>
 
                       <div className="dashboard-subcard">
-                        <div className="text-[10px] text-slate-400 block font-bold">Límite Diario Autorizado:</div>
-                        <strong className="text-2xl font-black text-white font-mono block mt-0.5">
+                        <div className="text-[10px] text-muted block font-bold">Límite Diario Autorizado:</div>
+                        <strong className="text-2xl font-black font-mono block mt-0.5">
                           ${studentWallets.find((w) => w.studentId === 'student-01')?.dailySpendingLimitMXN || 60} MXN
                         </strong>
                         <div className="text-[10px] text-amber-300 font-mono">
@@ -17777,17 +17777,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </div>
 
                       <div className="dashboard-subcard">
-                        <div className="text-[10px] text-slate-400 block font-bold">Último Consumo en Receso:</div>
-                        <strong className="text-sm font-black text-white block mt-1">
+                        <div className="text-[10px] text-muted block font-bold">Último Consumo en Receso:</div>
+                        <strong className="text-sm font-black block mt-1">
                           🥪 Sándwich Integral de Pavo
                         </strong>
-                        <div className="text-[11px] text-slate-400 font-mono block">
+                        <div className="text-[11px] text-muted font-mono block">
                           Hoy a las 10:45 hrs • $38.00 MXN
                         </div>
                       </div>
                     </div>
 
-                    <div className="p-3 bg-rose-950/20 border border-rose-500/30 rounded-xl flex items-center justify-between flex-wrap gap-2 text-xs">
+                    <div className="badge badge-rose">
                       <div className="text-rose-200">
                         🛡️ <strong>Protección Médica Activa:</strong> La cafetería tiene bloqueada la venta de <strong>CACAHUATE y MARISCOS</strong> para Carlos.
                       </div>
@@ -17809,17 +17809,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   {/* Tarjeta de Enfermería y Salud Escolar de Carlos */}
                   <div className="dashboard-filter-card space-y-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-subtle pb-3">
                       <div>
                         <div className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
                           Seguridad Médica en Plantel
                         </div>
-                        <h4 className="text-base font-black text-white flex items-center gap-2">
+                        <h4 className="text-base font-black flex items-center gap-2">
                           <HeartPulse className="w-5 h-5 text-rose-400" />
                           Enfermería Escolar & Expediente Clínico de Carlos
                         </h4>
                       </div>
-                      <div className="bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-xs font-bold px-3 py-1 rounded-xl flex items-center gap-1.5">
+                      <div className="badge badge-emerald">
                         <Check className="w-3.5 h-3.5" />
                         <div>En Clases • Signos Vitales Estables</div>
                       </div>
@@ -17827,11 +17827,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                       <div className="dashboard-subcard">
-                        <div className="text-[10px] text-slate-400 block font-bold">Atención Médica de Hoy:</div>
-                        <strong className="text-xs font-black text-white block mt-1">
+                        <div className="text-[10px] text-muted block font-bold">Atención Médica de Hoy:</div>
+                        <strong className="text-xs font-black block mt-1">
                           🩹 Raspón leve en rodilla izquierda
                         </strong>
-                        <div className="text-[11px] text-slate-400 font-mono block">
+                        <div className="text-[11px] text-muted font-mono block">
                           11:15 hrs • Temp: 36.5°C
                         </div>
                         <div className="text-[10px] text-emerald-400 font-bold block mt-1">
@@ -17840,11 +17840,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </div>
 
                       <div className="dashboard-subcard">
-                        <div className="text-[10px] text-slate-400 block font-bold">Medicamento Programado:</div>
-                        <strong className="text-xs font-black text-white block mt-1">
+                        <div className="text-[10px] text-muted block font-bold">Medicamento Programado:</div>
+                        <strong className="text-xs font-black block mt-1">
                           💨 Salbutamol Inhalador 100mcg
                         </strong>
-                        <div className="text-[11px] text-slate-400 font-mono block">
+                        <div className="text-[11px] text-muted font-mono block">
                           Previo a Educación Física (08:00 hrs)
                         </div>
                         <div className="text-[10px] text-emerald-400 font-bold block mt-1">
@@ -17853,11 +17853,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </div>
 
                       <div className="dashboard-subcard">
-                        <div className="text-[10px] text-slate-400 block font-bold">Enfermera a Cargo:</div>
-                        <strong className="text-xs font-black text-white block mt-1">
+                        <div className="text-[10px] text-muted block font-bold">Enfermera a Cargo:</div>
+                        <strong className="text-xs font-black block mt-1">
                           Enfra. Rosaura Morales
                         </strong>
-                        <div className="text-[11px] text-slate-400 font-mono block">
+                        <div className="text-[11px] text-muted font-mono block">
                           Céd. Profesional 748291
                         </div>
                         <div className="text-[10px] text-sky-400 font-bold block mt-1">
@@ -17866,8 +17866,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </div>
                     </div>
 
-                    <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-between flex-wrap gap-2 text-xs">
-                      <div className="text-slate-300">
+                    <div className="badge badge-sky">
+                      <div className="text-muted">
                         📋 <strong>Alergias en Expediente:</strong> Alergia severa a <strong>CACAHUATE y MARISCOS</strong> (Notificada a docentes y cafetería).
                       </div>
                       <button
@@ -17888,17 +17888,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   {/* Tarjeta de Academias Vespertinas de Carlos */}
                   <div className="dashboard-filter-card space-y-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-subtle pb-3">
                       <div>
                         <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                           Formación Integral Vespertina
                         </div>
-                        <h4 className="text-base font-black text-white flex items-center gap-2">
+                        <h4 className="text-base font-black flex items-center gap-2">
                           <Trophy className="w-5 h-5 text-amber-400" />
                           Academias & Talleres Extracurriculares de Carlos
                         </h4>
                       </div>
-                      <div className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-xs font-bold px-3 py-1 rounded-xl flex items-center gap-1.5">
+                      <div className="badge badge-amber">
                         <Check className="w-3.5 h-3.5" />
                         <div>2 Talleres Activos • Asistencia al 100%</div>
                       </div>
@@ -17907,49 +17907,49 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="dashboard-subcard space-y-2">
                         <div className="flex items-center justify-between">
-                          <div className="text-[10px] font-mono text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded">
+                          <div className="badge badge-amber font-mono">
                             MARTES Y JUEVES
                           </div>
                           <div className="text-xs font-bold text-emerald-400">14:45 - 16:15 hrs</div>
                         </div>
-                        <strong className="text-sm font-black text-white block">
+                        <strong className="text-sm font-black block">
                           🤖 Robótica Educativa LEGO SPIKE Prime
                         </strong>
-                        <div className="text-[11px] text-slate-400 space-y-0.5">
+                        <div className="text-[11px] text-muted space-y-0.5">
                           <p>Instructor: Ing. Fernando Salgado Ruiz</p>
                           <p>Aula: Laboratorio de Cómputo y Robótica</p>
                           <p className="text-emerald-400 font-mono font-bold">Cuota: $480.00 MXN / mes</p>
                         </div>
-                        <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px]">
-                          <div className="text-slate-400">Última sesión (01/Sep):</div>
+                        <div className="pt-2 border-t border-subtle flex items-center justify-between text-[11px]">
+                          <div className="text-muted">Última sesión (01/Sep):</div>
                           <div className="text-emerald-400 font-bold">✓ Asistencia Registrada</div>
                         </div>
                       </div>
 
                       <div className="dashboard-subcard space-y-2">
                         <div className="flex items-center justify-between">
-                          <div className="text-[10px] font-mono text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded">
+                          <div className="badge badge-amber font-mono">
                             LUNES Y MIÉRCOLES
                           </div>
                           <div className="text-xs font-bold text-emerald-400">14:45 - 16:15 hrs</div>
                         </div>
-                        <strong className="text-sm font-black text-white block">
+                        <strong className="text-sm font-black block">
                           ⚽ Fútbol Infantil Formativo y Torneos
                         </strong>
-                        <div className="text-[11px] text-slate-400 space-y-0.5">
+                        <div className="text-[11px] text-muted space-y-0.5">
                           <p>Instructor: Prof. Javier Morales Cruz</p>
                           <p>Área: Cancha de Pasto Sintético</p>
                           <p className="text-emerald-400 font-mono font-bold">Cuota: $420.00 MXN / mes</p>
                         </div>
-                        <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px]">
-                          <div className="text-slate-400">Última sesión (02/Sep):</div>
+                        <div className="pt-2 border-t border-subtle flex items-center justify-between text-[11px]">
+                          <div className="text-muted">Última sesión (02/Sep):</div>
                           <div className="text-emerald-400 font-bold">✓ Asistencia Registrada</div>
                         </div>
                       </div>
                     </div>
 
-                    <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 flex items-center justify-between flex-wrap gap-2 text-xs">
-                      <div className="text-slate-300">
+                    <div className="badge badge-sky">
+                      <div className="text-muted">
                         🎒 <strong>Entrega de Alumnos:</strong> La salida del turno vespertino es a las <strong>16:15 hrs</strong> por la Puerta Principal.
                       </div>
                       <button
@@ -17967,17 +17967,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   {/* Tarjeta de Encuesta Trimestral y Buzón Directivo */}
                   <div className="dashboard-filter-card space-y-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-subtle pb-3">
                       <div>
                         <div className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
                           Voz y Participación de la Familia
                         </div>
-                        <h4 className="text-base font-black text-white flex items-center gap-2">
+                        <h4 className="text-base font-black flex items-center gap-2">
                           <MessageSquareQuote className="w-5 h-5 text-rose-400" />
                           Encuesta de Calidad & Buzón para la Dirección
                         </h4>
                       </div>
-                      <div className="bg-rose-500/10 text-rose-300 border border-rose-500/30 text-xs font-bold px-3 py-1 rounded-xl flex items-center gap-1.5">
+                      <div className="badge badge-rose">
                         <ThumbsUp className="w-3.5 h-3.5" />
                         <div>Encuesta Trimestral 2026-1 Disponible</div>
                       </div>
@@ -17986,15 +17986,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="dashboard-subcard space-y-2">
                         <div className="flex items-center justify-between">
-                          <div className="text-[10px] font-mono text-rose-400 font-bold bg-rose-500/10 px-2 py-0.5 rounded">
+                          <div className="badge badge-rose font-mono">
                             EVALUACIÓN DE SERVICIOS
                           </div>
                           <div className="text-xs font-bold text-sky-400">Vence: 30/Sep/2026</div>
                         </div>
-                        <strong className="text-sm font-black text-white block">
+                        <strong className="text-sm font-black block">
                           📋 Evaluación Trimestral de Calidad Educativa y Servicios
                         </strong>
-                        <p className="text-[11px] text-slate-400">
+                        <p className="text-[11px] text-muted">
                           Tu opinión sobre la docencia en 1º "A", los alimentos de cafetería y las rutas de transporte nos ayuda a mejorar continuamente.
                         </p>
                         <div className="pt-2">
@@ -18006,7 +18006,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 setShowRespondSurveyModal(true);
                               }
                             }}
-                            className="w-full py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black text-xs transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-md shadow-rose-600/20"
+                            className="btn btn-danger btn-sm w-full"
                           >
                             <ThumbsUp className="w-3.5 h-3.5" />
                             <div>Completar Encuesta Institucional</div>
@@ -18016,21 +18016,21 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                       <div className="dashboard-subcard space-y-2">
                         <div className="flex items-center justify-between">
-                          <div className="text-[10px] font-mono text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded">
+                          <div className="badge badge-amber font-mono">
                             CANAL DIRECTO
                           </div>
                           <div className="text-xs font-bold text-emerald-400">Respuesta en &lt; 48 hrs</div>
                         </div>
-                        <strong className="text-sm font-black text-white block">
+                        <strong className="text-sm font-black block">
                           📬 Buzón de Sugerencias y Felicitaciones
                         </strong>
-                        <p className="text-[11px] text-slate-400">
+                        <p className="text-[11px] text-muted">
                           Envía comentarios directamente a la Dirección General de forma confidencial o anónima sobre cualquier aspecto escolar.
                         </p>
                         <div className="pt-2">
                           <button
                             onClick={() => setShowNewSuggestionModal(true)}
-                            className="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-1.5 border border-slate-700"
+                            className="btn btn-secondary btn-sm w-full"
                           >
                             <Send className="w-3.5 h-3.5" />
                             <div>Escribir al Buzón Directivo</div>
@@ -18042,17 +18042,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   {/* Tarjeta de Calendario Escolar y Próximos Eventos */}
                   <div className="dashboard-filter-card space-y-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-subtle pb-3">
                       <div>
                         <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                           Agenda Escolar Oficial
                         </div>
-                        <h4 className="text-base font-black text-white flex items-center gap-2">
+                        <h4 className="text-base font-black flex items-center gap-2">
                           <PartyPopper className="w-5 h-5 text-amber-400" />
                           Próximos Eventos Cívicos, Festivales y Suspensiones SEP
                         </h4>
                       </div>
-                      <div className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-xs font-bold px-3 py-1 rounded-xl flex items-center gap-1.5">
+                      <div className="badge badge-amber">
                         <CalendarDays className="w-3.5 h-3.5" />
                         <div>Calendario SEP 2026-2027</div>
                       </div>
@@ -18062,11 +18062,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {schoolEvents.slice(0, 3).map((evt) => (
                         <div
                           key={evt.id}
-                          className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2 flex flex-col justify-between"
+                          className="badge badge-sky"
                         >
                           <div>
                             <div className="flex items-center justify-between">
-                              <div className="text-[10px] font-mono text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded">
+                              <div className="badge badge-amber font-mono">
                                 {evt.date}
                               </div>
                               {evt.classesSuspended ? (
@@ -18075,13 +18075,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 <div className="text-[10px] font-bold text-emerald-400">Actividad Escolar</div>
                               )}
                             </div>
-                            <strong className="text-xs font-black text-white block mt-2">{evt.title}</strong>
-                            <p className="text-[11px] text-slate-400 mt-1 line-clamp-2">{evt.description}</p>
+                            <strong className="text-xs font-black block mt-2">{evt.title}</strong>
+                            <p className="text-[11px] text-muted mt-1 line-clamp-2">{evt.description}</p>
                           </div>
 
-                          <div className="pt-2 border-t border-slate-800/80 text-[10px] text-slate-400 flex items-center justify-between">
+                          <div className="pt-2 border-t border-subtle text-[10px] text-muted flex items-center justify-between">
                             <div>{evt.location || 'Plantel Escolar'}</div>
-                            <div className="font-mono text-slate-300">{evt.time || 'Horario habitual'}</div>
+                            <div className="font-mono text-muted">{evt.time || 'Horario habitual'}</div>
                           </div>
                         </div>
                       ))}
@@ -18090,57 +18090,57 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   {/* Tarjeta de Corresponsabilidad Familiar, CEPS y Asociación de Padres */}
                   <div className="dashboard-filter-card space-y-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-subtle pb-3">
                       <div>
                         <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                           Comunidad Escolar & Participación Social (SEP)
                         </div>
-                        <h4 className="text-base font-black text-white flex items-center gap-2">
+                        <h4 className="text-base font-black flex items-center gap-2">
                           <HeartHandshake className="w-5 h-5 text-amber-400" />
                           Participación Familiar: Asociación de Padres (APF) y CEPS
                         </h4>
                       </div>
-                      <div className="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-xs font-bold px-3 py-1 rounded-xl flex items-center gap-1.5">
+                      <div className="badge badge-amber">
                         <Scale className="w-3.5 h-3.5" />
                         <div>Mesa Directiva APF 2026-2027</div>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2 text-xs">
+                      <div className="badge badge-sky">
                         <div className="flex items-center justify-between">
-                          <div className="text-[10px] font-mono text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded">
+                          <div className="badge badge-amber font-mono">
                             CARGO DEL TUTOR
                           </div>
                           <div className="text-emerald-400 font-bold">Activo en Ciclo Escolar</div>
                         </div>
-                        <h5 className="font-bold text-white text-sm">
+                        <h5 className="font-bold text-sm">
                           Ing. Roberto Mendoza Valdés (Presidente de la APF)
                         </h5>
-                        <p className="text-[11px] text-slate-300">
+                        <p className="text-[11px] text-muted">
                           Representante general de la comunidad de tutores ante la Dirección Escolar y líder del <strong>Comité de Fomento a la Lectura</strong>.
                         </p>
-                        <div className="text-[11px] text-slate-400 pt-1 border-t border-slate-800">
+                        <div className="text-[11px] text-muted pt-1 border-t border-subtle">
                           Iniciativa activa: <em>Maratón trimestral de lectura de cuentos clásicos infantiles</em>.
                         </div>
                       </div>
 
-                      <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2 text-xs">
+                      <div className="badge badge-sky">
                         <div className="flex items-center justify-between">
-                          <div className="text-[10px] font-mono text-sky-400 font-bold bg-sky-500/10 px-2 py-0.5 rounded">
+                          <div className="badge badge-sky font-mono">
                             ÚLTIMA ASAMBLEA GENERAL
                           </div>
-                          <div className="text-slate-400 font-mono text-[10px]">
+                          <div className="text-muted font-mono text-[10px]">
                             {schoolAssemblies[0]?.date || 'Septiembre 2026'}
                           </div>
                         </div>
-                        <h5 className="font-bold text-white text-sm">
+                        <h5 className="font-bold text-sm">
                           {schoolAssemblies[0]?.title || 'Asamblea General Ordinaria'}
                         </h5>
-                        <p className="text-[11px] text-slate-300">
+                        <p className="text-[11px] text-muted">
                           Quórum verificado: <strong>{schoolAssemblies[0]?.quorumCount || 115} tutores</strong>. Acuerdos de mantenimiento y proyectos de techumbre aprobados.
                         </p>
-                        <div className="text-[11px] text-emerald-400 pt-1 border-t border-slate-800 font-medium">
+                        <div className="text-[11px] text-emerald-400 pt-1 border-t border-subtle font-medium">
                           ✓ Acta de asamblea debidamente firmada y protocolizada.
                         </div>
                       </div>
@@ -18154,20 +18154,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                           Ambiente Escolar Seguro • Normas COFEPRIS & INIFED
                         </div>
-                        <h3 className="text-base font-black text-white flex items-center gap-2">
+                        <h3 className="text-base font-black flex items-center gap-2">
                           <Hammer className="w-5 h-5 text-amber-400" />
                           Higiene de Instalaciones & Red Hidráulica Escolar
                         </h3>
                       </div>
-                      <div className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-3 py-1 rounded-xl font-bold flex items-center gap-1">
+                      <div className="badge badge-emerald">
                         <CheckCircle2 className="w-3.5 h-3.5" /> 100% Conforme
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                       <div className="dashboard-subcard space-y-1">
-                        <div className="text-slate-400 text-[11px]">Agua Purificada & Bebederos:</div>
-                        <div className="text-white font-bold flex items-center gap-1.5">
+                        <div className="text-muted text-[11px]">Agua Purificada & Bebederos:</div>
+                        <div className="font-bold flex items-center gap-1.5">
                           <Droplets className="w-4 h-4 text-sky-400" />
                           Filtro UV & Carbón
                         </div>
@@ -18177,29 +18177,29 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </div>
 
                       <div className="dashboard-subcard space-y-1">
-                        <div className="text-slate-400 text-[11px]">Cisternas & Tinacos:</div>
-                        <div className="text-white font-bold flex items-center gap-1.5">
+                        <div className="text-muted text-[11px]">Cisternas & Tinacos:</div>
+                        <div className="font-bold flex items-center gap-1.5">
                           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                           Desinfección Semestral
                         </div>
-                        <div className="text-[10px] text-slate-400">
+                        <div className="text-[10px] text-muted">
                           Último lavado: 15/09/2026
                         </div>
                       </div>
 
                       <div className="dashboard-subcard space-y-1">
-                        <div className="text-slate-400 text-[11px]">Seguridad Estructural:</div>
-                        <div className="text-white font-bold flex items-center gap-1.5">
+                        <div className="text-muted text-[11px]">Seguridad Estructural:</div>
+                        <div className="font-bold flex items-center gap-1.5">
                           <ShieldCheck className="w-4 h-4 text-purple-400" />
                           Dictamen INIFED
                         </div>
-                        <div className="text-[10px] text-slate-400">
+                        <div className="text-[10px] text-muted">
                           Salidas con barra antipánico
                         </div>
                       </div>
                     </div>
 
-                    <p className="text-[11px] text-slate-400 bg-slate-950/60 p-3 rounded-xl border border-slate-800/80">
+                    <p className="badge badge-sky">
                       ℹ️ Los trabajos de mantenimiento y mejoras al inmueble son supervisados conjuntamente por la Dirección y la Comisión de Infraestructura del CEPS y la Mesa Directiva APF.
                     </p>
                   </div>
@@ -18211,52 +18211,52 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                           Apoyo a la Economía Familiar • Artículo 149 LGE
                         </div>
-                        <h3 className="text-base font-black text-white flex items-center gap-2">
+                        <h3 className="text-base font-black flex items-center gap-2">
                           <Percent className="w-5 h-5 text-amber-400" />
                           Programa de Becas Oficiales SEP & Descuentos por Hermanos
                         </h3>
                       </div>
-                      <div className="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs px-3 py-1 rounded-xl font-bold flex items-center gap-1">
+                      <div className="badge badge-amber">
                         <Scale className="w-3.5 h-3.5" /> 5% Legal Garantizado
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                       <div className="dashboard-subcard space-y-1">
-                        <div className="text-slate-400 text-[11px]">Beca Oficial SEP:</div>
-                        <div className="text-white font-bold flex items-center gap-1.5">
+                        <div className="text-muted text-[11px]">Beca Oficial SEP:</div>
+                        <div className="font-bold flex items-center gap-1.5">
                           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                           Exención 25% a 100%
                         </div>
-                        <div className="text-[10px] text-slate-400">
+                        <div className="text-[10px] text-muted">
                           Socioeconómica con promedio mín. 8.5
                         </div>
                       </div>
 
                       <div className="dashboard-subcard space-y-1">
-                        <div className="text-slate-400 text-[11px]">Estímulo por Hermanos:</div>
-                        <div className="text-white font-bold flex items-center gap-1.5">
+                        <div className="text-muted text-[11px]">Estímulo por Hermanos:</div>
+                        <div className="font-bold flex items-center gap-1.5">
                           <Users className="w-4 h-4 text-sky-400" />
                           20% a 25% Directo
                         </div>
-                        <div className="text-[10px] text-slate-400">
+                        <div className="text-[10px] text-muted">
                           Segundo hermano matriculado
                         </div>
                       </div>
 
                       <div className="dashboard-subcard space-y-1">
-                        <div className="text-slate-400 text-[11px]">Transparencia Legal:</div>
-                        <div className="text-white font-bold flex items-center gap-1.5">
+                        <div className="text-muted text-[11px]">Transparencia Legal:</div>
+                        <div className="font-bold flex items-center gap-1.5">
                           <Scale className="w-4 h-4 text-amber-400" />
                           Comité Mixto de Becas
                         </div>
-                        <div className="text-[10px] text-slate-400">
+                        <div className="text-[10px] text-muted">
                           Convocatoria anual pública en agosto
                         </div>
                       </div>
                     </div>
 
-                    <p className="text-[11px] text-slate-400 bg-slate-950/60 p-3 rounded-xl border border-slate-800/80">
+                    <p className="badge badge-sky">
                       ℹ️ Las solicitudes de beca son dictaminadas por el Comité integrado por Directivos y representantes de Familias APF/CEPS. Ninguna beca está condicionada a cuotas o contraprestaciones laborales.
                     </p>
                   </div>
@@ -18268,20 +18268,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                           Recursos y Dotaciones Oficiales • Nueva Escuela Mexicana
                         </div>
-                        <h3 className="text-base font-black text-white flex items-center gap-2">
+                        <h3 className="text-base font-black flex items-center gap-2">
                           <BookOpenCheck className="w-5 h-5 text-amber-400" />
                           Libros Gratuitos CONALITEG & Almacén de Uniformes
                         </h3>
                       </div>
-                      <div className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-3 py-1 rounded-xl font-bold flex items-center gap-1">
+                      <div className="badge badge-emerald">
                         <CheckCircle2 className="w-3.5 h-3.5" /> Entrega Conforme
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                       <div className="dashboard-subcard space-y-1">
-                        <div className="text-slate-400 text-[11px]">Libros de Texto SEP:</div>
-                        <div className="text-white font-bold flex items-center gap-1.5">
+                        <div className="text-muted text-[11px]">Libros de Texto SEP:</div>
+                        <div className="font-bold flex items-center gap-1.5">
                           <BookOpen className="w-4 h-4 text-amber-400" />
                           Dotación 100% Gratuita
                         </div>
@@ -18291,36 +18291,36 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </div>
 
                       <div className="dashboard-subcard space-y-1">
-                        <div className="text-slate-400 text-[11px]">Títulos Entregados:</div>
-                        <div className="text-white font-bold flex items-center gap-1.5">
+                        <div className="text-muted text-[11px]">Títulos Entregados:</div>
+                        <div className="font-bold flex items-center gap-1.5">
                           <FileCheck className="w-4 h-4 text-sky-400" />
                           6 Libros Oficiales NEM
                         </div>
-                        <div className="text-[10px] text-slate-400">
+                        <div className="text-[10px] text-muted">
                           Aula, Comunitarios, Saberes y Lenguajes
                         </div>
                       </div>
 
                       <div className="dashboard-subcard space-y-1">
-                        <div className="text-slate-400 text-[11px]">Almacén de Uniformes:</div>
-                        <div className="text-white font-bold flex items-center gap-1.5">
+                        <div className="text-muted text-[11px]">Almacén de Uniformes:</div>
+                        <div className="font-bold flex items-center gap-1.5">
                           <Shirt className="w-4 h-4 text-teal-400" />
                           Atención en Plantel
                         </div>
-                        <div className="text-[10px] text-slate-400">
+                        <div className="text-[10px] text-muted">
                           Lunes a Viernes 07:30 - 15:30 hrs
                         </div>
                       </div>
                     </div>
 
-                    <p className="text-[11px] text-slate-400 bg-slate-950/60 p-3 rounded-xl border border-slate-800/80">
+                    <p className="badge badge-sky">
                       ℹ️ La entrega de los libros de texto gratuitos es un derecho constitucional. Si requiere reposición de algún libro o adquirir prendas adicionales del uniforme institucional, acuda al Almacén Escolar del plantel.
                     </p>
                   </div>
 
                   {/* Tarjeta de Constancias Oficiales con QR para el Tutor */}
-                  <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl space-y-4 shadow-xl">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                  <div className="dashboard-card space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-subtle pb-3">
                       <div className="flex items-center gap-3">
                         <div className="p-3 bg-sky-500/20 text-sky-400 rounded-2xl border border-sky-500/30">
                           <ScrollText className="w-6 h-6" />
@@ -18340,20 +18340,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </div>
                     </div>
 
-                    <p className="text-xs text-slate-300">
+                    <p className="text-xs text-muted">
                       Descarga directamente la constancia oficial de estudios de Carlos con sello digital y código QR para presentar ante el IMSS, ISSSTE, trámite de pasaporte mexicano o becas del Bienestar, sin filas ni esperas.
                     </p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                       <div className="dashboard-subcard space-y-1">
-                        <div className="text-slate-400 text-[11px]">Folio Asignado:</div>
+                        <div className="text-muted text-[11px]">Folio Asignado:</div>
                         <div className="text-sky-400 font-mono font-bold">CE-2026-PRI-001</div>
-                        <div className="text-[10px] text-slate-500">Sello SHA-256 Verificado</div>
+                        <div className="text-[10px] text-muted">Sello SHA-256 Verificado</div>
                       </div>
 
                       <div className="dashboard-subcard space-y-1">
-                        <div className="text-slate-400 text-[11px]">Vigencia Legal:</div>
-                        <div className="text-white font-bold">Hasta 26 de Noviembre 2026</div>
+                        <div className="text-muted text-[11px]">Vigencia Legal:</div>
+                        <div className="font-bold">Hasta 26 de Noviembre 2026</div>
                         <div className="text-[10px] text-emerald-400">90 días de validez oficial</div>
                       </div>
                     </div>
@@ -18365,7 +18365,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           setSelectedCertForDetail(cert);
                           setShowCertificateDetailModal(true);
                         }}
-                        className="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-md shadow-sky-500/20 cursor-pointer"
+                        className="btn btn-primary btn-sm"
                       >
                         <Printer className="w-4 h-4" />
                         <div>Descargar / Imprimir Constancia con QR</div>
@@ -18376,7 +18376,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           setActiveTab('certificates');
                           setCertificatesSubTab('kardex');
                         }}
-                        className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer"
+                        className="btn btn-secondary btn-sm"
                       >
                         <GraduationCap className="w-4 h-4" />
                         <div>Ver Kárdex Histórico Completo</div>
@@ -18392,9 +18392,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {/* 7. SUPERADMIN SAAS */}
         {activeTab === 'superadmin' && (
           <div className="space-y-6 animate-in fade-in">
-            <div className="bg-purple-950/40 border border-purple-800/80 p-6 rounded-3xl shadow-xl">
-              <h2 className="text-xl font-black text-white">Ecosistema Global de Escuelas Registradas (ASM)</h2>
-              <p className="text-xs text-slate-300 mt-1">Panel de control del dueño del SaaS.</p>
+            <div className="badge badge-purple">
+              <h2 className="text-xl font-black">Ecosistema Global de Escuelas Registradas (ASM)</h2>
+              <p className="text-xs text-muted mt-1">Panel de control del dueño del SaaS.</p>
             </div>
           </div>
         )}
@@ -18664,7 +18664,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="modal-actions">
                 <button type="button" onClick={() => setShowNewTeacherModal(false)} className="btn btn-secondary">Cancelar</button>
-                <button type="submit" className="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-3 rounded-xl shadow-lg shadow-emerald-500/20 cursor-pointer flex items-center justify-center gap-1.5">
+                <button type="submit" className="btn btn-success flex-1">
                   <Send className="w-4 h-4" /> <div>Dar de Alta y Enviar OTP</div>
                 </button>
               </div>
@@ -18681,7 +18681,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <MailCheck className="w-7 h-7" />
             </div>
             <h3 className="modal-title">Activación de Cuenta Docente</h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-muted">
               Introduce el código de 6 dígitos enviado a <strong className="text-emerald-400 font-mono">{activeTeacherForVerify.email}</strong>
             </p>
             <form onSubmit={handleVerifyTeacherOtp} className="space-y-4">
@@ -18696,7 +18696,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               />
               <div className="modal-actions">
                 <button type="button" onClick={() => setShowVerifyTeacherModal(false)} className="btn btn-secondary">Cancelar</button>
-                <button type="submit" disabled={otpCodeInput.length !== 6} className="flex-1 bg-emerald-500 text-slate-950 text-xs py-3 rounded-xl font-black cursor-pointer">Verificar Maestro</button>
+                <button type="submit" disabled={otpCodeInput.length !== 6} className="btn btn-success btn-sm flex-1">Verificar Maestro</button>
               </div>
             </form>
           </div>
@@ -18748,7 +18748,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
               <div className="modal-actions">
                 <button type="button" onClick={() => setShowNewStudentModal(false)} className="btn btn-secondary">Cancelar</button>
-                <button type="submit" className="flex-1 bg-sky-500 text-slate-950 font-black py-3 rounded-xl cursor-pointer">Inscribir</button>
+                <button type="submit" className="btn btn-primary flex-1">Inscribir</button>
               </div>
             </form>
           </div>
@@ -18769,14 +18769,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => window.print()}
-                  className="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-md shadow-emerald-600/20 transition-all cursor-pointer"
+                  className="btn btn-success btn-sm"
                 >
                   <Printer className="w-4 h-4" />
                   <div>Imprimir Boleta Oficial SEP</div>
                 </button>
                 <button
                   onClick={() => setShowReportCardModal(false)}
-                  className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs px-4 py-2 rounded-xl transition-colors cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   ✕ Cerrar
                 </button>
@@ -18786,9 +18786,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* DOCUMENTO MEMBRETADO OFICIAL SEP */}
             <div id="sep-report-card-printable" className="space-y-6">
               {/* Encabezado Oficial */}
-              <div className="border-b-2 border-slate-900 pb-4 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+              <div className="border-b-2 border-slate-300 pb-4 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-slate-900 text-white rounded-2xl flex flex-col items-center justify-center font-black leading-none shadow-md">
+                  <div className="w-16 h-16 bg-surface rounded-2xl flex flex-col items-center justify-center font-black leading-none shadow-md">
                     <div className="text-xl tracking-tighter">SEP</div>
                     <div className="text-[8px] font-mono tracking-widest text-amber-400 mt-0.5">MÉXICO</div>
                   </div>
@@ -18808,7 +18808,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="text-right bg-slate-50 p-3.5 rounded-2xl border border-slate-200 text-xs font-mono">
                   <div><strong>CCT SEP:</strong> {activeStudentForReportCard.levelId === 'PREESCOLAR' ? '30PJN0145X' : '30PPR0289Z'}</div>
                   <div><strong>Turno:</strong> Matutino</div>
-                  <div className="text-[11px] text-slate-500 mt-0.5">Folio: ASM-2026-{activeStudentForReportCard.studentCode}</div>
+                  <div className="text-[11px] text-muted mt-0.5">Folio: ASM-2026-{activeStudentForReportCard.studentCode}</div>
                 </div>
               </div>
 
@@ -18816,16 +18816,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs bg-slate-50 p-4 rounded-2xl border border-slate-200">
                 <div className="space-y-1">
                   <div>
-                    <div className="text-slate-500 block text-[11px]">Nombre Completo del Educando:</div>
+                    <div className="text-muted block text-[11px]">Nombre Completo del Educando:</div>
                     <strong className="text-slate-900 text-sm">{activeStudentForReportCard.firstName} {activeStudentForReportCard.lastName}</strong>
                   </div>
                   <div className="flex items-center gap-4 pt-1">
                     <div>
-                      <div className="text-slate-500 text-[10px] block">CURP:</div>
+                      <div className="text-muted text-[10px] block">CURP:</div>
                       <strong className="font-mono text-slate-900 text-xs">{activeStudentForReportCard.curp || 'MERU180512HDFZRR03'}</strong>
                     </div>
                     <div>
-                      <div className="text-slate-500 text-[10px] block">Matrícula Escolar:</div>
+                      <div className="text-muted text-[10px] block">Matrícula Escolar:</div>
                       <strong className="font-mono text-slate-900 text-xs">{activeStudentForReportCard.studentCode}</strong>
                     </div>
                   </div>
@@ -18833,16 +18833,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div className="space-y-1 md:border-l md:border-slate-200 md:pl-4">
                   <div>
-                    <div className="text-slate-500 block text-[11px]">Institución Educativa:</div>
+                    <div className="text-muted block text-[11px]">Institución Educativa:</div>
                     <strong className="text-slate-900 text-xs">{currentTenant.name}</strong>
                   </div>
                   <div className="flex items-center gap-4 pt-1">
                     <div>
-                      <div className="text-slate-500 text-[10px] block">Grado y Grupo:</div>
+                      <div className="text-muted text-[10px] block">Grado y Grupo:</div>
                       <strong className="text-slate-900 text-xs">{activeStudentForReportCard.groupName}</strong>
                     </div>
                     <div>
-                      <div className="text-slate-500 text-[10px] block">Dirección Técnica del Nivel:</div>
+                      <div className="text-muted text-[10px] block">Dirección Técnica del Nivel:</div>
                       <strong className="text-slate-900 text-xs">
                         {activeStudentForReportCard.levelId === 'PREESCOLAR' ? 'Mtra. Sofía Valenzuela' : 'Lic. Armando Paredes'}
                       </strong>
@@ -18883,7 +18883,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <tr key={sub.id} className="hover:bg-slate-50/80">
                             <td className="py-2.5 px-3">
                               <div className="font-bold text-slate-900 block">{sub.name}</div>
-                              <div className="text-[10px] text-slate-500">{sub.campoFormativo}</div>
+                              <div className="text-[10px] text-muted">{sub.campoFormativo}</div>
                             </td>
                             <td className="py-2.5 px-2 text-center font-mono">{p1}</td>
                             <td className="py-2.5 px-2 text-center font-mono">{p2}</td>
@@ -18910,7 +18910,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <tfoot className="bg-slate-100 font-bold border-t-2 border-slate-400 text-slate-900 text-xs">
                         <tr>
                           <td className="py-3 px-3 uppercase text-right">Promedio General del Ciclo Escolar:</td>
-                          <td colSpan={3} className="py-3 px-2 text-center text-slate-500 text-[11px] font-normal">
+                          <td colSpan={3} className="py-3 px-2 text-center text-muted text-[11px] font-normal">
                             Norma Oficial de Evaluación SEP
                           </td>
                           <td className="py-3 px-2 text-center font-mono font-black text-sm bg-amber-100 text-amber-950">
@@ -18934,29 +18934,29 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Bloque de Firmas y Sello de Validación Oficial */}
               <div className="pt-4 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center text-xs">
                 <div className="border-t-2 border-slate-400 pt-2 flex flex-col justify-between h-24">
-                  <div className="text-[10px] text-slate-400 uppercase">Docente Titular</div>
+                  <div className="text-[10px] text-muted uppercase">Docente Titular</div>
                   <div className="font-bold text-slate-900">Prof. Roberto Salazar</div>
-                  <div className="text-[11px] text-slate-500">Firma del Maestro(a) de Grupo</div>
+                  <div className="text-[11px] text-muted">Firma del Maestro(a) de Grupo</div>
                 </div>
 
                 <div className="border-t-2 border-slate-400 pt-2 flex flex-col justify-between h-24">
-                  <div className="text-[10px] text-slate-400 uppercase">Dirección Técnica Escolar</div>
+                  <div className="text-[10px] text-muted uppercase">Dirección Técnica Escolar</div>
                   <div className="font-bold text-slate-900">
                     {activeStudentForReportCard.levelId === 'PREESCOLAR' ? 'Mtra. Sofía Valenzuela' : 'Lic. Armando Paredes'}
                   </div>
-                  <div className="text-[11px] text-slate-500">
+                  <div className="text-[11px] text-muted">
                     Firma y Sello de la Dirección
                   </div>
                 </div>
 
                 <div className="border border-dashed border-slate-300 rounded-2xl p-3 flex items-center justify-center gap-3 bg-slate-50 h-24">
-                  <div className="w-12 h-12 bg-slate-900 text-white rounded-xl flex flex-col items-center justify-center font-mono text-[9px] font-black leading-tight">
+                  <div className="w-12 h-12 bg-surface rounded-xl flex flex-col items-center justify-center font-mono text-[9px] font-black leading-tight">
                     <div>QR</div>
                     <div>SEP</div>
                   </div>
                   <div className="text-[10px] text-slate-600 text-left">
                     <strong className="text-slate-900 block">Sello Digital de Autenticidad</strong>
-                    <div className="font-mono text-[9px] text-slate-500 block truncate w-32">
+                    <div className="font-mono text-[9px] text-muted block truncate w-32">
                       SIGED-2026-SEP-884920
                     </div>
                     <div className="text-[9px] text-emerald-700 font-bold block">Folio Oficial Verificado</div>
@@ -19087,7 +19087,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               {/* Checkbox de reprogramación de evaluaciones */}
-              <div className="bg-slate-950 p-3.5 rounded-2xl border border-slate-800 flex items-start gap-2.5">
+              <div className="badge badge-sky">
                 <input
                   type="checkbox"
                   id="allowMakeup"
@@ -19100,8 +19100,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   }
                   className="mt-0.5 rounded text-purple-600 focus:ring-purple-500 cursor-pointer"
                 />
-                <label htmlFor="allowMakeup" className="text-slate-300 cursor-pointer text-xs">
-                  <strong className="text-white block">Permitir entrega extemporánea de tareas y exámenes</strong>
+                <label htmlFor="allowMakeup" className="text-muted cursor-pointer text-xs">
+                  <strong className="block">Permitir entrega extemporánea de tareas y exámenes</strong>
                   Los profesores deberán recibir proyectos y aplicar evaluaciones pendientes sin penalización.
                 </label>
               </div>
@@ -19111,7 +19111,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowJustifyModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="flex-1 bg-purple-600 hover:bg-purple-500 text-white py-3 rounded-xl font-black cursor-pointer shadow-lg shadow-purple-600/20 transition-all flex items-center justify-center gap-2"
+                  className="btn btn-purple flex-1"
                 >
                   <FileText className="w-4 h-4" />
                   <div>Emitir y Autorizar Justificante</div>
@@ -19140,7 +19140,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => window.print()}
-                  className="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md shadow-purple-600/20 transition-all"
+                  className="btn btn-purple btn-sm"
                 >
                   <Printer className="w-3.5 h-3.5" />
                   <div>Imprimir Volante</div>
@@ -19160,7 +19160,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="text-xs text-slate-600">
                     Sistema Educativo Nacional • Incorporado a la SEP
                   </div>
-                  <div className="text-[10px] text-slate-500 font-mono">
+                  <div className="text-[10px] text-muted font-mono">
                     CCT Oficial: 30PPR0289Z • Ciclo Escolar 2026-2027
                   </div>
                 </div>
@@ -19169,7 +19169,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="bg-purple-100 text-purple-900 font-mono text-xs font-black px-3 py-1 rounded-lg border border-purple-300 inline-block">
                     FOLIO: {activeJustificationForPrint.folio}
                   </div>
-                  <div className="text-[10px] text-slate-500 mt-1">
+                  <div className="text-[10px] text-muted mt-1">
                     Fecha de Emisión: {activeJustificationForPrint.createdAt}
                   </div>
                 </div>
@@ -19189,22 +19189,22 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl text-xs space-y-2">
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <div className="text-slate-500 text-[10px] uppercase font-bold block">Alumno(a):</div>
+                    <div className="text-muted text-[10px] uppercase font-bold block">Alumno(a):</div>
                     <strong className="text-sm text-slate-900">{activeJustificationForPrint.studentName}</strong>
                   </div>
                   <div>
-                    <div className="text-slate-500 text-[10px] uppercase font-bold block">Matrícula Escolar:</div>
+                    <div className="text-muted text-[10px] uppercase font-bold block">Matrícula Escolar:</div>
                     <div className="font-mono font-bold text-slate-800">{activeJustificationForPrint.studentCode}</div>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-200">
                   <div>
-                    <div className="text-slate-500 text-[10px] uppercase font-bold block">Grado y Grupo:</div>
+                    <div className="text-muted text-[10px] uppercase font-bold block">Grado y Grupo:</div>
                     <div className="font-bold text-slate-800">{activeJustificationForPrint.groupName}</div>
                   </div>
                   <div>
-                    <div className="text-slate-500 text-[10px] uppercase font-bold block">Periodo Justificado:</div>
+                    <div className="text-muted text-[10px] uppercase font-bold block">Periodo Justificado:</div>
                     <div className="font-bold text-purple-900">
                       {activeJustificationForPrint.startDate} al {activeJustificationForPrint.endDate}
                     </div>
@@ -19215,7 +19215,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Motivo y Soporte */}
               <div className="space-y-2 text-xs">
                 <div className="border border-slate-200 p-3 rounded-xl">
-                  <div className="text-slate-500 text-[10px] uppercase font-bold block">Causa o Categoría:</div>
+                  <div className="text-muted text-[10px] uppercase font-bold block">Causa o Categoría:</div>
                   <div className="font-bold text-slate-900 capitalize">
                     {activeJustificationForPrint.reasonCategory.replace('_', ' ').toLowerCase()}
                     {activeJustificationForPrint.documentFolio && (
@@ -19245,7 +19245,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
                   <div className="border-t border-slate-400 pt-1">
                     <strong className="text-xs text-slate-900 block">{activeJustificationForPrint.authorizedBy}</strong>
-                    <div className="text-[10px] text-slate-500">Dirección Técnica Escolar</div>
+                    <div className="text-[10px] text-muted">Dirección Técnica Escolar</div>
                   </div>
                 </div>
 
@@ -19258,7 +19258,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
                   <div className="border-t border-slate-400 pt-1">
                     <strong className="text-xs text-slate-900 block">Sello Institucional</strong>
-                    <div className="text-[10px] text-slate-500">Vigencia Ciclo 2026-2027</div>
+                    <div className="text-[10px] text-muted">Vigencia Ciclo 2026-2027</div>
                   </div>
                 </div>
               </div>
@@ -19393,7 +19393,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               {/* Si es Citatorio: Fecha/Hora y Lugar */}
               {createNoticeForm.type === 'CITATORIO_PADRES' && (
-                <div className="bg-amber-950/30 border border-amber-800/60 p-3 rounded-2xl space-y-3">
+                <div className="badge badge-amber">
                   <div className="text-[11px] font-bold text-amber-300 flex items-center gap-1.5">
                     <Clock className="w-3.5 h-3.5" />
                     <div>Detalles de la Cita Presencial con el Tutor:</div>
@@ -19478,7 +19478,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               {/* Checkbox Acuse */}
-              <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 flex items-start gap-2.5">
+              <div className="badge badge-sky">
                 <input
                   type="checkbox"
                   id="reqAck"
@@ -19491,8 +19491,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   }
                   className="mt-0.5 rounded text-purple-600 focus:ring-purple-500 cursor-pointer"
                 />
-                <label htmlFor="reqAck" className="text-slate-300 cursor-pointer text-xs">
-                  <strong className="text-white block">Requerir Acuse Digital de Enterado a los Tutores</strong>
+                <label htmlFor="reqAck" className="text-muted cursor-pointer text-xs">
+                  <strong className="block">Requerir Acuse Digital de Enterado a los Tutores</strong>
                   El padre de familia deberá confirmar lectura con firma digital tokenizada desde el Portal Familiar.
                 </label>
               </div>
@@ -19502,7 +19502,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowCreateNoticeModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="flex-1 bg-purple-600 hover:bg-purple-500 text-white py-3 rounded-xl font-black cursor-pointer shadow-lg shadow-purple-600/25 transition-all flex items-center justify-center gap-2"
+                  className="btn btn-purple flex-1"
                 >
                   <Megaphone className="w-4 h-4" />
                   <div>Publicar Comunicado</div>
@@ -19531,7 +19531,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => window.print()}
-                  className="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md shadow-purple-600/20 transition-all"
+                  className="btn btn-purple btn-sm"
                 >
                   <Printer className="w-3.5 h-3.5" />
                   <div>Imprimir Formato</div>
@@ -19551,7 +19551,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="text-xs text-slate-600">
                     Sistema Educativo Nacional • Incorporado a la SEP
                   </div>
-                  <div className="text-[10px] text-slate-500 font-mono">
+                  <div className="text-[10px] text-muted font-mono">
                     CCT: 30PPR0289Z • Ciclo Escolar 2026-2027
                   </div>
                 </div>
@@ -19560,7 +19560,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="bg-purple-100 text-purple-900 font-mono text-xs font-black px-3 py-1 rounded-lg border border-purple-300 inline-block">
                     FOLIO: {activeNoticeForPrint.folio}
                   </div>
-                  <div className="text-[10px] text-slate-500 mt-1">
+                  <div className="text-[10px] text-muted mt-1">
                     Fecha: {activeNoticeForPrint.publishDate}
                   </div>
                 </div>
@@ -19569,7 +19569,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Asunto */}
               <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl text-xs space-y-1">
                 <div>
-                  <div className="text-slate-500 text-[10px] uppercase font-bold block">Destinatarios:</div>
+                  <div className="text-muted text-[10px] uppercase font-bold block">Destinatarios:</div>
                   <strong className="text-slate-900 text-sm">
                     {activeNoticeForPrint.targetAudience === 'TODOS'
                       ? 'Padres de Familia y Comunidad Escolar en General'
@@ -19579,7 +19579,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </strong>
                 </div>
                 <div className="pt-1 border-t border-slate-200">
-                  <div className="text-slate-500 text-[10px] uppercase font-bold block">Asunto:</div>
+                  <div className="text-muted text-[10px] uppercase font-bold block">Asunto:</div>
                   <strong className="text-purple-950 font-black text-sm">{activeNoticeForPrint.title}</strong>
                 </div>
               </div>
@@ -19592,11 +19592,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
                   <div className="grid grid-cols-2 gap-2 pt-1 text-slate-800">
                     <div>
-                      <div className="text-slate-500 text-[10px] uppercase font-bold block">Fecha y Hora:</div>
+                      <div className="text-muted text-[10px] uppercase font-bold block">Fecha y Hora:</div>
                       <strong className="text-slate-900">{activeNoticeForPrint.appointmentDateTime}</strong>
                     </div>
                     <div>
-                      <div className="text-slate-500 text-[10px] uppercase font-bold block">Lugar:</div>
+                      <div className="text-muted text-[10px] uppercase font-bold block">Lugar:</div>
                       <strong className="text-slate-900">{activeNoticeForPrint.appointmentLocation || 'Dirección Técnica'}</strong>
                     </div>
                   </div>
@@ -19616,7 +19616,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
                   <div className="border-t border-slate-400 pt-1">
                     <strong className="text-xs text-slate-900 block">{activeNoticeForPrint.publishedBy}</strong>
-                    <div className="text-[10px] text-slate-500">Dirección Escolar</div>
+                    <div className="text-[10px] text-muted">Dirección Escolar</div>
                   </div>
                 </div>
 
@@ -19629,7 +19629,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
                   <div className="border-t border-slate-400 pt-1">
                     <strong className="text-xs text-slate-900 block">Sello Institucional</strong>
-                    <div className="text-[10px] text-slate-500">Ciclo 2026-2027</div>
+                    <div className="text-[10px] text-muted">Ciclo 2026-2027</div>
                   </div>
                 </div>
               </div>
@@ -19637,22 +19637,22 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* TALÓN DE ACUSE DESPRENDIBLE */}
               {activeNoticeForPrint.requiresAcknowledgment && (
                 <div className="border-t-2 border-dashed border-slate-400 pt-4 space-y-3 bg-slate-50 p-4 rounded-xl">
-                  <div className="flex items-center justify-between text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                  <div className="flex items-center justify-between text-[10px] font-bold text-muted uppercase tracking-wider">
                     <div>✂️ TALÓN DE ACUSE DE ENTERADO (DESPRENDER Y ENVIAR FIRMADO AL COLEGIO)</div>
                     <div className="font-mono">FOLIO: {activeNoticeForPrint.folio}</div>
                   </div>
 
                   <div className="grid grid-cols-3 gap-2 text-[11px] text-slate-800">
                     <div>
-                      <div className="text-slate-500 text-[10px] block">Nombre del Alumno(a):</div>
+                      <div className="text-muted text-[10px] block">Nombre del Alumno(a):</div>
                       <strong className="text-slate-900">{activeNoticeForPrint.targetStudentName || 'Carlos Mendoza Ruiz'}</strong>
                     </div>
                     <div>
-                      <div className="text-slate-500 text-[10px] block">Grado y Grupo:</div>
+                      <div className="text-muted text-[10px] block">Grado y Grupo:</div>
                       <strong className="text-slate-900">{activeNoticeForPrint.targetGroupName || 'Primaria 1º "A"'}</strong>
                     </div>
                     <div>
-                      <div className="text-slate-500 text-[10px] block">Fecha de Notificación:</div>
+                      <div className="text-muted text-[10px] block">Fecha de Notificación:</div>
                       <div className="text-slate-900 font-mono">{activeNoticeForPrint.publishDate}</div>
                     </div>
                   </div>
@@ -19690,7 +19690,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => window.print()}
-                  className="bg-cyan-500 hover:bg-cyan-400 text-slate-950 px-4 py-2 rounded-xl text-xs font-black flex items-center gap-1.5 cursor-pointer shadow-md shadow-cyan-500/20 transition-all"
+                  className="btn btn-primary btn-sm"
                 >
                   <Printer className="w-3.5 h-3.5" />
                   <div>Imprimir Formato PVC</div>
@@ -19701,28 +19701,28 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* Hoja de Impresión con Marcas de Corte */}
             <div className="bg-slate-100 text-slate-900 p-6 sm:p-8 rounded-2xl shadow-xl space-y-6 border border-slate-300">
-              <div className="text-[11px] text-slate-500 text-center font-mono border-b border-slate-300 pb-2">
+              <div className="text-[11px] text-muted text-center font-mono border-b border-slate-300 pb-2">
                 📐 Plantilla de impresión directa para impresora de credenciales (Zebra / Fargo / Evolis) o laminado en mica térmica.
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start justify-center">
                 {/* ANVERSO (FRENTE) */}
                 <div className="border-2 border-dashed border-slate-400 p-2 rounded-2xl bg-white shadow-sm">
-                  <div className="text-[9px] font-mono font-bold text-slate-400 uppercase text-center mb-1">
+                  <div className="text-[9px] font-mono font-bold text-muted uppercase text-center mb-1">
                     [ Anverso / Frente ]
                   </div>
-                  <div className="w-full aspect-[85.6/53.98] bg-gradient-to-br from-indigo-900 via-blue-950 to-slate-950 text-white rounded-xl p-3 shadow-md flex flex-col justify-between relative overflow-hidden">
+                  <div className="w-full aspect-[85.6/53.98] bg-gradient-to-br from-indigo-900 via-blue-950 to-slate-950 rounded-xl p-3 shadow-md flex flex-col justify-between relative overflow-hidden">
                     {/* Header Anverso */}
                     <div className="flex items-center justify-between border-b border-blue-800/80 pb-1">
                       <div>
-                        <div className="text-[10px] font-black uppercase tracking-wider text-white">
+                        <div className="text-[10px] font-black uppercase tracking-wider">
                           {currentTenant.name}
                         </div>
                         <div className="text-[8px] text-cyan-300 font-mono">
                           CCT: {activeCredentialForPrint.cct} • {activeCredentialForPrint.levelName}
                         </div>
                       </div>
-                      <div className="text-[8px] font-mono font-bold bg-blue-800/80 px-1.5 py-0.5 rounded text-white">
+                      <div className="text-[8px] font-mono font-bold bg-blue-800/80 px-1.5 py-0.5 rounded">
                         2026-2027
                       </div>
                     </div>
@@ -19730,8 +19730,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     {/* Cuerpo Anverso */}
                     <div className="flex items-center gap-3 my-1">
                       {/* Foto */}
-                      <div className="w-14 h-18 bg-slate-800 border-2 border-cyan-400 rounded-lg flex flex-col items-center justify-center shrink-0 relative overflow-hidden">
-                        <div className="w-7 h-7 rounded-full bg-slate-700 flex items-center justify-center text-white font-black text-xs">
+                      <div className="w-14 h-18 bg-subtle border-2 border-cyan-400 rounded-lg flex flex-col items-center justify-center shrink-0 relative overflow-hidden">
+                        <div className="w-7 h-7 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center font-black text-xs">
                           {activeCredentialForPrint.fullName.charAt(0)}
                         </div>
                         <div className="text-[6px] font-mono text-cyan-300 mt-0.5 uppercase">
@@ -19741,17 +19741,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                       {/* Datos */}
                       <div className="flex-1 min-w-0 space-y-0.5">
-                        <div className="text-[11px] font-black leading-tight text-white uppercase truncate">
+                        <div className="text-[11px] font-black leading-tight uppercase truncate">
                           {activeCredentialForPrint.fullName}
                         </div>
                         <div className="text-[9px] font-bold text-cyan-400 truncate">
                           {activeCredentialForPrint.roleOrGrade}
                         </div>
-                        <div className="text-[8px] text-slate-300 font-mono">
-                          Matrícula: <strong className="text-white">{activeCredentialForPrint.matriculaOrCode}</strong>
+                        <div className="text-[8px] text-muted font-mono">
+                          Matrícula: <strong className="text-main">{activeCredentialForPrint.matriculaOrCode}</strong>
                         </div>
                         {activeCredentialForPrint.curp && (
-                          <div className="text-[7px] text-slate-400 font-mono truncate">
+                          <div className="text-[7px] text-muted font-mono truncate">
                             CURP: {activeCredentialForPrint.curp}
                           </div>
                         )}
@@ -19764,7 +19764,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
 
                     {/* Footer Anverso */}
-                    <div className="border-t border-blue-800/80 pt-1 flex items-center justify-between text-[7px] font-mono text-slate-400">
+                    <div className="border-t border-blue-800/80 pt-1 flex items-center justify-between text-[7px] font-mono text-muted">
                       <div>FOLIO: {activeCredentialForPrint.credentialCode}</div>
                       <div className="text-emerald-400 font-bold">● ACREDITACIÓN OFICIAL</div>
                     </div>
@@ -19773,7 +19773,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 {/* REVERSO (VUELTA) */}
                 <div className="border-2 border-dashed border-slate-400 p-2 rounded-2xl bg-white shadow-sm">
-                  <div className="text-[9px] font-mono font-bold text-slate-400 uppercase text-center mb-1">
+                  <div className="text-[9px] font-mono font-bold text-muted uppercase text-center mb-1">
                     [ Reverso / Vuelta ]
                   </div>
                   <div className="w-full aspect-[85.6/53.98] bg-slate-50 text-slate-900 rounded-xl p-3 shadow-md flex flex-col justify-between border border-slate-200">
@@ -19784,15 +19784,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                     <div className="grid grid-cols-2 gap-1.5 text-[8px] my-1">
                       <div className="bg-white p-1 rounded border border-slate-200">
-                        <div className="text-slate-500 block">Tipo de Sangre:</div>
+                        <div className="text-muted block">Tipo de Sangre:</div>
                         <strong className="text-rose-600 font-black text-[9px]">{activeCredentialForPrint.bloodType}</strong>
                       </div>
                       <div className="bg-white p-1 rounded border border-slate-200">
-                        <div className="text-slate-500 block">Alergias:</div>
+                        <div className="text-muted block">Alergias:</div>
                         <strong className="text-slate-800 truncate block">{activeCredentialForPrint.allergies || 'Ninguna'}</strong>
                       </div>
                       <div className="bg-white p-1 rounded border border-slate-200 col-span-2">
-                        <div className="text-slate-500 block">En caso de emergencia avisar a:</div>
+                        <div className="text-muted block">En caso de emergencia avisar a:</div>
                         <strong className="text-slate-900 truncate block">
                           {activeCredentialForPrint.emergencyContactName} ({activeCredentialForPrint.emergencyContactPhone})
                         </strong>
@@ -19800,7 +19800,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
 
                     {/* Cláusula y Firma */}
-                    <div className="text-[6.5px] text-slate-500 leading-tight italic">
+                    <div className="text-[6.5px] text-muted leading-tight italic">
                       "Esta credencial es personal e intransferible. Identifica al portador como miembro acreditado del Colegio. En caso de extravío favor de reportar a la Dirección Escolar."
                     </div>
 
@@ -19835,20 +19835,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   setShowScannerModal(false);
                   setScannerResult(null);
                 }}
-                className="text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800 transition-colors cursor-pointer"
+                className="btn btn-secondary"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Selector de Dirección (Entrada / Salida) */}
-            <div className="grid grid-cols-2 gap-2 bg-slate-950 p-1.5 rounded-2xl border border-slate-800 text-xs font-bold">
+            <div className="badge badge-sky">
               <button
                 onClick={() => setScannerDirection('ENTRADA')}
                 className={`py-2 rounded-xl transition-all cursor-pointer ${
                   scannerDirection === 'ENTRADA'
                     ? 'bg-emerald-500 text-slate-950 shadow-md font-black'
-                    : 'text-slate-400 hover:text-white'
+                    : 'text-muted hover:text-white'
                 }`}
               >
                 🟢 ENTRADA (Matutina)
@@ -19858,7 +19858,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className={`py-2 rounded-xl transition-all cursor-pointer ${
                   scannerDirection === 'SALIDA'
                     ? 'bg-amber-500 text-slate-950 shadow-md font-black'
-                    : 'text-slate-400 hover:text-white'
+                    : 'text-muted hover:text-white'
                 }`}
               >
                 🔴 SALIDA (Jornada)
@@ -19866,13 +19866,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             {/* Visor de Escaneo Simulado */}
-            <div className="bg-slate-950 border-2 border-dashed border-slate-700 rounded-2xl p-6 text-center space-y-3 relative overflow-hidden">
-              <div className="w-20 h-20 mx-auto rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 relative">
+            <div className="badge badge-sky">
+              <div className="badge badge-emerald">
                 <QrCode className="w-12 h-12" />
                 <div className="absolute inset-x-2 top-1/2 h-0.5 bg-emerald-400 shadow-[0_0_12px_#34d399] animate-pulse"></div>
               </div>
 
-              <div className="text-xs text-slate-300">
+              <div className="text-xs text-muted">
                 Haz clic en una credencial para probar el lector óptico del torniquete:
               </div>
 
@@ -19882,15 +19882,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <button
                     key={c.id}
                     onClick={() => handleQuickScan(c, scannerDirection)}
-                    className="w-full text-left bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 p-2.5 rounded-xl text-xs flex items-center justify-between cursor-pointer transition-colors"
+                    className="btn btn-secondary btn-sm w-full"
                   >
                     <div className="flex items-center gap-2 truncate">
-                      <div className="font-mono text-[10px] text-cyan-400 bg-slate-950 px-1.5 py-0.5 rounded border border-slate-800">
+                      <div className="badge badge-sky font-mono">
                         {c.credentialCode}
                       </div>
-                      <strong className="text-white truncate">{c.fullName}</strong>
+                      <strong className="truncate">{c.fullName}</strong>
                     </div>
-                    <div className="text-[10px] text-slate-400 shrink-0">{c.roleOrGrade}</div>
+                    <div className="text-[10px] text-muted shrink-0">{c.roleOrGrade}</div>
                   </button>
                 ))}
               </div>
@@ -20024,7 +20024,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               {/* Cláusula de Prórroga Médica */}
-              <div className="bg-slate-950 p-3.5 rounded-2xl border border-slate-800 space-y-2">
+              <div className="badge badge-sky">
                 <div className="flex items-start gap-2.5">
                   <input
                     type="checkbox"
@@ -20038,17 +20038,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     }
                     className="mt-0.5 rounded text-blue-600 focus:ring-blue-500 cursor-pointer"
                   />
-                  <label htmlFor="allowExtemp" className="text-slate-300 cursor-pointer select-none">
-                    <strong className="text-white block">Permitir Prórroga por Justificante Médico</strong>
-                    <div className="text-[11px] text-slate-400 block mt-0.5">
+                  <label htmlFor="allowExtemp" className="text-muted cursor-pointer select-none">
+                    <strong className="block">Permitir Prórroga por Justificante Médico</strong>
+                    <div className="text-[11px] text-muted block mt-0.5">
                       Habilita automáticamente entrega extemporánea sin deducción de calificación para alumnos con justificante médico aprobado.
                     </div>
                   </label>
                 </div>
 
                 {createTaskForm.allowExtempWithJustification && (
-                  <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px]">
-                    <div className="text-slate-400">Fecha Límite con Prórroga Médica:</div>
+                  <div className="pt-2 border-t border-subtle flex items-center justify-between text-[11px]">
+                    <div className="text-muted">Fecha Límite con Prórroga Médica:</div>
                     <input
                       type="date"
                       value={createTaskForm.extempExtendedDueDate}
@@ -20065,7 +20065,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowCreateTaskModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-black shadow-lg shadow-blue-600/25 transition-all cursor-pointer"
+                  className="btn btn-primary btn-sm"
                 >
                   Publicar en Libreta de Tareas
                 </button>
@@ -20087,7 +20087,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <h3 className="modal-title">
                   Entregas de {activeTaskForSubmissions.title}
                 </h3>
-                <div className="text-xs text-slate-400">
+                <div className="text-xs text-muted">
                   {activeTaskForSubmissions.subjectName} • {activeTaskForSubmissions.groupName}
                 </div>
               </div>
@@ -20113,7 +20113,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   return (
                     <div
                       key={sub.id}
-                      className="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-3"
+                      className="badge badge-sky"
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div className="flex items-center gap-2">
@@ -20121,8 +20121,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             {sub.studentName.charAt(0)}
                           </div>
                           <div>
-                            <div className="font-black text-white text-sm">{sub.studentName}</div>
-                            <div className="text-[11px] font-mono text-slate-400">
+                            <div className="font-black text-sm">{sub.studentName}</div>
+                            <div className="text-[11px] font-mono text-muted">
                               Matrícula: {sub.studentCode}
                             </div>
                           </div>
@@ -20131,20 +20131,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {/* Estatus */}
                         <div>
                           {sub.hasMedicalJustification ? (
-                            <div className="bg-amber-950 text-amber-300 border border-amber-800 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                            <div className="badge badge-amber">
                               <HeartPulse className="w-3 h-3 text-rose-400" />
                               Prórroga Justificante {sub.justificationFolio}
                             </div>
                           ) : sub.status === 'CALIFICADO' ? (
-                            <div className="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                            <div className="badge badge-emerald">
                               <Check className="w-3 h-3" /> Calificado ({sub.score}/10)
                             </div>
                           ) : sub.status === 'ENTREGADO' ? (
-                            <div className="bg-blue-950 text-blue-400 border border-blue-800 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                            <div className="badge badge-sky">
                               <FileCheck className="w-3 h-3" /> Entregado
                             </div>
                           ) : (
-                            <div className="bg-slate-900 text-slate-400 border border-slate-800 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                            <div className="bg-surface text-muted border border-subtle text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
                               <Clock className="w-3 h-3" /> Pendiente
                             </div>
                           )}
@@ -20153,14 +20153,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                       {/* Notas de entrega */}
                       {sub.submissionNotes && (
-                        <div className="bg-slate-900/70 p-2.5 rounded-xl border border-slate-800/80 text-[11px] text-slate-300">
-                          <strong className="text-slate-400 block mb-0.5">Nota de entrega / justificación:</strong>
+                        <div className="dashboard-subcard p-2.5 text-[11px] text-muted">
+                          <strong className="text-muted block mb-0.5">Nota de entrega / justificación:</strong>
                           {sub.submissionNotes}
                         </div>
                       )}
 
                       {/* Formulario de Calificación Docente */}
-                      <div className="bg-slate-900 p-3 rounded-xl border border-slate-800/80 grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
+                      <div className="bg-surface p-3 rounded-xl border border-subtle grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
                         <div className="space-y-1">
                           <label className="form-label">Nota (0 a 10):</label>
                           <input
@@ -20178,7 +20178,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                 },
                               })
                             }
-                            className="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-mono font-bold text-xs"
+                            className="badge badge-sky font-mono"
                           />
                         </div>
 
@@ -20200,12 +20200,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   },
                                 })
                               }
-                              className="flex-1 bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white text-xs"
+                              className="badge badge-sky"
                             />
                             <button
                               type="button"
                               onClick={() => handleGradeSubmission(sub.id, formScore, formFeedback)}
-                              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg shrink-0 cursor-pointer transition-colors"
+                              className="btn btn-success btn-sm"
                             >
                               Guardar
                             </button>
@@ -20240,7 +20240,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <form onSubmit={handleCreateScheduleSlot} className="space-y-4 text-xs">
               {/* Alerta de Conflicto si existe */}
               {slotConflictError && (
-                <div className="bg-rose-950/60 border border-rose-600/70 p-3.5 rounded-2xl text-rose-200 text-xs space-y-1">
+                <div className="badge badge-rose">
                   <div className="font-bold flex items-center gap-1.5 text-rose-300">
                     <AlertTriangle className="w-4 h-4 text-rose-400" />
                     <div>Colisión Detectada por el Sistema:</div>
@@ -20376,7 +20376,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowCreateSlotModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-black shadow-lg shadow-indigo-600/25 transition-all cursor-pointer"
+                  className="btn btn-purple btn-sm"
                 >
                   Verificar & Agregar Módulo
                 </button>
@@ -20493,7 +20493,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         targetGrade: level === 'PREESCOLAR' ? '2º de Kínder' : '1º de Primaria',
                       });
                     }}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400 font-bold"
+                    className="badge badge-amber"
                   >
                     <option value="PREESCOLAR">Preescolar</option>
                     <option value="PRIMARIA">Primaria</option>
@@ -20530,8 +20530,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               {/* Datos del Padre o Tutor */}
-              <div className="bg-slate-950 p-3.5 rounded-2xl border border-slate-800 space-y-3">
-                <div className="font-bold text-slate-300 block text-xs">
+              <div className="badge badge-sky">
+                <div className="font-bold text-muted block text-xs">
                   Datos del Padre / Madre o Tutor Legal:
                 </div>
 
@@ -20595,7 +20595,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowNewApplicantModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/20 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   Registrar & Emitir Folio
                 </button>
@@ -20622,9 +20622,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <button type="button" onClick={() => setShowScheduleEvalModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
-            <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 text-xs">
-              <div className="text-slate-400 block text-[10px]">Aspirante:</div>
-              <strong className="text-white text-sm">
+            <div className="badge badge-sky">
+              <div className="text-muted block text-[10px]">Aspirante:</div>
+              <strong className="text-sm">
                 {selectedApplicantForDetail.applicantFirstName} {selectedApplicantForDetail.applicantLastName}
               </strong>
               <div className="text-amber-400 font-mono mt-0.5">
@@ -20633,7 +20633,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             <form onSubmit={handleScheduleApplicantEvaluation} className="space-y-4 text-xs">
-              <div className="space-y-2 bg-slate-950 p-3.5 rounded-2xl border border-purple-500/30">
+              <div className="badge badge-purple">
                 <div className="font-bold text-purple-300 block text-xs">
                   1. Evaluación Diagnóstica Psicopedagógica:
                 </div>
@@ -20683,7 +20683,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="space-y-2 bg-slate-950 p-3.5 rounded-2xl border border-blue-500/30">
+              <div className="badge badge-sky">
                 <div className="font-bold text-blue-300 block text-xs">
                   2. Entrevista Familiar con Dirección:
                 </div>
@@ -20719,7 +20719,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowScheduleEvalModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-black shadow-lg shadow-purple-600/25 transition-all cursor-pointer"
+                  className="btn btn-purple btn-sm"
                 >
                   Guardar Citas & Calificación
                 </button>
@@ -20749,7 +20749,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* Ficha Imprimible Formato Oficial */}
             <div className="bg-white text-slate-900 p-6 rounded-2xl border-2 border-slate-300 space-y-4 shadow-inner">
               {/* Encabezado Institucional */}
-              <div className="flex items-center justify-between border-b-2 border-slate-900 pb-3">
+              <div className="flex items-center justify-between border-b-2 border-slate-300 pb-3">
                 <div>
                   <h3 className="font-black text-base uppercase tracking-tight text-slate-950">
                     {currentTenant.name}
@@ -20757,7 +20757,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="text-[10px] text-slate-600 font-mono">
                     SISTEMA EDUCATIVO NACIONAL • CCT: 30PPR0289Z
                   </div>
-                  <div className="text-[10px] text-slate-500">
+                  <div className="text-[10px] text-muted">
                     Niveles Incorporados: Preescolar y Primaria
                   </div>
                 </div>
@@ -20766,7 +20766,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="bg-amber-100 text-amber-900 font-mono font-black text-xs px-2.5 py-1 rounded border border-amber-300 inline-block">
                     {showAdmissionReceiptModal.folio}
                   </div>
-                  <div className="text-[10px] text-slate-500 mt-1 font-mono">
+                  <div className="text-[10px] text-muted mt-1 font-mono">
                     Ciclo Escolar 2026-2027
                   </div>
                 </div>
@@ -20780,25 +20780,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Datos del Aspirante */}
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div>
-                  <div className="text-[10px] text-slate-500 font-bold block">Aspirante:</div>
+                  <div className="text-[10px] text-muted font-bold block">Aspirante:</div>
                   <strong className="text-slate-900 font-black text-sm">
                     {showAdmissionReceiptModal.applicantFirstName} {showAdmissionReceiptModal.applicantLastName}
                   </strong>
                 </div>
                 <div>
-                  <div className="text-[10px] text-slate-500 font-bold block">CURP:</div>
+                  <div className="text-[10px] text-muted font-bold block">CURP:</div>
                   <strong className="text-slate-900 font-mono">
                     {showAdmissionReceiptModal.curp}
                   </strong>
                 </div>
                 <div>
-                  <div className="text-[10px] text-slate-500 font-bold block">Grado y Nivel Solicitado:</div>
+                  <div className="text-[10px] text-muted font-bold block">Grado y Nivel Solicitado:</div>
                   <strong className="text-indigo-800">
                     {showAdmissionReceiptModal.targetGrade} ({showAdmissionReceiptModal.targetLevelName})
                   </strong>
                 </div>
                 <div>
-                  <div className="text-[10px] text-slate-500 font-bold block">Padre o Tutor:</div>
+                  <div className="text-[10px] text-muted font-bold block">Padre o Tutor:</div>
                   <div className="text-slate-800 font-bold">{showAdmissionReceiptModal.parentName}</div>
                 </div>
               </div>
@@ -20850,7 +20850,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <button
                 type="button"
                 onClick={() => window.print()}
-                className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/20 transition-all cursor-pointer flex items-center gap-1.5"
+                className="btn btn-warning btn-sm"
               >
                 <Printer className="w-4 h-4" />
                 <div>Imprimir Ficha Oficial</div>
@@ -20877,8 +20877,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <button type="button" onClick={() => setShowPublicAdmissionModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
-            <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs space-y-3">
-              <div className="font-bold text-slate-200 block">
+            <div className="badge badge-sky">
+              <div className="font-bold text-main block">
                 🔍 Consulta en tiempo real el estatus de tu Solicitud con tu Folio:
               </div>
 
@@ -20892,43 +20892,43 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 />
                 <button
                   type="submit"
-                  className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-2 rounded-xl transition-colors cursor-pointer shrink-0"
+                  className="btn btn-success btn-sm"
                 >
                   Consultar Folio
                 </button>
               </form>
 
               {publicSearchResult && (
-                <div className="bg-slate-900 p-4 rounded-xl border border-emerald-500/40 space-y-2.5 animate-in fade-in">
+                <div className="dashboard-subcard p-4 space-y-2.5 animate-in fade-in">
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="font-mono text-xs font-black text-amber-400">
                         {publicSearchResult.folio}
                       </div>
-                      <h4 className="text-sm font-black text-white">
+                      <h4 className="text-sm font-black">
                         {publicSearchResult.applicantFirstName} {publicSearchResult.applicantLastName}
                       </h4>
                     </div>
-                    <div className="bg-emerald-500/10 text-emerald-400 text-xs font-bold px-3 py-1 rounded-xl border border-emerald-500/20">
+                    <div className="badge badge-emerald">
                       {publicSearchResult.status}
                     </div>
                   </div>
 
-                  <div className="text-[11px] text-slate-300 grid grid-cols-2 gap-2 border-t border-slate-800 pt-2">
-                    <div>Grado: <strong className="text-white">{publicSearchResult.targetGrade}</strong></div>
-                    <div>Tutor: <strong className="text-white">{publicSearchResult.parentName}</strong></div>
+                  <div className="text-[11px] text-muted grid grid-cols-2 gap-2 border-t border-subtle pt-2">
+                    <div>Grado: <strong className="text-main">{publicSearchResult.targetGrade}</strong></div>
+                    <div>Tutor: <strong className="text-main">{publicSearchResult.parentName}</strong></div>
                   </div>
 
                   {publicSearchResult.evaluationDate && (
-                    <div className="bg-purple-950/40 p-2.5 rounded-xl border border-purple-500/40 text-[11px] text-purple-200">
-                      📅 Cita para Evaluación Diagnóstica: <strong className="text-white font-mono">{publicSearchResult.evaluationDate} hrs</strong>
+                    <div className="badge badge-purple">
+                      📅 Cita para Evaluación Diagnóstica: <strong className="font-mono">{publicSearchResult.evaluationDate} hrs</strong>
                     </div>
                   )}
 
-                  <div className="pt-2 border-t border-slate-800 flex justify-end">
+                  <div className="pt-2 border-t border-subtle flex justify-end">
                     <button
                       onClick={() => setShowAdmissionReceiptModal(publicSearchResult)}
-                      className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs px-3 py-1.5 rounded-xl transition-colors cursor-pointer flex items-center gap-1.5"
+                      className="btn btn-warning btn-sm"
                     >
                       <Printer className="w-3.5 h-3.5" />
                       <div>Descargar Ficha Oficial de Admisión</div>
@@ -20939,7 +20939,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             <div className="text-center pt-2">
-              <div className="text-[11px] text-slate-500">
+              <div className="text-[11px] text-muted">
                 Los padres de familia pueden llenar su formulario público en línea desde cualquier dispositivo celular o computadora.
               </div>
             </div>
@@ -21097,7 +21097,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowNewBookModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black shadow-lg shadow-rose-600/25 transition-all cursor-pointer"
+                  className="btn btn-danger btn-sm"
                 >
                   Guardar en Catálogo
                 </button>
@@ -21126,7 +21126,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   setShowNewLoanModal(false);
                   setSelectedBookForLoan(null);
                 }}
-                className="text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800 transition-colors cursor-pointer"
+                className="btn btn-secondary"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -21206,13 +21206,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     setShowNewLoanModal(false);
                     setSelectedBookForLoan(null);
                   }}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   Confirmar Préstamo
                 </button>
@@ -21245,7 +21245,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               return (
                 <div className="bg-white text-slate-900 p-6 rounded-2xl border-2 border-slate-300 space-y-4 shadow-inner">
                   {/* Encabezado */}
-                  <div className="flex items-center justify-between border-b-2 border-slate-900 pb-3">
+                  <div className="flex items-center justify-between border-b-2 border-slate-300 pb-3">
                     <div>
                       <h3 className="font-black text-base uppercase tracking-tight text-slate-950">
                         {currentTenant.name}
@@ -21253,7 +21253,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <div className="text-[10px] text-slate-600 font-mono">
                         COORDINACIÓN DE BIBLIOTECA ESCOLAR Y ACERVO SEP • CCT: 30PPR0289Z
                       </div>
-                      <div className="text-[10px] text-slate-500">
+                      <div className="text-[10px] text-muted">
                         Ciclo Escolar 2026-2027
                       </div>
                     </div>
@@ -21306,7 +21306,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <button
                 type="button"
                 onClick={() => window.print()}
-                className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black shadow-lg shadow-emerald-600/20 transition-all cursor-pointer flex items-center gap-1.5"
+                className="btn btn-success btn-sm"
               >
                 <Printer className="w-4 h-4" />
                 <div>Imprimir Constancia</div>
@@ -21439,12 +21439,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               {/* Paradas */}
-              <div className="space-y-2 pt-2 border-t border-slate-800">
+              <div className="space-y-2 pt-2 border-t border-subtle">
                 <label className="form-label">
                   Puntos de Parada Programada (Itinerario):
                 </label>
                 {newRouteForm.stops.map((stop, idx) => (
-                  <div key={idx} className="bg-slate-950 p-2.5 rounded-xl border border-slate-800 grid grid-cols-3 gap-2 text-xs">
+                  <div key={idx} className="badge badge-sky">
                     <input
                       type="text"
                       placeholder="Nombre de la parada"
@@ -21497,7 +21497,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowNewRouteModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   Guardar y Activar Ruta
                 </button>
@@ -21611,7 +21611,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowEnrollStudentTransportModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   Confirmar Asignación
                 </button>
@@ -21734,7 +21734,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 p-3 bg-slate-950 rounded-xl border border-slate-800">
+              <div className="badge badge-sky">
                 <input
                   type="checkbox"
                   id="sepApprovedCheck"
@@ -21742,7 +21742,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   onChange={(e) => setNewProductForm({ ...newProductForm, isHealthySepApproved: e.target.checked })}
                   className="form-input"
                 />
-                <label htmlFor="sepApprovedCheck" className="text-slate-300 font-bold cursor-pointer text-xs">
+                <label htmlFor="sepApprovedCheck" className="text-muted font-bold cursor-pointer text-xs">
                   Cumple Lineamientos de Nutrición Escolar Saludable SEP
                 </label>
               </div>
@@ -21751,7 +21751,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowNewProductModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-orange-500 hover:bg-orange-400 text-slate-950 font-black shadow-lg shadow-orange-500/25 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   Agregar al Menú
                 </button>
@@ -21779,9 +21779,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             <div className="dashboard-subcard space-y-1">
-              <div className="text-[10px] font-mono text-slate-400 block font-bold">ALUMNO BENEFICIARIO:</div>
-              <strong className="text-white text-sm block">{selectedWalletForAction.studentName}</strong>
-              <div className="flex items-center justify-between text-xs text-slate-400 pt-1">
+              <div className="text-[10px] font-mono text-muted block font-bold">ALUMNO BENEFICIARIO:</div>
+              <strong className="text-sm block">{selectedWalletForAction.studentName}</strong>
+              <div className="flex items-center justify-between text-xs text-muted pt-1">
                 <div>{selectedWalletForAction.groupName}</div>
                 <div className="text-emerald-400 font-mono font-bold">
                   Saldo Actual: ${selectedWalletForAction.currentBalanceMXN} MXN
@@ -21801,7 +21801,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       className={`flex-1 py-1.5 rounded-xl font-mono font-bold transition-all ${
                         topUpForm.amountMXN === amt
                           ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30'
-                          : 'bg-slate-950 border border-slate-800 text-slate-300 hover:border-slate-700'
+                          : 'bg-slate-950 border border-subtle text-muted hover:border-subtle'
                       }`}
                     >
                       ${amt}
@@ -21851,7 +21851,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowTopUpModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black shadow-lg shadow-emerald-600/25 transition-all cursor-pointer"
+                  className="btn btn-success btn-sm"
                 >
                   Confirmar Recarga
                 </button>
@@ -21878,10 +21878,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <button type="button" onClick={() => setShowConfigureLimitModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
-            <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1 text-xs">
-              <div className="text-[10px] font-mono text-slate-400 block font-bold">ALUMNO:</div>
-              <strong className="text-white text-sm block">{selectedWalletForAction.studentName}</strong>
-              <div className="text-slate-400 block">Límite actual: ${selectedWalletForAction.dailySpendingLimitMXN} MXN</div>
+            <div className="badge badge-sky">
+              <div className="text-[10px] font-mono text-muted block font-bold">ALUMNO:</div>
+              <strong className="text-sm block">{selectedWalletForAction.studentName}</strong>
+              <div className="text-muted block">Límite actual: ${selectedWalletForAction.dailySpendingLimitMXN} MXN</div>
             </div>
 
             <form onSubmit={handleUpdateWalletLimit} className="space-y-4 text-xs">
@@ -21896,7 +21896,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       className={`flex-1 py-1.5 rounded-xl font-mono font-bold transition-all ${
                         limitForm.dailySpendingLimitMXN === lim
                           ? 'bg-orange-500 text-slate-950 shadow-md shadow-orange-500/30'
-                          : 'bg-slate-950 border border-slate-800 text-slate-300 hover:border-slate-700'
+                          : 'bg-slate-950 border border-subtle text-muted hover:border-subtle'
                       }`}
                     >
                       ${lim}
@@ -21913,7 +21913,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 />
               </div>
 
-              <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-200 text-[11px] leading-relaxed">
+              <div className="badge badge-amber">
                 ℹ️ La terminal de punto de venta (POS) bloqueará automáticamente cualquier compra que sobrepase este límite en un solo día escolar para proteger la economía familiar.
               </div>
 
@@ -21921,7 +21921,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowConfigureLimitModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-orange-500 hover:bg-orange-400 text-slate-950 font-black shadow-lg shadow-orange-500/25 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   Guardar Límite
                 </button>
@@ -21935,7 +21935,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       {showTicketReceiptModal && activeTransactionForReceipt && (
         <div className="modal-backdrop">
           <div className="modal-card modal-card-sm">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+            <div className="flex items-center justify-between border-b border-subtle pb-2">
               <div className="font-mono text-xs text-orange-400 font-bold">Comprobante de Cafetería</div>
               <button type="button" onClick={() => setShowTicketReceiptModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
@@ -21945,8 +21945,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="text-center border-b border-slate-200 pb-3">
                 <h4 className="font-black text-sm uppercase">{currentTenant.name || 'COLEGIO LOGOS'}</h4>
                 <p className="text-[10px] text-slate-600">Cafetería Escolar & Cooperativa SEP</p>
-                <p className="text-[10px] text-slate-500">Folio: {activeTransactionForReceipt.folio}</p>
-                <p className="text-[10px] text-slate-500">
+                <p className="text-[10px] text-muted">Folio: {activeTransactionForReceipt.folio}</p>
+                <p className="text-[10px] text-muted">
                   {activeTransactionForReceipt.date} • {activeTransactionForReceipt.time} hrs
                 </p>
               </div>
@@ -21988,7 +21988,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="text-center text-[9px] text-slate-400 pt-2 border-t border-dashed border-slate-200">
+              <div className="text-center text-[9px] text-muted pt-2 border-t border-dashed border-slate-200">
                 🛡️ Filtro de Alergias Médicas Verificado
                 <br />
                 ¡Gracias por fomentar una alimentación saludable!
@@ -22000,7 +22000,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <button
                 type="button"
                 onClick={() => window.print()}
-                className="px-4 py-2 rounded-xl bg-orange-500 hover:bg-orange-400 text-slate-950 font-black text-xs cursor-pointer flex items-center gap-1.5 shadow-md shadow-orange-500/20"
+                className="btn btn-warning btn-sm"
               >
                 <Printer className="w-3.5 h-3.5" />
                 <div>Imprimir Ticket</div>
@@ -22086,7 +22086,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               {/* Signos Vitales */}
               <div className="dashboard-subcard space-y-2">
-                <div className="text-[10px] font-mono text-slate-400 uppercase font-bold block">
+                <div className="text-[10px] font-mono text-muted uppercase font-bold block">
                   Toma de Signos Vitales
                 </div>
                 <div className="grid grid-cols-3 gap-2">
@@ -22183,7 +22183,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 p-3 bg-slate-950 rounded-xl border border-slate-800">
+              <div className="badge badge-sky">
                 <input
                   type="checkbox"
                   id="pickupCheck"
@@ -22193,7 +22193,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   }
                   className="form-input"
                 />
-                <label htmlFor="pickupCheck" className="text-slate-300 font-bold cursor-pointer text-xs">
+                <label htmlFor="pickupCheck" className="text-muted font-bold cursor-pointer text-xs">
                   Se solicita el retiro temprano del alumno por parte del tutor para revisión externa
                 </label>
               </div>
@@ -22202,7 +22202,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowNewConsultationModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black shadow-lg shadow-rose-600/25 transition-all cursor-pointer"
+                  className="btn btn-danger btn-sm"
                 >
                   Registrar & Notificar Tutor
                 </button>
@@ -22306,7 +22306,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-3">
+              <div className="badge badge-sky">
                 <div className="text-[10px] font-mono text-sky-400 uppercase font-bold block">
                   Datos de la Receta Médica Oficial
                 </div>
@@ -22356,7 +22356,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowNewMedicationModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black shadow-lg shadow-sky-500/25 transition-all cursor-pointer"
+                  className="btn btn-primary btn-sm"
                 >
                   Guardar Medicamento
                 </button>
@@ -22370,7 +22370,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       {showMedicalReportModal && selectedConsultationForReport && (
         <div className="modal-backdrop">
           <div className="modal-card modal-card-lg">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+            <div className="flex items-center justify-between border-b border-subtle pb-2">
               <div className="font-mono text-xs text-rose-400 font-bold">Hoja Clínica Oficial de Atención</div>
               <button type="button" onClick={() => setShowMedicalReportModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
@@ -22383,11 +22383,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     {currentTenant.name || 'COLEGIO LOGOS'}
                   </h4>
                   <p className="text-[10px] text-slate-600">Servicio Médico Escolar y Enfermería General</p>
-                  <p className="text-[10px] text-slate-500">CCT: 09PPR1428Z • Turno Matutino</p>
+                  <p className="text-[10px] text-muted">CCT: 09PPR1428Z • Turno Matutino</p>
                 </div>
                 <div className="text-right font-mono text-[10px]">
                   <strong className="text-rose-600 block text-xs">{selectedConsultationForReport.folio}</strong>
-                  <div className="text-slate-500">
+                  <div className="text-muted">
                     {selectedConsultationForReport.date} • {selectedConsultationForReport.time} hrs
                   </div>
                 </div>
@@ -22411,20 +22411,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               {/* Signos Vitales */}
               <div className="border border-slate-200 rounded-xl p-3 bg-slate-50/50">
-                <div className="font-mono text-[10px] font-bold text-slate-500 uppercase block mb-1">
+                <div className="font-mono text-[10px] font-bold text-muted uppercase block mb-1">
                   Signos Vitales Registrados
                 </div>
                 <div className="grid grid-cols-3 gap-2 font-mono text-[11px]">
                   <div>
-                    <div className="text-slate-500 block text-[10px]">Temperatura:</div>
+                    <div className="text-muted block text-[10px]">Temperatura:</div>
                     <strong>{selectedConsultationForReport.vitalSigns.temperatureCelsius || 36.5}°C</strong>
                   </div>
                   <div>
-                    <div className="text-slate-500 block text-[10px]">Presión Art.:</div>
+                    <div className="text-muted block text-[10px]">Presión Art.:</div>
                     <strong>{selectedConsultationForReport.vitalSigns.bloodPressure || 'Normal'}</strong>
                   </div>
                   <div>
-                    <div className="text-slate-500 block text-[10px]">Frec. Cardíaca:</div>
+                    <div className="text-muted block text-[10px]">Frec. Cardíaca:</div>
                     <strong>{selectedConsultationForReport.vitalSigns.heartRateBpm || 80} bpm</strong>
                   </div>
                 </div>
@@ -22452,13 +22452,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div className="border-b border-slate-400 pb-1 mb-1 font-bold text-slate-800">
                     {selectedConsultationForReport.nurseInCharge}
                   </div>
-                  <div className="text-slate-500">Enfermería Escolar (Firma & Cédula)</div>
+                  <div className="text-muted">Enfermería Escolar (Firma & Cédula)</div>
                 </div>
                 <div>
                   <div className="border-b border-slate-400 pb-1 mb-1 font-bold text-slate-800">
                     Acuse Notificado Vía App
                   </div>
-                  <div className="text-slate-500">Padre o Tutor Autorizado</div>
+                  <div className="text-muted">Padre o Tutor Autorizado</div>
                 </div>
               </div>
             </div>
@@ -22468,7 +22468,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <button
                 type="button"
                 onClick={() => window.print()}
-                className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black text-xs cursor-pointer flex items-center gap-1.5 shadow-md shadow-rose-600/20"
+                className="btn btn-danger btn-sm"
               >
                 <Printer className="w-3.5 h-3.5" />
                 <div>Imprimir Reporte Clínico</div>
@@ -22647,7 +22647,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowNewWorkshopModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   Crear Academia
                 </button>
@@ -22705,7 +22705,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </select>
               </div>
 
-              <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 text-[11px] text-slate-300 space-y-1">
+              <div className="badge badge-sky">
                 <div className="text-amber-400 font-bold block">✓ Autorización del Tutor Requerida</div>
                 <p>
                   Al confirmar la inscripción, el alumno quedará integrado a la lista oficial de asistencia vespertina y la cuota mensual se reflejará en el estado de cuenta familiar.
@@ -22716,7 +22716,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowEnrollWorkshopModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   Confirmar Inscripción
                 </button>
@@ -22885,7 +22885,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowNewAssetModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-black shadow-lg shadow-teal-600/25 transition-all cursor-pointer"
+                  className="btn btn-success btn-sm"
                 >
                   Registrar Activo Fijo
                 </button>
@@ -22998,7 +22998,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowNewTicketModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   Generar Ticket
                 </button>
@@ -23025,41 +23025,41 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <button type="button" onClick={() => setShowAssetDetailModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
-            <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-3 text-xs">
-              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                <div className="text-slate-400">Nombre del Activo:</div>
-                <strong className="text-white font-bold">{selectedAssetForDetail.name}</strong>
+            <div className="badge badge-sky">
+              <div className="flex items-center justify-between border-b border-subtle pb-2">
+                <div className="text-muted">Nombre del Activo:</div>
+                <strong className="font-bold">{selectedAssetForDetail.name}</strong>
               </div>
-              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                <div className="text-slate-400">Categoría:</div>
+              <div className="flex items-center justify-between border-b border-subtle pb-2">
+                <div className="text-muted">Categoría:</div>
                 <div className="text-teal-300 font-bold">{selectedAssetForDetail.category.replace(/_/g, ' ')}</div>
               </div>
-              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                <div className="text-slate-400">Número de Serie:</div>
-                <div className="font-mono text-slate-200">{selectedAssetForDetail.serialNumber || 'N/A'}</div>
+              <div className="flex items-center justify-between border-b border-subtle pb-2">
+                <div className="text-muted">Número de Serie:</div>
+                <div className="font-mono text-main">{selectedAssetForDetail.serialNumber || 'N/A'}</div>
               </div>
-              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                <div className="text-slate-400">Ubicación en Plantel:</div>
-                <div className="text-white font-bold">{selectedAssetForDetail.assignedLocation}</div>
+              <div className="flex items-center justify-between border-b border-subtle pb-2">
+                <div className="text-muted">Ubicación en Plantel:</div>
+                <div className="font-bold">{selectedAssetForDetail.assignedLocation}</div>
               </div>
-              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                <div className="text-slate-400">Responsable:</div>
-                <div className="text-slate-200">{selectedAssetForDetail.responsiblePerson}</div>
+              <div className="flex items-center justify-between border-b border-subtle pb-2">
+                <div className="text-muted">Responsable:</div>
+                <div className="text-main">{selectedAssetForDetail.responsiblePerson}</div>
               </div>
-              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                <div className="text-slate-400">Valor en Libros:</div>
+              <div className="flex items-center justify-between border-b border-subtle pb-2">
+                <div className="text-muted">Valor en Libros:</div>
                 <div className="font-mono text-emerald-400 font-bold">
                   ${selectedAssetForDetail.purchaseValueMXN.toLocaleString()}.00 MXN
                 </div>
               </div>
               <div className="flex items-center justify-between">
-                <div className="text-slate-400">Garantía Proveedor:</div>
+                <div className="text-muted">Garantía Proveedor:</div>
                 <div className="font-mono text-sky-400">{selectedAssetForDetail.warrantyExpiry || 'Sin garantía'}</div>
               </div>
             </div>
 
             {selectedAssetForDetail.notes && (
-              <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800 text-[11px] text-slate-300">
+              <div className="badge badge-sky">
                 <strong>Notas de Inventario:</strong> {selectedAssetForDetail.notes}
               </div>
             )}
@@ -23069,7 +23069,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <button
                 type="button"
                 onClick={() => window.print()}
-                className="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-black text-xs cursor-pointer flex items-center gap-1.5 shadow-md shadow-teal-600/20"
+                className="btn btn-success btn-sm"
               >
                 <Printer className="w-3.5 h-3.5" />
                 <div>Imprimir Placa / Código</div>
@@ -23185,7 +23185,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 text-[11px] text-slate-400 space-y-1">
+              <div className="badge badge-sky">
                 <div className="text-rose-400 font-bold block">✓ Plantilla Integral Automatizada</div>
                 <p>
                   Esta encuesta incluye por defecto el bloque de medición NPS (0 al 10), escala de valoración docente, evaluación de servicios de apoyo y campo de observaciones abiertas.
@@ -23196,7 +23196,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowNewSurveyModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black shadow-lg shadow-rose-600/25 transition-all cursor-pointer"
+                  className="btn btn-danger btn-sm"
                 >
                   Publicar Encuesta
                 </button>
@@ -23215,7 +23215,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
                   {selectedSurveyForRespond.code} • Participación Activa
                 </div>
-                <h3 className="text-base sm:text-lg font-black text-white flex items-center gap-2">
+                <h3 className="text-base sm:text-lg font-black flex items-center gap-2">
                   <ThumbsUp className="w-5 h-5 text-rose-400" />
                   {selectedSurveyForRespond.title}
                 </h3>
@@ -23225,12 +23225,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             <form onSubmit={handleSubmitSurveyResponse} className="space-y-5 text-xs">
               {/* Pregunta NPS 0 a 10 */}
-              <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-3">
+              <div className="badge badge-sky">
                 <div className="flex items-center justify-between">
-                  <strong className="text-slate-200 text-xs block">
+                  <strong className="text-main text-xs block">
                     1. ¿Qué tan probable es que recomiende nuestro Instituto a familiares y amigos?
                   </strong>
-                  <div className="font-mono text-xs font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded">
+                  <div className="badge badge-rose font-mono">
                     Score: {surveyAnswerForm.npsRating} / 10
                   </div>
                 </div>
@@ -23248,7 +23248,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             : score >= 7
                             ? 'bg-amber-500 text-slate-950 font-black scale-105 shadow-md shadow-amber-500/30'
                             : 'bg-rose-500 text-white font-black scale-105 shadow-md shadow-rose-500/30'
-                          : 'bg-slate-900 border border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-white'
+                          : 'bg-surface border border-subtle text-muted hover:bg-slate-100 hover:text-main'
                       }`}
                     >
                       {score}
@@ -23256,7 +23256,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   ))}
                 </div>
 
-                <div className="flex items-center justify-between text-[10px] text-slate-400 px-1">
+                <div className="flex items-center justify-between text-[10px] text-muted px-1">
                   <div>🔴 Nada Probable (0)</div>
                   <div>🟡 Neutral (7-8)</div>
                   <div>🟢 Definitivamente Sí (10)</div>
@@ -23265,7 +23265,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               {/* Pregunta 2: Docencia (1 a 5) */}
               <div className="dashboard-subcard space-y-2">
-                <strong className="text-slate-200 text-xs block">
+                <strong className="text-main text-xs block">
                   2. ¿Cómo califica la atención pedagógica, calidez y comunicación del personal docente?
                 </strong>
                 <div className="flex items-center gap-2">
@@ -23277,7 +23277,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
                         surveyAnswerForm.q2Rating >= star
                           ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
-                          : 'bg-slate-900 text-slate-600 border border-slate-800'
+                          : 'bg-surface text-slate-600 border border-subtle'
                       }`}
                     >
                       ⭐ {star}
@@ -23288,7 +23288,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               {/* Pregunta 3: Servicios e Instalaciones (1 a 5) */}
               <div className="dashboard-subcard space-y-2">
-                <strong className="text-slate-200 text-xs block">
+                <strong className="text-main text-xs block">
                   3. ¿El servicio de cafetería, transportación e instalaciones cumple sus expectativas?
                 </strong>
                 <div className="flex items-center gap-2">
@@ -23300,7 +23300,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
                         surveyAnswerForm.q3Rating >= star
                           ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
-                          : 'bg-slate-900 text-slate-600 border border-slate-800'
+                          : 'bg-surface text-slate-600 border border-subtle'
                       }`}
                     >
                       ⭐ {star}
@@ -23321,7 +23321,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 />
               </div>
 
-              <div className="flex items-center justify-between p-3 bg-slate-950 rounded-2xl border border-slate-800">
+              <div className="badge badge-sky">
                 <label className="form-label">
                   <input
                     type="checkbox"
@@ -23331,14 +23331,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   />
                   <div>Enviar evaluación de forma 100% anónima</div>
                 </label>
-                <div className="text-[10px] text-slate-400">Protección de Datos</div>
+                <div className="text-[10px] text-muted">Protección de Datos</div>
               </div>
 
               <div className="modal-actions">
                 <button type="button" onClick={() => setShowRespondSurveyModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black shadow-lg shadow-rose-600/25 transition-all cursor-pointer"
+                  className="btn btn-danger btn-sm"
                 >
                   Enviar Evaluación
                 </button>
@@ -23437,7 +23437,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               )}
 
-              <div className="flex items-center justify-between p-3 bg-slate-950 rounded-2xl border border-slate-800">
+              <div className="badge badge-sky">
                 <label className="form-label">
                   <input
                     type="checkbox"
@@ -23456,7 +23456,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowNewSuggestionModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   Enviar al Buzón
                 </button>
@@ -23499,7 +23499,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           e.target.value === 'VACACIONES_OFICIALES',
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="badge badge-amber"
                   >
                     <option value="FESTIVAL_INSTITUCIONAL">🎉 Festival Institucional</option>
                     <option value="ACTO_CIVICO_EFEMERIDE">🇲🇽 Acto Cívico / Efeméride</option>
@@ -23619,7 +23619,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowNewEventModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   Agendar Evento
                 </button>
@@ -23696,7 +23696,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowAssignCommissionModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   Asignar Responsabilidad
                 </button>
@@ -23724,16 +23724,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             <div className="space-y-3 text-xs">
-              <strong className="text-slate-300 block">Acuerdos Asentados Previamente:</strong>
+              <strong className="text-muted block">Acuerdos Asentados Previamente:</strong>
               <div className="space-y-1.5 max-h-40 overflow-y-auto custom-scrollbar">
                 {selectedEventForDetail.cteAgreements?.map((agr, idx) => (
                   <div
                     key={idx}
-                    className="p-2.5 bg-slate-950 rounded-xl border border-slate-800 text-[11px] text-emerald-300"
+                    className="badge badge-emerald"
                   >
                     {agr}
                   </div>
-                )) || <p className="text-slate-500">Sin acuerdos registrados.</p>}
+                )) || <p className="text-muted">Sin acuerdos registrados.</p>}
               </div>
             </div>
 
@@ -23754,7 +23754,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowCteAgreementsModal(false)} className="btn btn-secondary">Cerrar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black shadow-lg shadow-emerald-600/25 transition-all cursor-pointer"
+                  className="btn btn-success btn-sm"
                 >
                   Guardar en Minuta Oficial
                 </button>
@@ -23769,7 +23769,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         <div className="modal-backdrop">
           <div className="modal-card modal-card-xl">
             <div className="modal-header">
-              <h3 className="text-base font-black text-white flex items-center gap-2">
+              <h3 className="text-base font-black flex items-center gap-2">
                 <Briefcase className="w-5 h-5 text-emerald-400" />
                 Publicar Nueva Plaza / Vacante Escolar
               </h3>
@@ -23899,7 +23899,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowNewVacancyModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black shadow-lg shadow-emerald-600/25 transition-all cursor-pointer"
+                  className="btn btn-success btn-sm"
                 >
                   Publicar Plaza Vacante
                 </button>
@@ -23914,7 +23914,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         <div className="modal-backdrop">
           <div className="modal-card modal-card-lg">
             <div className="modal-header">
-              <h3 className="text-base font-black text-white flex items-center gap-2">
+              <h3 className="text-base font-black flex items-center gap-2">
                 <UserPlus className="w-5 h-5 text-emerald-400" />
                 Registrar Postulación de Candidato Docente
               </h3>
@@ -24045,7 +24045,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowNewCandidateModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black shadow-lg shadow-emerald-600/25 transition-all cursor-pointer"
+                  className="btn btn-success btn-sm"
                 >
                   Registrar Aspirante
                 </button>
@@ -24061,25 +24061,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="modal-card modal-card-lg">
             <div className="modal-header">
               <div>
-                <h3 className="text-base font-black text-white flex items-center gap-2">
+                <h3 className="text-base font-black flex items-center gap-2">
                   <FileBadge className="w-5 h-5 text-emerald-400" />
                   Expediente de Selección Docente
                 </h3>
-                <div className="text-xs text-slate-400">
+                <div className="text-xs text-muted">
                   {selectedCandidateForDetail.folio} • {selectedCandidateForDetail.fullName}
                 </div>
               </div>
               <button type="button" onClick={() => setShowCandidateDetailModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
-            <div className="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800 space-y-1.5 text-xs">
-              <div className="text-slate-300">
+            <div className="badge badge-sky">
+              <div className="text-muted">
                 <strong>Plaza:</strong> {selectedCandidateForDetail.vacancyTitle}
               </div>
-              <div className="text-slate-400">
+              <div className="text-muted">
                 <strong>Grado / Carrera:</strong> {selectedCandidateForDetail.degree}
               </div>
-              <div className="text-slate-400">
+              <div className="text-muted">
                 <strong>Cédula DGP:</strong>{' '}
                 <div className="font-mono text-amber-400 font-bold">
                   {selectedCandidateForDetail.professionalLicense || 'Pendiente'}
@@ -24171,7 +24171,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowCandidateDetailModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black shadow-lg shadow-emerald-600/25 transition-all cursor-pointer"
+                  className="btn btn-success btn-sm"
                 >
                   Guardar Evaluación
                 </button>
@@ -24186,7 +24186,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         <div className="modal-backdrop">
           <div className="modal-card modal-card-xl">
             <div className="modal-header">
-              <h3 className="text-base font-black text-white flex items-center gap-2">
+              <h3 className="text-base font-black flex items-center gap-2">
                 <Siren className="w-5 h-5 text-rose-400" />
                 Registrar Simulacro Escolar (PIPC / SEP)
               </h3>
@@ -24310,13 +24310,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               {/* Conteo de Personas Desalojadas */}
-              <div className="bg-slate-950/60 p-3 rounded-xl border border-slate-800 space-y-2">
+              <div className="badge badge-sky">
                 <label className="form-label">
                   Desglose de Personas Evacuadas a Zonas Seguras:
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   <div>
-                    <div className="text-[10px] text-slate-400">Alumnos:</div>
+                    <div className="text-[10px] text-muted">Alumnos:</div>
                     <input
                       type="number"
                       min={0}
@@ -24328,7 +24328,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     />
                   </div>
                   <div>
-                    <div className="text-[10px] text-slate-400">Docentes:</div>
+                    <div className="text-[10px] text-muted">Docentes:</div>
                     <input
                       type="number"
                       min={0}
@@ -24340,7 +24340,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     />
                   </div>
                   <div>
-                    <div className="text-[10px] text-slate-400">Personal Admn:</div>
+                    <div className="text-[10px] text-muted">Personal Admn:</div>
                     <input
                       type="number"
                       min={0}
@@ -24352,7 +24352,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     />
                   </div>
                   <div>
-                    <div className="text-[10px] text-slate-400">Visitantes:</div>
+                    <div className="text-[10px] text-muted">Visitantes:</div>
                     <input
                       type="number"
                       min={0}
@@ -24416,7 +24416,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowNewDrillModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black shadow-lg shadow-rose-600/25 transition-all cursor-pointer"
+                  className="btn btn-danger btn-sm"
                 >
                   Registrar en Bitácora PIPC
                 </button>
@@ -24432,11 +24432,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="modal-card modal-card-md">
             <div className="modal-header">
               <div>
-                <h3 className="text-base font-black text-white flex items-center gap-2">
+                <h3 className="text-base font-black flex items-center gap-2">
                   <UserPlus className="w-5 h-5 text-rose-400" />
                   Asignar Integrante a Brigada
                 </h3>
-                <div className="text-xs text-slate-400">{selectedBrigadeForAdd.name}</div>
+                <div className="text-xs text-muted">{selectedBrigadeForAdd.name}</div>
               </div>
               <button type="button" onClick={() => setShowAddBrigadeMemberModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
@@ -24514,7 +24514,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowAddBrigadeMemberModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black shadow-lg shadow-rose-600/25 transition-all cursor-pointer"
+                  className="btn btn-danger btn-sm"
                 >
                   Confirmar Asignación
                 </button>
@@ -24530,29 +24530,29 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="modal-card modal-card-lg">
             <div className="modal-header">
               <div>
-                <h3 className="text-base font-black text-white flex items-center gap-2">
+                <h3 className="text-base font-black flex items-center gap-2">
                   <ShieldCheck className="w-5 h-5 text-rose-400" />
                   Dictamen Oficial de Protección Civil
                 </h3>
-                <div className="text-xs text-slate-400">
+                <div className="text-xs text-muted">
                   {selectedDrillForDetail.code} • {selectedDrillForDetail.title}
                 </div>
               </div>
               <button type="button" onClick={() => setShowDrillDetailModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
-            <div className="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800 space-y-1 text-xs">
+            <div className="badge badge-sky">
               <div className="flex justify-between">
-                <div className="text-slate-400">Tiempo de Desalojo:</div>
+                <div className="text-muted">Tiempo de Desalojo:</div>
                 <div className="font-bold text-emerald-400">{selectedDrillForDetail.evacuationTimeSeconds} segundos</div>
               </div>
               <div className="flex justify-between">
-                <div className="text-slate-400">Personas Totales:</div>
-                <div className="font-bold text-white">{selectedDrillForDetail.participants.total} personas</div>
+                <div className="text-muted">Personas Totales:</div>
+                <div className="font-bold">{selectedDrillForDetail.participants.total} personas</div>
               </div>
               <div className="flex justify-between">
-                <div className="text-slate-400">Punto de Reunión:</div>
-                <div className="font-medium text-slate-300">{selectedDrillForDetail.assemblyPoint}</div>
+                <div className="text-muted">Punto de Reunión:</div>
+                <div className="font-medium text-muted">{selectedDrillForDetail.assemblyPoint}</div>
               </div>
             </div>
 
@@ -24614,7 +24614,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowDrillDetailModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black shadow-lg shadow-rose-600/25 transition-all cursor-pointer"
+                  className="btn btn-danger btn-sm"
                 >
                   Guardar Dictamen
                 </button>
@@ -24629,7 +24629,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         <div className="modal-backdrop">
           <div className="modal-card modal-card-xl">
             <div className="modal-header">
-              <h3 className="text-base font-black text-white flex items-center gap-2">
+              <h3 className="text-base font-black flex items-center gap-2">
                 <FileText className="w-5 h-5 text-amber-400" />
                 Convocar Asamblea Escolar / Sesión CEPS
               </h3>
@@ -24780,7 +24780,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowNewAssemblyModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   Convocar Asamblea Oficial
                 </button>
@@ -24795,7 +24795,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         <div className="modal-backdrop">
           <div className="modal-card modal-card-md">
             <div className="modal-header">
-              <h3 className="text-base font-black text-white flex items-center gap-2">
+              <h3 className="text-base font-black flex items-center gap-2">
                 <UserPlus className="w-5 h-5 text-amber-400" />
                 Registrar Integrante de Mesa Directiva APF
               </h3>
@@ -24906,7 +24906,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowNewBoardMemberModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   Registrar en Mesa Directiva
                 </button>
@@ -24922,11 +24922,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="modal-card modal-card-lg">
             <div className="modal-header">
               <div>
-                <h3 className="text-base font-black text-white flex items-center gap-2">
+                <h3 className="text-base font-black flex items-center gap-2">
                   <FileText className="w-5 h-5 text-amber-400" />
                   Asentar Acuerdo en Acta de Asamblea
                 </h3>
-                <div className="text-xs text-slate-400">
+                <div className="text-xs text-muted">
                   {selectedAssemblyForAgreement.code} • {selectedAssemblyForAgreement.title}
                 </div>
               </div>
@@ -24948,7 +24948,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 />
               </div>
 
-              <div className="bg-slate-950/70 p-3 rounded-xl border border-slate-800 text-[11px] text-slate-400">
+              <div className="badge badge-sky">
                 Al asentar el acuerdo, el acta quedará registrada con validez institucional conforme al reglamento escolar y la normatividad de la SEP.
               </div>
 
@@ -24956,7 +24956,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowAddAgreementModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   Asentar en Acta Oficial
                 </button>
@@ -25113,11 +25113,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-slate-800 flex items-center justify-end gap-2">
+              <div className="pt-3 border-t border-subtle flex items-center justify-end gap-2">
                 <button type="button" onClick={() => setShowNewWorkOrderModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   Programar Orden de Trabajo
                 </button>
@@ -25133,10 +25133,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="modal-card modal-card-md">
             <div className="flex items-center justify-between">
               <div>
-                <div className="font-mono text-[10px] text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                <div className="badge badge-amber font-mono">
                   {selectedWorkOrderForUpdate.folio}
                 </div>
-                <h3 className="text-base font-black text-white mt-1">
+                <h3 className="text-base font-black mt-1">
                   Actualizar Estatus de Reparación
                 </h3>
               </div>
@@ -25145,7 +25145,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   setShowUpdateWorkOrderModal(false);
                   setSelectedWorkOrderForUpdate(null);
                 }}
-                className="text-slate-400 hover:text-white text-lg font-bold cursor-pointer"
+                className="text-muted hover: text-lg font-bold cursor-pointer"
               >
                 ✕
               </button>
@@ -25197,20 +25197,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 />
               </div>
 
-              <div className="pt-3 border-t border-slate-800 flex items-center justify-end gap-2">
+              <div className="pt-3 border-t border-subtle flex items-center justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => {
                     setShowUpdateWorkOrderModal(false);
                     setSelectedWorkOrderForUpdate(null);
                   }}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   Actualizar Estatus
                 </button>
@@ -25373,11 +25373,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 />
               </div>
 
-              <div className="pt-3 border-t border-slate-800 flex items-center justify-end gap-2">
+              <div className="pt-3 border-t border-subtle flex items-center justify-end gap-2">
                 <button type="button" onClick={() => setShowNewInspectionModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black shadow-lg shadow-sky-500/25 transition-all cursor-pointer"
+                  className="btn btn-primary btn-sm"
                 >
                   Asentar Inspección Técnica
                 </button>
@@ -25392,7 +25392,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         <div className="modal-backdrop">
           <div className="modal-card modal-card-lg">
             <div className="modal-header">
-              <h3 className="text-base font-black text-white flex items-center gap-2">
+              <h3 className="text-base font-black flex items-center gap-2">
                 <Percent className="w-5 h-5 text-amber-400" />
                 Registrar Solicitud de Beca Escolar
               </h3>
@@ -25439,7 +25439,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         standardTuitionMXN: lvl === 'PREESCOLAR' ? 3800 : 4200,
                       });
                     }}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-500 cursor-pointer"
+                    className="w-full bg-subtle border border-subtle rounded-xl px-3 py-2 focus:outline-none focus:border-amber-500 cursor-pointer"
                   >
                     <option value="PREESCOLAR">Preescolar</option>
                     <option value="PRIMARIA">Primaria</option>
@@ -25564,11 +25564,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </label>
               </div>
 
-              <div className="pt-3 border-t border-slate-800 flex items-center justify-end gap-2">
+              <div className="pt-3 border-t border-subtle flex items-center justify-end gap-2">
                 <button type="button" onClick={() => setShowNewScholarshipModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   Ingresar Solicitud a Dictamen
                 </button>
@@ -25583,7 +25583,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         <div className="modal-backdrop">
           <div className="modal-card modal-card-lg">
             <div className="modal-header">
-              <h3 className="text-base font-black text-white flex items-center gap-2">
+              <h3 className="text-base font-black flex items-center gap-2">
                 <Scale className="w-5 h-5 text-amber-400" />
                 Dictamen del Comité de Becas • {selectedScholarshipForEvaluation.folio}
               </h3>
@@ -25592,21 +25592,21 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   setShowEvaluateScholarshipModal(false);
                   setSelectedScholarshipForEvaluation(null);
                 }}
-                className="text-slate-400 hover:text-white font-bold text-lg cursor-pointer"
+                className="text-muted hover: font-bold text-lg cursor-pointer"
               >
                 ✕
               </button>
             </div>
 
             {/* Resumen del Solicitante */}
-            <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs space-y-2">
+            <div className="badge badge-sky">
               <div className="flex justify-between items-center">
-                <strong className="text-sm font-black text-white">{selectedScholarshipForEvaluation.studentName}</strong>
+                <strong className="text-sm font-black">{selectedScholarshipForEvaluation.studentName}</strong>
                 <div className="text-amber-400 font-bold">{selectedScholarshipForEvaluation.grade}</div>
               </div>
-              <div className="grid grid-cols-3 gap-2 text-slate-400 text-[11px] pt-1">
+              <div className="grid grid-cols-3 gap-2 text-muted text-[11px] pt-1">
                 <div>Promedio: <strong className="text-emerald-400">{selectedScholarshipForEvaluation.previousGpa}</strong></div>
-                <div>Ingreso: <strong className="text-white">${selectedScholarshipForEvaluation.monthlyFamilyIncomeMXN.toLocaleString('es-MX')}</strong></div>
+                <div>Ingreso: <strong className="text-main">${selectedScholarshipForEvaluation.monthlyFamilyIncomeMXN.toLocaleString('es-MX')}</strong></div>
                 <div>Solicitado: <strong className="text-amber-400">{selectedScholarshipForEvaluation.requestedDiscountPercentage}%</strong></div>
               </div>
             </div>
@@ -25654,8 +25654,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               {/* Cálculo en Vivo de Colegiatura Resultante */}
               {evaluateScholarshipForm.status !== 'RECHAZADA' && (
-                <div className="p-3 bg-slate-950/80 rounded-xl border border-emerald-500/20 text-xs flex items-center justify-between">
-                  <div className="text-slate-400">
+                <div className="badge badge-emerald">
+                  <div className="text-muted">
                     Colegiatura Regular: ${selectedScholarshipForEvaluation.standardTuitionMXN.toLocaleString('es-MX')} MXN
                   </div>
                   <div className="text-emerald-400 font-black">
@@ -25695,20 +25695,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 />
               </div>
 
-              <div className="pt-3 border-t border-slate-800 flex items-center justify-end gap-2">
+              <div className="pt-3 border-t border-subtle flex items-center justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => {
                     setShowEvaluateScholarshipModal(false);
                     setSelectedScholarshipForEvaluation(null);
                   }}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   Protocolizar y Emitir Dictamen
                 </button>
@@ -25724,12 +25724,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="modal-card modal-card-xl">
             <div className="modal-header">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                <div className="badge badge-amber">
                   <BookOpenCheck className="w-5 h-5 text-amber-400" />
                 </div>
                 <div>
-                  <h3 className="font-black text-white text-base">Ingresar Remesa de Libros CONALITEG</h3>
-                  <p className="text-[11px] text-slate-400">Recepción oficial de Libros de Texto Gratuitos SEP</p>
+                  <h3 className="font-black text-base">Ingresar Remesa de Libros CONALITEG</h3>
+                  <p className="text-[11px] text-muted">Recepción oficial de Libros de Texto Gratuitos SEP</p>
                 </div>
               </div>
               <button type="button" onClick={() => setShowNewConalitegPackageModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
@@ -25859,7 +25859,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowNewConalitegPackageModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
+                  className="btn btn-warning btn-sm"
                 >
                   Registrar Remesa en Bodega
                 </button>
@@ -25875,12 +25875,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="modal-card modal-card-xl">
             <div className="modal-header">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                <div className="badge badge-emerald">
                   <FileBadge className="w-5 h-5 text-emerald-400" />
                 </div>
                 <div>
-                  <h3 className="font-black text-white text-base">Registrar Acuse de Entrega de Libros SEP</h3>
-                  <p className="text-[11px] text-slate-400">Constancia oficial firmada por el padre o tutor del alumno</p>
+                  <h3 className="font-black text-base">Registrar Acuse de Entrega de Libros SEP</h3>
+                  <p className="text-[11px] text-muted">Constancia oficial firmada por el padre o tutor del alumno</p>
                 </div>
               </div>
               <button type="button" onClick={() => setShowNewConalitegReceiptModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
@@ -25900,7 +25900,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       grade: sel ? sel.grade : newConalitegReceiptForm.grade,
                     });
                   }}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-amber-400 focus:outline-none"
+                  className="badge badge-amber"
                 >
                   {conalitegPackages.map((pkg) => (
                     <option key={pkg.id} value={pkg.id}>
@@ -26007,7 +26007,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowNewConalitegReceiptModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black shadow-lg shadow-emerald-500/25 transition-all cursor-pointer"
+                  className="btn btn-success btn-sm"
                 >
                   Emitir y Foliar Acuse Firmado
                 </button>
@@ -26023,12 +26023,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="modal-card modal-card-xl">
             <div className="modal-header">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center">
+                <div className="badge badge-sky">
                   <Shirt className="w-5 h-5 text-teal-400" />
                 </div>
                 <div>
-                  <h3 className="font-black text-white text-base">Alta de Artículo en Almacén Escolar</h3>
-                  <p className="text-[11px] text-slate-400">Uniforme, bata de laboratorio o material didáctico</p>
+                  <h3 className="font-black text-base">Alta de Artículo en Almacén Escolar</h3>
+                  <p className="text-[11px] text-muted">Uniforme, bata de laboratorio o material didáctico</p>
                 </div>
               </div>
               <button type="button" onClick={() => setShowNewUniformItemModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
@@ -26199,7 +26199,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowNewUniformItemModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-black shadow-lg shadow-teal-600/25 transition-all cursor-pointer"
+                  className="btn btn-success btn-sm"
                 >
                   Guardar en Almacén
                 </button>
@@ -26215,12 +26215,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <div className="modal-card modal-card-md">
             <div className="modal-header">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center">
+                <div className="badge badge-sky">
                   <Shirt className="w-5 h-5 text-teal-400" />
                 </div>
                 <div>
-                  <h3 className="font-black text-white text-base">Ajuste de Stock en Almacén</h3>
-                  <p className="text-[11px] text-slate-400">{selectedUniformForStock.name}</p>
+                  <h3 className="font-black text-base">Ajuste de Stock en Almacén</h3>
+                  <p className="text-[11px] text-muted">{selectedUniformForStock.name}</p>
                 </div>
               </div>
               <button
@@ -26228,27 +26228,27 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   setShowAdjustUniformStockModal(false);
                   setSelectedUniformForStock(null);
                 }}
-                className="text-slate-400 hover:text-white p-1 rounded-lg transition-colors cursor-pointer"
+                className="text-muted hover: p-1 rounded-lg transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 text-xs space-y-1">
+            <div className="badge badge-sky">
               <div className="flex justify-between">
-                <div className="text-slate-400">SKU / Talla:</div>
+                <div className="text-muted">SKU / Talla:</div>
                 <div className="font-mono text-teal-400 font-bold">
                   {selectedUniformForStock.sku} ({selectedUniformForStock.size.replace('TALLA_', 'T-')})
                 </div>
               </div>
               <div className="flex justify-between">
-                <div className="text-slate-400">Stock Físico Actual:</div>
-                <div className="font-mono font-black text-white text-sm">
+                <div className="text-muted">Stock Físico Actual:</div>
+                <div className="font-mono font-black text-sm">
                   {selectedUniformForStock.stockQuantity} piezas
                 </div>
               </div>
               <div className="flex justify-between">
-                <div className="text-slate-400">Precio Sugerido Venta:</div>
+                <div className="text-muted">Precio Sugerido Venta:</div>
                 <div className="font-mono text-emerald-400 font-bold">
                   ${selectedUniformForStock.salePriceMXN}.00 MXN
                 </div>
@@ -26282,9 +26282,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   }
                   className="form-input w-full font-mono"
                 />
-                <div className="text-[10px] text-slate-500 mt-1 block">
+                <div className="text-[10px] text-muted mt-1 block">
                   Nuevo stock resultante:{' '}
-                  <strong className="text-white">
+                  <strong className="text-main">
                     {Math.max(0, selectedUniformForStock.stockQuantity + Number(adjustStockForm.deltaStock))} piezas
                   </strong>
                 </div>
@@ -26297,13 +26297,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     setShowAdjustUniformStockModal(false);
                     setSelectedUniformForStock(null);
                   }}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-black shadow-lg shadow-teal-600/25 transition-all cursor-pointer"
+                  className="btn btn-success btn-sm"
                 >
                   Confirmar Movimiento
                 </button>
@@ -26324,7 +26324,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
                 <div>
                   <h3 className="modal-title">Emitir Constancia Oficial Digital</h3>
-                  <p className="text-[11px] text-slate-400">Genera folio oficial, sello criptográfico SHA-256 y QR de cotejo</p>
+                  <p className="text-[11px] text-muted">Genera folio oficial, sello criptográfico SHA-256 y QR de cotejo</p>
                 </div>
               </div>
               <button type="button" onClick={() => setShowNewCertificateModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
@@ -26374,7 +26374,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       });
                     }
                   }}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-sky-400 focus:outline-none"
+                  className="badge badge-sky"
                 >
                   <option value="student-01">Carlos Mendoza Ruiz (2026-PRI-001 - 1º Primaria)</option>
                   <option value="student-sof-01">Sofía Morales Rivas (2026-PRI-014 - 5º Primaria)</option>
@@ -26476,14 +26476,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 />
               </div>
 
-              <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-[11px] text-slate-400 space-y-1">
+              <div className="badge badge-sky">
                 <div className="flex justify-between">
                   <div>Autoridad Certificadora:</div>
-                  <div className="text-slate-200 font-semibold">{newCertificateForm.issuedByDirector}</div>
+                  <div className="text-main font-semibold">{newCertificateForm.issuedByDirector}</div>
                 </div>
                 <div className="flex justify-between">
                   <div>Cédula Profesional:</div>
-                  <div className="text-slate-300 font-mono">{newCertificateForm.directorCedula}</div>
+                  <div className="text-muted font-mono">{newCertificateForm.directorCedula}</div>
                 </div>
                 <div className="flex justify-between">
                   <div>Vigencia del Documento:</div>
@@ -26495,7 +26495,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowNewCertificateModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black shadow-lg shadow-sky-500/25 transition-all cursor-pointer flex items-center gap-1.5"
+                  className="btn btn-primary btn-sm"
                 >
                   <FileCheck className="w-4 h-4" />
                   <div>Emitir & Sellar Digitalmente</div>
@@ -26511,17 +26511,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         <div className="modal-backdrop">
           <div className="modal-card modal-card-2xl">
             {/* Modal Controls Top */}
-            <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+            <div className="p-4 border-b border-subtle flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <ScrollText className="w-5 h-5 text-sky-400" />
-                <div className="text-xs font-bold text-white uppercase tracking-wider">
+                <div className="text-xs font-bold uppercase tracking-wider">
                   Vista Previa del Documento Oficial Certificado
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => window.print()}
-                  className="px-3 py-1.5 bg-sky-500 hover:bg-sky-400 text-slate-950 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-md shadow-sky-500/20"
+                  className="btn btn-primary btn-sm"
                 >
                   <Printer className="w-3.5 h-3.5" />
                   <div>Imprimir Formato SEP</div>
@@ -26531,7 +26531,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     navigator.clipboard?.writeText(window.location.origin + selectedCertForDetail.qrValidationUrl);
                     showToast('🔗 Enlace de validación copiado al portapapeles');
                   }}
-                  className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold transition-all border border-slate-700 cursor-pointer"
+                  className="btn btn-secondary btn-sm"
                 >
                   Copiar Link QR
                 </button>
@@ -26542,7 +26542,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* Document Body Formatted like Authentic Official Mexican Certificate */}
             <div className="p-8 bg-white text-slate-900 font-serif space-y-6">
               {/* Official Header */}
-              <div className="text-center border-b-2 border-slate-900 pb-4 space-y-1">
+              <div className="text-center border-b-2 border-slate-300 pb-4 space-y-1">
                 <div className="text-[10px] tracking-widest uppercase font-sans font-bold text-slate-600">
                   SISTEMA EDUCATIVO NACIONAL • SECRETARÍA DE EDUCACIÓN PÚBLICA
                 </div>
@@ -26635,13 +26635,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="pt-4 border-t-2 border-slate-200 grid grid-cols-3 gap-4 items-center font-sans text-[10px]">
                 {/* QR Code Visual Box */}
                 <div className="flex flex-col items-center justify-center p-3 bg-slate-50 border border-slate-300 rounded-xl space-y-1">
-                  <div className="w-20 h-20 bg-slate-900 p-2 rounded-lg flex items-center justify-center text-white">
+                  <div className="w-20 h-20 bg-surface p-2 rounded-lg flex items-center justify-center">
                     <QrCode className="w-16 h-16 text-sky-400" />
                   </div>
                   <div className="font-bold text-[9px] text-slate-700 text-center">
                     Cotejo en Línea con QR
                   </div>
-                  <div className="font-mono text-[8px] text-slate-500 text-center truncate max-w-full">
+                  <div className="font-mono text-[8px] text-muted text-center truncate max-w-full">
                     {selectedCertForDetail.verificationToken}
                   </div>
                 </div>
@@ -26649,7 +26649,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 {/* Sello Digital SHA-256 */}
                 <div className="space-y-1">
                   <div className="font-bold text-slate-800 text-[10px]">SELLO DIGITAL DEL EMISOR (SHA-256):</div>
-                  <div className="font-mono text-[8px] text-slate-500 bg-slate-50 p-2 rounded border border-slate-200 break-all leading-tight">
+                  <div className="font-mono text-[8px] text-muted bg-slate-50 p-2 rounded border border-slate-200 break-all leading-tight">
                     {selectedCertForDetail.digitalSeal}
                   </div>
                   <div className="text-[9px] text-slate-600">
@@ -26659,7 +26659,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 {/* Signature Authority */}
                 <div className="text-center space-y-1 flex flex-col items-center justify-end">
-                  <div className="w-32 border-b border-slate-900 mb-1 pt-6"></div>
+                  <div className="w-32 border-b border-slate-300 mb-1 pt-6"></div>
                   <div className="font-bold text-[10px] text-slate-900">{selectedCertForDetail.issuedByDirector}</div>
                   <div className="text-[9px] text-slate-600">Directora Técnica del Plantel</div>
                   <div className="font-mono text-[9px] text-slate-600">CÉDULA PROF: {selectedCertForDetail.directorCedula}</div>
@@ -26802,7 +26802,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <button type="button" onClick={() => setShowNewSupervisionModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-sky-500/20 cursor-pointer"
+                  className="btn btn-primary btn-sm"
                 >
                   Guardar Acta Oficial
                 </button>
@@ -26821,14 +26821,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <Lock className="w-5 h-5 text-emerald-400" />
                 <div>
                   <h3 className="modal-title">Certificado de Autenticidad Forense</h3>
-                  <p className="text-[11px] text-slate-400">Verificación de Integridad Criptográfica de Bloque</p>
+                  <p className="text-[11px] text-muted">Verificación de Integridad Criptográfica de Bloque</p>
                 </div>
               </div>
               <button type="button" onClick={() => setShowAuditDetailModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <div className="space-y-4 text-xs">
-              <div className="bg-emerald-950/20 border border-emerald-800/40 p-3 rounded-2xl flex items-center justify-between">
+              <div className="badge badge-emerald">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
                   <div>
@@ -26836,40 +26836,40 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <div className="text-[11px] text-emerald-400/80">La firma digital del bloque coincide exactamente con los parámetros asentados.</div>
                   </div>
                 </div>
-                <div className="font-mono text-xs font-bold text-sky-400 bg-slate-950 px-3 py-1 rounded-xl border border-slate-800">
+                <div className="badge badge-sky font-mono">
                   {selectedLogForDetail.folio}
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 bg-slate-950 p-4 rounded-2xl border border-slate-800">
+              <div className="badge badge-sky">
                 <div>
-                  <div className="text-slate-400 block text-[10px]">ACCIÓN ASENTADA:</div>
-                  <strong className="text-white">{selectedLogForDetail.actionName}</strong>
+                  <div className="text-muted block text-[10px]">ACCIÓN ASENTADA:</div>
+                  <strong className="text-main">{selectedLogForDetail.actionName}</strong>
                 </div>
                 <div>
-                  <div className="text-slate-400 block text-[10px]">FECHA Y HORA (UTC):</div>
-                  <div className="text-white font-mono">{selectedLogForDetail.timestamp}</div>
+                  <div className="text-muted block text-[10px]">FECHA Y HORA (UTC):</div>
+                  <div className="font-mono">{selectedLogForDetail.timestamp}</div>
                 </div>
                 <div>
-                  <div className="text-slate-400 block text-[10px]">USUARIO EMISOR:</div>
-                  <strong className="text-white">{selectedLogForDetail.performedByName}</strong>
-                  <div className="text-slate-400 block text-[11px] font-mono">Rol: {selectedLogForDetail.performedByRole}</div>
+                  <div className="text-muted block text-[10px]">USUARIO EMISOR:</div>
+                  <strong className="text-main">{selectedLogForDetail.performedByName}</strong>
+                  <div className="text-muted block text-[11px] font-mono">Rol: {selectedLogForDetail.performedByRole}</div>
                 </div>
                 <div>
-                  <div className="text-slate-400 block text-[10px]">DIRECCIÓN IP AUDITADA:</div>
-                  <div className="text-white font-mono">{selectedLogForDetail.ipAddress}</div>
+                  <div className="text-muted block text-[10px]">DIRECCIÓN IP AUDITADA:</div>
+                  <div className="font-mono">{selectedLogForDetail.ipAddress}</div>
                 </div>
               </div>
 
               {(selectedLogForDetail.previousValue || selectedLogForDetail.newValue) && (
                 <div className="space-y-2">
-                  <div className="text-slate-400 font-bold block">Trazabilidad de Valores:</div>
+                  <div className="text-muted font-bold block">Trazabilidad de Valores:</div>
                   <div className="grid grid-cols-2 gap-2 text-[11px]">
-                    <div className="p-3 bg-rose-950/30 border border-rose-900/40 rounded-xl">
+                    <div className="badge badge-rose">
                       <div className="text-rose-400 font-bold block mb-0.5">VALOR ANTERIOR:</div>
                       <div className="text-rose-200">{selectedLogForDetail.previousValue || 'N/A'}</div>
                     </div>
-                    <div className="p-3 bg-emerald-950/30 border border-emerald-900/40 rounded-xl">
+                    <div className="badge badge-emerald">
                       <div className="text-emerald-400 font-bold block mb-0.5">VALOR SUSTITUTO:</div>
                       <div className="text-emerald-200">{selectedLogForDetail.newValue || 'N/A'}</div>
                     </div>
@@ -26877,9 +26877,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               )}
 
-              <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
-                <div className="text-slate-400 block text-[10px]">JUSTIFICACIÓN Y FUNDAMENTO NORMATIVO:</div>
-                <p className="text-slate-200">{selectedLogForDetail.justificationReason}</p>
+              <div className="badge badge-sky">
+                <div className="text-muted block text-[10px]">JUSTIFICACIÓN Y FUNDAMENTO NORMATIVO:</div>
+                <p className="text-main">{selectedLogForDetail.justificationReason}</p>
                 {selectedLogForDetail.officialAgreementRef && (
                   <div className="text-sky-400 text-[11px] pt-1">
                     Acuerdo Oficial: <strong>{selectedLogForDetail.officialAgreementRef}</strong>
@@ -26888,8 +26888,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="space-y-1">
-                <div className="text-slate-400 text-[10px] font-bold block">SELLO DIGITAL CRIPTOGRÁFICO (SHA-256):</div>
-                <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 font-mono text-[10px] text-emerald-400 break-all leading-relaxed">
+                <div className="text-muted text-[10px] font-bold block">SELLO DIGITAL CRIPTOGRÁFICO (SHA-256):</div>
+                <div className="badge badge-emerald font-mono">
                   {selectedLogForDetail.integrityHash}
                 </div>
               </div>
