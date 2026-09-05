@@ -650,6 +650,75 @@ button.btn,
   }
 }
 
+.modal-card-sm {
+  max-width: 26rem;
+}
+
+.modal-subtitle {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.modal-verify-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  background: var(--color-primary-bg);
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary-border);
+  border-radius: var(--radius-lg);
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .is-chromium & {
+    border-radius: calc(var(--radius-lg) * 2);
+    corner-shape: squircle;
+    -webkit-corner-shape: squircle;
+  }
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.modal-form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  width: 100%;
+
+  .btn {
+    flex: 1;
+  }
+}
+
+.otp-input {
+  width: 12rem;
+  margin-inline: auto;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: 0.35em;
+}
+
 @keyframes modalFadeIn {
   from { opacity: 0; transform: scale(0.96); }
   to { opacity: 1; transform: scale(1); }

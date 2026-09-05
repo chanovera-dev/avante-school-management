@@ -18558,94 +18558,115 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: REGISTRAR DIRECTOR DE NIVEL */}
       {showRegisterDirectorModal && activeLevelForAction && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card">
+            <div className="modal-header">
               <div>
-                <div className="text-[10px] font-mono uppercase text-sky-400 font-bold">Nombramiento Directivo</div>
-                <h3 className="font-black text-white text-lg">Registrar Director(a) de {activeLevelForAction.name}</h3>
+                <div className="badge badge-sky">
+                  Nombramiento Directivo
+                </div>
+                <h3 className="modal-title">
+                  Registrar Director(a) de {activeLevelForAction.name}
+                </h3>
               </div>
-              <button onClick={() => setShowRegisterDirectorModal(false)} className="text-slate-400 hover:text-white font-bold text-lg cursor-pointer">✕</button>
+              <button
+                type="button"
+                onClick={() => setShowRegisterDirectorModal(false)}
+                className="modal-close"
+                title="Cerrar ventana modal"
+              >
+                ✕
+              </button>
             </div>
 
-            <form onSubmit={handleSubmitDirectorForm} className="space-y-3.5 text-xs">
-              <div>
-                <label className="block font-bold uppercase text-slate-300 mb-1">Nombre y Apellidos</label>
+            <form onSubmit={handleSubmitDirectorForm} className="modal-form">
+              <div className="form-group">
+                <label className="form-label">Nombre y Apellidos</label>
                 <input
                   type="text"
                   required
                   value={directorForm.directorName}
                   onChange={(e) => setDirectorForm({ ...directorForm, directorName: e.target.value })}
                   placeholder="Ej. Lic. Claudia Valenzuela"
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-sky-500 font-bold"
+                  className="form-input"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block font-bold uppercase text-slate-300 mb-1">Nombramiento / Cargo</label>
+              <div className="modal-form-row">
+                <div className="form-group">
+                  <label className="form-label">Nombramiento / Cargo</label>
                   <input
                     type="text"
                     required
                     value={directorForm.directorTitle}
                     onChange={(e) => setDirectorForm({ ...directorForm, directorTitle: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-sky-500"
+                    className="form-input"
                   />
                 </div>
-                <div>
-                  <label className="block font-bold uppercase text-slate-300 mb-1">Clave CCT SEP</label>
+                <div className="form-group">
+                  <label className="form-label">Clave CCT SEP</label>
                   <input
                     type="text"
                     required
                     value={directorForm.cctCode}
                     onChange={(e) => setDirectorForm({ ...directorForm, cctCode: e.target.value.toUpperCase() })}
                     placeholder="Ej. 30PJN0145X"
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono uppercase outline-none focus:border-sky-500"
+                    className="form-input uppercase font-mono"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block font-bold uppercase text-slate-300 mb-1">Correo Institucional</label>
+              <div className="modal-form-row">
+                <div className="form-group">
+                  <label className="form-label">Correo Institucional</label>
                   <input
                     type="email"
                     required
                     value={directorForm.directorEmail}
                     onChange={(e) => setDirectorForm({ ...directorForm, directorEmail: e.target.value })}
                     placeholder="director@logos.edu.mx"
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-sky-500 font-mono"
+                    className="form-input font-mono"
                   />
                 </div>
-                <div>
-                  <label className="block font-bold uppercase text-slate-300 mb-1">Teléfono Directo</label>
+                <div className="form-group">
+                  <label className="form-label">Teléfono Directo</label>
                   <input
                     type="tel"
                     required
                     value={directorForm.directorPhone}
                     onChange={(e) => setDirectorForm({ ...directorForm, directorPhone: e.target.value })}
                     placeholder="921 555 1201"
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-sky-500 font-mono"
+                    className="form-input font-mono"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block font-bold uppercase text-slate-300 mb-1">Contraseña de Acceso para el Director</label>
+              <div className="form-group">
+                <label className="form-label">Contraseña de Acceso para el Director</label>
                 <input
                   type="password"
                   required
                   value={directorForm.directorPassword}
                   onChange={(e) => setDirectorForm({ ...directorForm, directorPassword: e.target.value })}
                   placeholder="Mínimo 6 caracteres"
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-sky-500 font-mono"
+                  className="form-input font-mono"
                 />
               </div>
 
-              <div className="flex gap-3 pt-3">
-                <button type="button" onClick={() => setShowRegisterDirectorModal(false)} className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 py-3 rounded-xl font-bold cursor-pointer">Cancelar</button>
-                <button type="submit" className="flex-1 bg-sky-500 hover:bg-sky-400 text-slate-950 font-black py-3 rounded-xl shadow-lg shadow-sky-500/20 cursor-pointer flex items-center justify-center gap-1.5">
-                  <Send className="w-4 h-4" /> <div>Guardar y Enviar OTP</div>
+              <div className="modal-actions">
+                <button
+                  type="button"
+                  onClick={() => setShowRegisterDirectorModal(false)}
+                  className="btn btn-secondary"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                >
+                  <Send />
+                  <div>Guardar y Enviar OTP</div>
                 </button>
               </div>
             </form>
@@ -18655,14 +18676,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: VERIFICAR DIRECTOR */}
       {showVerifyDirectorModal && activeLevelForAction && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl text-center space-y-4">
-            <div className="w-14 h-14 bg-sky-500/20 text-sky-400 border border-sky-500/30 rounded-2xl mx-auto flex items-center justify-center">
-              <MailCheck className="w-7 h-7" />
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-sm text-center">
+            <div className="modal-verify-icon">
+              <MailCheck />
             </div>
-            <h3 className="font-black text-white text-lg">Verifica la Cuenta del Director(a)</h3>
-            <p className="text-xs text-slate-400">Introduce el código OTP de 6 dígitos enviado al correo del director.</p>
-            <form onSubmit={handleVerifyDirectorOtp} className="space-y-4">
+            <h3 className="modal-title">Verifica la Cuenta del Director(a)</h3>
+            <p className="modal-subtitle">Introduce el código OTP de 6 dígitos enviado al correo del director.</p>
+            <form onSubmit={handleVerifyDirectorOtp} className="modal-form">
               <input
                 type="text"
                 maxLength={6}
@@ -18670,11 +18691,23 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 value={otpCodeInput}
                 onChange={(e) => setOtpCodeInput(e.target.value.replace(/\D/g, ''))}
                 placeholder="000000"
-                className="w-48 mx-auto text-center font-mono font-black text-3xl tracking-[8px] bg-slate-950 border-2 border-sky-500 rounded-2xl py-3 text-white outline-none"
+                className="form-input otp-input"
               />
-              <div className="flex gap-3 pt-2">
-                <button type="button" onClick={() => setShowVerifyDirectorModal(false)} className="flex-1 bg-slate-800 text-slate-300 text-xs py-3 rounded-xl font-bold cursor-pointer">Cancelar</button>
-                <button type="submit" disabled={otpCodeInput.length !== 6} className="flex-1 bg-sky-500 text-slate-950 text-xs py-3 rounded-xl font-black cursor-pointer">Verificar y Activar</button>
+              <div className="modal-actions">
+                <button
+                  type="button"
+                  onClick={() => setShowVerifyDirectorModal(false)}
+                  className="btn btn-secondary"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  disabled={otpCodeInput.length !== 6}
+                  className="btn btn-primary"
+                >
+                  Verificar y Activar
+                </button>
               </div>
             </form>
           </div>
