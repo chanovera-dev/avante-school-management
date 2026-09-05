@@ -153,6 +153,21 @@
 }
 
 /* Inputs, Selects y Textareas */
+.dashboard-page input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]):not([type="hidden"]),
+.dashboard-page select {
+  height: 37px !important;
+  min-height: 37px !important;
+  box-sizing: border-box !important;
+}
+
+.dashboard-page .btn,
+.dashboard-page button.btn,
+.dashboard-page button[type="submit"] {
+  height: 37px !important;
+  min-height: 37px !important;
+  box-sizing: border-box !important;
+}
+
 .dashboard-page input,
 .dashboard-page select,
 .dashboard-page textarea {
