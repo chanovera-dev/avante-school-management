@@ -7379,7 +7379,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {activeTab === 'attendance' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Header del Módulo */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
@@ -7407,7 +7407,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <button
                   onClick={handleMarkAllPresent}
-                  className="bg-slate-800 hover:bg-slate-750 text-slate-200 border border-slate-700 px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-lg"
+                  className="btn btn-secondary btn-sm"
                 >
                   <Check className="w-4 h-4 text-emerald-400" />
                   <div>⚡ Marcar Todos Presentes</div>
@@ -7424,12 +7424,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             {/* Controles de Contexto: Fecha, Grupo, Docente y Materia */}
-            <div className="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow-xl space-y-4">
+            <div className="dashboard-filter-card space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                 {/* Selector de Fecha */}
                 <div className="space-y-1">
                   <div className="flex items-center justify-between">
-                    <label className="text-[11px] font-bold text-slate-400 flex items-center gap-1.5">
+                    <label className="form-label">
                       <Calendar className="w-3.5 h-3.5 text-sky-400" />
                       <div>Fecha del Pase de Lista:</div>
                     </label>
@@ -7444,13 +7444,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     type="date"
                     value={attendanceDate}
                     onChange={(e) => setAttendanceDate(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 focus:border-emerald-400 rounded-xl px-3 py-2 text-xs font-semibold text-white outline-none cursor-pointer"
+                    className="form-input w-full"
                   />
                 </div>
 
                 {/* Selector de Grado y Grupo */}
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-slate-400 flex items-center gap-1.5">
+                  <label className="form-label">
                     <Layers className="w-3.5 h-3.5 text-emerald-400" />
                     <div>Grado y Grupo:</div>
                   </label>
@@ -7469,7 +7469,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 {/* Selector de Maestro Titular */}
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-slate-400 flex items-center gap-1.5">
+                  <label className="form-label">
                     <UserCheck className="w-3.5 h-3.5 text-amber-400" />
                     <div>Maestro(a) Responsable:</div>
                   </label>
@@ -7488,7 +7488,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 {/* Selector de Materia o Turno */}
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-slate-400 flex items-center gap-1.5">
+                  <label className="form-label">
                     <Clock className="w-3.5 h-3.5 text-purple-400" />
                     <div>Jornada / Asignatura:</div>
                   </label>
@@ -7529,25 +7529,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               return (
                 <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">Total en Lista</div>
                     <div className="text-2xl font-black text-white">{totalStudents}</div>
                     <div className="text-[10px] text-slate-500 block mt-0.5">{attendanceGroup}</div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">Presentes</div>
                     <div className="text-2xl font-black text-emerald-400">{presentCount}</div>
                     <div className="text-[10px] text-slate-500 block mt-0.5">A tiempo en el aula</div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">Retardos</div>
                     <div className="text-2xl font-black text-amber-400">{lateCount}</div>
                     <div className="text-[10px] text-slate-500 block mt-0.5">Tolerancia superada</div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">Faltas (Total)</div>
                     <div className="flex items-center gap-1.5 mt-0.5">
                       <div className="text-2xl font-black text-rose-400">{unexcusedCount + excusedCount}</div>
@@ -7556,7 +7556,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <div className="text-[10px] text-slate-500 block">Impacto en Boleta SEP</div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl col-span-2 sm:col-span-1">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">% de Asistencia</div>
                     <div className="text-2xl font-black text-sky-400">{percentage}%</div>
                     <div className="w-full bg-slate-950 h-1.5 rounded-full overflow-hidden mt-1.5 border border-slate-800">
@@ -7576,11 +7576,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               if (studentsInGroup.length === 0) {
                 return (
-                  <div className="bg-slate-900 border border-slate-800 rounded-3xl p-12 text-center shadow-xl space-y-3">
+                  <div className="dashboard-card p-12 text-center space-y-3">
                     <div className="w-16 h-16 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-3xl flex items-center justify-center mx-auto">
                       <CalendarCheck className="w-8 h-8" />
                     </div>
-                    <h3 className="text-lg font-black text-white">No hay alumnos en {attendanceGroup}</h3>
+                    <h3 className="modal-title">No hay alumnos en {attendanceGroup}</h3>
                     <p className="text-xs text-slate-400 max-w-sm mx-auto">
                       Inscribe alumnos en la sección de control escolar asignándolos a este grupo para tomar su asistencia diaria.
                     </p>
@@ -7589,7 +7589,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               }
 
               return (
-                <div className="bg-slate-900 border border-slate-800 rounded-3xl shadow-xl overflow-hidden">
+                <div className="dashboard-table-card">
                   <div className="px-6 py-4 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
                       <h3 className="text-base font-black text-white flex items-center gap-2">
@@ -7602,7 +7602,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <div className="text-[11px] font-mono text-slate-400 bg-slate-950 px-3 py-1 rounded-xl border border-slate-800">
+                      <div className="badge font-mono text-[11px] px-3 py-1">
                         {studentsInGroup.length} Estudiantes
                       </div>
                     </div>
@@ -7610,7 +7610,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs">
-                      <thead className="bg-slate-950/80 text-slate-400 uppercase font-mono text-[10px] tracking-wider border-b border-slate-800">
+                      <thead className="table-header-row">
                         <tr>
                           <th className="py-3.5 px-4 w-12">#</th>
                           <th className="py-3.5 px-4 min-w-[200px]">Alumno(a)</th>
@@ -7628,7 +7628,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           const notes = record?.notes || '';
 
                           return (
-                            <tr key={std.id} className="hover:bg-slate-800/30 transition-colors">
+                            <tr key={std.id} className="table-row-hover">
                               <td className="py-3 px-4 font-mono text-slate-500">{idx + 1}</td>
                               <td className="py-3 px-4">
                                 <div className="font-bold text-white flex items-center gap-2">
@@ -7651,7 +7651,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                               {/* 4 Botones de Selección de Estatus */}
                               <td className="py-3 px-4">
-                                <div className="flex items-center justify-center gap-1.5 bg-slate-950 p-1 rounded-2xl border border-slate-800 text-[11px] font-bold">
+                                <div className="flex items-center justify-center gap-1.5 bg-slate-100 p-1 rounded-2xl border border-slate-200 text-[11px] font-bold">
                                   <button
                                     onClick={() => handleUpdateAttendanceStatus(std.id, 'PRESENTE')}
                                     className={`flex-1 py-1.5 px-2 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1 ${
@@ -7710,7 +7710,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                     placeholder="Hora de llegada o motivo de inasistencia..."
                                     value={notes}
                                     onChange={(e) => handleUpdateAttendanceNotes(std.id, e.target.value)}
-                                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-200 outline-none focus:border-emerald-400 transition-colors"
+                                    className="form-input w-full"
                                   />
                                   <div className="flex items-center gap-2 pt-0.5">
                                     {currentStatus === 'FALTA_INJUSTIFICADA' && (
@@ -7745,7 +7745,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               <td className="py-3 px-4 text-center">
                                 <button
                                   onClick={() => handleNotifyTutor(std, currentStatus)}
-                                  className="bg-slate-800 hover:bg-sky-500 hover:text-slate-950 text-slate-300 px-3 py-1.5 rounded-xl font-bold text-[11px] transition-colors flex items-center justify-center gap-1 mx-auto cursor-pointer shadow-sm"
+                                  className="btn btn-secondary btn-sm"
                                   title={`Enviar notificación a ${std.tutorName || 'Tutor'}`}
                                 >
                                   <Send className="w-3.5 h-3.5" />
@@ -7760,7 +7760,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
 
                   {/* Barra al pie de la tabla */}
-                  <div className="p-4 bg-slate-950/60 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                  <div className="table-footer flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
                     <div className="text-slate-400 flex items-center gap-2">
                       <Check className="w-4 h-4 text-emerald-400" />
                       <div>Las inasistencias y retardos se guardan de forma acumulativa y alimentan la Boleta Oficial SEP.</div>
@@ -7784,7 +7784,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {activeTab === 'grades' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Header del Módulo */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
@@ -7808,7 +7808,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     if (sample) handleOpenReportCard(sample);
                     else showToast('⚠️ No hay alumnos en este grupo aún.');
                   }}
-                  className="bg-slate-800 hover:bg-slate-750 text-slate-200 border border-slate-700 px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-lg"
+                  className="btn btn-secondary btn-sm"
                 >
                   <FileText className="w-4 h-4 text-amber-400" />
                   <div>Ver Boleta Oficial SEP del Alumno</div>
@@ -7825,11 +7825,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             {/* Selector de Maestro, Grupo, Materia y Trimestre */}
-            <div className="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow-xl space-y-4">
+            <div className="dashboard-filter-card space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                 {/* Selector de Maestro Titular */}
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-slate-400 flex items-center gap-1.5">
+                  <label className="form-label">
                     <UserCheck className="w-3.5 h-3.5 text-emerald-400" />
                     <div>Maestro(a) Responsable:</div>
                   </label>
@@ -7848,7 +7848,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 {/* Selector de Grupo */}
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-slate-400 flex items-center gap-1.5">
+                  <label className="form-label">
                     <Layers className="w-3.5 h-3.5 text-sky-400" />
                     <div>Grado y Grupo:</div>
                   </label>
@@ -7867,7 +7867,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 {/* Selector de Asignatura Oficial SEP */}
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-slate-400 flex items-center gap-1.5">
+                  <label className="form-label">
                     <BookOpen className="w-3.5 h-3.5 text-amber-400" />
                     <div>Materia Oficial SEP:</div>
                   </label>
@@ -7886,11 +7886,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 {/* Filtro de Periodo / Trimestre */}
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-slate-400 flex items-center gap-1.5">
+                  <label className="form-label">
                     <Calendar className="w-3.5 h-3.5 text-purple-400" />
                     <div>Periodo de Evaluación:</div>
                   </label>
-                  <div className="flex bg-slate-950 p-1 rounded-xl border border-slate-800 text-[11px] font-bold">
+                  <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200 text-[11px] font-bold">
                     <button
                       onClick={() => setActiveGradePeriod('ALL')}
                       className={`flex-1 py-1 rounded-lg transition-colors cursor-pointer ${
@@ -7975,19 +7975,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               return (
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">Alumnos en Lista</div>
                     <div className="text-2xl font-black text-white">{studentsInGroup.length}</div>
                     <div className="text-[10px] text-slate-500 block mt-0.5">Grupo: {selectedGradeGroup}</div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">Promedio de la Asignatura</div>
                     <div className="text-2xl font-black text-amber-400">{avg}</div>
                     <div className="text-[10px] text-slate-500 block mt-0.5">Escala oficial SEP (5 a 10)</div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">Aprobados / Riesgo</div>
                     <div className="flex items-center gap-2 mt-1">
                       <div className="text-lg font-black text-emerald-400">{approvedCount} Aprobados</div>
@@ -7996,7 +7996,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <div className="text-[10px] text-slate-500 block mt-0.5">Mínimo aprobatorio: 6.0</div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">Inasistencias del Grupo</div>
                     <div className="text-2xl font-black text-purple-400">{totalAbsences}</div>
                     <div className="text-[10px] text-slate-500 block mt-0.5">Faltas acumuladas en la materia</div>
@@ -8011,11 +8011,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               if (studentsInGroup.length === 0) {
                 return (
-                  <div className="bg-slate-900 border border-slate-800 rounded-3xl p-12 text-center shadow-xl space-y-3">
+                  <div className="dashboard-card p-12 text-center space-y-3">
                     <div className="w-16 h-16 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded-3xl flex items-center justify-center mx-auto">
                       <GraduationCap className="w-8 h-8" />
                     </div>
-                    <h3 className="text-lg font-black text-white">No hay alumnos inscritos en este grupo</h3>
+                    <h3 className="modal-title">No hay alumnos inscritos en este grupo</h3>
                     <p className="text-xs text-slate-400 max-w-sm mx-auto">
                       Inscribe alumnos en la pestaña "Alumnos y Expedientes" asignándolos a <strong>{selectedGradeGroup}</strong> para habilitar su captura de notas.
                     </p>
@@ -8030,7 +8030,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               }
 
               return (
-                <div className="bg-slate-900 border border-slate-800 rounded-3xl shadow-xl overflow-hidden">
+                <div className="dashboard-table-card">
                   <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
                     <div>
                       <h3 className="text-base font-black text-white flex items-center gap-2">
@@ -8042,14 +8042,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </p>
                     </div>
 
-                    <div className="text-[11px] font-mono text-slate-400 bg-slate-950 px-3 py-1 rounded-xl border border-slate-800">
+                    <div className="badge font-mono text-[11px] px-3 py-1">
                       Escala SEP: 5.0 - 10.0
                     </div>
                   </div>
 
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs">
-                      <thead className="bg-slate-950/80 text-slate-400 uppercase font-mono text-[10px] tracking-wider border-b border-slate-800">
+                      <thead className="table-header-row">
                         <tr>
                           <th className="py-3.5 px-4">#</th>
                           <th className="py-3.5 px-4 min-w-[180px]">Alumno(a)</th>
@@ -8081,7 +8081,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           const obs = grade?.observations || '';
 
                           return (
-                            <tr key={std.id} className="hover:bg-slate-800/30 transition-colors">
+                            <tr key={std.id} className="table-row-hover">
                               <td className="py-3 px-4 font-mono text-slate-500">{idx + 1}</td>
                               <td className="py-3 px-4">
                                 <div className="font-bold text-white">{std.firstName} {std.lastName}</div>
@@ -8106,10 +8106,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                     }}
                                     className={`w-16 text-center font-mono font-bold py-1.5 rounded-xl border outline-none text-xs ${
                                       typeof p1 === 'number' && p1 < 6.0
-                                        ? 'bg-rose-950/80 text-rose-300 border-rose-600'
+                                        ? 'bg-rose-50 text-rose-700 border-rose-300'
                                         : typeof p1 === 'number' && p1 >= 6.0
-                                        ? 'bg-slate-950 text-emerald-300 border-slate-700 focus:border-amber-400'
-                                        : 'bg-slate-950 text-slate-400 border-slate-800 focus:border-amber-400'
+                                        ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
+                                        : 'bg-white text-slate-600 border-slate-300'
                                     }`}
                                   />
                                 </td>
@@ -8131,10 +8131,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                     }}
                                     className={`w-16 text-center font-mono font-bold py-1.5 rounded-xl border outline-none text-xs ${
                                       typeof p2 === 'number' && p2 < 6.0
-                                        ? 'bg-rose-950/80 text-rose-300 border-rose-600'
+                                        ? 'bg-rose-50 text-rose-700 border-rose-300'
                                         : typeof p2 === 'number' && p2 >= 6.0
-                                        ? 'bg-slate-950 text-emerald-300 border-slate-700 focus:border-amber-400'
-                                        : 'bg-slate-950 text-slate-400 border-slate-800 focus:border-amber-400'
+                                        ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
+                                        : 'bg-white text-slate-600 border-slate-300'
                                     }`}
                                   />
                                 </td>
@@ -8156,10 +8156,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                     }}
                                     className={`w-16 text-center font-mono font-bold py-1.5 rounded-xl border outline-none text-xs ${
                                       typeof p3 === 'number' && p3 < 6.0
-                                        ? 'bg-rose-950/80 text-rose-300 border-rose-600'
+                                        ? 'bg-rose-50 text-rose-700 border-rose-300'
                                         : typeof p3 === 'number' && p3 >= 6.0
-                                        ? 'bg-slate-950 text-emerald-300 border-slate-700 focus:border-amber-400'
-                                        : 'bg-slate-950 text-slate-400 border-slate-800 focus:border-amber-400'
+                                        ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
+                                        : 'bg-white text-slate-600 border-slate-300'
                                     }`}
                                   />
                                 </td>
@@ -8171,10 +8171,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   <div
                                     className={`font-mono font-black px-2.5 py-1 rounded-xl border text-xs ${
                                       finalG >= 8.0
-                                        ? 'bg-emerald-950 text-emerald-300 border-emerald-800'
+                                        ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
                                         : finalG >= 6.0
-                                        ? 'bg-amber-950 text-amber-300 border-amber-800'
-                                        : 'bg-rose-950 text-rose-300 border-rose-800'
+                                        ? 'bg-amber-50 text-amber-700 border-amber-300'
+                                        : 'bg-rose-50 text-rose-700 border-rose-300'
                                     }`}
                                   >
                                     {finalG.toFixed(1)}
@@ -8194,7 +8194,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                     const val = parseInt(e.target.value) || 0;
                                     handleUpdateGrade(std.id, 'period1Absences', val);
                                   }}
-                                  className="w-12 text-center bg-slate-950 border border-slate-800 rounded-xl py-1 text-slate-300 font-mono text-xs outline-none focus:border-purple-400"
+                                  className="form-input w-12 font-mono text-center"
                                 />
                               </td>
 
@@ -8205,7 +8205,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   placeholder="Observación formativa SEP..."
                                   value={obs}
                                   onChange={(e) => handleUpdateGrade(std.id, 'observations', e.target.value)}
-                                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-200 outline-none focus:border-amber-400"
+                                  className="form-input w-full"
                                 />
                               </td>
 
@@ -8213,7 +8213,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               <td className="py-3 px-4 text-center">
                                 <button
                                   onClick={() => handleOpenReportCard(std)}
-                                  className="bg-slate-800 hover:bg-amber-400 hover:text-slate-950 text-slate-300 px-3 py-1.5 rounded-xl font-bold text-[11px] transition-colors flex items-center justify-center gap-1 mx-auto cursor-pointer shadow-sm"
+                                  className="btn btn-secondary btn-sm"
                                   title="Ver Boleta de Evaluación Oficial SEP"
                                 >
                                   <FileText className="w-3.5 h-3.5" />
@@ -8228,7 +8228,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
 
                   {/* Barra al pie de la tabla */}
-                  <div className="p-4 bg-slate-950/60 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                  <div className="table-footer flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
                     <div className="text-slate-400 flex items-center gap-2">
                       <Check className="w-4 h-4 text-emerald-400" />
                       <div>Todas las asignaturas y calificaciones cumplen la normativa y campos formativos oficiales de la SEP.</div>
@@ -8252,7 +8252,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {activeTab === 'notices' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Header del Módulo */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
@@ -8292,31 +8292,31 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               return (
                 <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">Total Publicados</div>
                     <div className="text-2xl font-black text-white">{totalNotices}</div>
                     <div className="text-[10px] text-slate-500 block mt-0.5">Comunicados activos</div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">Circulares Generales</div>
                     <div className="text-2xl font-black text-sky-400">{circularesCount}</div>
                     <div className="text-[10px] text-slate-500 block mt-0.5">Eventos y avisos</div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">Citatorios a Padres</div>
                     <div className="text-2xl font-black text-amber-400">{citatoriosCount}</div>
                     <div className="text-[10px] text-slate-500 block mt-0.5">Citas presenciales</div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">Avisos Urgentes</div>
                     <div className="text-2xl font-black text-rose-400">{avisosUrgentes}</div>
                     <div className="text-[10px] text-slate-500 block mt-0.5">Alta prioridad</div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl col-span-2 sm:col-span-1">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">% Acuses de Enterado</div>
                     <div className="text-2xl font-black text-emerald-400">{avgAckRate}%</div>
                     <div className="w-full bg-slate-950 h-1.5 rounded-full overflow-hidden mt-1.5 border border-slate-800">
@@ -8443,7 +8443,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                       {/* Título y Contenido */}
                       <div className="space-y-2">
-                        <h3 className="text-lg font-black text-white">{notice.title}</h3>
+                        <h3 className="modal-title">{notice.title}</h3>
                         <p className="text-xs text-slate-300 leading-relaxed whitespace-pre-line">
                           {notice.content}
                         </p>
@@ -8468,7 +8468,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                       {/* Barra de Acuses de Enterado */}
                       {notice.requiresAcknowledgment && (
-                        <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
+                        <div className="dashboard-subcard space-y-2">
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs">
                             <div className="text-slate-400 flex items-center gap-1.5">
                               <CheckCheck className="w-4 h-4 text-emerald-400" />
@@ -8529,7 +8529,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {activeTab === 'credentials' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Header del Módulo */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
@@ -8576,31 +8576,31 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               return (
                 <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">Total Carnets Emitidos</div>
                     <div className="text-2xl font-black text-white">{credentials.length}</div>
                     <div className="text-[10px] text-slate-500 block mt-0.5">Credenciales activas</div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">Carnets de Alumnos</div>
                     <div className="text-2xl font-black text-cyan-400">{studentCreds}</div>
                     <div className="text-[10px] text-slate-500 block mt-0.5">Carnets activos</div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">Docentes & Personal</div>
                     <div className="text-2xl font-black text-purple-400">{teacherCreds}</div>
                     <div className="text-[10px] text-slate-500 block mt-0.5">Gafetes institucionales</div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">Accesos Registrados Hoy</div>
                     <div className="text-2xl font-black text-emerald-400">{totalScansToday}</div>
                     <div className="text-[10px] text-slate-500 block mt-0.5">Pases por torniquete</div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl col-span-2 sm:col-span-1">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">Torniquete & Puerta</div>
                     <div className="text-xs font-black text-emerald-400 flex items-center gap-1.5 mt-1">
                       <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></div>
@@ -8613,7 +8613,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             })()}
 
             {/* Selector de Pestaña: Alumnos vs Docentes */}
-            <div className="bg-slate-900 border border-slate-800 p-3 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="dashboard-subcard flex flex-col sm:flex-row items-center justify-between gap-3">
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setCredentialFilter('STUDENT')}
@@ -8643,7 +8643,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <select
                     value={selectedGroupForCreds}
                     onChange={(e) => setSelectedGroupForCreds(e.target.value)}
-                    className="bg-slate-950 border border-slate-700 text-white text-xs rounded-xl px-3 py-1.5 outline-none focus:border-cyan-400"
+                    className="form-select"
                   >
                     <option value="ALL">Todos los grupos</option>
                     {groups.map((g) => (
@@ -8672,10 +8672,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   return (
                     <div
                       key={cred.id}
-                      className="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-4 hover:border-slate-700 transition-all"
+                      className="dashboard-card p-5 space-y-4"
                     >
                       {/* Cabecera de la Tarjeta */}
-                      <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                      <div className="modal-header">
                         <div className="flex items-center gap-2">
                           <div className="font-mono text-xs font-black bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-2.5 py-0.5 rounded-lg">
                             {cred.credentialCode}
@@ -8819,7 +8819,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
 
             {/* BITÁCORA DE ACCESOS EN TIEMPO REAL (TORNIQUETES) */}
-            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+            <div className="dashboard-card space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
                 <div>
                   <h3 className="text-base font-black text-white flex items-center gap-2">
@@ -8917,7 +8917,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {activeTab === 'tasks' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Header del Módulo */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
@@ -8954,31 +8954,31 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               return (
                 <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">Total Asignaciones</div>
                     <div className="text-2xl font-black text-white">{totalTasks}</div>
                     <div className="text-[10px] text-slate-500 block mt-0.5">Actividades en curso</div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">Tareas Diarias</div>
                     <div className="text-2xl font-black text-blue-400">{tareasCount}</div>
                     <div className="text-[10px] text-slate-500 block mt-0.5">Ejercicios y lecturas</div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">Proyectos en Curso</div>
                     <div className="text-2xl font-black text-purple-400">{proyectosCount}</div>
                     <div className="text-[10px] text-slate-500 block mt-0.5">Evaluación formativa</div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">Entregas Recibidas</div>
                     <div className="text-2xl font-black text-emerald-400">{totalSubmissions}</div>
                     <div className="text-[10px] text-slate-500 block mt-0.5">Revisadas o en proceso</div>
                   </div>
 
-                  <div className="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl col-span-2 sm:col-span-1">
+                  <div className="dashboard-stat-card">
                     <div className="text-[11px] font-bold text-slate-400 block">Prórrogas Médicas</div>
                     <div className="text-2xl font-black text-amber-400">1 Alumno</div>
                     <div className="text-[10px] text-slate-400 block mt-0.5">Carlos Mendoza Ruiz</div>
@@ -9102,7 +9102,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       )}
 
                       {/* Barra de Progreso de Entregas */}
-                      <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
+                      <div className="dashboard-subcard space-y-2">
                         <div className="flex items-center justify-between text-xs">
                           <div className="text-slate-400 flex items-center gap-1.5">
                             <FileCheck className="w-4 h-4 text-emerald-400" />
@@ -9161,7 +9161,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {activeTab === 'schedules' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Header del Módulo */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
@@ -9208,7 +9208,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <select
                     value={selectedGroupForSchedule}
                     onChange={(e) => setSelectedGroupForSchedule(e.target.value)}
-                    className="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white outline-none focus:border-indigo-400 font-bold"
+                    className="form-select font-bold"
                   >
                     <option value='Primaria 1º "A"'>Primaria 1º "A" (Prof. Roberto Salazar)</option>
                     <option value='Preescolar 2º "A"'>Preescolar 2º "A" (Profra. Carmen Vega)</option>
@@ -9260,7 +9260,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               ];
 
               return (
-                <div className="bg-slate-900 border border-slate-800 rounded-3xl shadow-xl overflow-hidden">
+                <div className="dashboard-table-card">
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs border-collapse">
                       <thead className="bg-slate-950 text-slate-300 font-bold uppercase tracking-wider border-b border-slate-800">
@@ -9406,7 +9406,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {activeTab === 'admissions' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Header del Módulo */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
@@ -9494,7 +9494,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <select
                     value={selectedApplicantLevelFilter}
                     onChange={(e) => setSelectedApplicantLevelFilter(e.target.value)}
-                    className="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white outline-none focus:border-amber-400 font-bold"
+                    className="form-select font-bold"
                   >
                     <option value="ALL">Todos los Niveles</option>
                     <option value="PREESCOLAR">Preescolar</option>
@@ -9509,7 +9509,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <select
                     value={selectedApplicantStatusFilter}
                     onChange={(e) => setSelectedApplicantStatusFilter(e.target.value)}
-                    className="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white outline-none focus:border-amber-400 font-bold"
+                    className="form-select font-bold"
                   >
                     <option value="ALL">Todos los Estatus</option>
                     <option value="REGISTRADO">Registrado</option>
@@ -9748,7 +9748,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {activeTab === 'library' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Header del Módulo */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
@@ -9891,14 +9891,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         placeholder="Buscar por título, autor, ISBN o estante..."
                         value={bookSearchQuery}
                         onChange={(e) => setBookSearchQuery(e.target.value)}
-                        className="w-full bg-slate-950 border border-slate-700 rounded-xl pl-9 pr-3 py-1.5 text-xs text-white outline-none focus:border-rose-400"
+                        className="form-input w-full"
                       />
                     </div>
 
                     <select
                       value={selectedBookCategoryFilter}
                       onChange={(e) => setSelectedBookCategoryFilter(e.target.value)}
-                      className="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white outline-none focus:border-rose-400 font-bold"
+                      className="form-select font-bold"
                     >
                       <option value="ALL">Todas las Categorías</option>
                       <option value="LITERATURA_INFANTIL">Literatura Infantil</option>
@@ -10024,7 +10024,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <select
                       value={loanStatusFilter}
                       onChange={(e) => setLoanStatusFilter(e.target.value)}
-                      className="bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white outline-none focus:border-amber-400 font-bold"
+                      className="form-select font-bold"
                     >
                       <option value="ALL">Todos los Préstamos</option>
                       <option value="ACTIVO">Préstamos Activos</option>
@@ -10119,11 +10119,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="flex items-center gap-3 max-w-md">
-                  <label className="text-xs font-bold text-slate-300">Seleccionar Alumno:</label>
+                  <label className="form-label">Seleccionar Alumno:</label>
                   <select
                     value={clearanceSearchStudentId}
                     onChange={(e) => setClearanceSearchStudentId(e.target.value)}
-                    className="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-emerald-400 font-bold"
+                    className="form-select flex-1 font-bold"
                   >
                     {students.map((s) => (
                       <option key={s.id} value={s.id}>
@@ -10218,7 +10218,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {activeTab === 'transport' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Header del Módulo */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="font-mono text-xs text-amber-400 font-bold bg-amber-500/10 px-2.5 py-0.5 rounded-lg border border-amber-500/20">
@@ -10255,25 +10255,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* KPI Cards de Transporte */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Rutas en Circulación</div>
                 <div className="text-2xl font-black text-white mt-1">{transportRoutes.length}</div>
                 <div className="text-[10px] text-amber-400 font-bold">100% Cobertura Urbana</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Unidades Vehiculares</div>
                 <div className="text-2xl font-black text-white mt-1">{transportRoutes.length} Vans</div>
                 <div className="text-[10px] text-emerald-400 font-bold">Pólizas GNP / Axa Vigentes</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Alumnos con Servicio</div>
                 <div className="text-2xl font-black text-white mt-1">{transportEnrollments.length}</div>
                 <div className="text-[10px] text-sky-400 font-bold">Paradas fijas geolocalizadas</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Abordajes y Entregas Hoy</div>
                 <div className="text-2xl font-black text-emerald-400 mt-1">
                   {transportBoardingLogs.filter((l) => l.status === 'ENTREGADO_ESCUELA' || l.status === 'A_BORDO').length}
@@ -10419,7 +10419,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <select
                       value={selectedTransportRouteId}
                       onChange={(e) => setSelectedTransportRouteId(e.target.value)}
-                      className="bg-slate-950 border border-slate-700 text-white font-bold text-xs rounded-xl px-3 py-2 outline-none focus:border-amber-400"
+                      className="form-select font-bold"
                     >
                       {transportRoutes.map((r) => (
                         <option key={r.id} value={r.id}>
@@ -10609,7 +10609,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* SUBTAB 3: PADRÓN DE ALUMNOS */}
             {transportSubTab === 'enrollment' && (
-              <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
+              <div className="dashboard-table-card">
                 <div className="p-4 border-b border-slate-800 flex items-center justify-between">
                   <div className="text-xs font-bold text-white">
                     Padrón General de Alumnos con Servicio de Transporte Escolar ({transportEnrollments.length})
@@ -10624,7 +10624,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs text-slate-300">
-                    <thead className="bg-slate-950 text-slate-400 uppercase font-mono text-[10px] border-b border-slate-800">
+                    <thead className="table-header-row">
                       <tr>
                         <th className="py-3 px-4">Matrícula</th>
                         <th className="py-3 px-4">Alumno</th>
@@ -10672,7 +10672,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {activeTab === 'cafeteria' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Header del Módulo */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="font-mono text-xs text-orange-400 font-bold bg-orange-500/10 px-2.5 py-0.5 rounded-lg border border-orange-500/20">
@@ -10712,7 +10712,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* KPI Cards de Cafetería */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Alimentos Saludables SEP</div>
                 <div className="text-2xl font-black text-white mt-1">
                   {cafeteriaProducts.filter((p) => p.isHealthySepApproved).length}/{cafeteriaProducts.length}
@@ -10720,13 +10720,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="text-[10px] text-emerald-400 font-bold">Lineamientos de Nutrición SEP</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Monederos Activos</div>
                 <div className="text-2xl font-black text-white mt-1">{studentWallets.length} Alumnos</div>
                 <div className="text-[10px] text-sky-400 font-bold">Cobro con credencial QR</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Saldo en Circulación</div>
                 <div className="text-2xl font-black text-emerald-400 mt-1">
                   ${studentWallets.reduce((sum, w) => sum + w.currentBalanceMXN, 0)} MXN
@@ -10734,7 +10734,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="text-[10px] text-slate-400 font-bold">Fondos prepagados seguros</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Tickets de Consumo Hoy</div>
                 <div className="text-2xl font-black text-orange-400 mt-1">
                   {cafeteriaTransactions.filter((t) => t.type === 'CONSUMO').length}
@@ -10916,7 +10916,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 {/* Columna Izquierda / Central: Selección de Alumno y Catálogo de Cobro */}
                 <div className="lg:col-span-2 space-y-5">
                   {/* Selector de Alumno en Caja */}
-                  <div className="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow-xl space-y-4">
+                  <div className="dashboard-filter-card space-y-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div>
                         <div className="text-[10px] font-mono text-orange-400 font-bold uppercase tracking-wider block">
@@ -10933,7 +10933,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           setPosStudentId(e.target.value);
                           setPosCart([]);
                         }}
-                        className="bg-slate-950 border border-slate-700 text-white font-bold text-xs rounded-xl px-3 py-2 outline-none focus:border-orange-400"
+                        className="form-select font-bold"
                       >
                         {studentWallets.map((w) => (
                           <option key={w.studentId} value={w.studentId}>
@@ -11086,7 +11086,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 {/* Columna Derecha: Carrito y Ticket de Venta POS */}
                 <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-5 flex flex-col justify-between h-fit sticky top-24">
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <div className="modal-header">
                       <div>
                         <div className="text-[10px] font-mono text-orange-400 font-bold uppercase tracking-wider block">
                           Ticket de Consumo
@@ -11215,7 +11215,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* SUBTAB 3: GESTIÓN DE MONEDEROS */}
             {cafeteriaSubTab === 'wallets' && (
-              <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
+              <div className="dashboard-table-card">
                 <div className="p-4 border-b border-slate-800 flex items-center justify-between">
                   <div className="text-xs font-bold text-white">
                     Padrón de Monederos Escolares y Control de Fondos ({studentWallets.length})
@@ -11225,7 +11225,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs text-slate-300">
-                    <thead className="bg-slate-950 text-slate-400 uppercase font-mono text-[10px] border-b border-slate-800">
+                    <thead className="table-header-row">
                       <tr>
                         <th className="py-3 px-4">Matrícula</th>
                         <th className="py-3 px-4">Alumno</th>
@@ -11304,7 +11304,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* SUBTAB 4: HISTORIAL DE TICKETS */}
             {cafeteriaSubTab === 'history' && (
-              <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
+              <div className="dashboard-table-card">
                 <div className="p-4 border-b border-slate-800 flex items-center justify-between">
                   <div className="text-xs font-bold text-white">
                     Historial de Recargas y Tickets de Consumo ({cafeteriaTransactions.length})
@@ -11314,7 +11314,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs text-slate-300">
-                    <thead className="bg-slate-950 text-slate-400 uppercase font-mono text-[10px] border-b border-slate-800">
+                    <thead className="table-header-row">
                       <tr>
                         <th className="py-3 px-4">Folio</th>
                         <th className="py-3 px-4">Fecha & Hora</th>
@@ -11383,7 +11383,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {activeTab === 'infirmary' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Header del Módulo */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="font-mono text-xs text-rose-400 font-bold bg-rose-500/10 px-2.5 py-0.5 rounded-lg border border-rose-500/20">
@@ -11420,13 +11420,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* KPI Cards de Enfermería */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Atenciones Registradas</div>
                 <div className="text-2xl font-black text-white mt-1">{medicalConsultations.length} Consultas</div>
                 <div className="text-[10px] text-emerald-400 font-bold">Registro clínico escolar</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Medicamentos Programados</div>
                 <div className="text-2xl font-black text-sky-400 mt-1">
                   {scheduledMedications.filter((m) => m.status === 'ACTIVO').length} Alumnos
@@ -11434,13 +11434,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="text-[10px] text-slate-400 font-bold">Bajo prescripción médica</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Insumos en Botiquín</div>
                 <div className="text-2xl font-black text-white mt-1">{firstAidSupplies.length} Artículos</div>
                 <div className="text-[10px] text-emerald-400 font-bold">Stock de primeros auxilios</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Avisos a Padres Enviados</div>
                 <div className="text-2xl font-black text-rose-400 mt-1">
                   {medicalConsultations.filter((c) => c.parentNotified).length}
@@ -11489,7 +11489,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* SUBTAB 1: CONSULTAS Y ATENCIONES */}
             {infirmarySubTab === 'consultations' && (
               <div className="space-y-4">
-                <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
+                <div className="dashboard-table-card">
                   <div className="p-4 border-b border-slate-800 flex items-center justify-between">
                     <div className="text-xs font-bold text-white">
                       Bitácora de Atenciones Médicas Escolares ({medicalConsultations.length})
@@ -11499,7 +11499,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs text-slate-300">
-                      <thead className="bg-slate-950 text-slate-400 uppercase font-mono text-[10px] border-b border-slate-800">
+                      <thead className="table-header-row">
                         <tr>
                           <th className="py-3 px-4">Folio</th>
                           <th className="py-3 px-4">Fecha & Hora</th>
@@ -11648,13 +11648,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
 
                         <div className="grid grid-cols-2 gap-2 text-xs">
-                          <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800">
+                          <div className="dashboard-subcard">
                             <div className="text-[10px] text-slate-400 block font-bold">Alumno Asignado:</div>
                             <strong className="text-white block mt-0.5">{med.studentName}</strong>
                             <div className="text-[10px] font-mono text-slate-400">{med.groupName}</div>
                           </div>
 
-                          <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800">
+                          <div className="dashboard-subcard">
                             <div className="text-[10px] text-slate-400 block font-bold">Vigencia del Tratamiento:</div>
                             <strong className="text-slate-200 block text-[11px] mt-0.5">
                               {med.startDate} al {med.endDate}
@@ -11701,7 +11701,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* SUBTAB 3: BOTIQUÍN DE PRIMEROS AUXILIOS */}
             {infirmarySubTab === 'supplies' && (
-              <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
+              <div className="dashboard-table-card">
                 <div className="p-4 border-b border-slate-800 flex items-center justify-between">
                   <div className="text-xs font-bold text-white">
                     Inventario de Botiquín Escolar e Insumos Sanitarios ({firstAidSupplies.length})
@@ -11711,7 +11711,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs text-slate-300">
-                    <thead className="bg-slate-950 text-slate-400 uppercase font-mono text-[10px] border-b border-slate-800">
+                    <thead className="table-header-row">
                       <tr>
                         <th className="py-3 px-4">Insumo / Medicamento</th>
                         <th className="py-3 px-4">Categoría</th>
@@ -11804,7 +11804,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {activeTab === 'workshops' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Header del Módulo */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="font-mono text-xs text-amber-400 font-bold bg-amber-500/10 px-2.5 py-0.5 rounded-lg border border-amber-500/20">
@@ -11841,13 +11841,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* KPI Cards de Talleres */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Academias Ofertadas</div>
                 <div className="text-2xl font-black text-white mt-1">{extracurricularWorkshops.length} Talleres</div>
                 <div className="text-[10px] text-amber-400 font-bold">STEAM, Deportes & Arte</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Alumnos en Turno Vespertino</div>
                 <div className="text-2xl font-black text-amber-400 mt-1">
                   {workshopEnrollments.filter((e) => e.status === 'ACTIVO').length} Inscritos
@@ -11855,7 +11855,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="text-[10px] text-emerald-400 font-bold">Participación activa</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Capacidad Total Instalada</div>
                 <div className="text-2xl font-black text-white mt-1">
                   {extracurricularWorkshops.reduce((acc, w) => acc + w.maxCapacity, 0)} Lugares
@@ -11863,7 +11863,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="text-[10px] text-slate-400 font-bold">Distribuidos en 5 aulas</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Ocupación Promedio</div>
                 <div className="text-2xl font-black text-emerald-400 mt-1">
                   {Math.round(
@@ -12062,18 +12062,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <div className="text-[10px] font-mono text-amber-400 uppercase font-bold">
                       SESIÓN VESPERTINA EN CURSO
                     </div>
-                    <h3 className="text-lg font-black text-white flex items-center gap-2">
+                    <h3 className="modal-title">
                       <ClipboardCheck className="w-5 h-5 text-amber-400" />
                       Pase de Lista de la Academia
                     </h3>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <label className="text-xs font-bold text-slate-300">Seleccionar Taller:</label>
+                    <label className="form-label">Seleccionar Taller:</label>
                     <select
                       value={selectedWorkshopForAttendance}
                       onChange={(e) => setSelectedWorkshopForAttendance(e.target.value)}
-                      className="bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-amber-400"
+                      className="form-select"
                     >
                       {extracurricularWorkshops.map((w) => (
                         <option key={w.id} value={w.id}>
@@ -12109,7 +12109,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                       <div className="overflow-x-auto">
                         <table className="w-full text-left text-xs text-slate-300">
-                          <thead className="bg-slate-950 text-slate-400 uppercase font-mono text-[10px] border-b border-slate-800">
+                          <thead className="table-header-row">
                             <tr>
                               <th className="py-3 px-4">Alumno</th>
                               <th className="py-3 px-4">Matrícula</th>
@@ -12224,7 +12224,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* SUBTAB 3: PADRÓN DE ALUMNOS INSCRITOS */}
             {workshopsSubTab === 'enrollments' && (
-              <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
+              <div className="dashboard-table-card">
                 <div className="p-4 border-b border-slate-800 flex items-center justify-between">
                   <div className="text-xs font-bold text-white">
                     Padrón General de Inscripciones Extracurriculares ({workshopEnrollments.length})
@@ -12234,7 +12234,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs text-slate-300">
-                    <thead className="bg-slate-950 text-slate-400 uppercase font-mono text-[10px] border-b border-slate-800">
+                    <thead className="table-header-row">
                       <tr>
                         <th className="py-3 px-4">Alumno</th>
                         <th className="py-3 px-4">Matrícula</th>
@@ -12278,7 +12278,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {activeTab === 'inventory' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Header del Módulo */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="font-mono text-xs text-teal-400 font-bold bg-teal-500/10 px-2.5 py-0.5 rounded-lg border border-teal-500/20">
@@ -12336,7 +12336,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* KPI Cards de Inventario y CONALITEG */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Libros CONALITEG SEP</div>
                 <div className="text-2xl font-black text-amber-400 mt-1">
                   {conalitegPackages.reduce((acc, p) => acc + p.receivedPackagesCount, 0)} Paquetes
@@ -12347,7 +12347,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Almacén de Uniformes</div>
                 <div className="text-2xl font-black text-teal-400 mt-1">
                   {schoolUniforms.reduce((acc, u) => acc + u.stockQuantity, 0)} Prendas
@@ -12363,7 +12363,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Valor Patrimonial Activos</div>
                 <div className="text-2xl font-black text-emerald-400 mt-1">
                   ${schoolAssets.reduce((acc, a) => acc + a.purchaseValueMXN, 0).toLocaleString()} MXN
@@ -12373,7 +12373,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Tickets de Mantenimiento</div>
                 <div className="text-2xl font-black text-amber-400 mt-1">
                   {assetMaintenanceTickets.filter((t) => t.status !== 'RESUELTO').length} Abiertos
@@ -12470,7 +12470,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   ))}
                 </div>
 
-                <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
+                <div className="dashboard-table-card">
                   <div className="p-4 border-b border-slate-800 flex items-center justify-between">
                     <div className="text-xs font-bold text-white">
                       Listado Oficial de Activos y Equipamiento Institucional ({schoolAssets.length})
@@ -12480,7 +12480,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs text-slate-300">
-                      <thead className="bg-slate-950 text-slate-400 uppercase font-mono text-[10px] border-b border-slate-800">
+                      <thead className="table-header-row">
                         <tr>
                           <th className="py-3 px-4">Placa / Tag</th>
                           <th className="py-3 px-4">Activo & Modelo</th>
@@ -12586,7 +12586,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* SUBTAB 2: MESA DE AYUDA Y TICKETS */}
             {inventorySubTab === 'tickets' && (
               <div className="space-y-4">
-                <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
+                <div className="dashboard-table-card">
                   <div className="p-4 border-b border-slate-800 flex items-center justify-between">
                     <div className="text-xs font-bold text-white">
                       Bitácora de Tickets de Mantenimiento Preventivo y Correctivo ({assetMaintenanceTickets.length})
@@ -12596,7 +12596,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs text-slate-300">
-                      <thead className="bg-slate-950 text-slate-400 uppercase font-mono text-[10px] border-b border-slate-800">
+                      <thead className="table-header-row">
                         <tr>
                           <th className="py-3 px-4">Ticket</th>
                           <th className="py-3 px-4">Activo Dañado & Ubicación</th>
@@ -12692,7 +12692,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* SUBTAB 3: AUDITORÍA DE VALOR Y GARANTÍAS */}
             {inventorySubTab === 'audit' && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+                <div className="dashboard-card space-y-4">
                   <h3 className="text-sm font-black text-white flex items-center gap-2 border-b border-slate-800 pb-3">
                     <ShieldCheck className="w-5 h-5 text-teal-400" />
                     Valor Patrimonial por Categoría de Activos
@@ -12730,7 +12730,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
                 </div>
 
-                <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+                <div className="dashboard-card space-y-4">
                   <h3 className="text-sm font-black text-white flex items-center gap-2 border-b border-slate-800 pb-3">
                     <Calendar className="w-5 h-5 text-sky-400" />
                     Vigencia de Pólizas y Garantías Oficiales
@@ -12936,7 +12936,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 {/* Bitácora de Acuses de Entrega a Tutores */}
-                <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
+                <div className="dashboard-table-card">
                   <div className="p-4 border-b border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
                     <div>
                       <h4 className="text-sm font-black text-white flex items-center gap-2">
@@ -12954,7 +12954,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs text-slate-300">
-                      <thead className="bg-slate-950 text-slate-400 uppercase font-mono text-[10px] border-b border-slate-800">
+                      <thead className="table-header-row">
                         <tr>
                           <th className="py-3 px-4">Folio Acuse</th>
                           <th className="py-3 px-4">Alumno & Matrícula</th>
@@ -13038,7 +13038,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 {/* Catálogo de Uniformes */}
-                <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
+                <div className="dashboard-table-card">
                   <div className="p-4 border-b border-slate-800 flex items-center justify-between">
                     <h4 className="text-sm font-black text-white flex items-center gap-2">
                       <Tag className="w-4 h-4 text-teal-400" />
@@ -13051,7 +13051,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs text-slate-300">
-                      <thead className="bg-slate-950 text-slate-400 uppercase font-mono text-[10px] border-b border-slate-800">
+                      <thead className="table-header-row">
                         <tr>
                           <th className="py-3 px-4">SKU / Clave</th>
                           <th className="py-3 px-4">Prenda / Artículo</th>
@@ -13134,7 +13134,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {activeTab === 'surveys' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Header del Módulo */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="font-mono text-xs text-rose-400 font-bold bg-rose-500/10 px-2.5 py-0.5 rounded-lg border border-rose-500/20">
@@ -13171,13 +13171,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* KPI Cards de Clima Escolar */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">NPS Institucional Global</div>
                 <div className="text-2xl font-black text-emerald-400 mt-1">+82</div>
                 <div className="text-[10px] text-emerald-400 font-bold">Nivel de Excelencia y Lealtad</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Encuestas Activas</div>
                 <div className="text-2xl font-black text-white mt-1">
                   {institutionalSurveys.filter((s) => s.status === 'ACTIVA').length}
@@ -13185,7 +13185,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="text-[10px] text-rose-400 font-bold">En periodo de recepción</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Respuestas Acumuladas</div>
                 <div className="text-2xl font-black text-sky-400 mt-1">
                   {institutionalSurveys.reduce((acc, s) => acc + s.responsesCount, 0)}
@@ -13193,7 +13193,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="text-[10px] text-slate-400 font-bold">Padres y docentes evaluados</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Sugerencias Atendidas</div>
                 <div className="text-2xl font-black text-amber-400 mt-1">
                   {confidentialSuggestions.filter((s) => s.status === 'ATENDIDO' || s.status === 'EN_ACCION').length} / {confidentialSuggestions.length}
@@ -13316,7 +13316,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {surveysSubTab === 'nps' && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Desglose NPS */}
-                <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+                <div className="dashboard-card space-y-4">
                   <h3 className="text-sm font-black text-white flex items-center gap-2 border-b border-slate-800 pb-3">
                     <ThumbsUp className="w-5 h-5 text-rose-400" />
                     Termómetro Net Promoter Score (NPS) del Instituto
@@ -13368,7 +13368,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 {/* Dimensiones de Calidad */}
-                <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+                <div className="dashboard-card space-y-4">
                   <h3 className="text-sm font-black text-white flex items-center gap-2 border-b border-slate-800 pb-3">
                     <Award className="w-5 h-5 text-amber-400" />
                     Evaluación por Áreas y Dimensiones Institucionales
@@ -13401,7 +13401,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* SUBTAB 3: BUZÓN CONFIDENCIAL */}
             {surveysSubTab === 'suggestions' && (
               <div className="space-y-4">
-                <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
+                <div className="dashboard-table-card">
                   <div className="p-4 border-b border-slate-800 flex items-center justify-between">
                     <div className="text-xs font-bold text-white">
                       Buzón Directivo de Sugerencias y Mejora Continua ({confidentialSuggestions.length})
@@ -13411,7 +13411,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs text-slate-300">
-                      <thead className="bg-slate-950 text-slate-400 uppercase font-mono text-[10px] border-b border-slate-800">
+                      <thead className="table-header-row">
                         <tr>
                           <th className="py-3 px-4">Folio</th>
                           <th className="py-3 px-4">Categoría & Asunto</th>
@@ -13510,7 +13510,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {activeTab === 'events' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Header del Módulo */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="font-mono text-xs text-amber-400 font-bold bg-amber-500/10 px-2.5 py-0.5 rounded-lg border border-amber-500/20">
@@ -13540,13 +13540,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* KPI Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Eventos Programados</div>
                 <div className="text-2xl font-black text-white mt-1">{schoolEvents.length}</div>
                 <div className="text-[10px] text-amber-400 font-bold">Actos cívicos y festivales</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Suspensiones SEP</div>
                 <div className="text-2xl font-black text-rose-400 mt-1">
                   {schoolEvents.filter((e) => e.classesSuspended).length}
@@ -13554,7 +13554,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="text-[10px] text-rose-400 font-bold">Fechas sin actividades escolares</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Sesiones CTE</div>
                 <div className="text-2xl font-black text-sky-400 mt-1">
                   {schoolEvents.filter((e) => e.type === 'CONSEJO_TECNICO_CTE').length}
@@ -13562,7 +13562,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="text-[10px] text-slate-400 font-bold">Consejos Técnicos Escolares</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div className="dashboard-stat-card">
                 <div className="text-[11px] text-slate-400 font-medium">Comisiones Asignadas</div>
                 <div className="text-2xl font-black text-emerald-400 mt-1">
                   {schoolEvents.reduce((acc, e) => acc + e.commissions.length, 0)}
@@ -13708,7 +13708,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               ● Suspensión de Clases para Alumnos
                             </div>
                           </div>
-                          <h3 className="text-lg font-black text-white mt-1.5">{cte.title}</h3>
+                          <h3 className="modal-title">{cte.title}</h3>
                           <p className="text-xs text-slate-400 mt-0.5">{cte.description}</p>
                         </div>
 
@@ -13794,7 +13794,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   .map((fest) => (
                     <div
                       key={fest.id}
-                      className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4"
+                      className="dashboard-card space-y-4"
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
                         <div>
@@ -13806,7 +13806,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               ● Festival Escolar
                             </div>
                           </div>
-                          <h3 className="text-lg font-black text-white mt-1.5">{fest.title}</h3>
+                          <h3 className="modal-title">{fest.title}</h3>
                           <p className="text-xs text-slate-400 mt-0.5">{fest.description}</p>
                         </div>
 
@@ -13891,7 +13891,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {activeTab === 'recruitment' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Header del Módulo */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <Briefcase className="w-6 h-6 text-emerald-400" />
@@ -13922,7 +13922,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* KPI Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-slate-900/80 border border-slate-800/80 p-4 rounded-2xl flex items-center gap-3">
+              <div className="dashboard-stat-card flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
                   <Briefcase className="w-5 h-5" />
                 </div>
@@ -13934,7 +13934,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="bg-slate-900/80 border border-slate-800/80 p-4 rounded-2xl flex items-center gap-3">
+              <div className="dashboard-stat-card flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
                   <UserPlus className="w-5 h-5" />
                 </div>
@@ -13946,7 +13946,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="bg-slate-900/80 border border-slate-800/80 p-4 rounded-2xl flex items-center gap-3">
+              <div className="dashboard-stat-card flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
                   <FileBadge className="w-5 h-5" />
                 </div>
@@ -13958,7 +13958,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="bg-slate-900/80 border border-slate-800/80 p-4 rounded-2xl flex items-center gap-3">
+              <div className="dashboard-stat-card flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400">
                   <CheckCircle2 className="w-5 h-5" />
                 </div>
@@ -14162,7 +14162,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </thead>
                       <tbody className="divide-y divide-slate-800/60">
                         {teacherCandidates.map((cand) => (
-                          <tr key={cand.id} className="hover:bg-slate-800/30 transition-colors">
+                          <tr key={cand.id} className="table-row-hover">
                             <td className="p-3 font-mono font-bold text-emerald-400">{cand.folio}</td>
                             <td className="p-3">
                               <div className="font-bold text-white">{cand.fullName}</div>
@@ -14317,7 +14317,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {activeTab === 'safety' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Header del Módulo */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="bg-rose-500/10 text-rose-400 border border-rose-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
@@ -14359,7 +14359,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* KPI Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-slate-900/80 border border-slate-800/80 p-4 rounded-2xl flex items-center gap-3">
+              <div className="dashboard-stat-card flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400">
                   <Siren className="w-5 h-5" />
                 </div>
@@ -14369,7 +14369,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="bg-slate-900/80 border border-slate-800/80 p-4 rounded-2xl flex items-center gap-3">
+              <div className="dashboard-stat-card flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
                   <Clock className="w-5 h-5" />
                 </div>
@@ -14386,7 +14386,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="bg-slate-900/80 border border-slate-800/80 p-4 rounded-2xl flex items-center gap-3">
+              <div className="dashboard-stat-card flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
                   <Users className="w-5 h-5" />
                 </div>
@@ -14398,7 +14398,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="bg-slate-900/80 border border-slate-800/80 p-4 rounded-2xl flex items-center gap-3">
+              <div className="dashboard-stat-card flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
                   <ShieldCheck className="w-5 h-5" />
                 </div>
@@ -14615,7 +14615,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             {brigade.vestColor}
                           </div>
                         </div>
-                        <h3 className="text-base font-bold text-white">{brigade.name}</h3>
+                        <h3 className="modal-title">{brigade.name}</h3>
                         <p className="text-xs text-slate-400 mt-0.5">
                           Jefe(a) Responsable: <strong className="text-white">{brigade.leaderName}</strong>
                         </p>
@@ -14730,7 +14730,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {activeTab === 'community' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Header del Módulo */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
@@ -14769,7 +14769,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* KPI Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-slate-900/80 border border-slate-800/80 p-4 rounded-2xl flex items-center gap-3">
+              <div className="dashboard-stat-card flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
                   <Scale className="w-5 h-5" />
                 </div>
@@ -14779,7 +14779,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="bg-slate-900/80 border border-slate-800/80 p-4 rounded-2xl flex items-center gap-3">
+              <div className="dashboard-stat-card flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
                   <Users className="w-5 h-5" />
                 </div>
@@ -14789,7 +14789,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="bg-slate-900/80 border border-slate-800/80 p-4 rounded-2xl flex items-center gap-3">
+              <div className="dashboard-stat-card flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
                   <CheckCircle2 className="w-5 h-5" />
                 </div>
@@ -14801,7 +14801,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="bg-slate-900/80 border border-slate-800/80 p-4 rounded-2xl flex items-center gap-3">
+              <div className="dashboard-stat-card flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
                   <HeartHandshake className="w-5 h-5" />
                 </div>
@@ -14991,7 +14991,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           </div>
                         </div>
 
-                        <h3 className="text-base font-bold text-white mb-2 leading-snug">
+                        <h3 className="modal-title">
                           {asemb.title}
                         </h3>
 
@@ -15051,7 +15051,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {activeTab === 'maintenance' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Encabezado y Acciones */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/10 text-amber-400 border border-amber-500/20">
@@ -15090,7 +15090,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* KPIs de Mantenimiento */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-slate-900/80 border border-slate-800/80 p-4 rounded-2xl flex items-center gap-3">
+              <div className="dashboard-stat-card flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
                   <Wrench className="w-5 h-5" />
                 </div>
@@ -15102,7 +15102,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="bg-slate-900/80 border border-slate-800/80 p-4 rounded-2xl flex items-center gap-3">
+              <div className="dashboard-stat-card flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
                   <CheckCircle2 className="w-5 h-5" />
                 </div>
@@ -15114,7 +15114,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="bg-slate-900/80 border border-slate-800/80 p-4 rounded-2xl flex items-center gap-3">
+              <div className="dashboard-stat-card flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
                   <DollarSign className="w-5 h-5" />
                 </div>
@@ -15126,7 +15126,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="bg-slate-900/80 border border-slate-800/80 p-4 rounded-2xl flex items-center gap-3">
+              <div className="dashboard-stat-card flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
                   <Building2 className="w-5 h-5" />
                 </div>
@@ -15321,7 +15321,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           </div>
 
                           <div>
-                            <h3 className="text-base font-bold text-white">{insp.title}</h3>
+                            <h3 className="modal-title">{insp.title}</h3>
                             <div className="text-xs text-slate-400 mt-0.5 flex items-center gap-2">
                               <div>Inspector: <strong className="text-slate-200">{insp.inspectorName}</strong></div>
                               <div>•</div>
@@ -15519,7 +15519,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {activeTab === 'scholarships' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Header & Acciones */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <Percent className="w-6 h-6 text-amber-400" />
@@ -15671,7 +15671,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               {app.level} • {app.grade}
                             </div>
                           </div>
-                          <h3 className="text-base font-bold text-white mt-1.5">{app.studentName}</h3>
+                          <h3 className="modal-title">{app.studentName}</h3>
                           <p className="text-xs text-slate-400">Matrícula: {app.studentCode}</p>
                         </div>
                         <div
@@ -15778,7 +15778,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="space-y-6">
                 <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-6">
                   <div>
-                    <h3 className="text-base font-bold text-white flex items-center gap-2">
+                    <h3 className="modal-title">
                       <Scale className="w-5 h-5 text-amber-400" />
                       Marco Jurídico de Exenciones: Artículo 149 Fracc. III de la LGE
                     </h3>
@@ -15812,7 +15812,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           );
 
                           return (
-                            <tr key={pct} className="hover:bg-slate-800/30 transition-colors">
+                            <tr key={pct} className="table-row-hover">
                               <td className="p-3 font-bold text-white">
                                 <div className="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
                                   {pct}% de Descuento
@@ -15863,20 +15863,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Convocatoria Vigente */}
                   <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-4">
-                    <h3 className="text-base font-bold text-white flex items-center gap-2">
+                    <h3 className="modal-title">
                       <FileBadge className="w-5 h-5 text-amber-400" />
                       Bases de la Convocatoria Anual 2026-2027
                     </h3>
                     <div className="space-y-3 text-xs text-slate-300">
-                      <div className="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                      <div className="dashboard-subcard">
                         <strong className="text-white block mb-1">1. Requisitos Académicos:</strong>
                         <div>Haber cursado al menos un ciclo escolar previo en la institución y contar con promedio mínimo general de 8.5 en escala de 10 sin materias reprobadas.</div>
                       </div>
-                      <div className="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                      <div className="dashboard-subcard">
                         <strong className="text-white block mb-1">2. Estudio Socioeconómico:</strong>
                         <div>Presentar comprobantes de ingresos familiares de los últimos 3 meses, carta de ingresos no comprobables bajo protesta de decir verdad y recibo de luz CFE reciente.</div>
                       </div>
-                      <div className="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                      <div className="dashboard-subcard">
                         <strong className="text-white block mb-1">3. Criterios de Ponderación:</strong>
                         <div>Prioridad a familias con dos o más hijos matriculados simultáneamente, orfandad parcial/total o disminución intempestiva de ingresos por causas médicas graves.</div>
                       </div>
@@ -15885,20 +15885,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   {/* Tabulador y Causales de Pérdida */}
                   <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-4">
-                    <h3 className="text-base font-bold text-white flex items-center gap-2">
+                    <h3 className="modal-title">
                       <AlertCircle className="w-5 h-5 text-rose-400" />
                       Causales de Pérdida o Cancelación de Beca
                     </h3>
                     <div className="space-y-3 text-xs text-slate-300">
-                      <div className="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                      <div className="dashboard-subcard">
                         <strong className="text-rose-400 block mb-1">Baja de Promedio:</strong>
                         <div>Obtener un promedio trimestral inferior a 8.5 en Primaria o presentar reportes por indisciplina grave que contravengan el Reglamento Escolar.</div>
                       </div>
-                      <div className="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                      <div className="dashboard-subcard">
                         <strong className="text-rose-400 block mb-1">Falsedad de Declaraciones:</strong>
                         <div>Comprobación de ingresos no declarados u omisión dolosa de dependientes en el estudio socioeconómico.</div>
                       </div>
-                      <div className="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                      <div className="dashboard-subcard">
                         <strong className="text-rose-400 block mb-1">Mora en Porcentaje Remanente:</strong>
                         <div>Acumular más de 60 días naturales de adeudo en el pago de la cuota complementaria no subsidiada.</div>
                       </div>
@@ -15914,7 +15914,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {activeTab === 'certificates' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Header Banner */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">
@@ -15952,7 +15952,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* KPI Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-lg">
+              <div className="dashboard-stat-card">
                 <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
                   <div>Documentos Emitidos</div>
                   <FileCheck className="w-4 h-4 text-sky-400" />
@@ -15961,7 +15961,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <p className="text-[11px] text-sky-400/90 mt-1">Con sello criptográfico oficial</p>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-lg">
+              <div className="dashboard-stat-card">
                 <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
                   <div>Descargas & Consultas QR</div>
                   <QrCode className="w-4 h-4 text-emerald-400" />
@@ -15972,7 +15972,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <p className="text-[11px] text-emerald-400/90 mt-1">Verificaciones exitosas</p>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-lg">
+              <div className="dashboard-stat-card">
                 <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
                   <div>Vigencia Reglamentaria</div>
                   <Clock className="w-4 h-4 text-amber-400" />
@@ -15981,7 +15981,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <p className="text-[11px] text-amber-400/90 mt-1">Validez legal en dependencias</p>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-lg">
+              <div className="dashboard-stat-card">
                 <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
                   <div>Sello de Autenticidad</div>
                   <ShieldCheck className="w-4 h-4 text-indigo-400" />
@@ -16040,7 +16040,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <select
                       value={selectedCertTypeFilter}
                       onChange={(e) => setSelectedCertTypeFilter(e.target.value)}
-                      className="bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-sky-500"
+                      className="form-select"
                     >
                       <option value="ALL">Todos los tipos ({officialCertificates.length})</option>
                       <option value="CONSTANCIA_ESTUDIOS_SIMPLE">Constancia de Estudios Simple</option>
@@ -16081,7 +16081,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   {cert.status}
                                 </div>
                               </div>
-                              <h3 className="text-base font-bold text-white">{cert.studentName}</h3>
+                              <h3 className="modal-title">{cert.studentName}</h3>
                               <p className="text-xs text-slate-400 font-mono">
                                 Matrícula: {cert.studentCode} • CURP: {cert.curp}
                               </p>
@@ -16289,7 +16289,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <QrCode className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="text-base font-bold text-white">Módulo de Cotejo Público y Verificación de Autenticidad</h3>
+                      <h3 className="modal-title">Módulo de Cotejo Público y Verificación de Autenticidad</h3>
                       <p className="text-xs text-slate-400">
                         Permite a embajadas, dependencias oficiales (SEP, IMSS, Bienestar) y otras instituciones cotejar la validez de un documento oficial emitido por este plantel.
                       </p>
@@ -16298,7 +16298,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   <form onSubmit={handleVerifyDocumentToken} className="space-y-4 pt-2">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                      <label className="form-label">
                         Ingresa el Folio o Token Criptográfico de la Constancia:
                       </label>
                       <div className="flex flex-col sm:flex-row items-stretch gap-2">
@@ -16307,7 +16307,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           value={verifierQueryToken}
                           onChange={(e) => setVerifierQueryToken(e.target.value)}
                           placeholder="Ejemplo: tok-ce-7f9a1b2c3d4e o CE-2026-PRI-001"
-                          className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-sky-500 font-mono"
+                          className="form-input flex-1 font-mono"
                         />
                         <button
                           type="submit"
@@ -16397,7 +16397,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {activeTab === 'audit' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Header Banner */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">
@@ -16428,7 +16428,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* KPI Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-lg">
+              <div className="dashboard-stat-card">
                 <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
                   <div>Cumplimiento Normativo</div>
                   <CheckCircle2 className="w-4 h-4 text-emerald-400" />
@@ -16437,7 +16437,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="text-[10px] text-slate-400 mt-1">Conforme SEP • Zona Escolar 14</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-lg">
+              <div className="dashboard-stat-card">
                 <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
                   <div>Eventos Inmutables</div>
                   <ShieldAlert className="w-4 h-4 text-sky-400" />
@@ -16446,7 +16446,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="text-[10px] text-slate-400 mt-1">Bloques encadenados SHA-256</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-lg">
+              <div className="dashboard-stat-card">
                 <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
                   <div>Visitas de Supervisión</div>
                   <FileText className="w-4 h-4 text-indigo-400" />
@@ -16455,7 +16455,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="text-[10px] text-slate-400 mt-1">Actas oficiales rubricadas</div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-lg">
+              <div className="dashboard-stat-card">
                 <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
                   <div>Integridad Criptográfica</div>
                   <Lock className="w-4 h-4 text-purple-400" />
@@ -16515,14 +16515,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       placeholder="Buscar por folio AUD-..., nombre del alumno, CURP, o acción..."
                       value={auditSearchTerm}
                       onChange={(e) => setAuditSearchTerm(e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-500"
+                      className="form-input w-full"
                     />
                   </div>
                   <div className="flex items-center gap-3 w-full md:w-auto">
                     <select
                       value={selectedAuditCategoryFilter}
                       onChange={(e) => setSelectedAuditCategoryFilter(e.target.value)}
-                      className="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500"
+                      className="form-select"
                     >
                       <option value="ALL">Todas las Categorías</option>
                       <option value="RECTIFICACION_CALIFICACIONES">Rectificación Calificaciones</option>
@@ -16535,7 +16535,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <select
                       value={selectedAuditSeverityFilter}
                       onChange={(e) => setSelectedAuditSeverityFilter(e.target.value)}
-                      className="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500"
+                      className="form-select"
                     >
                       <option value="ALL">Todas las Severidades</option>
                       <option value="CRITICO">🔴 Crítico</option>
@@ -16695,7 +16695,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   {supervisionInspections.map((insp) => (
                     <div
                       key={insp.id}
-                      className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4"
+                      className="dashboard-card space-y-4"
                     >
                       <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-800 pb-4">
                         <div>
@@ -16710,7 +16710,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               Fecha: {insp.inspectionDate}
                             </div>
                           </div>
-                          <h3 className="text-base font-bold text-white">{insp.purpose}</h3>
+                          <h3 className="modal-title">{insp.purpose}</h3>
                           <div className="text-xs text-slate-400 mt-0.5">
                             {insp.supervisionZone} • Inspectora Comisionada: <strong className="text-white">{insp.inspectorName}</strong>
                           </div>
@@ -16781,10 +16781,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             {/* SUBTAB 3: DOSSIER DE CUMPLIMIENTO NORMATIVO */}
             {auditSubTab === 'dossier' && (
               <div className="space-y-6">
-                <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4">
-                  <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+                <div className="dashboard-card space-y-4">
+                  <div className="modal-header">
                     <div>
-                      <h3 className="text-base font-bold text-white flex items-center gap-2">
+                      <h3 className="modal-title">
                         <CheckCircle2 className="w-5 h-5 text-emerald-400" />
                         Matriz de Cumplimiento Regulatorio Obligatorio SEP
                       </h3>
@@ -16800,7 +16800,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                    <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
+                    <div className="dashboard-subcard space-y-2">
                       <div className="flex items-center justify-between">
                         <div className="font-bold text-white">1. Acuerdos de Incorporación RVOE</div>
                         <div className="text-emerald-400 font-bold flex items-center gap-1">
@@ -16813,7 +16813,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <div className="font-mono text-[10px] text-sky-400">CCT: 09PPR1849X • Zona 14</div>
                     </div>
 
-                    <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
+                    <div className="dashboard-subcard space-y-2">
                       <div className="flex items-center justify-between">
                         <div className="font-bold text-white">2. Expedientes y Cotejo CURP (RENAPO)</div>
                         <div className="text-emerald-400 font-bold flex items-center gap-1">
@@ -16826,7 +16826,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <div className="font-mono text-[10px] text-sky-400">45 expedientes muestreados sin anomalías</div>
                     </div>
 
-                    <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
+                    <div className="dashboard-subcard space-y-2">
                       <div className="flex items-center justify-between">
                         <div className="font-bold text-white">3. Padrón Obligatorio de Becas SEP (Art. 149 LGE)</div>
                         <div className="text-emerald-400 font-bold flex items-center gap-1">
@@ -16839,7 +16839,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <div className="font-mono text-[10px] text-sky-400">14 alumnos exentos con porcentajes de 25% al 100%</div>
                     </div>
 
-                    <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
+                    <div className="dashboard-subcard space-y-2">
                       <div className="flex items-center justify-between">
                         <div className="font-bold text-white">4. Dotaciones de Libros Gratuitos CONALITEG</div>
                         <div className="text-emerald-400 font-bold flex items-center gap-1">
@@ -16852,7 +16852,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <div className="font-mono text-[10px] text-sky-400">Remesa SEP-CONALITEG-2026-PRI-14 distribuida</div>
                     </div>
 
-                    <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
+                    <div className="dashboard-subcard space-y-2">
                       <div className="flex items-center justify-between">
                         <div className="font-bold text-white">5. Consejos Técnicos Escolares (CTE)</div>
                         <div className="text-emerald-400 font-bold flex items-center gap-1">
@@ -16865,7 +16865,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <div className="font-mono text-[10px] text-sky-400">Libro de actas de CTE disponible para inspección</div>
                     </div>
 
-                    <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
+                    <div className="dashboard-subcard space-y-2">
                       <div className="flex items-center justify-between">
                         <div className="font-bold text-white">6. Protección Civil & Seguridad Escolar</div>
                         <div className="text-emerald-400 font-bold flex items-center gap-1">
@@ -16887,7 +16887,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {/* 3. MÓDULO DE ALUMNOS Y EXPEDIENTES */}
         {activeTab === 'academic' && (
           <div className="space-y-6 animate-in fade-in">
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <GraduationCap className="w-6 h-6 text-sky-400" />
@@ -16913,7 +16913,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <GraduationCap className="w-8 h-8" />
                 </div>
                 <div className="max-w-md mx-auto space-y-1">
-                  <h3 className="text-lg font-black text-white">Sin alumnos registrados aún</h3>
+                  <h3 className="modal-title">Sin alumnos registrados aún</h3>
                   <p className="text-xs text-slate-400">
                     Comienza inscribiendo al primer alumno para generar su matrícula oficial vitalicia.
                   </p>
@@ -16929,7 +16929,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
             ) : (
-              <div className="bg-slate-900 border border-slate-800 rounded-3xl shadow-xl overflow-hidden">
+              <div className="dashboard-table-card">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
                     <thead className="bg-slate-950 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-800">
@@ -16978,7 +16978,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {/* 4. MÓDULO DE GRUPOS */}
         {activeTab === 'groups' && (
           <div className="space-y-6 animate-in fade-in">
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <Layers className="w-6 h-6 text-indigo-400" />
@@ -17003,7 +17003,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <div className="text-[10px] font-bold uppercase px-2.5 py-1 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40">
                       {grp.level}
                     </div>
-                    <h3 className="text-lg font-black text-white mt-2 mb-1">{grp.name}</h3>
+                    <h3 className="modal-title">{grp.name}</h3>
                     <p className="text-xs text-slate-400 mb-3">Turno: {grp.shift}</p>
                     <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 text-xs">
                       Docente: <strong className="text-white">{grp.leadTeacher}</strong>
@@ -17018,7 +17018,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {/* 5. MÓDULO DE CAJA ESCOLAR */}
         {activeTab === 'finance' && (
           <div className="space-y-6 animate-in fade-in">
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <DollarSign className="w-6 h-6 text-emerald-400" />
@@ -17066,7 +17066,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {/* 6. PORTAL FAMILIAR */}
         {activeTab === 'parent' && (
           <div className="space-y-6 animate-in fade-in">
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="dashboard-card dashboard-section-header">
               <div>
                 <h2 className="text-xl font-black text-white flex items-center gap-2">
                   <Users className="w-6 h-6 text-indigo-400" />
@@ -17090,11 +17090,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* Ficha del Alumno para el Tutor */}
             {students[0] && (
-              <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4">
+              <div className="dashboard-card space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
                   <div>
                     <div className="text-[10px] font-mono text-sky-400 uppercase font-bold tracking-wider">Hijo Registrado</div>
-                    <h3 className="text-lg font-black text-white">{students[0].firstName} {students[0].lastName}</h3>
+                    <h3 className="modal-title">{students[0].firstName} {students[0].lastName}</h3>
                     <p className="text-xs text-slate-400">{students[0].groupName} • Matrícula: <strong className="font-mono text-slate-200">{students[0].studentCode}</strong></p>
                   </div>
 
@@ -17104,7 +17104,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
                     <button
                       onClick={() => handleOpenReportCard(students[0])}
-                      className="bg-slate-800 hover:bg-slate-750 text-slate-200 border border-slate-700 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+                      className="btn btn-secondary btn-sm"
                     >
                       <Printer className="w-3.5 h-3.5 text-amber-400" />
                       <div>Imprimir Boleta SEP</div>
@@ -17113,19 +17113,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs pt-1">
-                  <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1">
+                  <div className="dashboard-subcard space-y-1">
                     <div className="text-slate-500 font-bold block text-[11px]">Promedio General del Ciclo:</div>
                     <div className="text-2xl font-black text-amber-400">9.3</div>
                     <div className="text-[10px] text-slate-500 block">Evaluado por maestros titulares</div>
                   </div>
 
-                  <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1">
+                  <div className="dashboard-subcard space-y-1">
                     <div className="text-slate-500 font-bold block text-[11px]">Inasistencias Acumuladas:</div>
                     <div className="text-2xl font-black text-purple-400">4 faltas</div>
                     <div className="text-[10px] text-slate-500 block">97.8% de asistencia escolar</div>
                   </div>
 
-                  <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1">
+                  <div className="dashboard-subcard space-y-1">
                     <div className="text-slate-500 font-bold block text-[11px]">Colegiatura Vigente:</div>
                     <div className="text-2xl font-black text-emerald-400">Al Corriente</div>
                     <div className="text-[10px] text-slate-500 block">Pagos validados con CoDi®</div>
@@ -17189,7 +17189,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 {/* Bandeja de Circulares y Citatorios del Alumno en el Portal Familiar */}
                 <div className="bg-slate-950 p-6 rounded-2xl border border-slate-800 space-y-4">
-                  <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <div className="modal-header">
                     <div>
                       <h4 className="text-base font-black text-white flex items-center gap-2">
                         <Megaphone className="w-5 h-5 text-purple-400" />
@@ -17583,7 +17583,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 {/* 📚 Biblioteca Escolar: Préstamos Activos de Carlos */}
-                <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4">
+                <div className="dashboard-card space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
@@ -17646,7 +17646,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 {/* 🚌 Transporte Escolar Seguro de Carlos */}
-                <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4">
+                <div className="dashboard-card space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
                       <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
@@ -17731,7 +17731,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
 
                   {/* Tarjeta de Monedero Escolar y Cafetería de Carlos */}
-                  <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-6 shadow-xl space-y-4">
+                  <div className="dashboard-filter-card space-y-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
                       <div>
                         <div className="text-[10px] font-mono text-orange-400 font-bold uppercase tracking-wider block">
@@ -17758,7 +17758,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                      <div className="dashboard-subcard">
                         <div className="text-[10px] text-slate-400 block font-bold">Saldo Disponible:</div>
                         <strong className="text-2xl font-black text-emerald-400 font-mono block mt-0.5">
                           ${studentWallets.find((w) => w.studentId === 'student-01')?.currentBalanceMXN || 162} MXN
@@ -17766,7 +17766,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <div className="text-[10px] text-slate-400 font-mono">Fondos recargados en caja</div>
                       </div>
 
-                      <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                      <div className="dashboard-subcard">
                         <div className="text-[10px] text-slate-400 block font-bold">Límite Diario Autorizado:</div>
                         <strong className="text-2xl font-black text-white font-mono block mt-0.5">
                           ${studentWallets.find((w) => w.studentId === 'student-01')?.dailySpendingLimitMXN || 60} MXN
@@ -17776,7 +17776,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
                       </div>
 
-                      <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                      <div className="dashboard-subcard">
                         <div className="text-[10px] text-slate-400 block font-bold">Último Consumo en Receso:</div>
                         <strong className="text-sm font-black text-white block mt-1">
                           🥪 Sándwich Integral de Pavo
@@ -17808,7 +17808,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
 
                   {/* Tarjeta de Enfermería y Salud Escolar de Carlos */}
-                  <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-6 shadow-xl space-y-4">
+                  <div className="dashboard-filter-card space-y-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
                       <div>
                         <div className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
@@ -17826,7 +17826,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                      <div className="dashboard-subcard">
                         <div className="text-[10px] text-slate-400 block font-bold">Atención Médica de Hoy:</div>
                         <strong className="text-xs font-black text-white block mt-1">
                           🩹 Raspón leve en rodilla izquierda
@@ -17839,7 +17839,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
                       </div>
 
-                      <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                      <div className="dashboard-subcard">
                         <div className="text-[10px] text-slate-400 block font-bold">Medicamento Programado:</div>
                         <strong className="text-xs font-black text-white block mt-1">
                           💨 Salbutamol Inhalador 100mcg
@@ -17852,7 +17852,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
                       </div>
 
-                      <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                      <div className="dashboard-subcard">
                         <div className="text-[10px] text-slate-400 block font-bold">Enfermera a Cargo:</div>
                         <strong className="text-xs font-black text-white block mt-1">
                           Enfra. Rosaura Morales
@@ -17887,7 +17887,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
 
                   {/* Tarjeta de Academias Vespertinas de Carlos */}
-                  <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-6 shadow-xl space-y-4">
+                  <div className="dashboard-filter-card space-y-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
                       <div>
                         <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
@@ -17905,7 +17905,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
+                      <div className="dashboard-subcard space-y-2">
                         <div className="flex items-center justify-between">
                           <div className="text-[10px] font-mono text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded">
                             MARTES Y JUEVES
@@ -17926,7 +17926,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
                       </div>
 
-                      <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
+                      <div className="dashboard-subcard space-y-2">
                         <div className="flex items-center justify-between">
                           <div className="text-[10px] font-mono text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded">
                             LUNES Y MIÉRCOLES
@@ -17966,7 +17966,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
 
                   {/* Tarjeta de Encuesta Trimestral y Buzón Directivo */}
-                  <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-6 shadow-xl space-y-4">
+                  <div className="dashboard-filter-card space-y-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
                       <div>
                         <div className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
@@ -17984,7 +17984,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
+                      <div className="dashboard-subcard space-y-2">
                         <div className="flex items-center justify-between">
                           <div className="text-[10px] font-mono text-rose-400 font-bold bg-rose-500/10 px-2 py-0.5 rounded">
                             EVALUACIÓN DE SERVICIOS
@@ -18014,7 +18014,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
                       </div>
 
-                      <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-2">
+                      <div className="dashboard-subcard space-y-2">
                         <div className="flex items-center justify-between">
                           <div className="text-[10px] font-mono text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded">
                             CANAL DIRECTO
@@ -18041,7 +18041,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
 
                   {/* Tarjeta de Calendario Escolar y Próximos Eventos */}
-                  <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-6 shadow-xl space-y-4">
+                  <div className="dashboard-filter-card space-y-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
                       <div>
                         <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
@@ -18089,7 +18089,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
 
                   {/* Tarjeta de Corresponsabilidad Familiar, CEPS y Asociación de Padres */}
-                  <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-6 shadow-xl space-y-4">
+                  <div className="dashboard-filter-card space-y-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
                       <div>
                         <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
@@ -18148,7 +18148,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
 
                   {/* 🚰 Seguridad e Higiene de Instalaciones: Monitoreo para Familias */}
-                  <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4">
+                  <div className="dashboard-card space-y-4">
                     <div className="flex items-center justify-between">
                       <div>
                         <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
@@ -18165,7 +18165,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                      <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1">
+                      <div className="dashboard-subcard space-y-1">
                         <div className="text-slate-400 text-[11px]">Agua Purificada & Bebederos:</div>
                         <div className="text-white font-bold flex items-center gap-1.5">
                           <Droplets className="w-4 h-4 text-sky-400" />
@@ -18176,7 +18176,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
                       </div>
 
-                      <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1">
+                      <div className="dashboard-subcard space-y-1">
                         <div className="text-slate-400 text-[11px]">Cisternas & Tinacos:</div>
                         <div className="text-white font-bold flex items-center gap-1.5">
                           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
@@ -18187,7 +18187,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
                       </div>
 
-                      <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1">
+                      <div className="dashboard-subcard space-y-1">
                         <div className="text-slate-400 text-[11px]">Seguridad Estructural:</div>
                         <div className="text-white font-bold flex items-center gap-1.5">
                           <ShieldCheck className="w-4 h-4 text-purple-400" />
@@ -18205,7 +18205,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
 
                   {/* 🎓 Becas SEP & Estímulos Familiares: Información Transparente */}
-                  <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4">
+                  <div className="dashboard-card space-y-4">
                     <div className="flex items-center justify-between">
                       <div>
                         <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
@@ -18222,7 +18222,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                      <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1">
+                      <div className="dashboard-subcard space-y-1">
                         <div className="text-slate-400 text-[11px]">Beca Oficial SEP:</div>
                         <div className="text-white font-bold flex items-center gap-1.5">
                           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
@@ -18233,7 +18233,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
                       </div>
 
-                      <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1">
+                      <div className="dashboard-subcard space-y-1">
                         <div className="text-slate-400 text-[11px]">Estímulo por Hermanos:</div>
                         <div className="text-white font-bold flex items-center gap-1.5">
                           <Users className="w-4 h-4 text-sky-400" />
@@ -18244,7 +18244,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
                       </div>
 
-                      <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1">
+                      <div className="dashboard-subcard space-y-1">
                         <div className="text-slate-400 text-[11px]">Transparencia Legal:</div>
                         <div className="text-white font-bold flex items-center gap-1.5">
                           <Scale className="w-4 h-4 text-amber-400" />
@@ -18262,7 +18262,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </div>
 
                   {/* 📚 Dotación Oficial de Libros CONALITEG y Almacén de Uniformes */}
-                  <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4">
+                  <div className="dashboard-card space-y-4">
                     <div className="flex items-center justify-between">
                       <div>
                         <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
@@ -18279,7 +18279,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                      <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1">
+                      <div className="dashboard-subcard space-y-1">
                         <div className="text-slate-400 text-[11px]">Libros de Texto SEP:</div>
                         <div className="text-white font-bold flex items-center gap-1.5">
                           <BookOpen className="w-4 h-4 text-amber-400" />
@@ -18290,7 +18290,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
                       </div>
 
-                      <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1">
+                      <div className="dashboard-subcard space-y-1">
                         <div className="text-slate-400 text-[11px]">Títulos Entregados:</div>
                         <div className="text-white font-bold flex items-center gap-1.5">
                           <FileCheck className="w-4 h-4 text-sky-400" />
@@ -18301,7 +18301,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
                       </div>
 
-                      <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1">
+                      <div className="dashboard-subcard space-y-1">
                         <div className="text-slate-400 text-[11px]">Almacén de Uniformes:</div>
                         <div className="text-white font-bold flex items-center gap-1.5">
                           <Shirt className="w-4 h-4 text-teal-400" />
@@ -18329,7 +18329,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <div className="text-xs font-bold text-sky-400 uppercase tracking-wide">
                             Constancias Digitales de Estudio con Código QR
                           </div>
-                          <h3 className="text-base font-bold text-white">
+                          <h3 className="modal-title">
                             Documentación Oficial para Trámites y Becas
                           </h3>
                         </div>
@@ -18345,13 +18345,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     </p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                      <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1">
+                      <div className="dashboard-subcard space-y-1">
                         <div className="text-slate-400 text-[11px]">Folio Asignado:</div>
                         <div className="text-sky-400 font-mono font-bold">CE-2026-PRI-001</div>
                         <div className="text-[10px] text-slate-500">Sello SHA-256 Verificado</div>
                       </div>
 
-                      <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-1">
+                      <div className="dashboard-subcard space-y-1">
                         <div className="text-slate-400 text-[11px]">Vigencia Legal:</div>
                         <div className="text-white font-bold">Hasta 26 de Noviembre 2026</div>
                         <div className="text-[10px] text-emerald-400">90 días de validez oficial</div>
@@ -18413,14 +18413,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   Registrar Director(a) de {activeLevelForAction.name}
                 </h3>
               </div>
-              <button
-                type="button"
-                onClick={() => setShowRegisterDirectorModal(false)}
-                className="modal-close"
-                title="Cerrar ventana modal"
-              >
-                <X />
-              </button>
+              <button type="button" onClick={() => setShowRegisterDirectorModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleSubmitDirectorForm} className="modal-form">
@@ -18498,13 +18491,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="modal-actions">
-                <button
-                  type="button"
-                  onClick={() => setShowRegisterDirectorModal(false)}
-                  className="btn btn-secondary"
-                >
-                  Cancelar
-                </button>
+                <button type="button" onClick={() => setShowRegisterDirectorModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="btn btn-primary"
@@ -18522,14 +18509,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       {showVerifyDirectorModal && activeLevelForAction && (
         <div className="modal-backdrop">
           <div className="modal-card modal-card-sm text-center">
-            <button
-              type="button"
-              onClick={() => setShowVerifyDirectorModal(false)}
-              className="modal-close"
-              title="Cerrar ventana modal"
-            >
-              <X />
-            </button>
+            <button type="button" onClick={() => setShowVerifyDirectorModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             <div className="modal-verify-icon">
               <MailCheck />
             </div>
@@ -18546,13 +18526,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className="form-input otp-input"
               />
               <div className="modal-actions">
-                <button
-                  type="button"
-                  onClick={() => setShowVerifyDirectorModal(false)}
-                  className="btn btn-secondary"
-                >
-                  Cancelar
-                </button>
+                <button type="button" onClick={() => setShowVerifyDirectorModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   disabled={otpCodeInput.length !== 6}
@@ -18568,37 +18542,37 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: DAR DE ALTA NUEVO MAESTRO / DOCENTE */}
       {showNewTeacherModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono uppercase text-emerald-400 font-bold">Plantilla Docente</div>
-                <h3 className="font-black text-white text-lg">Alta de Nuevo Maestro / Profesor</h3>
+                <h3 className="modal-title">Alta de Nuevo Maestro / Profesor</h3>
               </div>
-              <button onClick={() => setShowNewTeacherModal(false)} className="text-slate-400 hover:text-white font-bold text-lg cursor-pointer">✕</button>
+              <button type="button" onClick={() => setShowNewTeacherModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateTeacher} className="space-y-3.5 text-xs">
               <div>
-                <label className="block font-bold uppercase text-slate-300 mb-1">Nombre Completo del Maestro(a)</label>
+                <label className="form-label">Nombre Completo del Maestro(a)</label>
                 <input
                   type="text"
                   required
                   value={newTeacherForm.fullName}
                   onChange={(e) => setNewTeacherForm({ ...newTeacherForm, fullName: e.target.value })}
                   placeholder="Ej. Prof. Manuel H. Morales"
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-500 font-bold"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold uppercase text-slate-300 mb-1">Nivel Escolar</label>
+                  <label className="form-label">Nivel Escolar</label>
                   <select
                     value={newTeacherForm.levelId}
                     onChange={(e) => setNewTeacherForm({ ...newTeacherForm, levelId: e.target.value })}
                     disabled={isLevelDirector}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-500 disabled:opacity-60"
+                    className="form-select w-full"
                   >
                     {educationalLevels.map((lvl) => (
                       <option key={lvl.id} value={lvl.id}>
@@ -18609,51 +18583,51 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div>
-                  <label className="block font-bold uppercase text-slate-300 mb-1">Cédula / Especialidad</label>
+                  <label className="form-label">Cédula / Especialidad</label>
                   <input
                     type="text"
                     required
                     value={newTeacherForm.specialty}
                     onChange={(e) => setNewTeacherForm({ ...newTeacherForm, specialty: e.target.value })}
                     placeholder="Ej. Lic. en Educación Primaria"
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-500"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold uppercase text-slate-300 mb-1">Correo Institucional</label>
+                  <label className="form-label">Correo Institucional</label>
                   <input
                     type="email"
                     required
                     value={newTeacherForm.email}
                     onChange={(e) => setNewTeacherForm({ ...newTeacherForm, email: e.target.value })}
                     placeholder="profesor@logos.edu.mx"
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-500 font-mono"
+                    className="form-input w-full font-mono"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-bold uppercase text-slate-300 mb-1">Teléfono Directo</label>
+                  <label className="form-label">Teléfono Directo</label>
                   <input
                     type="tel"
                     required
                     value={newTeacherForm.phone}
                     onChange={(e) => setNewTeacherForm({ ...newTeacherForm, phone: e.target.value })}
                     placeholder="921 555 3344"
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-500 font-mono"
+                    className="form-input w-full font-mono"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold uppercase text-slate-300 mb-1">Grupo Asignado</label>
+                  <label className="form-label">Grupo Asignado</label>
                   <select
                     value={newTeacherForm.assignedGroup}
                     onChange={(e) => setNewTeacherForm({ ...newTeacherForm, assignedGroup: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-500"
+                    className="form-select w-full"
                   >
                     {groups
                       .filter((g) => g.levelId === newTeacherForm.levelId)
@@ -18664,32 +18638,32 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div>
-                  <label className="block font-bold uppercase text-slate-300 mb-1">Materia(s) Titular</label>
+                  <label className="form-label">Materia(s) Titular</label>
                   <input
                     type="text"
                     required
                     value={newTeacherForm.assignedSubject}
                     onChange={(e) => setNewTeacherForm({ ...newTeacherForm, assignedSubject: e.target.value })}
                     placeholder="Ej. Español y Matemáticas"
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-500"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-bold uppercase text-slate-300 mb-1">Contraseña de Acceso para el Maestro</label>
+                <label className="form-label">Contraseña de Acceso para el Maestro</label>
                 <input
                   type="password"
                   required
                   value={newTeacherForm.password}
                   onChange={(e) => setNewTeacherForm({ ...newTeacherForm, password: e.target.value })}
                   placeholder="Mínimo 6 caracteres"
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-500 font-mono"
+                  className="form-input w-full font-mono"
                 />
               </div>
 
-              <div className="flex gap-3 pt-3">
-                <button type="button" onClick={() => setShowNewTeacherModal(false)} className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 py-3 rounded-xl font-bold cursor-pointer">Cancelar</button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewTeacherModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button type="submit" className="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-3 rounded-xl shadow-lg shadow-emerald-500/20 cursor-pointer flex items-center justify-center gap-1.5">
                   <Send className="w-4 h-4" /> <div>Dar de Alta y Enviar OTP</div>
                 </button>
@@ -18701,12 +18675,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: VERIFICAR MAESTRO OTP */}
       {showVerifyTeacherModal && activeTeacherForVerify && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl text-center space-y-4">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-md text-center">
             <div className="w-14 h-14 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-2xl mx-auto flex items-center justify-center">
               <MailCheck className="w-7 h-7" />
             </div>
-            <h3 className="font-black text-white text-lg">Activación de Cuenta Docente</h3>
+            <h3 className="modal-title">Activación de Cuenta Docente</h3>
             <p className="text-xs text-slate-400">
               Introduce el código de 6 dígitos enviado a <strong className="text-emerald-400 font-mono">{activeTeacherForVerify.email}</strong>
             </p>
@@ -18718,10 +18692,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 value={otpCodeInput}
                 onChange={(e) => setOtpCodeInput(e.target.value.replace(/\D/g, ''))}
                 placeholder="000000"
-                className="w-48 mx-auto text-center font-mono font-black text-3xl tracking-[8px] bg-slate-950 border-2 border-emerald-500 rounded-2xl py-3 text-white outline-none"
+                className="form-input w-48 font-mono text-center"
               />
-              <div className="flex gap-3 pt-2">
-                <button type="button" onClick={() => setShowVerifyTeacherModal(false)} className="flex-1 bg-slate-800 text-slate-300 text-xs py-3 rounded-xl font-bold cursor-pointer">Cancelar</button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowVerifyTeacherModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button type="submit" disabled={otpCodeInput.length !== 6} className="flex-1 bg-emerald-500 text-slate-950 text-xs py-3 rounded-xl font-black cursor-pointer">Verificar Maestro</button>
               </div>
             </form>
@@ -18731,9 +18705,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: NUEVO ALUMNO */}
       {showNewStudentModal && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-4">
-            <h3 className="font-black text-white text-lg">Inscripción de Alumno</h3>
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-xl">
+            <h3 className="modal-title">Inscripción de Alumno</h3>
             <form onSubmit={handleCreateStudent} className="space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-3">
                 <input
@@ -18742,7 +18716,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   placeholder="Nombre(s)"
                   value={newStudentForm.firstName}
                   onChange={(e) => setNewStudentForm({ ...newStudentForm, firstName: e.target.value })}
-                  className="bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white"
+                  className="form-input"
                 />
                 <input
                   type="text"
@@ -18750,14 +18724,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   placeholder="Apellidos"
                   value={newStudentForm.lastName}
                   onChange={(e) => setNewStudentForm({ ...newStudentForm, lastName: e.target.value })}
-                  className="bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white"
+                  className="form-input"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <select
                   value={newStudentForm.levelId}
                   onChange={(e) => setNewStudentForm({ ...newStudentForm, levelId: e.target.value })}
-                  className="bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white"
+                  className="form-select"
                 >
                   <option value="PREESCOLAR">Preescolar</option>
                   <option value="PRIMARIA">Primaria</option>
@@ -18765,15 +18739,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <select
                   value={newStudentForm.groupName}
                   onChange={(e) => setNewStudentForm({ ...newStudentForm, groupName: e.target.value })}
-                  className="bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white"
+                  className="form-select"
                 >
                   {groups.filter((g) => g.levelId === newStudentForm.levelId).map((g) => (
                     <option key={g.id} value={g.name}>{g.name}</option>
                   ))}
                 </select>
               </div>
-              <div className="flex gap-3 pt-2">
-                <button type="button" onClick={() => setShowNewStudentModal(false)} className="flex-1 bg-slate-800 py-3 rounded-xl font-bold cursor-pointer">Cancelar</button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewStudentModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button type="submit" className="flex-1 bg-sky-500 text-slate-950 font-black py-3 rounded-xl cursor-pointer">Inscribir</button>
               </div>
             </form>
@@ -18783,8 +18757,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: BOLETA DE EVALUACIÓN OFICIAL SEP (FORMATO OFICIAL MEXICANO) */}
       {showReportCardModal && activeStudentForReportCard && (
-        <div className="fixed inset-0 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 z-50 animate-in fade-in overflow-y-auto">
-          <div className="bg-white text-slate-900 rounded-3xl max-w-4xl w-full p-6 sm:p-10 shadow-2xl space-y-6 my-8 border border-slate-200 print:p-0 print:border-none print:shadow-none print:m-0 print:w-full print:text-black">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-4xl print-document print:p-0 print:border-none print:shadow-none print:m-0 print:w-full print:text-black">
             
             {/* Barra de Acciones del Modal (Oculta al imprimir) */}
             <div className="flex items-center justify-between border-b border-slate-200 pb-4 print:hidden">
@@ -18996,30 +18970,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: EMITIR JUSTIFICANTE OFICIAL DE INASISTENCIA */}
       {showJustifyModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-xl">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-purple-400 font-bold uppercase tracking-wider block">
                   Control Escolar Institucional
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <FileText className="w-5 h-5 text-purple-400" />
                   Emitir Justificante Oficial de Inasistencia
                 </h3>
               </div>
-              <button
-                onClick={() => setShowJustifyModal(false)}
-                className="text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800 transition-colors cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <button type="button" onClick={() => setShowJustifyModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateJustification} className="space-y-4 text-xs">
               {/* Selector de Alumno */}
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Alumno(a):</label>
+                <label className="form-label">Alumno(a):</label>
                 <select
                   value={justificationForm.studentId}
                   onChange={(e) => setJustificationForm({ ...justificationForm, studentId: e.target.value })}
@@ -19036,24 +19005,24 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Rango de Fechas */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Fecha Desde:</label>
+                  <label className="form-label">Fecha Desde:</label>
                   <input
                     type="date"
                     required
                     value={justificationForm.startDate}
                     onChange={(e) => setJustificationForm({ ...justificationForm, startDate: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-purple-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Fecha Hasta:</label>
+                  <label className="form-label">Fecha Hasta:</label>
                   <input
                     type="date"
                     required
                     value={justificationForm.endDate}
                     onChange={(e) => setJustificationForm({ ...justificationForm, endDate: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-purple-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
@@ -19061,7 +19030,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Motivo Oficial */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Categoría del Motivo:</label>
+                  <label className="form-label">Categoría del Motivo:</label>
                   <select
                     value={justificationForm.reasonCategory}
                     onChange={(e) =>
@@ -19070,7 +19039,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         reasonCategory: e.target.value as any,
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-white outline-none focus:border-purple-400"
+                    className="form-select w-full"
                   >
                     <option value="MEDICA">Causa Médica / Salud</option>
                     <option value="FAMILIAR">Asunto Familiar Justificado</option>
@@ -19081,39 +19050,39 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Folio de Comprobante / Receta:</label>
+                  <label className="form-label">Folio de Comprobante / Receta:</label>
                   <input
                     type="text"
                     placeholder="Ej. REC-IMSS-9821, Certificado Dr..."
                     value={justificationForm.documentFolio}
                     onChange={(e) => setJustificationForm({ ...justificationForm, documentFolio: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-purple-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               {/* Diagnóstico o Explicación */}
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Descripción del Motivo / Diagnóstico:</label>
+                <label className="form-label">Descripción del Motivo / Diagnóstico:</label>
                 <textarea
                   rows={2}
                   required
                   placeholder="Detalla el motivo o prescripción médica que respalda la inasistencia..."
                   value={justificationForm.reasonDescription}
                   onChange={(e) => setJustificationForm({ ...justificationForm, reasonDescription: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white outline-none focus:border-purple-400 resize-none"
+                  className="form-input w-full resize-none"
                 />
               </div>
 
               {/* Autorizado por */}
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Autorizado Oficialmente por:</label>
+                <label className="form-label">Autorizado Oficialmente por:</label>
                 <input
                   type="text"
                   required
                   value={justificationForm.authorizedBy}
                   onChange={(e) => setJustificationForm({ ...justificationForm, authorizedBy: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-purple-400"
+                  className="form-input w-full"
                 />
               </div>
 
@@ -19138,14 +19107,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               {/* Botones de acción */}
-              <div className="flex gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowJustifyModal(false)}
-                  className="flex-1 bg-slate-800 hover:bg-slate-750 text-slate-300 py-3 rounded-xl font-bold cursor-pointer transition-colors"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowJustifyModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="flex-1 bg-purple-600 hover:bg-purple-500 text-white py-3 rounded-xl font-black cursor-pointer shadow-lg shadow-purple-600/20 transition-all flex items-center justify-center gap-2"
@@ -19161,14 +19124,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: VOLANTE OFICIAL IMPRIMIBLE DE JUSTIFICANTE */}
       {showPrintJustificationModal && activeJustificationForPrint && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-6 max-h-[92vh] overflow-y-auto custom-scrollbar text-white">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-2xl">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-purple-400 font-bold uppercase tracking-wider block">
                   Documento Oficial Emitido
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <FileText className="w-5 h-5 text-purple-400" />
                   Volante Oficial de Justificante Escolar
                 </h3>
@@ -19182,12 +19145,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <Printer className="w-3.5 h-3.5" />
                   <div>Imprimir Volante</div>
                 </button>
-                <button
-                  onClick={() => setShowPrintJustificationModal(false)}
-                  className="text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800 transition-colors cursor-pointer"
-                >
-                  <X className="w-4 h-4" />
-                </button>
+                <button type="button" onClick={() => setShowPrintJustificationModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
               </div>
             </div>
 
@@ -19311,31 +19269,26 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: REDACTAR COMUNICADO O CITATORIO OFICIAL */}
       {showCreateNoticeModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-xl">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-purple-400 font-bold uppercase tracking-wider block">
                   Comunicación y Relaciones Institucionales
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <Megaphone className="w-5 h-5 text-purple-400" />
                   Redactar Comunicado o Citatorio Oficial
                 </h3>
               </div>
-              <button
-                onClick={() => setShowCreateNoticeModal(false)}
-                className="text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800 transition-colors cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <button type="button" onClick={() => setShowCreateNoticeModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateNotice} className="space-y-4 text-xs">
               {/* Tipo y Prioridad */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Tipo de Comunicado:</label>
+                  <label className="form-label">Tipo de Comunicado:</label>
                   <select
                     value={createNoticeForm.type}
                     onChange={(e) =>
@@ -19344,7 +19297,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         type: e.target.value as any,
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-purple-400"
+                    className="form-select w-full"
                   >
                     <option value="CIRCULAR_GENERAL">Circular General Escolar</option>
                     <option value="CITATORIO_PADRES">Citatorio Presencial a Padres</option>
@@ -19355,7 +19308,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Nivel de Prioridad:</label>
+                  <label className="form-label">Nivel de Prioridad:</label>
                   <select
                     value={createNoticeForm.priority}
                     onChange={(e) =>
@@ -19364,7 +19317,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         priority: e.target.value as any,
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-purple-400"
+                    className="form-select w-full"
                   >
                     <option value="NORMAL">Normal</option>
                     <option value="ALTA">Alta</option>
@@ -19376,7 +19329,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Destinatarios */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Audiencia / Destinatarios:</label>
+                  <label className="form-label">Audiencia / Destinatarios:</label>
                   <select
                     value={createNoticeForm.targetAudience}
                     onChange={(e) =>
@@ -19385,7 +19338,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         targetAudience: e.target.value as any,
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-purple-400"
+                    className="form-select w-full"
                   >
                     <option value="TODOS">Todo el Colegio</option>
                     <option value="GRUPO">Por Grupo Escolar</option>
@@ -19395,7 +19348,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 {createNoticeForm.targetAudience === 'GRUPO' && (
                   <div className="space-y-1">
-                    <label className="text-slate-300 font-bold">Seleccionar Grupo:</label>
+                    <label className="form-label">Seleccionar Grupo:</label>
                     <select
                       value={createNoticeForm.targetGroupId}
                       onChange={(e) =>
@@ -19404,7 +19357,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           targetGroupId: e.target.value,
                         })
                       }
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-purple-400"
+                      className="form-select w-full"
                     >
                       {groups.map((g) => (
                         <option key={g.id} value={g.name}>
@@ -19417,7 +19370,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 {createNoticeForm.targetAudience === 'INDIVIDUAL' && (
                   <div className="space-y-1">
-                    <label className="text-slate-300 font-bold">Seleccionar Alumno(a):</label>
+                    <label className="form-label">Seleccionar Alumno(a):</label>
                     <select
                       value={createNoticeForm.targetStudentId}
                       onChange={(e) =>
@@ -19426,7 +19379,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           targetStudentId: e.target.value,
                         })
                       }
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-purple-400"
+                      className="form-select w-full"
                     >
                       {students.map((s) => (
                         <option key={s.id} value={s.id}>
@@ -19456,7 +19409,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           appointmentDateTime: e.target.value,
                         })
                       }
-                      className="bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                      className="form-input"
                     />
                     <input
                       type="text"
@@ -19468,7 +19421,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           appointmentLocation: e.target.value,
                         })
                       }
-                      className="bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                      className="form-input"
                     />
                   </div>
                 </div>
@@ -19476,50 +19429,50 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               {/* Título */}
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Título o Asunto del Comunicado:</label>
+                <label className="form-label">Título o Asunto del Comunicado:</label>
                 <input
                   type="text"
                   required
                   placeholder="Ej. Convocatoria a Junta de Padres de Familia..."
                   value={createNoticeForm.title}
                   onChange={(e) => setCreateNoticeForm({ ...createNoticeForm, title: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-purple-400 font-semibold"
+                  className="form-input w-full"
                 />
               </div>
 
               {/* Cuerpo del Mensaje */}
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Cuerpo del Comunicado:</label>
+                <label className="form-label">Cuerpo del Comunicado:</label>
                 <textarea
                   rows={4}
                   required
                   placeholder="Escribe el contenido detallado del comunicado o las instrucciones para los padres de familia..."
                   value={createNoticeForm.content}
                   onChange={(e) => setCreateNoticeForm({ ...createNoticeForm, content: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white outline-none focus:border-purple-400 resize-none"
+                  className="form-input w-full resize-none"
                 />
               </div>
 
               {/* Emisor y Acuse de Enterado */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Área o Persona Emisora:</label>
+                  <label className="form-label">Área o Persona Emisora:</label>
                   <input
                     type="text"
                     required
                     value={createNoticeForm.publishedBy}
                     onChange={(e) => setCreateNoticeForm({ ...createNoticeForm, publishedBy: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-purple-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Fecha Límite para Acuse (Opcional):</label>
+                  <label className="form-label">Fecha Límite para Acuse (Opcional):</label>
                   <input
                     type="date"
                     value={createNoticeForm.acknowledgmentDeadline}
                     onChange={(e) => setCreateNoticeForm({ ...createNoticeForm, acknowledgmentDeadline: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-purple-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
@@ -19545,14 +19498,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               {/* Botones de Acción */}
-              <div className="flex gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowCreateNoticeModal(false)}
-                  className="flex-1 bg-slate-800 hover:bg-slate-750 text-slate-300 py-3 rounded-xl font-bold cursor-pointer transition-colors"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowCreateNoticeModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="flex-1 bg-purple-600 hover:bg-purple-500 text-white py-3 rounded-xl font-black cursor-pointer shadow-lg shadow-purple-600/25 transition-all flex items-center justify-center gap-2"
@@ -19568,14 +19515,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: FORMATO OFICIAL IMPRIMIBLE DE CIRCULAR O CITATORIO */}
       {showPrintNoticeModal && activeNoticeForPrint && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-6 max-h-[92vh] overflow-y-auto custom-scrollbar text-white">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-2xl">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-purple-400 font-bold uppercase tracking-wider block">
                   Documento Oficial de Difusión
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <Megaphone className="w-5 h-5 text-purple-400" />
                   {activeNoticeForPrint.type === 'CITATORIO_PADRES' ? 'Citatorio Oficial a Padres' : 'Circular Institucional'}
                 </h3>
@@ -19589,12 +19536,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <Printer className="w-3.5 h-3.5" />
                   <div>Imprimir Formato</div>
                 </button>
-                <button
-                  onClick={() => setShowPrintNoticeModal(false)}
-                  className="text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800 transition-colors cursor-pointer"
-                >
-                  <X className="w-4 h-4" />
-                </button>
+                <button type="button" onClick={() => setShowPrintNoticeModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
               </div>
             </div>
 
@@ -19732,14 +19674,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: FORMATO OFICIAL IMPRIMIBLE DE GAFETE / CREDENCIAL PVC */}
       {showPrintBadgeModal && activeCredentialForPrint && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-6 max-h-[92vh] overflow-y-auto custom-scrollbar text-white">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-2xl">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-cyan-400 font-bold uppercase tracking-wider block">
                   Estándar CR-80 (PVC 85.6mm x 53.98mm)
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <CreditCard className="w-5 h-5 text-cyan-400" />
                   Credencial Oficial Escolar • Anverso y Reverso
                 </h3>
@@ -19753,12 +19695,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <Printer className="w-3.5 h-3.5" />
                   <div>Imprimir Formato PVC</div>
                 </button>
-                <button
-                  onClick={() => setShowPrintBadgeModal(false)}
-                  className="text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800 transition-colors cursor-pointer"
-                >
-                  <X className="w-4 h-4" />
-                </button>
+                <button type="button" onClick={() => setShowPrintBadgeModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
               </div>
             </div>
 
@@ -19881,14 +19818,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: SIMULADOR DE ESCANEO DE TORNIQUETE EN PUERTA */}
       {showScannerModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-md">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider block">
                   Torniquete & Puerta Principal
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <Scan className="w-5 h-5 text-emerald-400" />
                   Simulador de Lector QR de Puerta
                 </h3>
@@ -19981,31 +19918,26 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: ASIGNAR NUEVA TAREA O PROYECTO */}
       {showCreateTaskModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-blue-400 font-bold uppercase tracking-wider block">
                   Cuaderno de Tareas • Docente
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <ClipboardList className="w-5 h-5 text-blue-400" />
                   Asignar Nueva Tarea o Proyecto
                 </h3>
               </div>
-              <button
-                onClick={() => setShowCreateTaskModal(false)}
-                className="text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800 transition-colors cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <button type="button" onClick={() => setShowCreateTaskModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateTask} className="space-y-4 text-xs">
               {/* Tipo y Materia */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Tipo de Asignación:</label>
+                  <label className="form-label">Tipo de Asignación:</label>
                   <select
                     value={createTaskForm.type}
                     onChange={(e) =>
@@ -20014,7 +19946,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         type: e.target.value as any,
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-blue-400 font-bold"
+                    className="form-select w-full font-bold"
                   >
                     <option value="TAREA">Tarea Diaria</option>
                     <option value="PROYECTO">Proyecto Formativo</option>
@@ -20025,11 +19957,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Materia / Campo:</label>
+                  <label className="form-label">Materia / Campo:</label>
                   <select
                     value={createTaskForm.subjectName}
                     onChange={(e) => setCreateTaskForm({ ...createTaskForm, subjectName: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-blue-400"
+                    className="form-select w-full"
                   >
                     <option value="Lenguajes (Español)">Lenguajes (Español)</option>
                     <option value="Saberes y Pensamiento Científico (Matemáticas)">Saberes y Pensamiento Científico</option>
@@ -20041,52 +19973,52 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               {/* Título */}
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Título de la Asignación:</label>
+                <label className="form-label">Título de la Asignación:</label>
                 <input
                   type="text"
                   required
                   placeholder="Ej. Resumen del Cuento 'La Selva Lacandona'"
                   value={createTaskForm.title}
                   onChange={(e) => setCreateTaskForm({ ...createTaskForm, title: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-blue-400 font-semibold"
+                  className="form-input w-full"
                 />
               </div>
 
               {/* Descripción e Instrucciones */}
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Instrucciones Detalladas para el Alumno:</label>
+                <label className="form-label">Instrucciones Detalladas para el Alumno:</label>
                 <textarea
                   rows={4}
                   required
                   placeholder="Escribe los pasos a realizar, páginas del libro de texto, materiales requeridos o criterios de entrega..."
                   value={createTaskForm.description}
                   onChange={(e) => setCreateTaskForm({ ...createTaskForm, description: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-white outline-none focus:border-blue-400 resize-none"
+                  className="form-input w-full resize-none"
                 />
               </div>
 
               {/* Fechas y Escala */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Fecha Límite Oficial:</label>
+                  <label className="form-label">Fecha Límite Oficial:</label>
                   <input
                     type="date"
                     required
                     value={createTaskForm.dueDate}
                     onChange={(e) => setCreateTaskForm({ ...createTaskForm, dueDate: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-blue-400 font-mono"
+                    className="form-input w-full font-mono"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Escala / Puntos Máximos:</label>
+                  <label className="form-label">Escala / Puntos Máximos:</label>
                   <input
                     type="number"
                     min="5"
                     max="100"
                     value={createTaskForm.maxScore}
                     onChange={(e) => setCreateTaskForm({ ...createTaskForm, maxScore: Number(e.target.value) })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-blue-400 font-mono font-bold"
+                    className="form-input w-full font-mono"
                   />
                 </div>
               </div>
@@ -20123,20 +20055,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       onChange={(e) =>
                         setCreateTaskForm({ ...createTaskForm, extempExtendedDueDate: e.target.value })
                       }
-                      className="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-amber-300 font-mono"
+                      className="form-input font-mono"
                     />
                   </div>
                 )}
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowCreateTaskModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowCreateTaskModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-black shadow-lg shadow-blue-600/25 transition-all cursor-pointer"
@@ -20151,26 +20077,21 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: REVISIÓN DE ENTREGAS Y CALIFICACIÓN */}
       {showSubmissionsModal && activeTaskForSubmissions && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-6 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-2xl">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-blue-400 font-bold uppercase tracking-wider block">
                   Revisión Docente • {activeTaskForSubmissions.folio}
                 </div>
-                <h3 className="text-lg font-black text-white">
+                <h3 className="modal-title">
                   Entregas de {activeTaskForSubmissions.title}
                 </h3>
                 <div className="text-xs text-slate-400">
                   {activeTaskForSubmissions.subjectName} • {activeTaskForSubmissions.groupName}
                 </div>
               </div>
-              <button
-                onClick={() => setShowSubmissionsModal(false)}
-                className="text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800 transition-colors cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <button type="button" onClick={() => setShowSubmissionsModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             {/* Lista de Alumnos y sus Entregas */}
@@ -20241,7 +20162,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {/* Formulario de Calificación Docente */}
                       <div className="bg-slate-900 p-3 rounded-xl border border-slate-800/80 grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
                         <div className="space-y-1">
-                          <label className="text-[10px] text-slate-400 font-bold block">Nota (0 a 10):</label>
+                          <label className="form-label">Nota (0 a 10):</label>
                           <input
                             type="number"
                             min="0"
@@ -20262,7 +20183,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         </div>
 
                         <div className="space-y-1 sm:col-span-2">
-                          <label className="text-[10px] text-slate-400 font-bold block">
+                          <label className="form-label">
                             Retroalimentación al Alumno:
                           </label>
                           <div className="flex items-center gap-2">
@@ -20301,24 +20222,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: ASIGNAR BLOQUE HORARIO */}
       {showCreateSlotModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-indigo-400 font-bold uppercase tracking-wider block">
                   Matriz Curricular • Director Técnico
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <CalendarDays className="w-5 h-5 text-indigo-400" />
                   Asignar Módulo a la Parrilla Horaria
                 </h3>
               </div>
-              <button
-                onClick={() => setShowCreateSlotModal(false)}
-                className="text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800 transition-colors cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <button type="button" onClick={() => setShowCreateSlotModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateScheduleSlot} className="space-y-4 text-xs">
@@ -20336,11 +20252,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Grupo y Día */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Grupo:</label>
+                  <label className="form-label">Grupo:</label>
                   <select
                     value={createSlotForm.groupName}
                     onChange={(e) => setCreateSlotForm({ ...createSlotForm, groupName: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-indigo-400 font-bold"
+                    className="form-select w-full font-bold"
                   >
                     <option value='Primaria 1º "A"'>Primaria 1º "A"</option>
                     <option value='Preescolar 2º "A"'>Preescolar 2º "A"</option>
@@ -20348,7 +20264,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Día de la Semana:</label>
+                  <label className="form-label">Día de la Semana:</label>
                   <select
                     value={createSlotForm.dayOfWeek}
                     onChange={(e) =>
@@ -20357,7 +20273,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         dayOfWeek: e.target.value as any,
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-indigo-400 font-bold"
+                    className="form-select w-full font-bold"
                   >
                     <option value="LUNES">Lunes</option>
                     <option value="MARTES">Martes</option>
@@ -20371,24 +20287,24 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Horario Inicio y Fin */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Hora Inicio (24h):</label>
+                  <label className="form-label">Hora Inicio (24h):</label>
                   <input
                     type="time"
                     required
                     value={createSlotForm.startTime}
                     onChange={(e) => setCreateSlotForm({ ...createSlotForm, startTime: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-indigo-400 font-mono font-bold"
+                    className="form-input w-full font-mono"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Hora Fin (24h):</label>
+                  <label className="form-label">Hora Fin (24h):</label>
                   <input
                     type="time"
                     required
                     value={createSlotForm.endTime}
                     onChange={(e) => setCreateSlotForm({ ...createSlotForm, endTime: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-indigo-400 font-mono font-bold"
+                    className="form-input w-full font-mono"
                   />
                 </div>
               </div>
@@ -20396,23 +20312,23 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Materia y Docente */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Asignatura / Módulo:</label>
+                  <label className="form-label">Asignatura / Módulo:</label>
                   <input
                     type="text"
                     required
                     placeholder="Ej. Taller de Ajedrez"
                     value={createSlotForm.subjectName}
                     onChange={(e) => setCreateSlotForm({ ...createSlotForm, subjectName: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-indigo-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Docente Asignado:</label>
+                  <label className="form-label">Docente Asignado:</label>
                   <select
                     value={createSlotForm.teacherName}
                     onChange={(e) => setCreateSlotForm({ ...createSlotForm, teacherName: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-indigo-400"
+                    className="form-select w-full"
                   >
                     <option value="Prof. Roberto Salazar">Prof. Roberto Salazar</option>
                     <option value="Profra. Carmen Vega">Profra. Carmen Vega</option>
@@ -20423,19 +20339,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Espacio e Instalación */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Nombre del Espacio:</label>
+                  <label className="form-label">Nombre del Espacio:</label>
                   <input
                     type="text"
                     required
                     placeholder="Ej. Aula 101 - Edificio A"
                     value={createSlotForm.classroom}
                     onChange={(e) => setCreateSlotForm({ ...createSlotForm, classroom: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-indigo-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Tipo de Instalación:</label>
+                  <label className="form-label">Tipo de Instalación:</label>
                   <select
                     value={createSlotForm.facility}
                     onChange={(e) =>
@@ -20444,7 +20360,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         facility: e.target.value as any,
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-indigo-400"
+                    className="form-select w-full"
                   >
                     <option value="AULA_REGULAR">Aula Regular</option>
                     <option value="LABORATORIO_COMPUTO">Laboratorio de Cómputo</option>
@@ -20456,14 +20372,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowCreateSlotModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowCreateSlotModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-black shadow-lg shadow-indigo-600/25 transition-all cursor-pointer"
@@ -20478,30 +20388,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: REGISTRAR NUEVO ASPIRANTE */}
       {showNewApplicantModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-xl">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                   Control Escolar & Admisiones
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <UserPlus className="w-5 h-5 text-amber-400" />
                   Registro de Aspirante a Nuevo Ingreso
                 </h3>
               </div>
-              <button
-                onClick={() => setShowNewApplicantModal(false)}
-                className="text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800 transition-colors cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <button type="button" onClick={() => setShowNewApplicantModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={(e) => handleCreateApplicant(e, false)} className="space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Nombre(s) del Aspirante:</label>
+                  <label className="form-label">Nombre(s) del Aspirante:</label>
                   <input
                     type="text"
                     required
@@ -20510,12 +20415,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewApplicantForm({ ...newApplicantForm, applicantFirstName: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400 font-bold"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Apellidos:</label>
+                  <label className="form-label">Apellidos:</label>
                   <input
                     type="text"
                     required
@@ -20524,14 +20429,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewApplicantForm({ ...newApplicantForm, applicantLastName: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400 font-bold"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-3">
                 <div className="space-y-1 col-span-2">
-                  <label className="text-slate-300 font-bold">CURP del Alumno:</label>
+                  <label className="form-label">CURP del Alumno:</label>
                   <input
                     type="text"
                     required
@@ -20541,18 +20446,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewApplicantForm({ ...newApplicantForm, curp: e.target.value.toUpperCase() })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400 font-mono uppercase"
+                    className="form-input w-full font-mono uppercase"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Género:</label>
+                  <label className="form-label">Género:</label>
                   <select
                     value={newApplicantForm.gender}
                     onChange={(e) =>
                       setNewApplicantForm({ ...newApplicantForm, gender: e.target.value as any })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-select w-full"
                   >
                     <option value="M">Masculino</option>
                     <option value="F">Femenino</option>
@@ -20563,7 +20468,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="grid grid-cols-3 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Fecha Nacimiento:</label>
+                  <label className="form-label">Fecha Nacimiento:</label>
                   <input
                     type="date"
                     required
@@ -20571,12 +20476,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewApplicantForm({ ...newApplicantForm, birthDate: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400 font-mono"
+                    className="form-input w-full font-mono"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Nivel:</label>
+                  <label className="form-label">Nivel:</label>
                   <select
                     value={newApplicantForm.targetLevelId}
                     onChange={(e) => {
@@ -20596,13 +20501,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Grado Solicitado:</label>
+                  <label className="form-label">Grado Solicitado:</label>
                   <select
                     value={newApplicantForm.targetGrade}
                     onChange={(e) =>
                       setNewApplicantForm({ ...newApplicantForm, targetGrade: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-select w-full"
                   >
                     {newApplicantForm.targetLevelId === 'PREESCOLAR' ? (
                       <>
@@ -20631,7 +20536,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-400 text-[11px]">Nombre Completo del Tutor:</label>
+                  <label className="form-label">Nombre Completo del Tutor:</label>
                   <input
                     type="text"
                     required
@@ -20640,13 +20545,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewApplicantForm({ ...newApplicantForm, parentName: e.target.value })
                     }
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-white outline-none focus:border-amber-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1">
-                    <label className="text-slate-400 text-[11px]">Teléfono Móvil / WhatsApp:</label>
+                    <label className="form-label">Teléfono Móvil / WhatsApp:</label>
                     <input
                       type="tel"
                       required
@@ -20655,12 +20560,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       onChange={(e) =>
                         setNewApplicantForm({ ...newApplicantForm, parentPhone: e.target.value })
                       }
-                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-white font-mono outline-none focus:border-amber-400"
+                      className="form-input w-full font-mono"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-slate-400 text-[11px]">Correo Electrónico:</label>
+                    <label className="form-label">Correo Electrónico:</label>
                     <input
                       type="email"
                       required
@@ -20669,31 +20574,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       onChange={(e) =>
                         setNewApplicantForm({ ...newApplicantForm, parentEmail: e.target.value })
                       }
-                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-white font-mono outline-none focus:border-amber-400"
+                      className="form-input w-full font-mono"
                     />
                   </div>
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Observaciones / Antecedentes:</label>
+                <label className="form-label">Observaciones / Antecedentes:</label>
                 <textarea
                   rows={2}
                   placeholder="Ej. Hermano de alumno en 4º de Primaria, escuela de procedencia..."
                   value={newApplicantForm.notes}
                   onChange={(e) => setNewApplicantForm({ ...newApplicantForm, notes: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-input w-full"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowNewApplicantModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewApplicantModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/20 transition-all cursor-pointer"
@@ -20708,24 +20607,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: AGENDAR EVALUACIÓN DIAGNÓSTICA & ENTREVISTA */}
       {showScheduleEvalModal && selectedApplicantForDetail && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-purple-400 font-bold uppercase tracking-wider block">
                   Folio: {selectedApplicantForDetail.folio}
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <CalendarClock className="w-5 h-5 text-purple-400" />
                   Citas y Evaluación Diagnóstica
                 </h3>
               </div>
-              <button
-                onClick={() => setShowScheduleEvalModal(false)}
-                className="text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800 transition-colors cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <button type="button" onClick={() => setShowScheduleEvalModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 text-xs">
@@ -20746,7 +20640,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1">
-                    <label className="text-slate-400 text-[11px]">Fecha y Hora:</label>
+                    <label className="form-label">Fecha y Hora:</label>
                     <input
                       type="text"
                       required
@@ -20755,12 +20649,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       onChange={(e) =>
                         setScheduleEvalForm({ ...scheduleEvalForm, evaluationDate: e.target.value })
                       }
-                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-white font-mono outline-none focus:border-purple-400"
+                      className="form-input w-full font-mono"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-slate-400 text-[11px]">Calificación Diagnóstica (0 a 10):</label>
+                    <label className="form-label">Calificación Diagnóstica (0 a 10):</label>
                     <input
                       type="number"
                       step="0.1"
@@ -20770,13 +20664,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       onChange={(e) =>
                         setScheduleEvalForm({ ...scheduleEvalForm, evaluationScore: Number(e.target.value) })
                       }
-                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-emerald-400 font-mono font-bold outline-none focus:border-purple-400"
+                      className="form-input w-full font-mono"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-400 text-[11px]">Observaciones del Diagnóstico:</label>
+                  <label className="form-label">Observaciones del Diagnóstico:</label>
                   <input
                     type="text"
                     placeholder="Ej. Madurez grafo-motriz, vocabulario y conteo"
@@ -20784,7 +20678,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setScheduleEvalForm({ ...scheduleEvalForm, evaluationNotes: e.target.value })
                     }
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-white outline-none focus:border-purple-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
@@ -20795,7 +20689,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-400 text-[11px]">Fecha y Hora de la Entrevista:</label>
+                  <label className="form-label">Fecha y Hora de la Entrevista:</label>
                   <input
                     type="text"
                     placeholder="YYYY-MM-DD HH:MM"
@@ -20803,12 +20697,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setScheduleEvalForm({ ...scheduleEvalForm, interviewDate: e.target.value })
                     }
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-white font-mono outline-none focus:border-blue-400"
+                    className="form-input w-full font-mono"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-400 text-[11px]">Acuerdos / Dictamen de Dirección:</label>
+                  <label className="form-label">Acuerdos / Dictamen de Dirección:</label>
                   <input
                     type="text"
                     placeholder="Ej. Familia comprometida con el reglamento institucional"
@@ -20816,19 +20710,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setScheduleEvalForm({ ...scheduleEvalForm, interviewNotes: e.target.value })
                     }
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-white outline-none focus:border-blue-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowScheduleEvalModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowScheduleEvalModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-black shadow-lg shadow-purple-600/25 transition-all cursor-pointer"
@@ -20843,24 +20731,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: FICHA OFICIAL DE PREINSCRIPCIÓN / ADMISIÓN (IMPRIMIBLE) */}
       {showAdmissionReceiptModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-xl">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                   Documento Oficial de Preinscripción
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <Printer className="w-5 h-5 text-amber-400" />
                   Ficha Oficial de Admisión SEP
                 </h3>
               </div>
-              <button
-                onClick={() => setShowAdmissionReceiptModal(null)}
-                className="text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800 transition-colors cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <button type="button" onClick={() => setShowAdmissionReceiptModal(null)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             {/* Ficha Imprimible Formato Oficial */}
@@ -20962,14 +20845,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-              <button
-                type="button"
-                onClick={() => setShowAdmissionReceiptModal(null)}
-                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-              >
-                Cerrar
-              </button>
+            <div className="modal-actions">
+              <button type="button" onClick={() => setShowAdmissionReceiptModal(null)} className="btn btn-secondary">Cerrar</button>
               <button
                 type="button"
                 onClick={() => window.print()}
@@ -20985,24 +20862,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: PORTAL PÚBLICO WEB DE ADMISIONES (SIMULADOR PÚBLICO PARA PADRES) */}
       {showPublicAdmissionModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-2xl">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider block">
                   Módulo Web Público • Portal Familiar de Admisiones
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <Search className="w-5 h-5 text-emerald-400" />
                   Portal Web de Preinscripción en Línea
                 </h3>
               </div>
-              <button
-                onClick={() => setShowPublicAdmissionModal(false)}
-                className="text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800 transition-colors cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <button type="button" onClick={() => setShowPublicAdmissionModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs space-y-3">
@@ -21016,7 +20888,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   placeholder="Ej. ADM-2026-001, ADM-2026-002..."
                   value={publicFolioSearch}
                   onChange={(e) => setPublicFolioSearch(e.target.value.toUpperCase())}
-                  className="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono font-bold text-xs outline-none focus:border-emerald-400 uppercase"
+                  className="form-input flex-1 font-mono uppercase"
                 />
                 <button
                   type="submit"
@@ -21077,96 +20949,91 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: REGISTRAR NUEVO LIBRO EN CATÁLOGO */}
       {showNewBookModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-xl">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
                   Biblioteca Escolar & Acervo
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <BookOpen className="w-5 h-5 text-rose-400" />
                   Alta de Libro en Catálogo
                 </h3>
               </div>
-              <button
-                onClick={() => setShowNewBookModal(false)}
-                className="text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800 transition-colors cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <button type="button" onClick={() => setShowNewBookModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateBook} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Título de la Obra:</label>
+                <label className="form-label">Título de la Obra:</label>
                 <input
                   type="text"
                   required
                   placeholder="Ej. El Principito, Múltiples Lenguajes 1º..."
                   value={newBookForm.title}
                   onChange={(e) => setNewBookForm({ ...newBookForm, title: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400 font-bold"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Autor(es):</label>
+                  <label className="form-label">Autor(es):</label>
                   <input
                     type="text"
                     required
                     placeholder="Ej. Antoine de Saint-Exupéry"
                     value={newBookForm.author}
                     onChange={(e) => setNewBookForm({ ...newBookForm, author: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400 font-bold"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">ISBN / Código de Barras:</label>
+                  <label className="form-label">ISBN / Código de Barras:</label>
                   <input
                     type="text"
                     required
                     placeholder="Ej. 978-607-07-2879-2"
                     value={newBookForm.isbn}
                     onChange={(e) => setNewBookForm({ ...newBookForm, isbn: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono outline-none focus:border-rose-400"
+                    className="form-input w-full font-mono"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-3">
                 <div className="space-y-1 col-span-2">
-                  <label className="text-slate-300 font-bold">Editorial:</label>
+                  <label className="form-label">Editorial:</label>
                   <input
                     type="text"
                     required
                     placeholder="Ej. CONALITEG / Planeta / FCE"
                     value={newBookForm.publisher}
                     onChange={(e) => setNewBookForm({ ...newBookForm, publisher: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Año Edición:</label>
+                  <label className="form-label">Año Edición:</label>
                   <input
                     type="number"
                     value={newBookForm.yearPublished}
                     onChange={(e) => setNewBookForm({ ...newBookForm, yearPublished: Number(e.target.value) })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono outline-none focus:border-rose-400"
+                    className="form-input w-full font-mono"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Categoría:</label>
+                  <label className="form-label">Categoría:</label>
                   <select
                     value={newBookForm.category}
                     onChange={(e) => setNewBookForm({ ...newBookForm, category: e.target.value as any })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400 font-bold"
+                    className="form-select w-full font-bold"
                   >
                     <option value="LITERATURA_INFANTIL">Literatura Infantil</option>
                     <option value="LIBRO_SEP">Libro de Texto SEP</option>
@@ -21179,11 +21046,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Nivel Sugerido:</label>
+                  <label className="form-label">Nivel Sugerido:</label>
                   <select
                     value={newBookForm.targetLevel}
                     onChange={(e) => setNewBookForm({ ...newBookForm, targetLevel: e.target.value as any })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                    className="form-select w-full"
                   >
                     <option value="TODOS">Todos los Niveles</option>
                     <option value="PREESCOLAR">Preescolar</option>
@@ -21192,48 +21059,42 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Ejemplares (Stock):</label>
+                  <label className="form-label">Ejemplares (Stock):</label>
                   <input
                     type="number"
                     min={1}
                     value={newBookForm.totalCopies}
                     onChange={(e) => setNewBookForm({ ...newBookForm, totalCopies: Number(e.target.value) })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono font-bold outline-none focus:border-rose-400"
+                    className="form-input w-full font-mono"
                   />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Ubicación en Estantería:</label>
+                <label className="form-label">Ubicación en Estantería:</label>
                 <input
                   type="text"
                   required
                   placeholder="Ej. Estante A-2, Módulo de Lectura Kínder"
                   value={newBookForm.shelfLocation}
                   onChange={(e) => setNewBookForm({ ...newBookForm, shelfLocation: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-amber-300 font-mono outline-none focus:border-rose-400"
+                  className="form-input w-full font-mono"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Sinopsis o Reseña Pedagógica:</label>
+                <label className="form-label">Sinopsis o Reseña Pedagógica:</label>
                 <textarea
                   rows={2}
                   placeholder="Breve resumen del contenido del libro..."
                   value={newBookForm.summary}
                   onChange={(e) => setNewBookForm({ ...newBookForm, summary: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                  className="form-input w-full"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowNewBookModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewBookModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black shadow-lg shadow-rose-600/25 transition-all cursor-pointer"
@@ -21248,14 +21109,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: REGISTRAR PRÉSTAMO DE LIBRO */}
       {showNewLoanModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                   Control de Préstamos
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <BookmarkCheck className="w-5 h-5 text-amber-400" />
                   Préstamo de Libro a Alumno
                 </h3>
@@ -21273,11 +21134,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             <form onSubmit={handleCreateBookLoan} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Seleccionar Libro:</label>
+                <label className="form-label">Seleccionar Libro:</label>
                 <select
                   value={newLoanForm.bookId}
                   onChange={(e) => setNewLoanForm({ ...newLoanForm, bookId: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400 font-bold"
+                  className="form-select w-full font-bold"
                 >
                   {books.map((b) => (
                     <option key={b.id} value={b.id} disabled={b.availableCopies === 0}>
@@ -21288,11 +21149,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Seleccionar Alumno Solicitante:</label>
+                <label className="form-label">Seleccionar Alumno Solicitante:</label>
                 <select
                   value={newLoanForm.studentId}
                   onChange={(e) => setNewLoanForm({ ...newLoanForm, studentId: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400 font-bold"
+                  className="form-select w-full font-bold"
                 >
                   {students.map((s) => (
                     <option key={s.id} value={s.id}>
@@ -21304,11 +21165,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Modalidad de Préstamo:</label>
+                  <label className="form-label">Modalidad de Préstamo:</label>
                   <select
                     value={newLoanForm.loanType}
                     onChange={(e) => setNewLoanForm({ ...newLoanForm, loanType: e.target.value as any })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-select w-full"
                   >
                     <option value="DOMICILIO">Préstamo a Domicilio (7 días)</option>
                     <option value="SALA">Préstamo en Sala de Biblioteca</option>
@@ -21316,29 +21177,29 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Fecha Límite de Devolución:</label>
+                  <label className="form-label">Fecha Límite de Devolución:</label>
                   <input
                     type="date"
                     required
                     value={newLoanForm.dueDate}
                     onChange={(e) => setNewLoanForm({ ...newLoanForm, dueDate: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-amber-300 font-mono outline-none focus:border-amber-400"
+                    className="form-input w-full font-mono"
                   />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Instrucciones o Notas del Bibliotecario:</label>
+                <label className="form-label">Instrucciones o Notas del Bibliotecario:</label>
                 <input
                   type="text"
                   placeholder="Ej. Lectura semanal para reporte del Campo Formativo Lenguajes"
                   value={newLoanForm.librarianNotes}
                   onChange={(e) => setNewLoanForm({ ...newLoanForm, librarianNotes: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-input w-full"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+              <div className="modal-actions">
                 <button
                   type="button"
                   onClick={() => {
@@ -21363,24 +21224,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: CONSTANCIA OFICIAL DE NO ADEUDO BIBLIOTECARIO (IMPRIMIBLE) */}
       {showClearanceCertificateModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-xl">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider block">
                   Constancia Institucional
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <ShieldCheck className="w-5 h-5 text-emerald-400" />
                   Sello de No Adeudo Bibliotecario
                 </h3>
               </div>
-              <button
-                onClick={() => setShowClearanceCertificateModal(false)}
-                className="text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800 transition-colors cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <button type="button" onClick={() => setShowClearanceCertificateModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             {(() => {
@@ -21445,14 +21301,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               );
             })()}
 
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-              <button
-                type="button"
-                onClick={() => setShowClearanceCertificateModal(false)}
-                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-              >
-                Cerrar
-              </button>
+            <div className="modal-actions">
+              <button type="button" onClick={() => setShowClearanceCertificateModal(false)} className="btn btn-secondary">Cerrar</button>
               <button
                 type="button"
                 onClick={() => window.print()}
@@ -21468,123 +21318,118 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: REGISTRAR NUEVA RUTA ESCOLAR */}
       {showNewRouteModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-xl">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                   Transporte Escolar
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <Bus className="w-5 h-5 text-amber-400" />
                   Alta de Nueva Ruta Escolar
                 </h3>
               </div>
-              <button
-                onClick={() => setShowNewRouteModal(false)}
-                className="text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800 transition-colors cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <button type="button" onClick={() => setShowNewRouteModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateTransportRoute} className="space-y-4 text-xs">
               <div className="grid grid-cols-3 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Código de Ruta:</label>
+                  <label className="form-label">Código de Ruta:</label>
                   <input
                     type="text"
                     required
                     placeholder="Ej. RUTA-PTE-03"
                     value={newRouteForm.code}
                     onChange={(e) => setNewRouteForm({ ...newRouteForm, code: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono font-bold outline-none focus:border-amber-400"
+                    className="form-input w-full font-mono"
                   />
                 </div>
 
                 <div className="space-y-1 col-span-2">
-                  <label className="text-slate-300 font-bold">Nombre Oficial de la Ruta:</label>
+                  <label className="form-label">Nombre Oficial de la Ruta:</label>
                   <input
                     type="text"
                     required
                     placeholder="Ej. Ruta Poniente - Polanco / Anzures"
                     value={newRouteForm.name}
                     onChange={(e) => setNewRouteForm({ ...newRouteForm, name: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400 font-bold"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Placas de la Unidad:</label>
+                  <label className="form-label">Placas de la Unidad:</label>
                   <input
                     type="text"
                     required
                     placeholder="Ej. 77-RB-99"
                     value={newRouteForm.vehiclePlate}
                     onChange={(e) => setNewRouteForm({ ...newRouteForm, vehiclePlate: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono font-bold outline-none focus:border-amber-400"
+                    className="form-input w-full font-mono"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Modelo de Camioneta / Van:</label>
+                  <label className="form-label">Modelo de Camioneta / Van:</label>
                   <input
                     type="text"
                     required
                     value={newRouteForm.vehicleModel}
                     onChange={(e) => setNewRouteForm({ ...newRouteForm, vehicleModel: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Nombre del Chofer Certificado:</label>
+                  <label className="form-label">Nombre del Chofer Certificado:</label>
                   <input
                     type="text"
                     required
                     placeholder="Ej. Sr. Armando Ramos Díaz"
                     value={newRouteForm.driverName}
                     onChange={(e) => setNewRouteForm({ ...newRouteForm, driverName: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400 font-bold"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Teléfono Móvil Chofer:</label>
+                  <label className="form-label">Teléfono Móvil Chofer:</label>
                   <input
                     type="tel"
                     required
                     placeholder="+52 55 1234 5678"
                     value={newRouteForm.driverPhone}
                     onChange={(e) => setNewRouteForm({ ...newRouteForm, driverPhone: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono outline-none focus:border-amber-400"
+                    className="form-input w-full font-mono"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Monitora de Ruta y Seguridad:</label>
+                  <label className="form-label">Monitora de Ruta y Seguridad:</label>
                   <input
                     type="text"
                     required
                     placeholder="Ej. Profra. Lorena Valdés"
                     value={newRouteForm.monitorName}
                     onChange={(e) => setNewRouteForm({ ...newRouteForm, monitorName: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Turno de Operación:</label>
+                  <label className="form-label">Turno de Operación:</label>
                   <select
                     value={newRouteForm.shift}
                     onChange={(e) => setNewRouteForm({ ...newRouteForm, shift: e.target.value as any })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400 font-bold"
+                    className="form-select w-full font-bold"
                   >
                     <option value="AMBOS">Ambos Turnos (Matutino & Vespertino)</option>
                     <option value="MATUTINO_RECOGIDA">Solo Turno Matutino (Recogida)</option>
@@ -21595,7 +21440,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               {/* Paradas */}
               <div className="space-y-2 pt-2 border-t border-slate-800">
-                <label className="text-slate-300 font-bold block">
+                <label className="form-label">
                   Puntos de Parada Programada (Itinerario):
                 </label>
                 {newRouteForm.stops.map((stop, idx) => (
@@ -21609,7 +21454,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         copy[idx].name = e.target.value;
                         setNewRouteForm({ ...newRouteForm, stops: copy });
                       }}
-                      className="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-white font-bold"
+                      className="form-input"
                     />
                     <input
                       type="text"
@@ -21620,7 +21465,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         copy[idx].address = e.target.value;
                         setNewRouteForm({ ...newRouteForm, stops: copy });
                       }}
-                      className="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-slate-300"
+                      className="form-input"
                     />
                     <div className="flex items-center gap-1">
                       <input
@@ -21631,7 +21476,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           copy[idx].scheduledTimeMorning = e.target.value;
                           setNewRouteForm({ ...newRouteForm, stops: copy });
                         }}
-                        className="bg-slate-900 border border-slate-700 rounded-lg px-1.5 py-1 text-amber-300 font-mono text-[11px] w-1/2"
+                        className="form-input font-mono"
                       />
                       <input
                         type="time"
@@ -21641,21 +21486,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           copy[idx].scheduledTimeAfternoon = e.target.value;
                           setNewRouteForm({ ...newRouteForm, stops: copy });
                         }}
-                        className="bg-slate-900 border border-slate-700 rounded-lg px-1.5 py-1 text-amber-300 font-mono text-[11px] w-1/2"
+                        className="form-input font-mono"
                       />
                     </div>
                   </div>
                 ))}
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowNewRouteModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewRouteModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
@@ -21670,33 +21509,28 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: ASIGNAR ALUMNO A RUTA DE TRANSPORTE */}
       {showEnrollStudentTransportModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                   Asignación de Pasajeros
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <UserPlus className="w-5 h-5 text-amber-400" />
                   Inscribir Alumno a Ruta Escolar
                 </h3>
               </div>
-              <button
-                onClick={() => setShowEnrollStudentTransportModal(false)}
-                className="text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800 transition-colors cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <button type="button" onClick={() => setShowEnrollStudentTransportModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleEnrollStudentInTransport} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Seleccionar Alumno:</label>
+                <label className="form-label">Seleccionar Alumno:</label>
                 <select
                   value={enrollTransportForm.studentId}
                   onChange={(e) => setEnrollTransportForm({ ...enrollTransportForm, studentId: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400 font-bold"
+                  className="form-select w-full font-bold"
                 >
                   {students.map((s) => (
                     <option key={s.id} value={s.id}>
@@ -21707,7 +21541,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Seleccionar Ruta Escolar:</label>
+                <label className="form-label">Seleccionar Ruta Escolar:</label>
                 <select
                   value={enrollTransportForm.routeId}
                   onChange={(e) => {
@@ -21719,7 +21553,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       stopId: r?.stops[0]?.id || '',
                     });
                   }}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400 font-bold"
+                  className="form-select w-full font-bold"
                 >
                   {transportRoutes.map((r) => (
                     <option key={r.id} value={r.id}>
@@ -21733,11 +21567,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 const route = transportRoutes.find((r) => r.id === enrollTransportForm.routeId) || transportRoutes[0];
                 return (
                   <div className="space-y-1">
-                    <label className="text-slate-300 font-bold">Seleccionar Parada de Abordaje / Descenso:</label>
+                    <label className="form-label">Seleccionar Parada de Abordaje / Descenso:</label>
                     <select
                       value={enrollTransportForm.stopId}
                       onChange={(e) => setEnrollTransportForm({ ...enrollTransportForm, stopId: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-amber-300 font-bold outline-none focus:border-amber-400"
+                      className="form-select w-full font-bold"
                     >
                       {route?.stops.map((s) => (
                         <option key={s.id} value={s.id}>
@@ -21750,11 +21584,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               })()}
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Modalidad de Servicio:</label>
+                <label className="form-label">Modalidad de Servicio:</label>
                 <select
                   value={enrollTransportForm.shift}
                   onChange={(e) => setEnrollTransportForm({ ...enrollTransportForm, shift: e.target.value as any })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-select w-full"
                 >
                   <option value="AMBOS">Servicio Completo (Ida y Vuelta)</option>
                   <option value="MATUTINO_RECOGIDA">Solo Turno Matutino (A la Escuela)</option>
@@ -21763,24 +21597,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Especificaciones Médicas o de Asiento:</label>
+                <label className="form-label">Especificaciones Médicas o de Asiento:</label>
                 <input
                   type="text"
                   placeholder="Ej. Asiento delantero preferencial, autorización de entrega a la abuela..."
                   value={enrollTransportForm.emergencyNotes}
                   onChange={(e) => setEnrollTransportForm({ ...enrollTransportForm, emergencyNotes: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-input w-full"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowEnrollStudentTransportModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowEnrollStudentTransportModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
@@ -21795,42 +21623,37 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: NUEVO PRODUCTO DE CAFETERÍA */}
       {showNewProductModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-orange-400 font-bold uppercase tracking-wider block">
                   Nutrición y Cooperativa Escolar
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <Utensils className="w-5 h-5 text-orange-400" />
                   Alta de Alimento o Bebida
                 </h3>
               </div>
-              <button
-                onClick={() => setShowNewProductModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button type="button" onClick={() => setShowNewProductModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateCafeteriaProduct} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Nombre del Producto:</label>
+                <label className="form-label">Nombre del Producto:</label>
                 <input
                   type="text"
                   required
                   placeholder="Ej. Sándwich Integral de Pavo y Panela"
                   value={newProductForm.name}
                   onChange={(e) => setNewProductForm({ ...newProductForm, name: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-orange-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Categoría:</label>
+                  <label className="form-label">Categoría:</label>
                   <select
                     value={newProductForm.category}
                     onChange={(e) =>
@@ -21839,7 +21662,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         category: e.target.value as CafeteriaProductItem['category'],
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-orange-400"
+                    className="form-select w-full"
                   >
                     <option value="DESAYUNOS_SALUDABLES">🥪 Desayuno Saludable</option>
                     <option value="FRUTAS_VERDURAS">🍎 Frutas y Verduras</option>
@@ -21850,61 +21673,61 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Precio ($ MXN):</label>
+                  <label className="form-label">Precio ($ MXN):</label>
                   <input
                     type="number"
                     min="1"
                     required
                     value={newProductForm.priceMXN}
                     onChange={(e) => setNewProductForm({ ...newProductForm, priceMXN: Number(e.target.value) })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-orange-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Calorías (kcal aprox):</label>
+                  <label className="form-label">Calorías (kcal aprox):</label>
                   <input
                     type="number"
                     min="0"
                     value={newProductForm.caloriesKcal}
                     onChange={(e) => setNewProductForm({ ...newProductForm, caloriesKcal: Number(e.target.value) })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-orange-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Stock Inicial en Barra:</label>
+                  <label className="form-label">Stock Inicial en Barra:</label>
                   <input
                     type="number"
                     min="0"
                     value={newProductForm.stockQuantity}
                     onChange={(e) => setNewProductForm({ ...newProductForm, stockQuantity: Number(e.target.value) })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-orange-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Ingredientes (separados por coma):</label>
+                <label className="form-label">Ingredientes (separados por coma):</label>
                 <input
                   type="text"
                   placeholder="Ej. Pan integral de centeno, pechuga de pavo, lechuga, jitomate..."
                   value={newProductForm.ingredientsStr}
                   onChange={(e) => setNewProductForm({ ...newProductForm, ingredientsStr: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-orange-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Alérgenos Críticos (ej. GLUTEN, LACTEOS, CACAHUATE):</label>
+                <label className="form-label">Alérgenos Críticos (ej. GLUTEN, LACTEOS, CACAHUATE):</label>
                 <input
                   type="text"
                   placeholder="Ej. GLUTEN, LACTEOS, NUEZ"
                   value={newProductForm.allergensStr}
                   onChange={(e) => setNewProductForm({ ...newProductForm, allergensStr: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-orange-400"
+                  className="form-input w-full"
                 />
                 <div className="text-[10px] text-rose-400 block font-mono">
                   * El sistema bloqueará automáticamente este producto en caja si el alumno tiene alergia registrada.
@@ -21917,21 +21740,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   id="sepApprovedCheck"
                   checked={newProductForm.isHealthySepApproved}
                   onChange={(e) => setNewProductForm({ ...newProductForm, isHealthySepApproved: e.target.checked })}
-                  className="w-4 h-4 rounded text-orange-500 bg-slate-900 border-slate-700 focus:ring-orange-400"
+                  className="form-input"
                 />
                 <label htmlFor="sepApprovedCheck" className="text-slate-300 font-bold cursor-pointer text-xs">
                   Cumple Lineamientos de Nutrición Escolar Saludable SEP
                 </label>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowNewProductModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewProductModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-orange-500 hover:bg-orange-400 text-slate-950 font-black shadow-lg shadow-orange-500/25 transition-all cursor-pointer"
@@ -21946,27 +21763,22 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: RECARGA DE MONEDERO ESCOLAR */}
       {showTopUpModal && selectedWalletForAction && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-md">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider block">
                   Fondos Prepagados Escolares
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <CircleDollarSign className="w-5 h-5 text-emerald-400" />
                   Recargar Monedero Digital
                 </h3>
               </div>
-              <button
-                onClick={() => setShowTopUpModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button type="button" onClick={() => setShowTopUpModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
-            <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1">
+            <div className="dashboard-subcard space-y-1">
               <div className="text-[10px] font-mono text-slate-400 block font-bold">ALUMNO BENEFICIARIO:</div>
               <strong className="text-white text-sm block">{selectedWalletForAction.studentName}</strong>
               <div className="flex items-center justify-between text-xs text-slate-400 pt-1">
@@ -21979,7 +21791,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             <form onSubmit={handleTopUpWallet} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Monto a Recargar ($ MXN):</label>
+                <label className="form-label">Monto a Recargar ($ MXN):</label>
                 <div className="flex gap-2 mb-2">
                   {[50, 100, 200, 500].map((amt) => (
                     <button
@@ -22002,12 +21814,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   required
                   value={topUpForm.amountMXN}
                   onChange={(e) => setTopUpForm({ ...topUpForm, amountMXN: Number(e.target.value) })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono font-bold text-base outline-none focus:border-emerald-400"
+                  className="form-input w-full font-mono"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Método de Recepción:</label>
+                <label className="form-label">Método de Recepción:</label>
                 <select
                   value={topUpForm.paymentMethod}
                   onChange={(e) =>
@@ -22016,7 +21828,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       paymentMethod: e.target.value as 'EFECTIVO' | 'TRANSFERENCIA' | 'TARJETA',
                     })
                   }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400"
+                  className="form-select w-full"
                 >
                   <option value="EFECTIVO">💵 Efectivo en Caja Escolar</option>
                   <option value="TRANSFERENCIA">📱 Transferencia SPEI / Banco</option>
@@ -22025,24 +21837,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Nota o Folio de Depósito:</label>
+                <label className="form-label">Nota o Folio de Depósito:</label>
                 <input
                   type="text"
                   placeholder="Ej. Entregado por padre en recepción..."
                   value={topUpForm.notes}
                   onChange={(e) => setTopUpForm({ ...topUpForm, notes: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400"
+                  className="form-input w-full"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowTopUpModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowTopUpModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black shadow-lg shadow-emerald-600/25 transition-all cursor-pointer"
@@ -22057,24 +21863,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: CONFIGURAR LÍMITE DIARIO DE GASTO */}
       {showConfigureLimitModal && selectedWalletForAction && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-md">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-orange-400 font-bold uppercase tracking-wider block">
                   Control Familiar y Presupuesto
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <Settings className="w-5 h-5 text-orange-400" />
                   Límite Diario de Gasto
                 </h3>
               </div>
-              <button
-                onClick={() => setShowConfigureLimitModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button type="button" onClick={() => setShowConfigureLimitModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1 text-xs">
@@ -22085,7 +21886,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             <form onSubmit={handleUpdateWalletLimit} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Nuevo Límite Diario Permitido ($ MXN):</label>
+                <label className="form-label">Nuevo Límite Diario Permitido ($ MXN):</label>
                 <div className="flex gap-2 mb-2">
                   {[40, 60, 80, 100].map((lim) => (
                     <button
@@ -22108,7 +21909,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   required
                   value={limitForm.dailySpendingLimitMXN}
                   onChange={(e) => setLimitForm({ dailySpendingLimitMXN: Number(e.target.value) })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono font-bold text-base outline-none focus:border-orange-400"
+                  className="form-input w-full font-mono"
                 />
               </div>
 
@@ -22116,14 +21917,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 ℹ️ La terminal de punto de venta (POS) bloqueará automáticamente cualquier compra que sobrepase este límite en un solo día escolar para proteger la economía familiar.
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowConfigureLimitModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowConfigureLimitModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-orange-500 hover:bg-orange-400 text-slate-950 font-black shadow-lg shadow-orange-500/25 transition-all cursor-pointer"
@@ -22138,16 +21933,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: TICKET DE CONSUMO IMPRIMIBLE */}
       {showTicketReceiptModal && activeTransactionForReceipt && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4 text-white">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-sm">
             <div className="flex items-center justify-between border-b border-slate-800 pb-2">
               <div className="font-mono text-xs text-orange-400 font-bold">Comprobante de Cafetería</div>
-              <button
-                onClick={() => setShowTicketReceiptModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button type="button" onClick={() => setShowTicketReceiptModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             {/* Formato de Ticket */}
@@ -22205,14 +21995,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2">
-              <button
-                type="button"
-                onClick={() => setShowTicketReceiptModal(false)}
-                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs cursor-pointer"
-              >
-                Cerrar
-              </button>
+            <div className="modal-actions">
+              <button type="button" onClick={() => setShowTicketReceiptModal(false)} className="btn btn-secondary">Cerrar</button>
               <button
                 type="button"
                 onClick={() => window.print()}
@@ -22228,33 +22012,28 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: REGISTRAR NUEVA ATENCIÓN MÉDICA EN ENFERMERÍA */}
       {showNewConsultationModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-xl">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
                   Enfermería General del Plantel
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <Stethoscope className="w-5 h-5 text-rose-400" />
                   Registro de Consulta o Atención Médica
                 </h3>
               </div>
-              <button
-                onClick={() => setShowNewConsultationModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button type="button" onClick={() => setShowNewConsultationModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateMedicalConsultation} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Alumno que Ingresa a Enfermería:</label>
+                <label className="form-label">Alumno que Ingresa a Enfermería:</label>
                 <select
                   value={newConsultationForm.studentId}
                   onChange={(e) => setNewConsultationForm({ ...newConsultationForm, studentId: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                  className="form-select w-full"
                 >
                   {students.map((s) => (
                     <option key={s.id} value={s.id}>
@@ -22266,7 +22045,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Motivo de Atención:</label>
+                  <label className="form-label">Motivo de Atención:</label>
                   <select
                     value={newConsultationForm.reason}
                     onChange={(e) =>
@@ -22275,7 +22054,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         reason: e.target.value as MedicalConsultationItem['reason'],
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                    className="form-select w-full"
                   >
                     <option value="HERIDA_RASPON">🩹 Herida / Raspón / Laceración</option>
                     <option value="CAIDA_GOLPE">🤕 Caída o Golpe Fuerte (Contusión)</option>
@@ -22287,7 +22066,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Nivel de Gravedad:</label>
+                  <label className="form-label">Nivel de Gravedad:</label>
                   <select
                     value={newConsultationForm.severity}
                     onChange={(e) =>
@@ -22296,7 +22075,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         severity: e.target.value as MedicalConsultationItem['severity'],
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                    className="form-select w-full"
                   >
                     <option value="LEVE">🟢 Leve (Atención y alta a salón)</option>
                     <option value="MODERADA">🟡 Moderada (Requiere reposo/observación)</option>
@@ -22306,13 +22085,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               {/* Signos Vitales */}
-              <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-2">
+              <div className="dashboard-subcard space-y-2">
                 <div className="text-[10px] font-mono text-slate-400 uppercase font-bold block">
                   Toma de Signos Vitales
                 </div>
                 <div className="grid grid-cols-3 gap-2">
                   <div className="space-y-0.5">
-                    <label className="text-[10px] text-slate-400">Temperatura (°C):</label>
+                    <label className="form-label">Temperatura (°C):</label>
                     <input
                       type="number"
                       step="0.1"
@@ -22320,11 +22099,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       onChange={(e) =>
                         setNewConsultationForm({ ...newConsultationForm, temperatureCelsius: Number(e.target.value) })
                       }
-                      className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-mono outline-none focus:border-rose-400 text-xs"
+                      className="form-input w-full font-mono"
                     />
                   </div>
                   <div className="space-y-0.5">
-                    <label className="text-[10px] text-slate-400">Presión Arterial:</label>
+                    <label className="form-label">Presión Arterial:</label>
                     <input
                       type="text"
                       placeholder="110/70"
@@ -22332,25 +22111,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       onChange={(e) =>
                         setNewConsultationForm({ ...newConsultationForm, bloodPressure: e.target.value })
                       }
-                      className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-mono outline-none focus:border-rose-400 text-xs"
+                      className="form-input w-full font-mono"
                     />
                   </div>
                   <div className="space-y-0.5">
-                    <label className="text-[10px] text-slate-400">Frec. Cardíaca (bpm):</label>
+                    <label className="form-label">Frec. Cardíaca (bpm):</label>
                     <input
                       type="number"
                       value={newConsultationForm.heartRateBpm}
                       onChange={(e) =>
                         setNewConsultationForm({ ...newConsultationForm, heartRateBpm: Number(e.target.value) })
                       }
-                      className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-mono outline-none focus:border-rose-400 text-xs"
+                      className="form-input w-full font-mono"
                     />
                   </div>
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Síntomas Reportados por el Alumno o Docente:</label>
+                <label className="form-label">Síntomas Reportados por el Alumno o Docente:</label>
                 <textarea
                   rows={2}
                   required
@@ -22359,12 +22138,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   onChange={(e) =>
                     setNewConsultationForm({ ...newConsultationForm, symptomsDescription: e.target.value })
                   }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Tratamiento y Procedimiento Clínico Aplicado:</label>
+                <label className="form-label">Tratamiento y Procedimiento Clínico Aplicado:</label>
                 <textarea
                   rows={2}
                   required
@@ -22373,25 +22152,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   onChange={(e) =>
                     setNewConsultationForm({ ...newConsultationForm, treatmentGiven: e.target.value })
                   }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Enfermera / Responsable:</label>
+                  <label className="form-label">Enfermera / Responsable:</label>
                   <input
                     type="text"
                     value={newConsultationForm.nurseInCharge}
                     onChange={(e) =>
                       setNewConsultationForm({ ...newConsultationForm, nurseInCharge: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Observaciones Adicionales:</label>
+                  <label className="form-label">Observaciones Adicionales:</label>
                   <input
                     type="text"
                     placeholder="Ej. Alumno cooperador y estable..."
@@ -22399,7 +22178,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewConsultationForm({ ...newConsultationForm, nurseNotes: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
@@ -22412,21 +22191,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   onChange={(e) =>
                     setNewConsultationForm({ ...newConsultationForm, requiresPickupByParent: e.target.checked })
                   }
-                  className="w-4 h-4 rounded text-rose-600 bg-slate-900 border-slate-700 focus:ring-rose-500"
+                  className="form-input"
                 />
                 <label htmlFor="pickupCheck" className="text-slate-300 font-bold cursor-pointer text-xs">
                   Se solicita el retiro temprano del alumno por parte del tutor para revisión externa
                 </label>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowNewConsultationModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewConsultationModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black shadow-lg shadow-rose-600/25 transition-all cursor-pointer"
@@ -22441,33 +22214,28 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: PROGRAMAR MEDICAMENTO CON RECETA */}
       {showNewMedicationModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-sky-400 font-bold uppercase tracking-wider block">
                   Control Farmacéutico Escolar
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <Pill className="w-5 h-5 text-sky-400" />
                   Programar Medicamento Bajo Receta Médica
                 </h3>
               </div>
-              <button
-                onClick={() => setShowNewMedicationModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button type="button" onClick={() => setShowNewMedicationModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateScheduledMedication} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Alumno:</label>
+                <label className="form-label">Alumno:</label>
                 <select
                   value={newMedicationForm.studentId}
                   onChange={(e) => setNewMedicationForm({ ...newMedicationForm, studentId: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-sky-400"
+                  className="form-select w-full"
                 >
                   {students.map((s) => (
                     <option key={s.id} value={s.id}>
@@ -22479,61 +22247,61 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Nombre del Fármaco y Presentación:</label>
+                  <label className="form-label">Nombre del Fármaco y Presentación:</label>
                   <input
                     type="text"
                     required
                     placeholder="Ej. Loratadina Jarabe 5mg/5ml"
                     value={newMedicationForm.medicationName}
                     onChange={(e) => setNewMedicationForm({ ...newMedicationForm, medicationName: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-sky-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Dosis Exacta Autorizada:</label>
+                  <label className="form-label">Dosis Exacta Autorizada:</label>
                   <input
                     type="text"
                     required
                     placeholder="Ej. 5 ml vía oral"
                     value={newMedicationForm.dosage}
                     onChange={(e) => setNewMedicationForm({ ...newMedicationForm, dosage: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-sky-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-2">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Hora de Toma:</label>
+                  <label className="form-label">Hora de Toma:</label>
                   <input
                     type="time"
                     required
                     value={newMedicationForm.scheduledTime}
                     onChange={(e) => setNewMedicationForm({ ...newMedicationForm, scheduledTime: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-2 text-white outline-none focus:border-sky-400 font-mono"
+                    className="form-input w-full font-mono"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Fecha Inicio:</label>
+                  <label className="form-label">Fecha Inicio:</label>
                   <input
                     type="date"
                     required
                     value={newMedicationForm.startDate}
                     onChange={(e) => setNewMedicationForm({ ...newMedicationForm, startDate: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-2 text-white outline-none focus:border-sky-400 font-mono"
+                    className="form-input w-full font-mono"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Fecha Fin:</label>
+                  <label className="form-label">Fecha Fin:</label>
                   <input
                     type="date"
                     required
                     value={newMedicationForm.endDate}
                     onChange={(e) => setNewMedicationForm({ ...newMedicationForm, endDate: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-2 text-white outline-none focus:border-sky-400 font-mono"
+                    className="form-input w-full font-mono"
                   />
                 </div>
               </div>
@@ -22544,7 +22312,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1">
-                    <label className="text-[11px] text-slate-400 font-bold">Médico que Prescribe:</label>
+                    <label className="form-label">Médico que Prescribe:</label>
                     <input
                       type="text"
                       required
@@ -22553,12 +22321,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       onChange={(e) =>
                         setNewMedicationForm({ ...newMedicationForm, prescriptionDoctorName: e.target.value })
                       }
-                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-sky-400"
+                      className="form-input w-full"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-[11px] text-slate-400 font-bold">Cédula Profesional:</label>
+                    <label className="form-label">Cédula Profesional:</label>
                     <input
                       type="text"
                       required
@@ -22567,31 +22335,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       onChange={(e) =>
                         setNewMedicationForm({ ...newMedicationForm, doctorLicense: e.target.value })
                       }
-                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-sky-400"
+                      className="form-input w-full"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[11px] text-slate-400 font-bold">Nombre del Padre que Autoriza:</label>
+                  <label className="form-label">Nombre del Padre que Autoriza:</label>
                   <input
                     type="text"
                     placeholder="Ej. Lic. Mariana Castro"
                     value={newMedicationForm.parentName}
                     onChange={(e) => setNewMedicationForm({ ...newMedicationForm, parentName: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-sky-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowNewMedicationModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewMedicationModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black shadow-lg shadow-sky-500/25 transition-all cursor-pointer"
@@ -22606,16 +22368,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: HOJA CLÍNICA DE ATENCIÓN IMPRIMIBLE */}
       {showMedicalReportModal && selectedConsultationForReport && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-4 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
             <div className="flex items-center justify-between border-b border-slate-800 pb-2">
               <div className="font-mono text-xs text-rose-400 font-bold">Hoja Clínica Oficial de Atención</div>
-              <button
-                onClick={() => setShowMedicalReportModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button type="button" onClick={() => setShowMedicalReportModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             {/* Hoja Clínica con Estilo Impreso */}
@@ -22706,14 +22463,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2">
-              <button
-                type="button"
-                onClick={() => setShowMedicalReportModal(false)}
-                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs cursor-pointer"
-              >
-                Cerrar
-              </button>
+            <div className="modal-actions">
+              <button type="button" onClick={() => setShowMedicalReportModal(false)} className="btn btn-secondary">Cerrar</button>
               <button
                 type="button"
                 onClick={() => window.print()}
@@ -22729,41 +22480,36 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: REGISTRAR NUEVA ACADEMIA / TALLER */}
       {showNewWorkshopModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                   Turno Vespertino
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <Trophy className="w-5 h-5 text-amber-400" />
                   Nueva Academia o Taller Extracurricular
                 </h3>
               </div>
-              <button
-                onClick={() => setShowNewWorkshopModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button type="button" onClick={() => setShowNewWorkshopModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateWorkshop} className="space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Código Identificador:</label>
+                  <label className="form-label">Código Identificador:</label>
                   <input
                     type="text"
                     placeholder="Ej. TAL-ROB-02"
                     value={newWorkshopForm.code}
                     onChange={(e) => setNewWorkshopForm({ ...newWorkshopForm, code: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono outline-none focus:border-amber-400"
+                    className="form-input w-full font-mono"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Categoría:</label>
+                  <label className="form-label">Categoría:</label>
                   <select
                     value={newWorkshopForm.category}
                     onChange={(e) =>
@@ -22772,7 +22518,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         category: e.target.value as ExtracurricularWorkshopItem['category'],
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-select w-full"
                   >
                     <option value="CIENCIA_TECNOLOGIA">🤖 Ciencia, Robótica y STEAM</option>
                     <option value="DEPORTIVO">⚽ Deportes y Torneos</option>
@@ -22784,94 +22530,94 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Nombre de la Academia / Taller:</label>
+                <label className="form-label">Nombre de la Academia / Taller:</label>
                 <input
                   type="text"
                   required
                   placeholder="Ej. Robótica Avanzada e Inteligencia Artificial"
                   value={newWorkshopForm.name}
                   onChange={(e) => setNewWorkshopForm({ ...newWorkshopForm, name: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Descripción del Programa Formativo:</label>
+                <label className="form-label">Descripción del Programa Formativo:</label>
                 <textarea
                   rows={2}
                   placeholder="Objetivos de aprendizaje, actividades semanales y materiales..."
                   value={newWorkshopForm.description}
                   onChange={(e) => setNewWorkshopForm({ ...newWorkshopForm, description: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Instructor / Docente:</label>
+                  <label className="form-label">Instructor / Docente:</label>
                   <input
                     type="text"
                     required
                     placeholder="Ej. Ing. Fernando Salgado"
                     value={newWorkshopForm.instructorName}
                     onChange={(e) => setNewWorkshopForm({ ...newWorkshopForm, instructorName: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Teléfono de Contacto:</label>
+                  <label className="form-label">Teléfono de Contacto:</label>
                   <input
                     type="text"
                     placeholder="+52 55 ..."
                     value={newWorkshopForm.instructorPhone}
                     onChange={(e) => setNewWorkshopForm({ ...newWorkshopForm, instructorPhone: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Aula / Instalación Asignada:</label>
+                  <label className="form-label">Aula / Instalación Asignada:</label>
                   <input
                     type="text"
                     required
                     placeholder="Ej. Laboratorio de Cómputo"
                     value={newWorkshopForm.classroom}
                     onChange={(e) => setNewWorkshopForm({ ...newWorkshopForm, classroom: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Horario Vespertino:</label>
+                  <label className="form-label">Horario Vespertino:</label>
                   <input
                     type="text"
                     required
                     placeholder="14:45 - 16:15 hrs"
                     value={newWorkshopForm.scheduleTime}
                     onChange={(e) => setNewWorkshopForm({ ...newWorkshopForm, scheduleTime: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono outline-none focus:border-amber-400"
+                    className="form-input w-full font-mono"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-2">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Días (Separados por coma):</label>
+                  <label className="form-label">Días (Separados por coma):</label>
                   <input
                     type="text"
                     required
                     placeholder="MARTES, JUEVES"
                     value={newWorkshopForm.scheduleDays}
                     onChange={(e) => setNewWorkshopForm({ ...newWorkshopForm, scheduleDays: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-2 text-white font-mono text-[11px] outline-none focus:border-amber-400"
+                    className="form-input w-full font-mono"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Cuota Mensual ($):</label>
+                  <label className="form-label">Cuota Mensual ($):</label>
                   <input
                     type="number"
                     required
@@ -22879,12 +22625,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewWorkshopForm({ ...newWorkshopForm, monthlyFeeMXN: Number(e.target.value) })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-2 text-white font-mono text-[11px] outline-none focus:border-amber-400"
+                    className="form-input w-full font-mono"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Cupo Máximo:</label>
+                  <label className="form-label">Cupo Máximo:</label>
                   <input
                     type="number"
                     required
@@ -22892,19 +22638,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewWorkshopForm({ ...newWorkshopForm, maxCapacity: Number(e.target.value) })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-2 text-white font-mono text-[11px] outline-none focus:border-amber-400"
+                    className="form-input w-full font-mono"
                   />
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowNewWorkshopModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewWorkshopModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
@@ -22919,33 +22659,28 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: INSCRIBIR ALUMNO A TALLER */}
       {showEnrollWorkshopModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-md">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                   Inscripción Extracurricular
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <Users className="w-5 h-5 text-amber-400" />
                   Inscribir Alumno a Academia
                 </h3>
               </div>
-              <button
-                onClick={() => setShowEnrollWorkshopModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button type="button" onClick={() => setShowEnrollWorkshopModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleEnrollStudentWorkshop} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Seleccionar Academia / Taller:</label>
+                <label className="form-label">Seleccionar Academia / Taller:</label>
                 <select
                   value={enrollWorkshopForm.workshopId}
                   onChange={(e) => setEnrollWorkshopForm({ ...enrollWorkshopForm, workshopId: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-select w-full"
                 >
                   {extracurricularWorkshops.map((w) => (
                     <option key={w.id} value={w.id}>
@@ -22956,11 +22691,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Alumno a Inscribir:</label>
+                <label className="form-label">Alumno a Inscribir:</label>
                 <select
                   value={enrollWorkshopForm.studentId}
                   onChange={(e) => setEnrollWorkshopForm({ ...enrollWorkshopForm, studentId: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-select w-full"
                 >
                   {students.map((s) => (
                     <option key={s.id} value={s.id}>
@@ -22977,14 +22712,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </p>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowEnrollWorkshopModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowEnrollWorkshopModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
@@ -22999,30 +22728,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: REGISTRAR ACTIVO FIJO */}
       {showNewAssetModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-teal-400 font-bold uppercase tracking-wider block">
                   Control Patrimonial
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <Box className="w-5 h-5 text-teal-400" />
                   Registrar Nuevo Activo Fijo
                 </h3>
               </div>
-              <button
-                onClick={() => setShowNewAssetModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button type="button" onClick={() => setShowNewAssetModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateSchoolAsset} className="space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Categoría de Activo:</label>
+                  <label className="form-label">Categoría de Activo:</label>
                   <select
                     value={newAssetForm.category}
                     onChange={(e) =>
@@ -23031,7 +22755,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         category: e.target.value as SchoolAssetItem['category'],
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-teal-400"
+                    className="form-select w-full"
                   >
                     <option value="TECNOLOGIA_COMPUTO">💻 Tecnología y Cómputo</option>
                     <option value="MOBILIARIO_AULAS">🪑 Mobiliario de Aulas</option>
@@ -23042,7 +22766,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Condición Inicial:</label>
+                  <label className="form-label">Condición Inicial:</label>
                   <select
                     value={newAssetForm.condition}
                     onChange={(e) =>
@@ -23051,7 +22775,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         condition: e.target.value as SchoolAssetItem['condition'],
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-teal-400"
+                    className="form-select w-full"
                   >
                     <option value="EXCELENTE">🟢 Excelente (Nuevo)</option>
                     <option value="BUENO">🟢 Bueno (Operativo)</option>
@@ -23061,69 +22785,69 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Nombre descriptivo del Activo:</label>
+                <label className="form-label">Nombre descriptivo del Activo:</label>
                 <input
                   type="text"
                   required
                   placeholder="Ej. Pantalla Interactiva SMART Board 75 pulgadas"
                   value={newAssetForm.name}
                   onChange={(e) => setNewAssetForm({ ...newAssetForm, name: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-teal-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Marca y Modelo:</label>
+                  <label className="form-label">Marca y Modelo:</label>
                   <input
                     type="text"
                     placeholder="Ej. SMART Board GX Series"
                     value={newAssetForm.brandModel}
                     onChange={(e) => setNewAssetForm({ ...newAssetForm, brandModel: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-teal-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Número de Serie Oficial:</label>
+                  <label className="form-label">Número de Serie Oficial:</label>
                   <input
                     type="text"
                     placeholder="Ej. SN-883921-MX"
                     value={newAssetForm.serialNumber}
                     onChange={(e) => setNewAssetForm({ ...newAssetForm, serialNumber: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono outline-none focus:border-teal-400"
+                    className="form-input w-full font-mono"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Ubicación Asignada:</label>
+                  <label className="form-label">Ubicación Asignada:</label>
                   <input
                     type="text"
                     required
                     placeholder="Ej. Aula 101 Primaria 1º 'A'"
                     value={newAssetForm.assignedLocation}
                     onChange={(e) => setNewAssetForm({ ...newAssetForm, assignedLocation: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-teal-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Persona o Docente Responsable:</label>
+                  <label className="form-label">Persona o Docente Responsable:</label>
                   <input
                     type="text"
                     placeholder="Ej. Profra. Laura Gómez"
                     value={newAssetForm.responsiblePerson}
                     onChange={(e) => setNewAssetForm({ ...newAssetForm, responsiblePerson: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-teal-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Valor de Adquisición ($ MXN):</label>
+                  <label className="form-label">Valor de Adquisición ($ MXN):</label>
                   <input
                     type="number"
                     required
@@ -23131,40 +22855,34 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewAssetForm({ ...newAssetForm, purchaseValueMXN: Number(e.target.value) })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono outline-none focus:border-teal-400"
+                    className="form-input w-full font-mono"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Vencimiento de Garantía:</label>
+                  <label className="form-label">Vencimiento de Garantía:</label>
                   <input
                     type="date"
                     value={newAssetForm.warrantyExpiry}
                     onChange={(e) => setNewAssetForm({ ...newAssetForm, warrantyExpiry: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-teal-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Observaciones / Notas:</label>
+                <label className="form-label">Observaciones / Notas:</label>
                 <textarea
                   rows={2}
                   placeholder="Detalles de instalación, accesorios incluidos..."
                   value={newAssetForm.notes}
                   onChange={(e) => setNewAssetForm({ ...newAssetForm, notes: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-teal-400"
+                  className="form-input w-full"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowNewAssetModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewAssetModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-black shadow-lg shadow-teal-600/25 transition-all cursor-pointer"
@@ -23179,33 +22897,28 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: REPORTAR AVERÍA / TICKET DE MANTENIMIENTO */}
       {showNewTicketModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-md">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                   Mesa de Ayuda
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <Wrench className="w-5 h-5 text-amber-400" />
                   Reportar Avería o Mantenimiento
                 </h3>
               </div>
-              <button
-                onClick={() => setShowNewTicketModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button type="button" onClick={() => setShowNewTicketModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateMaintenanceTicket} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Activo con Desperfecto:</label>
+                <label className="form-label">Activo con Desperfecto:</label>
                 <select
                   value={newTicketForm.assetId}
                   onChange={(e) => setNewTicketForm({ ...newTicketForm, assetId: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-select w-full"
                 >
                   {schoolAssets.map((a) => (
                     <option key={a.id} value={a.id}>
@@ -23217,7 +22930,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Nivel de Prioridad:</label>
+                  <label className="form-label">Nivel de Prioridad:</label>
                   <select
                     value={newTicketForm.priority}
                     onChange={(e) =>
@@ -23226,7 +22939,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         priority: e.target.value as AssetMaintenanceTicketItem['priority'],
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-select w-full"
                   >
                     <option value="BAJA">⚪ Baja (Preventivo)</option>
                     <option value="MEDIA">🟡 Media (Requiere Atención)</option>
@@ -23236,59 +22949,53 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Técnico / Área Asignada:</label>
+                  <label className="form-label">Técnico / Área Asignada:</label>
                   <input
                     type="text"
                     value={newTicketForm.assignedTo}
                     onChange={(e) => setNewTicketForm({ ...newTicketForm, assignedTo: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Título del Problema:</label>
+                <label className="form-label">Título del Problema:</label>
                 <input
                   type="text"
                   required
                   placeholder="Ej. Falla en lámpara de proyección o falso contacto"
                   value={newTicketForm.title}
                   onChange={(e) => setNewTicketForm({ ...newTicketForm, title: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Descripción detallada de la Falla:</label>
+                <label className="form-label">Descripción detallada de la Falla:</label>
                 <textarea
                   rows={3}
                   required
                   placeholder="Describe qué ocurrió, cuándo comenzó la falla y el estado actual..."
                   value={newTicketForm.description}
                   onChange={(e) => setNewTicketForm({ ...newTicketForm, description: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Reportado por:</label>
+                <label className="form-label">Reportado por:</label>
                 <input
                   type="text"
                   placeholder="Ej. Profra. Laura Gómez / Mtro. Roberto Salazar"
                   value={newTicketForm.reportedBy}
                   onChange={(e) => setNewTicketForm({ ...newTicketForm, reportedBy: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-input w-full"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowNewTicketModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewTicketModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
@@ -23303,24 +23010,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: FICHA TÉCNICA DEL ACTIVO */}
       {showAssetDetailModal && selectedAssetForDetail && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-teal-400 font-bold uppercase tracking-wider block">
                   Ficha Técnica Oficial
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <FileText className="w-5 h-5 text-teal-400" />
                   {selectedAssetForDetail.assetTag}
                 </h3>
               </div>
-              <button
-                onClick={() => setShowAssetDetailModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button type="button" onClick={() => setShowAssetDetailModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-3 text-xs">
@@ -23362,14 +23064,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
             )}
 
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-              <button
-                type="button"
-                onClick={() => setShowAssetDetailModal(false)}
-                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer text-xs"
-              >
-                Cerrar
-              </button>
+            <div className="modal-actions">
+              <button type="button" onClick={() => setShowAssetDetailModal(false)} className="btn btn-secondary">Cerrar</button>
               <button
                 type="button"
                 onClick={() => window.print()}
@@ -23385,41 +23081,36 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: NUEVA ENCUESTA INSTITUCIONAL */}
       {showNewSurveyModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
                   Evaluación Institucional
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <MessageSquareQuote className="w-5 h-5 text-rose-400" />
                   Crear Nueva Encuesta Institucional
                 </h3>
               </div>
-              <button
-                onClick={() => setShowNewSurveyModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button type="button" onClick={() => setShowNewSurveyModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateInstitutionalSurvey} className="space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Código Identificador:</label>
+                  <label className="form-label">Código Identificador:</label>
                   <input
                     type="text"
                     placeholder="Ej. ENC-2026-T2"
                     value={newSurveyForm.code}
                     onChange={(e) => setNewSurveyForm({ ...newSurveyForm, code: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono outline-none focus:border-rose-400"
+                    className="form-input w-full font-mono"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Audiencia Objetivo:</label>
+                  <label className="form-label">Audiencia Objetivo:</label>
                   <select
                     value={newSurveyForm.targetAudience}
                     onChange={(e) =>
@@ -23428,7 +23119,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         targetAudience: e.target.value as InstitutionalSurveyItem['targetAudience'],
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                    className="form-select w-full"
                   >
                     <option value="PADRES_FAMILIA">👨‍👩‍👧‍👦 Padres de Familia</option>
                     <option value="DOCENTES">👩‍🏫 Personal Docente</option>
@@ -23439,31 +23130,31 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Título de la Encuesta:</label>
+                <label className="form-label">Título de la Encuesta:</label>
                 <input
                   type="text"
                   required
                   placeholder="Ej. Encuesta Trimestral de Calidad Educativa y Servicios"
                   value={newSurveyForm.title}
                   onChange={(e) => setNewSurveyForm({ ...newSurveyForm, title: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Descripción y Propósito:</label>
+                <label className="form-label">Descripción y Propósito:</label>
                 <textarea
                   rows={2}
                   placeholder="Explica a los participantes el objetivo de esta medición y cómo impactará en las mejoras escolares..."
                   value={newSurveyForm.description}
                   onChange={(e) => setNewSurveyForm({ ...newSurveyForm, description: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Categoría Principal:</label>
+                  <label className="form-label">Categoría Principal:</label>
                   <select
                     value={newSurveyForm.category}
                     onChange={(e) =>
@@ -23472,7 +23163,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         category: e.target.value as InstitutionalSurveyItem['category'],
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                    className="form-select w-full"
                   >
                     <option value="SATISFACCION_GENERAL_NPS">⭐ Satisfacción General (NPS)</option>
                     <option value="CALIDAD_EDUCATIVA">📚 Calidad Educativa y Docencia</option>
@@ -23483,13 +23174,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Fecha Límite de Recepción:</label>
+                  <label className="form-label">Fecha Límite de Recepción:</label>
                   <input
                     type="date"
                     required
                     value={newSurveyForm.endDate}
                     onChange={(e) => setNewSurveyForm({ ...newSurveyForm, endDate: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
@@ -23501,14 +23192,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </p>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowNewSurveyModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewSurveyModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black shadow-lg shadow-rose-600/25 transition-all cursor-pointer"
@@ -23523,9 +23208,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: RESPONDER ENCUESTA INSTITUCIONAL */}
       {showRespondSurveyModal && selectedSurveyForRespond && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-xl">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-wider block">
                   {selectedSurveyForRespond.code} • Participación Activa
@@ -23535,12 +23220,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   {selectedSurveyForRespond.title}
                 </h3>
               </div>
-              <button
-                onClick={() => setShowRespondSurveyModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button type="button" onClick={() => setShowRespondSurveyModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleSubmitSurveyResponse} className="space-y-5 text-xs">
@@ -23584,7 +23264,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               {/* Pregunta 2: Docencia (1 a 5) */}
-              <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
+              <div className="dashboard-subcard space-y-2">
                 <strong className="text-slate-200 text-xs block">
                   2. ¿Cómo califica la atención pedagógica, calidez y comunicación del personal docente?
                 </strong>
@@ -23607,7 +23287,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               {/* Pregunta 3: Servicios e Instalaciones (1 a 5) */}
-              <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
+              <div className="dashboard-subcard space-y-2">
                 <strong className="text-slate-200 text-xs block">
                   3. ¿El servicio de cafetería, transportación e instalaciones cumple sus expectativas?
                 </strong>
@@ -23631,18 +23311,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               {/* Pregunta 4: Comentarios libres */}
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">4. Comentarios adicionales o propuestas de mejora:</label>
+                <label className="form-label">4. Comentarios adicionales o propuestas de mejora:</label>
                 <textarea
                   rows={3}
                   placeholder="Comparte cualquier aspecto específico que desees destacar o sugerir para el colegio..."
                   value={surveyAnswerForm.comments}
                   onChange={(e) => setSurveyAnswerForm({ ...surveyAnswerForm, comments: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="flex items-center justify-between p-3 bg-slate-950 rounded-2xl border border-slate-800">
-                <label className="flex items-center gap-2 cursor-pointer text-slate-300">
+                <label className="form-label">
                   <input
                     type="checkbox"
                     checked={surveyAnswerForm.isAnonymous}
@@ -23654,14 +23334,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="text-[10px] text-slate-400">Protección de Datos</div>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowRespondSurveyModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowRespondSurveyModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black shadow-lg shadow-rose-600/25 transition-all cursor-pointer"
@@ -23676,29 +23350,24 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: NUEVA SUGERENCIA PARA BUZÓN DIRECTIVO */}
       {showNewSuggestionModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-md">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                   Buzón Directivo Confidencial
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <Send className="w-5 h-5 text-amber-400" />
                   Enviar Mensaje a Dirección General
                 </h3>
               </div>
-              <button
-                onClick={() => setShowNewSuggestionModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button type="button" onClick={() => setShowNewSuggestionModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateConfidentialSuggestion} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Área o Categoría del Asunto:</label>
+                <label className="form-label">Área o Categoría del Asunto:</label>
                 <select
                   value={newSuggestionForm.category}
                   onChange={(e) =>
@@ -23707,7 +23376,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       category: e.target.value as ConfidentialSuggestionItem['category'],
                     })
                   }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-select w-full"
                 >
                   <option value="INSTALACIONES">🏗️ Instalaciones y Mantenimiento</option>
                   <option value="ACADEMICA">📚 Aspectos Académicos o Docencia</option>
@@ -23719,57 +23388,57 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Asunto Principal:</label>
+                <label className="form-label">Asunto Principal:</label>
                 <input
                   type="text"
                   required
                   placeholder="Ej. Propuesta de techumbre para patio de juegos"
                   value={newSuggestionForm.subject}
                   onChange={(e) => setNewSuggestionForm({ ...newSuggestionForm, subject: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Mensaje o Sugerencia:</label>
+                <label className="form-label">Mensaje o Sugerencia:</label>
                 <textarea
                   rows={4}
                   required
                   placeholder="Describe detalladamente tu propuesta, felicitación o inquietud..."
                   value={newSuggestionForm.message}
                   onChange={(e) => setNewSuggestionForm({ ...newSuggestionForm, message: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-input w-full"
                 />
               </div>
 
               {!newSuggestionForm.isAnonymous && (
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1">
-                    <label className="text-slate-300 font-bold">Tu Nombre (Opcional):</label>
+                    <label className="form-label">Tu Nombre (Opcional):</label>
                     <input
                       type="text"
                       placeholder="Ej. Fernando Mendoza"
                       value={newSuggestionForm.senderName}
                       onChange={(e) => setNewSuggestionForm({ ...newSuggestionForm, senderName: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                      className="form-input w-full"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-slate-300 font-bold">Correo de Contacto:</label>
+                    <label className="form-label">Correo de Contacto:</label>
                     <input
                       type="email"
                       placeholder="tutor@ejemplo.com"
                       value={newSuggestionForm.senderEmail}
                       onChange={(e) => setNewSuggestionForm({ ...newSuggestionForm, senderEmail: e.target.value })}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                      className="form-input w-full"
                     />
                   </div>
                 </div>
               )}
 
               <div className="flex items-center justify-between p-3 bg-slate-950 rounded-2xl border border-slate-800">
-                <label className="flex items-center gap-2 cursor-pointer text-slate-300">
+                <label className="form-label">
                   <input
                     type="checkbox"
                     checked={newSuggestionForm.isAnonymous}
@@ -23783,14 +23452,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="text-[10px] text-amber-400 font-bold">Buzón Seguro</div>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowNewSuggestionModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewSuggestionModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
@@ -23805,30 +23468,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: NUEVO EVENTO ESCOLAR O SESIÓN CTE */}
       {showNewEventModal && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                   Organización Institucional
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <PartyPopper className="w-5 h-5 text-amber-400" />
                   Programar Evento o Sesión CTE
                 </h3>
               </div>
-              <button
-                onClick={() => setShowNewEventModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button type="button" onClick={() => setShowNewEventModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateSchoolEvent} className="space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Tipo de Actividad:</label>
+                  <label className="form-label">Tipo de Actividad:</label>
                   <select
                     value={newEventForm.type}
                     onChange={(e) =>
@@ -23853,78 +23511,78 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Código Identificador:</label>
+                  <label className="form-label">Código Identificador:</label>
                   <input
                     type="text"
                     placeholder="Ej. EVT-2026-003"
                     value={newEventForm.code}
                     onChange={(e) => setNewEventForm({ ...newEventForm, code: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono outline-none focus:border-amber-400"
+                    className="form-input w-full font-mono"
                   />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Nombre del Evento:</label>
+                <label className="form-label">Nombre del Evento:</label>
                 <input
                   type="text"
                   required
                   placeholder="Ej. Festival del Día de Muertos y Muestra de Altares"
                   value={newEventForm.title}
                   onChange={(e) => setNewEventForm({ ...newEventForm, title: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Descripción Institucional:</label>
+                <label className="form-label">Descripción Institucional:</label>
                 <textarea
                   rows={2}
                   placeholder="Detalles sobre el propósito pedagógico, vestimenta, dinámicas o programa cívico..."
                   value={newEventForm.description}
                   onChange={(e) => setNewEventForm({ ...newEventForm, description: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Fecha de Realización:</label>
+                  <label className="form-label">Fecha de Realización:</label>
                   <input
                     type="date"
                     required
                     value={newEventForm.date}
                     onChange={(e) => setNewEventForm({ ...newEventForm, date: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Horario:</label>
+                  <label className="form-label">Horario:</label>
                   <input
                     type="text"
                     placeholder="Ej. 09:00 - 13:30 hrs"
                     value={newEventForm.time}
                     onChange={(e) => setNewEventForm({ ...newEventForm, time: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Lugar o Instalación:</label>
+                  <label className="form-label">Lugar o Instalación:</label>
                   <input
                     type="text"
                     placeholder="Ej. Patio Cívico Central"
                     value={newEventForm.location}
                     onChange={(e) => setNewEventForm({ ...newEventForm, location: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Audiencia Convocada:</label>
+                  <label className="form-label">Audiencia Convocada:</label>
                   <select
                     value={newEventForm.audience}
                     onChange={(e) =>
@@ -23933,7 +23591,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         audience: e.target.value as SchoolEventItem['audience'],
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-select w-full"
                   >
                     <option value="TODA_LA_COMUNIDAD">🌐 Toda la Comunidad Escolar</option>
                     <option value="SOLO_DOCENTES">👩‍🏫 Exclusivo Personal Docente</option>
@@ -23943,8 +23601,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800">
-                <label className="flex items-center gap-2 cursor-pointer text-slate-300">
+              <div className="dashboard-subcard">
+                <label className="form-label">
                   <input
                     type="checkbox"
                     checked={newEventForm.classesSuspended}
@@ -23957,14 +23615,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </label>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowNewEventModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewEventModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
@@ -23979,29 +23631,24 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: ASIGNAR COMISIÓN DOCENTE A EVENTO */}
       {showAssignCommissionModal && selectedEventForDetail && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-md">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">
                   {selectedEventForDetail.code}
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <Flag className="w-5 h-5 text-amber-400" />
                   Asignar Comisión Docente
                 </h3>
               </div>
-              <button
-                onClick={() => setShowAssignCommissionModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button type="button" onClick={() => setShowAssignCommissionModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleAssignTeacherCommission} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Docente Responsable:</label>
+                <label className="form-label">Docente Responsable:</label>
                 <select
                   value={newCommissionForm.teacherId}
                   onChange={(e) => {
@@ -24012,7 +23659,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       teacherName: selected ? selected.fullName : 'Docente',
                     });
                   }}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-select w-full"
                 >
                   {teachers.map((t) => (
                     <option key={t.id} value={t.id}>
@@ -24023,36 +23670,30 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Comisión o Función Asignada:</label>
+                <label className="form-label">Comisión o Función Asignada:</label>
                 <input
                   type="text"
                   required
                   placeholder="Ej. Coordinador de Audio y Sonido, Escenografía, Primeros Auxilios"
                   value={newCommissionForm.role}
                   onChange={(e) => setNewCommissionForm({ ...newCommissionForm, role: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Indicaciones Operativas y Tareas:</label>
+                <label className="form-label">Indicaciones Operativas y Tareas:</label>
                 <textarea
                   rows={3}
                   placeholder="Detalles sobre entregables, horario de montaje, materiales o coordinación con otros profesores..."
                   value={newCommissionForm.notes}
                   onChange={(e) => setNewCommissionForm({ ...newCommissionForm, notes: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-input w-full"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowAssignCommissionModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowAssignCommissionModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
@@ -24067,24 +23708,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: AGREGAR ACUERDO COLEGIADO CTE */}
       {showCteAgreementsModal && selectedEventForDetail && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-white">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
+            <div className="modal-header">
               <div>
                 <div className="text-[10px] font-mono text-sky-400 font-bold uppercase tracking-wider block">
                   {selectedEventForDetail.code} • Minuta Colegiada
                 </div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
+                <h3 className="modal-title">
                   <Check className="w-5 h-5 text-emerald-400" />
                   Asentar Acuerdo Colegiado CTE
                 </h3>
               </div>
-              <button
-                onClick={() => setShowCteAgreementsModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button type="button" onClick={() => setShowCteAgreementsModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <div className="space-y-3 text-xs">
@@ -24103,25 +23739,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             <form onSubmit={handleAddCteAgreement} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Nuevo Acuerdo Colegiado:</label>
+                <label className="form-label">Nuevo Acuerdo Colegiado:</label>
                 <textarea
                   rows={3}
                   required
                   placeholder="Ej. Acuerdo CTE 03: Establecer una rúbrica unificada de evaluación formativa para los proyectos NEM del segundo trimestre."
                   value={cteNewAgreementInput}
                   onChange={(e) => setCteNewAgreementInput(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400"
+                  className="form-input w-full"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowCteAgreementsModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cerrar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowCteAgreementsModal(false)} className="btn btn-secondary">Cerrar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black shadow-lg shadow-emerald-600/25 transition-all cursor-pointer"
@@ -24136,50 +23766,45 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: PUBLICAR PLAZA VACANTE */}
       {showNewVacancyModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-700 w-full max-w-xl rounded-3xl p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-xl">
+            <div className="modal-header">
               <h3 className="text-base font-black text-white flex items-center gap-2">
                 <Briefcase className="w-5 h-5 text-emerald-400" />
                 Publicar Nueva Plaza / Vacante Escolar
               </h3>
-              <button
-                onClick={() => setShowNewVacancyModal(false)}
-                className="text-slate-400 hover:text-white text-sm font-bold cursor-pointer"
-              >
-                ✕
-              </button>
+              <button type="button" onClick={() => setShowNewVacancyModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateJobVacancy} className="space-y-4 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="space-y-1 sm:col-span-2">
-                  <label className="text-slate-300 font-bold">Título de la Plaza Docente:</label>
+                  <label className="form-label">Título de la Plaza Docente:</label>
                   <input
                     type="text"
                     required
                     placeholder="Ej. Profesor(a) Titular Bilingüe - Primaria Alta"
                     value={newVacancyForm.title}
                     onChange={(e) => setNewVacancyForm({ ...newVacancyForm, title: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Código Interno:</label>
+                  <label className="form-label">Código Interno:</label>
                   <input
                     type="text"
                     placeholder="Ej. VAC-2026-004"
                     value={newVacancyForm.code}
                     onChange={(e) => setNewVacancyForm({ ...newVacancyForm, code: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Área / Departamento:</label>
+                  <label className="form-label">Área / Departamento:</label>
                   <select
                     value={newVacancyForm.department}
                     onChange={(e) =>
@@ -24188,7 +23813,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         department: e.target.value as JobVacancyItem['department'],
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400"
+                    className="form-select w-full"
                   >
                     <option value="DOCENCIA_PRIMARIA">Docencia Primaria</option>
                     <option value="DOCENCIA_PREESCOLAR">Docencia Preescolar</option>
@@ -24199,7 +23824,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Tipo de Contratación:</label>
+                  <label className="form-label">Tipo de Contratación:</label>
                   <select
                     value={newVacancyForm.type}
                     onChange={(e) =>
@@ -24208,7 +23833,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         type: e.target.value as JobVacancyItem['type'],
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400"
+                    className="form-select w-full"
                   >
                     <option value="TIEMPO_COMPLETO">Tiempo Completo (Matutino)</option>
                     <option value="MEDIO_TIEMPO">Medio Tiempo</option>
@@ -24219,7 +23844,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Rango Salarial Ofrecido:</label>
+                  <label className="form-label">Rango Salarial Ofrecido:</label>
                   <input
                     type="text"
                     placeholder="Ej. $18,000 - $21,000 MXN / mes"
@@ -24227,25 +23852,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewVacancyForm({ ...newVacancyForm, salaryRangeMXN: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Cierre de Convocatoria:</label>
+                  <label className="form-label">Cierre de Convocatoria:</label>
                   <input
                     type="date"
                     value={newVacancyForm.closingDate}
                     onChange={(e) =>
                       setNewVacancyForm({ ...newVacancyForm, closingDate: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Descripción del Puesto y Funciones:</label>
+                <label className="form-label">Descripción del Puesto y Funciones:</label>
                 <textarea
                   rows={2}
                   required
@@ -24254,30 +23879,24 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   onChange={(e) =>
                     setNewVacancyForm({ ...newVacancyForm, description: e.target.value })
                   }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Requisitos Institucionales & SEP (un requisito por renglón):</label>
+                <label className="form-label">Requisitos Institucionales & SEP (un requisito por renglón):</label>
                 <textarea
                   rows={3}
                   value={newVacancyForm.requirementsStr}
                   onChange={(e) =>
                     setNewVacancyForm({ ...newVacancyForm, requirementsStr: e.target.value })
                   }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400 font-mono text-[11px]"
+                  className="form-input w-full font-mono"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowNewVacancyModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewVacancyModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black shadow-lg shadow-emerald-600/25 transition-all cursor-pointer"
@@ -24292,30 +23911,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: REGISTRAR POSTULACIÓN DE CANDIDATO */}
       {showNewCandidateModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-700 w-full max-w-lg rounded-3xl p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
+            <div className="modal-header">
               <h3 className="text-base font-black text-white flex items-center gap-2">
                 <UserPlus className="w-5 h-5 text-emerald-400" />
                 Registrar Postulación de Candidato Docente
               </h3>
-              <button
-                onClick={() => setShowNewCandidateModal(false)}
-                className="text-slate-400 hover:text-white text-sm font-bold cursor-pointer"
-              >
-                ✕
-              </button>
+              <button type="button" onClick={() => setShowNewCandidateModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateCandidate} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Plaza a la que se Postula:</label>
+                <label className="form-label">Plaza a la que se Postula:</label>
                 <select
                   value={newCandidateForm.vacancyId}
                   onChange={(e) =>
                     setNewCandidateForm({ ...newCandidateForm, vacancyId: e.target.value })
                   }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400"
+                  className="form-select w-full"
                 >
                   {jobVacancies.map((v) => (
                     <option key={v.id} value={v.id}>
@@ -24326,7 +23940,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Nombre Completo del Docente / Aspirante:</label>
+                <label className="form-label">Nombre Completo del Docente / Aspirante:</label>
                 <input
                   type="text"
                   required
@@ -24335,13 +23949,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   onChange={(e) =>
                     setNewCandidateForm({ ...newCandidateForm, fullName: e.target.value })
                   }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Correo Electrónico:</label>
+                  <label className="form-label">Correo Electrónico:</label>
                   <input
                     type="email"
                     required
@@ -24350,12 +23964,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewCandidateForm({ ...newCandidateForm, email: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Teléfono de Contacto:</label>
+                  <label className="form-label">Teléfono de Contacto:</label>
                   <input
                     type="tel"
                     required
@@ -24364,14 +23978,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewCandidateForm({ ...newCandidateForm, phone: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="space-y-1 sm:col-span-2">
-                  <label className="text-slate-300 font-bold">Título o Licenciatura:</label>
+                  <label className="form-label">Título o Licenciatura:</label>
                   <input
                     type="text"
                     required
@@ -24380,12 +23994,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewCandidateForm({ ...newCandidateForm, degree: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Años Experiencia:</label>
+                  <label className="form-label">Años Experiencia:</label>
                   <input
                     type="number"
                     min={0}
@@ -24396,13 +24010,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         yearsOfExperience: Number(e.target.value),
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Número de Cédula Profesional DGP (opcional):</label>
+                <label className="form-label">Número de Cédula Profesional DGP (opcional):</label>
                 <input
                   type="text"
                   placeholder="Ej. 11982345 (o 'En trámite')"
@@ -24410,12 +24024,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   onChange={(e) =>
                     setNewCandidateForm({ ...newCandidateForm, professionalLicense: e.target.value })
                   }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400 font-mono"
+                  className="form-input w-full font-mono"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Resumen de Trayectoria / Experiencia NEM:</label>
+                <label className="form-label">Resumen de Trayectoria / Experiencia NEM:</label>
                 <textarea
                   rows={2}
                   placeholder="Experiencia previa en colegios particulares, cursos de actualización docente..."
@@ -24423,18 +24037,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   onChange={(e) =>
                     setNewCandidateForm({ ...newCandidateForm, resumeSummary: e.target.value })
                   }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400"
+                  className="form-input w-full"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowNewCandidateModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewCandidateModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black shadow-lg shadow-emerald-600/25 transition-all cursor-pointer"
@@ -24449,9 +24057,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: EVALUACIÓN Y AVANCE DE FASE DE CANDIDATO */}
       {showCandidateDetailModal && selectedCandidateForDetail && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-700 w-full max-w-lg rounded-3xl p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
+            <div className="modal-header">
               <div>
                 <h3 className="text-base font-black text-white flex items-center gap-2">
                   <FileBadge className="w-5 h-5 text-emerald-400" />
@@ -24461,12 +24069,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   {selectedCandidateForDetail.folio} • {selectedCandidateForDetail.fullName}
                 </div>
               </div>
-              <button
-                onClick={() => setShowCandidateDetailModal(false)}
-                className="text-slate-400 hover:text-white text-sm font-bold cursor-pointer"
-              >
-                ✕
-              </button>
+              <button type="button" onClick={() => setShowCandidateDetailModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <div className="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800 space-y-1.5 text-xs">
@@ -24486,7 +24089,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             <form onSubmit={handleAdvanceCandidateStatus} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Fase en el Proceso de Selección:</label>
+                <label className="form-label">Fase en el Proceso de Selección:</label>
                 <select
                   value={candidateEvaluationForm.status}
                   onChange={(e) =>
@@ -24495,7 +24098,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       status: e.target.value as TeacherCandidateItem['status'],
                     })
                   }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400"
+                  className="form-select w-full"
                 >
                   <option value="POSTULADO">1. Postulado / CV Recibido</option>
                   <option value="ENTREVISTA_INICIAL">2. Entrevista Inicial con Dirección</option>
@@ -24509,7 +24112,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">
+                  <label className="form-label">
                     Puntaje Clase Muestra (0 a 100):
                   </label>
                   <input
@@ -24523,12 +24126,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         pedagogicalDemoScore: Number(e.target.value),
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Validación SEP / DGP:</label>
+                  <label className="form-label">Validación SEP / DGP:</label>
                   <select
                     value={candidateEvaluationForm.sepAccreditation}
                     onChange={(e) =>
@@ -24537,7 +24140,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         sepAccreditation: e.target.value as TeacherCandidateItem['sepAccreditation'],
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400"
+                    className="form-select w-full"
                   >
                     <option value="VALIDADA_DGP">Cédula Oficial Validada DGP</option>
                     <option value="EN_TRAMITE">Constancia Oficial en Trámite</option>
@@ -24547,7 +24150,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">
+                <label className="form-label">
                   Notas de Desempeño Didáctico y Observaciones:
                 </label>
                 <textarea
@@ -24560,18 +24163,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       interviewNotes: e.target.value,
                     })
                   }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-emerald-400"
+                  className="form-input w-full"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowCandidateDetailModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowCandidateDetailModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black shadow-lg shadow-emerald-600/25 transition-all cursor-pointer"
@@ -24586,50 +24183,45 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: REGISTRAR SIMULACRO ESCOLAR */}
       {showNewDrillModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-700 w-full max-w-xl rounded-3xl p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-xl">
+            <div className="modal-header">
               <h3 className="text-base font-black text-white flex items-center gap-2">
                 <Siren className="w-5 h-5 text-rose-400" />
                 Registrar Simulacro Escolar (PIPC / SEP)
               </h3>
-              <button
-                onClick={() => setShowNewDrillModal(false)}
-                className="text-slate-400 hover:text-white text-sm font-bold cursor-pointer"
-              >
-                ✕
-              </button>
+              <button type="button" onClick={() => setShowNewDrillModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateCivilProtectionDrill} className="space-y-4 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="space-y-1 sm:col-span-2">
-                  <label className="text-slate-300 font-bold">Título del Simulacro:</label>
+                  <label className="form-label">Título del Simulacro:</label>
                   <input
                     type="text"
                     required
                     placeholder="Ej. Simulacro Bimestral de Repliegue Sísmico"
                     value={newDrillForm.title}
                     onChange={(e) => setNewDrillForm({ ...newDrillForm, title: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Código:</label>
+                  <label className="form-label">Código:</label>
                   <input
                     type="text"
                     placeholder="Ej. SIM-2026-004"
                     value={newDrillForm.code}
                     onChange={(e) => setNewDrillForm({ ...newDrillForm, code: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Tipo de Amenaza:</label>
+                  <label className="form-label">Tipo de Amenaza:</label>
                   <select
                     value={newDrillForm.drillType}
                     onChange={(e) =>
@@ -24638,7 +24230,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         drillType: e.target.value as CivilProtectionDrillItem['drillType'],
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                    className="form-select w-full"
                   >
                     <option value="SISMO">🔔 Sismo / Alerta Sísmica</option>
                     <option value="INCENDIO">🔥 Conato de Incendio</option>
@@ -24648,43 +24240,43 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Fecha de Ejecución:</label>
+                  <label className="form-label">Fecha de Ejecución:</label>
                   <input
                     type="date"
                     required
                     value={newDrillForm.date}
                     onChange={(e) => setNewDrillForm({ ...newDrillForm, date: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Hora de Activación:</label>
+                  <label className="form-label">Hora de Activación:</label>
                   <input
                     type="text"
                     placeholder="11:00 hrs"
                     value={newDrillForm.time}
                     onChange={(e) => setNewDrillForm({ ...newDrillForm, time: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Hipótesis Oficial del Ejercicio:</label>
+                <label className="form-label">Hipótesis Oficial del Ejercicio:</label>
                 <textarea
                   rows={2}
                   required
                   placeholder="Sismo magnitud 8.0 costas de Guerrero con percepción severa..."
                   value={newDrillForm.hypothesis}
                   onChange={(e) => setNewDrillForm({ ...newDrillForm, hypothesis: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">
+                  <label className="form-label">
                     Tiempo de Evacuación (en segundos):
                   </label>
                   <input
@@ -24698,12 +24290,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         evacuationTimeSeconds: Number(e.target.value),
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400 font-mono font-bold"
+                    className="form-input w-full font-mono"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Punto de Reunión Oficial:</label>
+                  <label className="form-label">Punto de Reunión Oficial:</label>
                   <input
                     type="text"
                     required
@@ -24712,14 +24304,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewDrillForm({ ...newDrillForm, assemblyPoint: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               {/* Conteo de Personas Desalojadas */}
               <div className="bg-slate-950/60 p-3 rounded-xl border border-slate-800 space-y-2">
-                <label className="text-slate-300 font-bold block">
+                <label className="form-label">
                   Desglose de Personas Evacuadas a Zonas Seguras:
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -24732,7 +24324,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       onChange={(e) =>
                         setNewDrillForm({ ...newDrillForm, studentsCount: Number(e.target.value) })
                       }
-                      className="w-full bg-slate-900 border border-slate-700 rounded-lg p-1.5 text-white font-mono"
+                      className="form-input w-full font-mono"
                     />
                   </div>
                   <div>
@@ -24744,7 +24336,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       onChange={(e) =>
                         setNewDrillForm({ ...newDrillForm, teachersCount: Number(e.target.value) })
                       }
-                      className="w-full bg-slate-900 border border-slate-700 rounded-lg p-1.5 text-white font-mono"
+                      className="form-input w-full font-mono"
                     />
                   </div>
                   <div>
@@ -24756,7 +24348,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       onChange={(e) =>
                         setNewDrillForm({ ...newDrillForm, staffCount: Number(e.target.value) })
                       }
-                      className="w-full bg-slate-900 border border-slate-700 rounded-lg p-1.5 text-white font-mono"
+                      className="form-input w-full font-mono"
                     />
                   </div>
                   <div>
@@ -24768,14 +24360,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       onChange={(e) =>
                         setNewDrillForm({ ...newDrillForm, visitorsCount: Number(e.target.value) })
                       }
-                      className="w-full bg-slate-900 border border-slate-700 rounded-lg p-1.5 text-white font-mono"
+                      className="form-input w-full font-mono"
                     />
                   </div>
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">
+                <label className="form-label">
                   Incidentes o Atenciones (un incidente por renglón):
                 </label>
                 <textarea
@@ -24784,13 +24376,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   onChange={(e) =>
                     setNewDrillForm({ ...newDrillForm, incidentsStr: e.target.value })
                   }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Dictamen del Comité:</label>
+                  <label className="form-label">Dictamen del Comité:</label>
                   <select
                     value={newDrillForm.evaluation}
                     onChange={(e) =>
@@ -24799,7 +24391,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         evaluation: e.target.value as CivilProtectionDrillItem['evaluation'],
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                    className="form-select w-full"
                   >
                     <option value="EXCELENTE">Excelente (Menor a 120s, repliegue impecable)</option>
                     <option value="BUENO">Bueno (Desalojo ordenado)</option>
@@ -24809,25 +24401,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Notas de la Dirección:</label>
+                  <label className="form-label">Notas de la Dirección:</label>
                   <input
                     type="text"
                     placeholder="Observaciones para próxima sesión de CTE..."
                     value={newDrillForm.notes}
                     onChange={(e) => setNewDrillForm({ ...newDrillForm, notes: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowNewDrillModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewDrillModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black shadow-lg shadow-rose-600/25 transition-all cursor-pointer"
@@ -24842,9 +24428,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: ASIGNAR BRIGADISTA */}
       {showAddBrigadeMemberModal && selectedBrigadeForAdd && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-700 w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-md">
+            <div className="modal-header">
               <div>
                 <h3 className="text-base font-black text-white flex items-center gap-2">
                   <UserPlus className="w-5 h-5 text-rose-400" />
@@ -24852,17 +24438,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </h3>
                 <div className="text-xs text-slate-400">{selectedBrigadeForAdd.name}</div>
               </div>
-              <button
-                onClick={() => setShowAddBrigadeMemberModal(false)}
-                className="text-slate-400 hover:text-white text-sm font-bold cursor-pointer"
-              >
-                ✕
-              </button>
+              <button type="button" onClick={() => setShowAddBrigadeMemberModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleAddBrigadeMember} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Docente o Personal Asignado:</label>
+                <label className="form-label">Docente o Personal Asignado:</label>
                 <select
                   value={newBrigadeMemberForm.teacherId}
                   onChange={(e) => {
@@ -24873,7 +24454,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       fullName: selected ? selected.fullName : 'Docente',
                     });
                   }}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                  className="form-select w-full"
                 >
                   {teachers.map((t) => (
                     <option key={t.id} value={t.id}>
@@ -24884,7 +24465,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Función / Rol en el Operativo:</label>
+                <label className="form-label">Función / Rol en el Operativo:</label>
                 <input
                   type="text"
                   required
@@ -24893,12 +24474,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   onChange={(e) =>
                     setNewBrigadeMemberForm({ ...newBrigadeMemberForm, role: e.target.value })
                   }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Edificio o Zona Bajo su Cobertura:</label>
+                <label className="form-label">Edificio o Zona Bajo su Cobertura:</label>
                 <input
                   type="text"
                   required
@@ -24910,11 +24491,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       buildingZone: e.target.value,
                     })
                   }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                  className="form-input w-full"
                 />
               </div>
 
-              <label className="flex items-center gap-2 text-slate-300 pt-1 cursor-pointer">
+              <label className="form-label">
                 <input
                   type="checkbox"
                   checked={newBrigadeMemberForm.certified}
@@ -24924,19 +24505,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       certified: e.target.checked,
                     })
                   }
-                  className="w-4 h-4 rounded text-rose-500 focus:ring-0 bg-slate-950 border-slate-700"
+                  className="form-input"
                 />
                 <div>Cuenta con Constancia Vigente de Capacitación en Protección Civil</div>
               </label>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowAddBrigadeMemberModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowAddBrigadeMemberModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black shadow-lg shadow-rose-600/25 transition-all cursor-pointer"
@@ -24951,9 +24526,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: EDITAR DICTAMEN DE SIMULACRO */}
       {showDrillDetailModal && selectedDrillForDetail && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-700 w-full max-w-lg rounded-3xl p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
+            <div className="modal-header">
               <div>
                 <h3 className="text-base font-black text-white flex items-center gap-2">
                   <ShieldCheck className="w-5 h-5 text-rose-400" />
@@ -24963,12 +24538,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   {selectedDrillForDetail.code} • {selectedDrillForDetail.title}
                 </div>
               </div>
-              <button
-                onClick={() => setShowDrillDetailModal(false)}
-                className="text-slate-400 hover:text-white text-sm font-bold cursor-pointer"
-              >
-                ✕
-              </button>
+              <button type="button" onClick={() => setShowDrillDetailModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <div className="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800 space-y-1 text-xs">
@@ -24988,7 +24558,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             <form onSubmit={handleUpdateDrillEvaluation} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Dictamen y Evaluación del Ejercicio:</label>
+                <label className="form-label">Dictamen y Evaluación del Ejercicio:</label>
                 <select
                   value={drillEvaluationEditForm.evaluation}
                   onChange={(e) =>
@@ -24997,7 +24567,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       evaluation: e.target.value as CivilProtectionDrillItem['evaluation'],
                     })
                   }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                  className="form-select w-full"
                 >
                   <option value="EXCELENTE">Excelente - Evacuación dentro de tiempo meta con repliegue correcto</option>
                   <option value="BUENO">Bueno - Desalojo ordenado con detalles menores</option>
@@ -25007,7 +24577,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">
+                <label className="form-label">
                   Incidentes y Atenciones Médicas (un renglón por incidente):
                 </label>
                 <textarea
@@ -25019,12 +24589,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       incidentsStr: e.target.value,
                     })
                   }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">
+                <label className="form-label">
                   Observaciones y Medidas Correctivas para el Comité PIPC:
                 </label>
                 <textarea
@@ -25036,18 +24606,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       notes: e.target.value,
                     })
                   }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-rose-400"
+                  className="form-input w-full"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowDrillDetailModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowDrillDetailModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black shadow-lg shadow-rose-600/25 transition-all cursor-pointer"
@@ -25062,25 +24626,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: CONVOCAR ASAMBLEA ESCOLAR O SESIÓN CEPS */}
       {showNewAssemblyModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-700 w-full max-w-xl rounded-3xl p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-xl">
+            <div className="modal-header">
               <h3 className="text-base font-black text-white flex items-center gap-2">
                 <FileText className="w-5 h-5 text-amber-400" />
                 Convocar Asamblea Escolar / Sesión CEPS
               </h3>
-              <button
-                onClick={() => setShowNewAssemblyModal(false)}
-                className="text-slate-400 hover:text-white text-sm font-bold cursor-pointer"
-              >
-                ✕
-              </button>
+              <button type="button" onClick={() => setShowNewAssemblyModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateSchoolAssembly} className="space-y-4 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="space-y-1 sm:col-span-2">
-                  <label className="text-slate-300 font-bold">Título de la Convocatoria:</label>
+                  <label className="form-label">Título de la Convocatoria:</label>
                   <input
                     type="text"
                     required
@@ -25089,12 +24648,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewAssemblyForm({ ...newAssemblyForm, title: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Folio de Acta:</label>
+                  <label className="form-label">Folio de Acta:</label>
                   <input
                     type="text"
                     placeholder="Ej. ACT-APF-2026-002"
@@ -25102,14 +24661,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewAssemblyForm({ ...newAssemblyForm, code: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400 font-mono"
+                    className="form-input w-full font-mono"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Tipo de Órgano Colegiado:</label>
+                  <label className="form-label">Tipo de Órgano Colegiado:</label>
                   <select
                     value={newAssemblyForm.type}
                     onChange={(e) =>
@@ -25118,7 +24677,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         type: e.target.value as SchoolAssemblyItem['type'],
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-select w-full"
                   >
                     <option value="ASAMBLEA_GENERAL_APF">Asamblea General de Padres (APF)</option>
                     <option value="SESION_ORDINARIA_CEPS">Sesión Ordinaria de Consejo (CEPS)</option>
@@ -25127,7 +24686,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Fecha Programada:</label>
+                  <label className="form-label">Fecha Programada:</label>
                   <input
                     type="date"
                     required
@@ -25135,12 +24694,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewAssemblyForm({ ...newAssemblyForm, date: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Horario:</label>
+                  <label className="form-label">Horario:</label>
                   <input
                     type="text"
                     placeholder="08:30 - 10:00 hrs"
@@ -25148,14 +24707,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewAssemblyForm({ ...newAssemblyForm, time: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Sede / Modalidad:</label>
+                  <label className="form-label">Sede / Modalidad:</label>
                   <input
                     type="text"
                     required
@@ -25164,12 +24723,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewAssemblyForm({ ...newAssemblyForm, location: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Quórum Estimado (Tutores):</label>
+                  <label className="form-label">Quórum Estimado (Tutores):</label>
                   <input
                     type="number"
                     min={1}
@@ -25180,13 +24739,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         quorumCount: Number(e.target.value),
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400 font-mono"
+                    className="form-input w-full font-mono"
                   />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">
+                <label className="form-label">
                   Orden del Día / Acuerdos Previstos (un renglón por acuerdo):
                 </label>
                 <textarea
@@ -25195,12 +24754,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   onChange={(e) =>
                     setNewAssemblyForm({ ...newAssemblyForm, agreementsStr: e.target.value })
                   }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Estatus de la Convocatoria:</label>
+                <label className="form-label">Estatus de la Convocatoria:</label>
                 <select
                   value={newAssemblyForm.status}
                   onChange={(e) =>
@@ -25209,7 +24768,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       status: e.target.value as SchoolAssemblyItem['status'],
                     })
                   }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-select w-full"
                 >
                   <option value="CONVOCADA">Convocada (Notificación enviada a tutores)</option>
                   <option value="REALIZADA_CON_ACTA">Realizada con Acta Formal Asentada</option>
@@ -25217,14 +24776,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </select>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowNewAssemblyModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewAssemblyModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
@@ -25239,24 +24792,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: REGISTRAR INTEGRANTE APF */}
       {showNewBoardMemberModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-700 w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-md">
+            <div className="modal-header">
               <h3 className="text-base font-black text-white flex items-center gap-2">
                 <UserPlus className="w-5 h-5 text-amber-400" />
                 Registrar Integrante de Mesa Directiva APF
               </h3>
-              <button
-                onClick={() => setShowNewBoardMemberModal(false)}
-                className="text-slate-400 hover:text-white text-sm font-bold cursor-pointer"
-              >
-                ✕
-              </button>
+              <button type="button" onClick={() => setShowNewBoardMemberModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleAddApfBoardMember} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Cargo en la Mesa Directiva:</label>
+                <label className="form-label">Cargo en la Mesa Directiva:</label>
                 <select
                   value={newBoardMemberForm.role}
                   onChange={(e) =>
@@ -25265,7 +24813,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       role: e.target.value as ApfBoardMemberItem['role'],
                     })
                   }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-select w-full"
                 >
                   <option value="PRESIDENTE">Presidente(a) de la APF</option>
                   <option value="SECRETARIO">Secretario(a)</option>
@@ -25277,7 +24825,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">Nombre Completo del Tutor(a):</label>
+                <label className="form-label">Nombre Completo del Tutor(a):</label>
                 <input
                   type="text"
                   required
@@ -25286,13 +24834,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   onChange={(e) =>
                     setNewBoardMemberForm({ ...newBoardMemberForm, fullName: e.target.value })
                   }
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Nombre del Alumno(a):</label>
+                  <label className="form-label">Nombre del Alumno(a):</label>
                   <input
                     type="text"
                     required
@@ -25304,12 +24852,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         studentName: e.target.value,
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Grado y Grupo:</label>
+                  <label className="form-label">Grado y Grupo:</label>
                   <input
                     type="text"
                     required
@@ -25321,14 +24869,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         studentGrade: e.target.value,
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Correo Electrónico:</label>
+                  <label className="form-label">Correo Electrónico:</label>
                   <input
                     type="email"
                     placeholder="tutor@gmail.com"
@@ -25336,12 +24884,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewBoardMemberForm({ ...newBoardMemberForm, email: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-bold">Teléfono / WhatsApp:</label>
+                  <label className="form-label">Teléfono / WhatsApp:</label>
                   <input
                     type="text"
                     placeholder="55 1234 5678"
@@ -25349,19 +24897,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewBoardMemberForm({ ...newBoardMemberForm, phone: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowNewBoardMemberModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewBoardMemberModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
@@ -25376,9 +24918,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: ASENTAR ACUERDO EN ACTA */}
       {showAddAgreementModal && selectedAssemblyForAgreement && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-700 w-full max-w-lg rounded-3xl p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
+            <div className="modal-header">
               <div>
                 <h3 className="text-base font-black text-white flex items-center gap-2">
                   <FileText className="w-5 h-5 text-amber-400" />
@@ -25388,17 +24930,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   {selectedAssemblyForAgreement.code} • {selectedAssemblyForAgreement.title}
                 </div>
               </div>
-              <button
-                onClick={() => setShowAddAgreementModal(false)}
-                className="text-slate-400 hover:text-white text-sm font-bold cursor-pointer"
-              >
-                ✕
-              </button>
+              <button type="button" onClick={() => setShowAddAgreementModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleRecordAssemblyAgreement} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="text-slate-300 font-bold">
+                <label className="form-label">
                   Redacción del Acuerdo Aprobado en Asamblea:
                 </label>
                 <textarea
@@ -25407,7 +24944,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   placeholder="Ej. Por mayoría calificada de los tutores presentes, se aprueba destinar los fondos de mantenimiento para..."
                   value={newAgreementInput}
                   onChange={(e) => setNewAgreementInput(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white outline-none focus:border-amber-400 leading-relaxed"
+                  className="form-input w-full"
                 />
               </div>
 
@@ -25415,14 +24952,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 Al asentar el acuerdo, el acta quedará registrada con validez institucional conforme al reglamento escolar y la normatividad de la SEP.
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowAddAgreementModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowAddAgreementModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
@@ -25437,36 +24968,31 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: NUEVA ORDEN DE TRABAJO */}
       {showNewWorkOrderModal && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-lg w-full shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-black text-white flex items-center gap-2">
+              <h3 className="modal-title">
                 <Wrench className="w-5 h-5 text-amber-400" />
                 Nueva Orden de Trabajo / Reparación
               </h3>
-              <button
-                onClick={() => setShowNewWorkOrderModal(false)}
-                className="text-slate-400 hover:text-white text-lg font-bold cursor-pointer"
-              >
-                ✕
-              </button>
+              <button type="button" onClick={() => setShowNewWorkOrderModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateFacilityWorkOrder} className="space-y-4 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Folio (Opcional)</label>
+                  <label className="form-label">Folio (Opcional)</label>
                   <input
                     type="text"
                     value={newWorkOrderForm.folio}
                     onChange={(e) => setNewWorkOrderForm({ ...newWorkOrderForm, folio: e.target.value })}
                     placeholder="Ej. OT-MNT-2026-004"
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Prioridad</label>
+                  <label className="form-label">Prioridad</label>
                   <select
                     value={newWorkOrderForm.priority}
                     onChange={(e) =>
@@ -25475,7 +25001,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         priority: e.target.value as FacilityWorkOrderItem['priority'],
                       })
                     }
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-500 cursor-pointer"
+                    className="form-select w-full"
                   >
                     <option value="BAJA">Baja</option>
                     <option value="MEDIA">Media</option>
@@ -25486,7 +25012,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Sistema de Infraestructura</label>
+                <label className="form-label">Sistema de Infraestructura</label>
                 <select
                   value={newWorkOrderForm.systemType}
                   onChange={(e) =>
@@ -25495,7 +25021,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       systemType: e.target.value as FacilityWorkOrderItem['systemType'],
                     })
                   }
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-500 cursor-pointer"
+                  className="form-select w-full"
                 >
                   <option value="RED_HIDRAULICA_CISTERNAS">🚰 Red Hidráulica & Cisternas</option>
                   <option value="SISTEMA_ELECTRICO">⚡ Sistema Eléctrico & Subestación</option>
@@ -25506,95 +25032,89 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Título de la Reparación *</label>
+                <label className="form-label">Título de la Reparación *</label>
                 <input
                   type="text"
                   required
                   value={newWorkOrderForm.title}
                   onChange={(e) => setNewWorkOrderForm({ ...newWorkOrderForm, title: e.target.value })}
                   placeholder="Ej. Cambio de balastra y tubos LED en Aula 202"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                  className="form-input w-full"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Ubicación Exacta en el Plantel *</label>
+                <label className="form-label">Ubicación Exacta en el Plantel *</label>
                 <input
                   type="text"
                   required
                   value={newWorkOrderForm.areaLocation}
                   onChange={(e) => setNewWorkOrderForm({ ...newWorkOrderForm, areaLocation: e.target.value })}
                   placeholder="Ej. Edificio B - Sanitarios de Niñas Planta Alta"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                  className="form-input w-full"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Descripción del Trabajo</label>
+                <label className="form-label">Descripción del Trabajo</label>
                 <textarea
                   rows={2}
                   value={newWorkOrderForm.description}
                   onChange={(e) => setNewWorkOrderForm({ ...newWorkOrderForm, description: e.target.value })}
                   placeholder="Detalles del problema reportado o materiales requeridos..."
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Asignado a</label>
+                  <label className="form-label">Asignado a</label>
                   <input
                     type="text"
                     value={newWorkOrderForm.assignedWorker}
                     onChange={(e) => setNewWorkOrderForm({ ...newWorkOrderForm, assignedWorker: e.target.value })}
                     placeholder="Ej. Don Tomás Cruz Mendoza"
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Fecha Compromiso</label>
+                  <label className="form-label">Fecha Compromiso</label>
                   <input
                     type="date"
                     value={newWorkOrderForm.targetCompletionDate}
                     onChange={(e) => setNewWorkOrderForm({ ...newWorkOrderForm, targetCompletionDate: e.target.value })}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-500 cursor-pointer"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Costo Materiales (MXN)</label>
+                  <label className="form-label">Costo Materiales (MXN)</label>
                   <input
                     type="number"
                     min="0"
                     value={newWorkOrderForm.materialsCostMXN}
                     onChange={(e) => setNewWorkOrderForm({ ...newWorkOrderForm, materialsCostMXN: Number(e.target.value) })}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-500"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Costo Mano de Obra (MXN)</label>
+                  <label className="form-label">Costo Mano de Obra (MXN)</label>
                   <input
                     type="number"
                     min="0"
                     value={newWorkOrderForm.laborCostMXN}
                     onChange={(e) => setNewWorkOrderForm({ ...newWorkOrderForm, laborCostMXN: Number(e.target.value) })}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-500"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="pt-3 border-t border-slate-800 flex items-center justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={() => setShowNewWorkOrderModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+                <button type="button" onClick={() => setShowNewWorkOrderModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
@@ -25609,8 +25129,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: ACTUALIZAR ESTATUS DE ORDEN DE TRABAJO */}
       {showUpdateWorkOrderModal && selectedWorkOrderForUpdate && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-md">
             <div className="flex items-center justify-between">
               <div>
                 <div className="font-mono text-[10px] text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
@@ -25633,7 +25153,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             <form onSubmit={handleUpdateFacilityWorkOrderStatus} className="space-y-4 text-xs">
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Nuevo Estatus</label>
+                <label className="form-label">Nuevo Estatus</label>
                 <select
                   value={updateWorkOrderForm.status}
                   onChange={(e) =>
@@ -25642,7 +25162,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       status: e.target.value as FacilityWorkOrderItem['status'],
                     })
                   }
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-500 cursor-pointer"
+                  className="form-select w-full"
                 >
                   <option value="PENDIENTE">Pendiente</option>
                   <option value="EN_EJECUCION">En Ejecución</option>
@@ -25652,7 +25172,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Notas de Ejecución / Visto Bueno</label>
+                <label className="form-label">Notas de Ejecución / Visto Bueno</label>
                 <textarea
                   rows={3}
                   value={updateWorkOrderForm.completionNotes}
@@ -25660,12 +25180,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     setUpdateWorkOrderForm({ ...updateWorkOrderForm, completionNotes: e.target.value })
                   }
                   placeholder="Detalles del trabajo concluido, pruebas realizadas o materiales aplicados..."
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                  className="form-input w-full"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Costo Real Final (MXN)</label>
+                <label className="form-label">Costo Real Final (MXN)</label>
                 <input
                   type="number"
                   min="0"
@@ -25673,7 +25193,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   onChange={(e) =>
                     setUpdateWorkOrderForm({ ...updateWorkOrderForm, actualCostMXN: Number(e.target.value) })
                   }
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-500"
+                  className="form-input w-full"
                 />
               </div>
 
@@ -25702,36 +25222,31 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: NUEVA INSPECCIÓN TÉCNICA */}
       {showNewInspectionModal && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-lg w-full shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-black text-white flex items-center gap-2">
+              <h3 className="modal-title">
                 <FileText className="w-5 h-5 text-sky-400" />
                 Registrar Inspección Periódica en Bitácora
               </h3>
-              <button
-                onClick={() => setShowNewInspectionModal(false)}
-                className="text-slate-400 hover:text-white text-lg font-bold cursor-pointer"
-              >
-                ✕
-              </button>
+              <button type="button" onClick={() => setShowNewInspectionModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateFacilityInspection} className="space-y-4 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Código (Opcional)</label>
+                  <label className="form-label">Código (Opcional)</label>
                   <input
                     type="text"
                     value={newInspectionForm.code}
                     onChange={(e) => setNewInspectionForm({ ...newInspectionForm, code: e.target.value })}
                     placeholder="Ej. INSP-2026-005"
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-sky-500"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Frecuencia</label>
+                  <label className="form-label">Frecuencia</label>
                   <select
                     value={newInspectionForm.frequency}
                     onChange={(e) =>
@@ -25740,7 +25255,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         frequency: e.target.value as FacilityInspectionItem['frequency'],
                       })
                     }
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-500 cursor-pointer"
+                    className="form-select w-full"
                   >
                     <option value="SEMANAL">Semanal</option>
                     <option value="MENSUAL">Mensual</option>
@@ -25752,7 +25267,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Sistema Evaluado</label>
+                <label className="form-label">Sistema Evaluado</label>
                 <select
                   value={newInspectionForm.systemType}
                   onChange={(e) =>
@@ -25761,7 +25276,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       systemType: e.target.value as FacilityInspectionItem['systemType'],
                     })
                   }
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-500 cursor-pointer"
+                  className="form-select w-full"
                 >
                   <option value="RED_HIDRAULICA_CISTERNAS">🚰 Red Hidráulica & Cisternas</option>
                   <option value="SISTEMA_ELECTRICO">⚡ Sistema Eléctrico & Subestación</option>
@@ -25772,54 +25287,54 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Título de la Inspección *</label>
+                <label className="form-label">Título de la Inspección *</label>
                 <input
                   type="text"
                   required
                   value={newInspectionForm.title}
                   onChange={(e) => setNewInspectionForm({ ...newInspectionForm, title: e.target.value })}
                   placeholder="Ej. Revisión Trimestral de Bombas y Tanques Hidroneumáticos"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-sky-500"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Inspector / Responsable</label>
+                  <label className="form-label">Inspector / Responsable</label>
                   <input
                     type="text"
                     value={newInspectionForm.inspectorName}
                     onChange={(e) => setNewInspectionForm({ ...newInspectionForm, inspectorName: e.target.value })}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-sky-500"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Fecha de Inspección</label>
+                  <label className="form-label">Fecha de Inspección</label>
                   <input
                     type="date"
                     value={newInspectionForm.inspectionDate}
                     onChange={(e) => setNewInspectionForm({ ...newInspectionForm, inspectionDate: e.target.value })}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-500 cursor-pointer"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-slate-300 font-bold mb-1">
+                <label className="form-label">
                   Puntos de Verificación / Checklist (1 por línea con : OPTIMO o : REGULAR_OBSERVACIONES)
                 </label>
                 <textarea
                   rows={4}
                   value={newInspectionForm.checklistStr}
                   onChange={(e) => setNewInspectionForm({ ...newInspectionForm, checklistStr: e.target.value })}
-                  className="w-full font-mono text-[11px] bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-500"
+                  className="form-input w-full font-mono"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Dictamen Global</label>
+                  <label className="form-label">Dictamen Global</label>
                   <select
                     value={newInspectionForm.overallStatus}
                     onChange={(e) =>
@@ -25828,7 +25343,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         overallStatus: e.target.value as FacilityInspectionItem['overallStatus'],
                       })
                     }
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-500 cursor-pointer"
+                    className="form-select w-full"
                   >
                     <option value="CONFORME">Conforme (Sin observaciones)</option>
                     <option value="REQUIERE_MANTENIMIENTO">Requiere Mantenimiento Preventivo</option>
@@ -25837,35 +25352,29 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Próxima Inspección Programada</label>
+                  <label className="form-label">Próxima Inspección Programada</label>
                   <input
                     type="date"
                     value={newInspectionForm.nextScheduledDate}
                     onChange={(e) => setNewInspectionForm({ ...newInspectionForm, nextScheduledDate: e.target.value })}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-sky-500 cursor-pointer"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Notas de Evidencia / Dictamen Técnico</label>
+                <label className="form-label">Notas de Evidencia / Dictamen Técnico</label>
                 <input
                   type="text"
                   value={newInspectionForm.evidenceNotes}
                   onChange={(e) => setNewInspectionForm({ ...newInspectionForm, evidenceNotes: e.target.value })}
                   placeholder="Ej. Acta firmada por jefe de mantenimiento y folio archivado en expediente SEP."
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-sky-500"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="pt-3 border-t border-slate-800 flex items-center justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={() => setShowNewInspectionModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+                <button type="button" onClick={() => setShowNewInspectionModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black shadow-lg shadow-sky-500/25 transition-all cursor-pointer"
@@ -25880,50 +25389,45 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: NUEVA SOLICITUD DE BECA */}
       {showNewScholarshipModal && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 my-8">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
+            <div className="modal-header">
               <h3 className="text-base font-black text-white flex items-center gap-2">
                 <Percent className="w-5 h-5 text-amber-400" />
                 Registrar Solicitud de Beca Escolar
               </h3>
-              <button
-                onClick={() => setShowNewScholarshipModal(false)}
-                className="text-slate-400 hover:text-white font-bold text-lg cursor-pointer"
-              >
-                ✕
-              </button>
+              <button type="button" onClick={() => setShowNewScholarshipModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateScholarshipApplication} className="space-y-3 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Nombre Completo del Alumno *</label>
+                  <label className="form-label">Nombre Completo del Alumno *</label>
                   <input
                     type="text"
                     required
                     value={newScholarshipForm.studentName}
                     onChange={(e) => setNewScholarshipForm({ ...newScholarshipForm, studentName: e.target.value })}
                     placeholder="Ej. Sofía Morales Rivas"
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Matrícula Escolar</label>
+                  <label className="form-label">Matrícula Escolar</label>
                   <input
                     type="text"
                     value={newScholarshipForm.studentCode}
                     onChange={(e) => setNewScholarshipForm({ ...newScholarshipForm, studentCode: e.target.value })}
                     placeholder="Ej. 2026-PRI-014"
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Nivel Educativo</label>
+                  <label className="form-label">Nivel Educativo</label>
                   <select
                     value={newScholarshipForm.level}
                     onChange={(e) => {
@@ -25943,19 +25447,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Grado Escolar</label>
+                  <label className="form-label">Grado Escolar</label>
                   <input
                     type="text"
                     value={newScholarshipForm.grade}
                     onChange={(e) => setNewScholarshipForm({ ...newScholarshipForm, grade: e.target.value })}
                     placeholder="Ej. 3º Primaria 'A'"
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-500"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Modalidad de Beca Solicitada</label>
+                <label className="form-label">Modalidad de Beca Solicitada</label>
                 <select
                   value={newScholarshipForm.type}
                   onChange={(e) =>
@@ -25964,7 +25468,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       type: e.target.value as ScholarshipApplicationItem['type'],
                     })
                   }
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-500 cursor-pointer"
+                  className="form-select w-full"
                 >
                   <option value="BECA_SEP_OBLIGATORIA">📜 Beca Oficial SEP (5% Art. 149 LGE)</option>
                   <option value="BECA_EXCELENCIA_ACADEMICA">⭐ Beca Excelencia Académica (Promedio &gt; 9.5)</option>
@@ -25976,7 +25480,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Promedio Anterior</label>
+                  <label className="form-label">Promedio Anterior</label>
                   <input
                     type="number"
                     step="0.1"
@@ -25984,12 +25488,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     max="10.0"
                     value={newScholarshipForm.previousGpa}
                     onChange={(e) => setNewScholarshipForm({ ...newScholarshipForm, previousGpa: Number(e.target.value) })}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-500"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Ingreso Familiar (MXN)</label>
+                  <label className="form-label">Ingreso Familiar (MXN)</label>
                   <input
                     type="number"
                     min="0"
@@ -25998,26 +25502,26 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewScholarshipForm({ ...newScholarshipForm, monthlyFamilyIncomeMXN: Number(e.target.value) })
                     }
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-500"
+                    className="form-input w-full"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Dependientes</label>
+                  <label className="form-label">Dependientes</label>
                   <input
                     type="number"
                     min="1"
                     max="10"
                     value={newScholarshipForm.dependentsCount}
                     onChange={(e) => setNewScholarshipForm({ ...newScholarshipForm, dependentsCount: Number(e.target.value) })}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-500"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">% Descuento Solicitado</label>
+                  <label className="form-label">% Descuento Solicitado</label>
                   <select
                     value={newScholarshipForm.requestedDiscountPercentage}
                     onChange={(e) =>
@@ -26026,7 +25530,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         requestedDiscountPercentage: Number(e.target.value),
                       })
                     }
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-500 cursor-pointer"
+                    className="form-select w-full"
                   >
                     <option value="25">25% de Descuento</option>
                     <option value="50">50% de Descuento</option>
@@ -26036,38 +25540,32 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Colegiatura Regular (MXN)</label>
+                  <label className="form-label">Colegiatura Regular (MXN)</label>
                   <input
                     type="number"
                     value={newScholarshipForm.standardTuitionMXN}
                     onChange={(e) =>
                       setNewScholarshipForm({ ...newScholarshipForm, standardTuitionMXN: Number(e.target.value) })
                     }
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-500"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="pt-2">
-                <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
+                <label className="form-label">
                   <input
                     type="checkbox"
                     checked={newScholarshipForm.documentsVerified}
                     onChange={(e) => setNewScholarshipForm({ ...newScholarshipForm, documentsVerified: e.target.checked })}
-                    className="rounded bg-slate-800 border-slate-700 text-amber-500 focus:ring-0 w-4 h-4 cursor-pointer"
+                    className="form-input"
                   />
                   <div>Expediente completo (Comprobantes de ingreso, boletas y solicitud formal entregados)</div>
                 </label>
               </div>
 
               <div className="pt-3 border-t border-slate-800 flex items-center justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={() => setShowNewScholarshipModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+                <button type="button" onClick={() => setShowNewScholarshipModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
@@ -26082,9 +25580,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: DICTAMEN DEL COMITÉ DE BECAS */}
       {showEvaluateScholarshipModal && selectedScholarshipForEvaluation && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 my-8">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
+            <div className="modal-header">
               <h3 className="text-base font-black text-white flex items-center gap-2">
                 <Scale className="w-5 h-5 text-amber-400" />
                 Dictamen del Comité de Becas • {selectedScholarshipForEvaluation.folio}
@@ -26116,7 +25614,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <form onSubmit={handleEvaluateScholarshipApplication} className="space-y-3 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">Resolución del Comité</label>
+                  <label className="form-label">Resolución del Comité</label>
                   <select
                     value={evaluateScholarshipForm.status}
                     onChange={(e) =>
@@ -26125,7 +25623,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         status: e.target.value as ScholarshipApplicationItem['status'],
                       })
                     }
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-500 cursor-pointer"
+                    className="form-select w-full"
                   >
                     <option value="APROBADA">✅ Aprobada</option>
                     <option value="CONDICIONADA">⚠️ Aprobada Condicionada (Promedio)</option>
@@ -26134,7 +25632,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-bold mb-1">% Beca Aprobado</label>
+                  <label className="form-label">% Beca Aprobado</label>
                   <select
                     value={evaluateScholarshipForm.approvedDiscountPercentage}
                     onChange={(e) =>
@@ -26143,7 +25641,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         approvedDiscountPercentage: Number(e.target.value),
                       })
                     }
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-500 cursor-pointer"
+                    className="form-select w-full"
                   >
                     <option value="0">0% (Sin beca)</option>
                     <option value="25">25% Descuento</option>
@@ -26172,7 +25670,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               )}
 
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Fundamentación y Dictamen del Comité *</label>
+                <label className="form-label">Fundamentación y Dictamen del Comité *</label>
                 <textarea
                   rows={3}
                   required
@@ -26181,19 +25679,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     setEvaluateScholarshipForm({ ...evaluateScholarshipForm, resolutionNotes: e.target.value })
                   }
                   placeholder="Ej. Otorgada conforme a estudio socioeconómico y cumplimiento del 5% del Art. 149 LGE. Sujeta a mantener promedio mínimo de 8.5."
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                  className="form-input w-full"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Órgano Revisor / Firmante</label>
+                <label className="form-label">Órgano Revisor / Firmante</label>
                 <input
                   type="text"
                   value={evaluateScholarshipForm.reviewerName}
                   onChange={(e) =>
                     setEvaluateScholarshipForm({ ...evaluateScholarshipForm, reviewerName: e.target.value })
                   }
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-500"
+                  className="form-input w-full"
                 />
               </div>
 
@@ -26222,9 +25720,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: NUEVA REMESA CONALITEG */}
       {showNewConalitegPackageModal && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-xl w-full shadow-2xl space-y-5 animate-in fade-in zoom-in-95">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-xl">
+            <div className="modal-header">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
                   <BookOpenCheck className="w-5 h-5 text-amber-400" />
@@ -26234,18 +25732,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <p className="text-[11px] text-slate-400">Recepción oficial de Libros de Texto Gratuitos SEP</p>
                 </div>
               </div>
-              <button
-                onClick={() => setShowNewConalitegPackageModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg transition-colors cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button type="button" onClick={() => setShowNewConalitegPackageModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateConalitegPackage} className="space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Folio de Remesa SEP *</label>
+                  <label className="form-label">Folio de Remesa SEP *</label>
                   <input
                     type="text"
                     required
@@ -26254,11 +25747,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewConalitegPackageForm({ ...newConalitegPackageForm, remesaFolio: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:border-amber-400 focus:outline-none"
+                    className="form-input w-full font-mono"
                   />
                 </div>
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Nivel Educativo</label>
+                  <label className="form-label">Nivel Educativo</label>
                   <select
                     value={newConalitegPackageForm.level}
                     onChange={(e) =>
@@ -26267,7 +25760,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         level: e.target.value as ConalitegPackageItem['level'],
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-amber-400 focus:outline-none"
+                    className="form-select w-full"
                   >
                     <option value="PRIMARIA">Primaria</option>
                     <option value="PREESCOLAR">Preescolar</option>
@@ -26277,7 +25770,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Grado Escolar Destino</label>
+                  <label className="form-label">Grado Escolar Destino</label>
                   <input
                     type="text"
                     required
@@ -26286,25 +25779,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewConalitegPackageForm({ ...newConalitegPackageForm, grade: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-amber-400 focus:outline-none"
+                    className="form-input w-full"
                   />
                 </div>
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Fecha de Recepción</label>
+                  <label className="form-label">Fecha de Recepción</label>
                   <input
                     type="date"
                     value={newConalitegPackageForm.receptionDate}
                     onChange={(e) =>
                       setNewConalitegPackageForm({ ...newConalitegPackageForm, receptionDate: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-amber-400 focus:outline-none"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Paquetes Recibidos Físicamente</label>
+                  <label className="form-label">Paquetes Recibidos Físicamente</label>
                   <input
                     type="number"
                     min="1"
@@ -26315,11 +25808,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         receivedPackagesCount: Number(e.target.value),
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:border-amber-400 focus:outline-none"
+                    className="form-input w-full font-mono"
                   />
                 </div>
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Matrícula Total Alumnos (Meta)</label>
+                  <label className="form-label">Matrícula Total Alumnos (Meta)</label>
                   <input
                     type="number"
                     min="1"
@@ -26330,25 +25823,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         enrolledStudentsCount: Number(e.target.value),
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:border-amber-400 focus:outline-none"
+                    className="form-input w-full font-mono"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-slate-300 font-bold block mb-1">Oficina / Supervisión de Zona SEP</label>
+                <label className="form-label">Oficina / Supervisión de Zona SEP</label>
                 <input
                   type="text"
                   value={newConalitegPackageForm.zoneSupervisorOffice}
                   onChange={(e) =>
                     setNewConalitegPackageForm({ ...newConalitegPackageForm, zoneSupervisorOffice: e.target.value })
                   }
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-amber-400 focus:outline-none"
+                  className="form-input w-full"
                 />
               </div>
 
               <div>
-                <label className="text-slate-300 font-bold block mb-1">
+                <label className="form-label">
                   Libros Oficiales Incluidos (un título por renglón)
                 </label>
                 <textarea
@@ -26358,18 +25851,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     setNewConalitegPackageForm({ ...newConalitegPackageForm, booksStr: e.target.value })
                   }
                   placeholder="Múltiples Lenguajes&#10;Proyectos de Aula&#10;Proyectos Escolares&#10;Nuestros Saberes"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-white focus:border-amber-400 focus:outline-none font-mono text-xs"
+                  className="form-input w-full font-mono"
                 />
               </div>
 
-              <div className="flex justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowNewConalitegPackageModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewConalitegPackageModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition-all cursor-pointer"
@@ -26384,9 +25871,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: NUEVO ACUSE DE ENTREGA CONALITEG */}
       {showNewConalitegReceiptModal && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-xl w-full shadow-2xl space-y-5 animate-in fade-in zoom-in-95">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-xl">
+            <div className="modal-header">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
                   <FileBadge className="w-5 h-5 text-emerald-400" />
@@ -26396,17 +25883,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <p className="text-[11px] text-slate-400">Constancia oficial firmada por el padre o tutor del alumno</p>
                 </div>
               </div>
-              <button
-                onClick={() => setShowNewConalitegReceiptModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg transition-colors cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button type="button" onClick={() => setShowNewConalitegReceiptModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateConalitegReceipt} className="space-y-4 text-xs">
               <div>
-                <label className="text-slate-300 font-bold block mb-1">Paquete / Grado de Remesa *</label>
+                <label className="form-label">Paquete / Grado de Remesa *</label>
                 <select
                   value={newConalitegReceiptForm.packageId}
                   onChange={(e) => {
@@ -26430,7 +25912,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Nombre Completo del Alumno *</label>
+                  <label className="form-label">Nombre Completo del Alumno *</label>
                   <input
                     type="text"
                     required
@@ -26439,11 +25921,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewConalitegReceiptForm({ ...newConalitegReceiptForm, studentName: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-amber-400 focus:outline-none"
+                    className="form-input w-full"
                   />
                 </div>
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Matrícula Escolar</label>
+                  <label className="form-label">Matrícula Escolar</label>
                   <input
                     type="text"
                     placeholder="Ej. 2026-PRI-045"
@@ -26451,14 +25933,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewConalitegReceiptForm({ ...newConalitegReceiptForm, studentCode: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:border-amber-400 focus:outline-none"
+                    className="form-input w-full font-mono"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Padre, Madre o Tutor que Firma *</label>
+                  <label className="form-label">Padre, Madre o Tutor que Firma *</label>
                   <input
                     type="text"
                     required
@@ -26467,11 +25949,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewConalitegReceiptForm({ ...newConalitegReceiptForm, parentName: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-amber-400 focus:outline-none"
+                    className="form-input w-full"
                   />
                 </div>
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Teléfono de Contacto</label>
+                  <label className="form-label">Teléfono de Contacto</label>
                   <input
                     type="tel"
                     placeholder="55 1234 5678"
@@ -26479,56 +25961,50 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewConalitegReceiptForm({ ...newConalitegReceiptForm, parentPhone: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:border-amber-400 focus:outline-none"
+                    className="form-input w-full font-mono"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Fecha de Entrega</label>
+                  <label className="form-label">Fecha de Entrega</label>
                   <input
                     type="date"
                     value={newConalitegReceiptForm.deliveryDate}
                     onChange={(e) =>
                       setNewConalitegReceiptForm({ ...newConalitegReceiptForm, deliveryDate: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-amber-400 focus:outline-none"
+                    className="form-input w-full"
                   />
                 </div>
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Entregado por Personal</label>
+                  <label className="form-label">Entregado por Personal</label>
                   <input
                     type="text"
                     value={newConalitegReceiptForm.deliveredByStaff}
                     onChange={(e) =>
                       setNewConalitegReceiptForm({ ...newConalitegReceiptForm, deliveredByStaff: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-amber-400 focus:outline-none"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-slate-300 font-bold block mb-1">Observaciones / Notas del Acuse</label>
+                <label className="form-label">Observaciones / Notas del Acuse</label>
                 <input
                   type="text"
                   value={newConalitegReceiptForm.notes}
                   onChange={(e) =>
                     setNewConalitegReceiptForm({ ...newConalitegReceiptForm, notes: e.target.value })
                   }
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-amber-400 focus:outline-none"
+                  className="form-input w-full"
                 />
               </div>
 
-              <div className="flex justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowNewConalitegReceiptModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewConalitegReceiptModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black shadow-lg shadow-emerald-500/25 transition-all cursor-pointer"
@@ -26543,9 +26019,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: ALTA DE UNIFORME O ARTÍCULO */}
       {showNewUniformItemModal && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-xl w-full shadow-2xl space-y-5 animate-in fade-in zoom-in-95">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-xl">
+            <div className="modal-header">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center">
                   <Shirt className="w-5 h-5 text-teal-400" />
@@ -26555,42 +26031,37 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <p className="text-[11px] text-slate-400">Uniforme, bata de laboratorio o material didáctico</p>
                 </div>
               </div>
-              <button
-                onClick={() => setShowNewUniformItemModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg transition-colors cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button type="button" onClick={() => setShowNewUniformItemModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateUniformItem} className="space-y-4 text-xs">
               <div className="grid grid-cols-3 gap-3">
                 <div className="col-span-2">
-                  <label className="text-slate-300 font-bold block mb-1">Nombre de la Prenda o Artículo *</label>
+                  <label className="form-label">Nombre de la Prenda o Artículo *</label>
                   <input
                     type="text"
                     required
                     placeholder="Ej. Chamarra Térmica Institucional con Bordado"
                     value={newUniformItemForm.name}
                     onChange={(e) => setNewUniformItemForm({ ...newUniformItemForm, name: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-teal-400 focus:outline-none"
+                    className="form-input w-full"
                   />
                 </div>
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">SKU / Código</label>
+                  <label className="form-label">SKU / Código</label>
                   <input
                     type="text"
                     placeholder="Auto-generar"
                     value={newUniformItemForm.sku}
                     onChange={(e) => setNewUniformItemForm({ ...newUniformItemForm, sku: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:border-teal-400 focus:outline-none"
+                    className="form-input w-full font-mono"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Categoría</label>
+                  <label className="form-label">Categoría</label>
                   <select
                     value={newUniformItemForm.category}
                     onChange={(e) =>
@@ -26599,7 +26070,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         category: e.target.value as SchoolUniformItem['category'],
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-teal-400 focus:outline-none"
+                    className="form-select w-full"
                   >
                     <option value="UNIFORME_DIARIO">Uniforme Diario</option>
                     <option value="UNIFORME_DEPORTIVO">Uniforme Deportivo</option>
@@ -26608,7 +26079,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </select>
                 </div>
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Nivel</label>
+                  <label className="form-label">Nivel</label>
                   <select
                     value={newUniformItemForm.level}
                     onChange={(e) =>
@@ -26617,7 +26088,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         level: e.target.value as SchoolUniformItem['level'],
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-teal-400 focus:outline-none"
+                    className="form-select w-full"
                   >
                     <option value="PRIMARIA">Primaria</option>
                     <option value="PREESCOLAR">Preescolar</option>
@@ -26625,7 +26096,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   </select>
                 </div>
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Talla</label>
+                  <label className="form-label">Talla</label>
                   <select
                     value={newUniformItemForm.size}
                     onChange={(e) =>
@@ -26634,7 +26105,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         size: e.target.value as SchoolUniformItem['size'],
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:border-teal-400 focus:outline-none"
+                    className="form-select w-full"
                   >
                     <option value="TALLA_4">Talla 4</option>
                     <option value="TALLA_6">Talla 6</option>
@@ -26650,7 +26121,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="grid grid-cols-4 gap-3">
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Stock Físico Inicial</label>
+                  <label className="form-label">Stock Físico Inicial</label>
                   <input
                     type="number"
                     min="0"
@@ -26658,11 +26129,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewUniformItemForm({ ...newUniformItemForm, stockQuantity: Number(e.target.value) })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:border-teal-400 focus:outline-none"
+                    className="form-input w-full font-mono"
                   />
                 </div>
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Alerta Stock Mínimo</label>
+                  <label className="form-label">Alerta Stock Mínimo</label>
                   <input
                     type="number"
                     min="1"
@@ -26670,11 +26141,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewUniformItemForm({ ...newUniformItemForm, minStockAlert: Number(e.target.value) })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:border-teal-400 focus:outline-none"
+                    className="form-input w-full font-mono"
                   />
                 </div>
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Costo Unitario MXN</label>
+                  <label className="form-label">Costo Unitario MXN</label>
                   <input
                     type="number"
                     min="0"
@@ -26682,11 +26153,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewUniformItemForm({ ...newUniformItemForm, unitCostMXN: Number(e.target.value) })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:border-teal-400 focus:outline-none"
+                    className="form-input w-full font-mono"
                   />
                 </div>
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Precio Venta MXN</label>
+                  <label className="form-label">Precio Venta MXN</label>
                   <input
                     type="number"
                     min="0"
@@ -26694,44 +26165,38 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewUniformItemForm({ ...newUniformItemForm, salePriceMXN: Number(e.target.value) })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-emerald-400 font-mono font-bold focus:border-teal-400 focus:outline-none"
+                    className="form-input w-full font-mono"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Estante en Bodega</label>
+                  <label className="form-label">Estante en Bodega</label>
                   <input
                     type="text"
                     value={newUniformItemForm.warehouseShelf}
                     onChange={(e) =>
                       setNewUniformItemForm({ ...newUniformItemForm, warehouseShelf: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-teal-400 focus:outline-none"
+                    className="form-input w-full"
                   />
                 </div>
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Proveedor / Confeccionista</label>
+                  <label className="form-label">Proveedor / Confeccionista</label>
                   <input
                     type="text"
                     value={newUniformItemForm.supplierName}
                     onChange={(e) =>
                       setNewUniformItemForm({ ...newUniformItemForm, supplierName: e.target.value })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-teal-400 focus:outline-none"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowNewUniformItemModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewUniformItemModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-black shadow-lg shadow-teal-600/25 transition-all cursor-pointer"
@@ -26746,9 +26211,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: AJUSTE DE STOCK DE UNIFORME */}
       {showAdjustUniformStockModal && selectedUniformForStock && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-5 animate-in fade-in zoom-in-95">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-md">
+            <div className="modal-header">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center">
                   <Shirt className="w-5 h-5 text-teal-400" />
@@ -26792,11 +26257,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             <form onSubmit={handleAdjustUniformStock} className="space-y-4 text-xs">
               <div>
-                <label className="text-slate-300 font-bold block mb-1">Motivo del Movimiento</label>
+                <label className="form-label">Motivo del Movimiento</label>
                 <select
                   value={adjustStockForm.reason}
                   onChange={(e) => setAdjustStockForm({ ...adjustStockForm, reason: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-teal-400 focus:outline-none"
+                  className="form-select w-full"
                 >
                   <option value="VENTA_A_TUTOR">Venta / Despacho a Tutor (-)</option>
                   <option value="RECEPCION_PROVEEDOR">Entrada / Resurtido de Proveedor (+)</option>
@@ -26806,7 +26271,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div>
-                <label className="text-slate-300 font-bold block mb-1">
+                <label className="form-label">
                   Cantidad a Ajustar (Ingresa número positivo o negativo)
                 </label>
                 <input
@@ -26815,7 +26280,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   onChange={(e) =>
                     setAdjustStockForm({ ...adjustStockForm, deltaStock: Number(e.target.value) })
                   }
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono font-bold text-sm focus:border-teal-400 focus:outline-none"
+                  className="form-input w-full font-mono"
                 />
                 <div className="text-[10px] text-slate-500 mt-1 block">
                   Nuevo stock resultante:{' '}
@@ -26825,7 +26290,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2 pt-2 border-t border-slate-800">
+              <div className="modal-actions">
                 <button
                   type="button"
                   onClick={() => {
@@ -26850,29 +26315,24 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: EMITIR NUEVA CONSTANCIA DIGITAL */}
       {showNewCertificateModal && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-lg w-full shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
+            <div className="modal-header">
               <div className="flex items-center gap-2">
                 <div className="p-2 bg-sky-500/20 text-sky-400 rounded-xl">
                   <ScrollText className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white">Emitir Constancia Oficial Digital</h3>
+                  <h3 className="modal-title">Emitir Constancia Oficial Digital</h3>
                   <p className="text-[11px] text-slate-400">Genera folio oficial, sello criptográfico SHA-256 y QR de cotejo</p>
                 </div>
               </div>
-              <button
-                onClick={() => setShowNewCertificateModal(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <button type="button" onClick={() => setShowNewCertificateModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateOfficialCertificate} className="space-y-4 text-xs">
               <div>
-                <label className="text-slate-300 font-bold block mb-1">Seleccionar Alumno Registrado</label>
+                <label className="form-label">Seleccionar Alumno Registrado</label>
                 <select
                   onChange={(e) => {
                     const studentId = e.target.value;
@@ -26924,30 +26384,30 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Nombre Completo Alumno</label>
+                  <label className="form-label">Nombre Completo Alumno</label>
                   <input
                     type="text"
                     required
                     value={newCertificateForm.studentName}
                     onChange={(e) => setNewCertificateForm({ ...newCertificateForm, studentName: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-sky-400 focus:outline-none"
+                    className="form-input w-full"
                   />
                 </div>
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">CURP Oficial</label>
+                  <label className="form-label">CURP Oficial</label>
                   <input
                     type="text"
                     required
                     value={newCertificateForm.curp}
                     onChange={(e) => setNewCertificateForm({ ...newCertificateForm, curp: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:border-sky-400 focus:outline-none uppercase"
+                    className="form-input w-full font-mono uppercase"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Tipo de Constancia</label>
+                  <label className="form-label">Tipo de Constancia</label>
                   <select
                     value={newCertificateForm.type}
                     onChange={(e) =>
@@ -26956,7 +26416,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         type: e.target.value as OfficialCertificateItem['type'],
                       })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-sky-400 focus:outline-none"
+                    className="form-select w-full"
                   >
                     <option value="CONSTANCIA_ESTUDIOS_SIMPLE">Constancia de Estudios Simple</option>
                     <option value="CONSTANCIA_INSCRIPCION">Constancia de Inscripción Formal</option>
@@ -26967,7 +26427,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Promedio Acreditado (Escala 10)</label>
+                  <label className="form-label">Promedio Acreditado (Escala 10)</label>
                   <input
                     type="number"
                     step="0.1"
@@ -26977,42 +26437,42 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     onChange={(e) =>
                       setNewCertificateForm({ ...newCertificateForm, averageGrade: Number(e.target.value) })
                     }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-bold font-mono focus:border-sky-400 focus:outline-none"
+                    className="form-input w-full font-mono"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Grado Escolar</label>
+                  <label className="form-label">Grado Escolar</label>
                   <input
                     type="text"
                     required
                     value={newCertificateForm.grade}
                     onChange={(e) => setNewCertificateForm({ ...newCertificateForm, grade: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-sky-400 focus:outline-none"
+                    className="form-input w-full"
                   />
                 </div>
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Grupo y Ciclo</label>
+                  <label className="form-label">Grupo y Ciclo</label>
                   <input
                     type="text"
                     required
                     value={newCertificateForm.groupName}
                     onChange={(e) => setNewCertificateForm({ ...newCertificateForm, groupName: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-sky-400 focus:outline-none"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-slate-300 font-bold block mb-1">Propósito / Observaciones Oficiales</label>
+                <label className="form-label">Propósito / Observaciones Oficiales</label>
                 <input
                   type="text"
                   value={newCertificateForm.notes}
                   onChange={(e) => setNewCertificateForm({ ...newCertificateForm, notes: e.target.value })}
                   placeholder="Ej. Para trámite de pasaporte, guardería IMSS o beca Benito Juárez"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-sky-400 focus:outline-none"
+                  className="form-input w-full"
                 />
               </div>
 
@@ -27031,14 +26491,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2 pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowNewCertificateModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewCertificateModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-black shadow-lg shadow-sky-500/25 transition-all cursor-pointer flex items-center gap-1.5"
@@ -27054,8 +26508,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: FORMATO IMPRIMIBLE DE CONSTANCIA OFICIAL CON QR */}
       {showCertificateDetailModal && selectedCertForDetail && (
-        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full shadow-2xl max-h-[95vh] overflow-y-auto flex flex-col">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-2xl">
             {/* Modal Controls Top */}
             <div className="p-4 border-b border-slate-800 flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -27081,12 +26535,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 >
                   Copiar Link QR
                 </button>
-                <button
-                  onClick={() => setShowCertificateDetailModal(false)}
-                  className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 cursor-pointer ml-1"
-                >
-                  <X className="w-5 h-5" />
-                </button>
+                <button type="button" onClick={() => setShowCertificateDetailModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
               </div>
             </div>
 
@@ -27223,93 +26672,88 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: REGISTRAR VISITA DE SUPERVISIÓN DE ZONA */}
       {showNewSupervisionModal && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full p-6 shadow-2xl animate-in zoom-in-95 space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-xl">
+            <div className="modal-header">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-5 h-5 text-sky-400" />
-                <h3 className="text-base font-bold text-white">Registrar Visita de Supervisión SEP</h3>
+                <h3 className="modal-title">Registrar Visita de Supervisión SEP</h3>
               </div>
-              <button
-                onClick={() => setShowNewSupervisionModal(false)}
-                className="text-slate-400 hover:text-white text-lg font-bold cursor-pointer"
-              >
-                ✕
-              </button>
+              <button type="button" onClick={() => setShowNewSupervisionModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <form onSubmit={handleCreateSupervisionInspection} className="space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Número de Oficio SEP</label>
+                  <label className="form-label">Número de Oficio SEP</label>
                   <input
                     type="text"
                     required
                     value={newSupervisionInspectionForm.officialNoticeNumber}
                     onChange={(e) => setNewSupervisionInspectionForm({ ...newSupervisionInspectionForm, officialNoticeNumber: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:border-sky-400 focus:outline-none"
+                    className="form-input w-full font-mono"
                     placeholder="OFICIO-SZ05-2026-XXX"
                   />
                 </div>
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Fecha de Inspección</label>
+                  <label className="form-label">Fecha de Inspección</label>
                   <input
                     type="date"
                     required
                     value={newSupervisionInspectionForm.inspectionDate}
                     onChange={(e) => setNewSupervisionInspectionForm({ ...newSupervisionInspectionForm, inspectionDate: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-sky-400 focus:outline-none"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Zona Escolar / Sector</label>
+                  <label className="form-label">Zona Escolar / Sector</label>
                   <input
                     type="text"
                     required
                     value={newSupervisionInspectionForm.supervisionZone}
                     onChange={(e) => setNewSupervisionInspectionForm({ ...newSupervisionInspectionForm, supervisionZone: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-sky-400 focus:outline-none"
+                    className="form-input w-full"
                   />
                 </div>
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Inspectora / Comisionado</label>
+                  <label className="form-label">Inspectora / Comisionado</label>
                   <input
                     type="text"
                     required
                     value={newSupervisionInspectionForm.inspectorName}
                     onChange={(e) => setNewSupervisionInspectionForm({ ...newSupervisionInspectionForm, inspectorName: e.target.value })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-sky-400 focus:outline-none"
+                    className="form-input w-full"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-slate-300 font-bold block mb-1">Propósito de la Visita Técnico-Administrativa</label>
+                <label className="form-label">Propósito de la Visita Técnico-Administrativa</label>
                 <input
                   type="text"
                   required
                   value={newSupervisionInspectionForm.purpose}
                   onChange={(e) => setNewSupervisionInspectionForm({ ...newSupervisionInspectionForm, purpose: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-sky-400 focus:outline-none"
+                  className="form-input w-full"
                 />
               </div>
 
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Muestra Expedientes</label>
+                  <label className="form-label">Muestra Expedientes</label>
                   <input
                     type="number"
                     min="1"
                     value={newSupervisionInspectionForm.sampleAuditedCount}
                     onChange={(e) => setNewSupervisionInspectionForm({ ...newSupervisionInspectionForm, sampleAuditedCount: Number(e.target.value) })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-sky-400 focus:outline-none"
+                    className="form-input w-full"
                   />
                 </div>
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Calificación (%)</label>
+                  <label className="form-label">Calificación (%)</label>
                   <input
                     type="number"
                     step="0.1"
@@ -27317,15 +26761,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     max="100"
                     value={newSupervisionInspectionForm.complianceScorePercent}
                     onChange={(e) => setNewSupervisionInspectionForm({ ...newSupervisionInspectionForm, complianceScorePercent: Number(e.target.value) })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-sky-400 focus:outline-none"
+                    className="form-input w-full"
                   />
                 </div>
                 <div>
-                  <label className="text-slate-300 font-bold block mb-1">Dictamen</label>
+                  <label className="form-label">Dictamen</label>
                   <select
                     value={newSupervisionInspectionForm.status}
                     onChange={(e) => setNewSupervisionInspectionForm({ ...newSupervisionInspectionForm, status: e.target.value as SupervisionInspectionItem['status'] })}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-sky-400 focus:outline-none"
+                    className="form-select w-full"
                   >
                     <option value="CONFORME">CONFORME</option>
                     <option value="CON_OBSERVACIONES_SOLVENTADAS">CON OBSERVACIONES SOLVENTADAS</option>
@@ -27335,33 +26779,27 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div>
-                <label className="text-slate-300 font-bold block mb-1">Hallazgos Oficiales (1 por renglón)</label>
+                <label className="form-label">Hallazgos Oficiales (1 por renglón)</label>
                 <textarea
                   rows={2}
                   value={newSupervisionInspectionForm.findingsStr}
                   onChange={(e) => setNewSupervisionInspectionForm({ ...newSupervisionInspectionForm, findingsStr: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-sky-400 focus:outline-none"
+                  className="form-input w-full"
                 />
               </div>
 
               <div>
-                <label className="text-slate-300 font-bold block mb-1">Acuerdos y Compromisos (1 por renglón)</label>
+                <label className="form-label">Acuerdos y Compromisos (1 por renglón)</label>
                 <textarea
                   rows={2}
                   value={newSupervisionInspectionForm.agreedActionsStr}
                   onChange={(e) => setNewSupervisionInspectionForm({ ...newSupervisionInspectionForm, agreedActionsStr: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:border-sky-400 focus:outline-none"
+                  className="form-input w-full"
                 />
               </div>
 
-              <div className="flex justify-end gap-3 pt-3 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowNewSupervisionModal(false)}
-                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-bold cursor-pointer"
-                >
-                  Cancelar
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowNewSupervisionModal(false)} className="btn btn-secondary">Cancelar</button>
                 <button
                   type="submit"
                   className="px-5 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-sky-500/20 cursor-pointer"
@@ -27376,22 +26814,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* MODAL: VERIFICACIÓN FORENSE Y DETALLE CRIPTOGRÁFICO */}
       {showAuditDetailModal && selectedLogForDetail && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 shadow-2xl animate-in zoom-in-95 space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-2xl">
+            <div className="modal-header">
               <div className="flex items-center gap-2">
                 <Lock className="w-5 h-5 text-emerald-400" />
                 <div>
-                  <h3 className="text-base font-bold text-white">Certificado de Autenticidad Forense</h3>
+                  <h3 className="modal-title">Certificado de Autenticidad Forense</h3>
                   <p className="text-[11px] text-slate-400">Verificación de Integridad Criptográfica de Bloque</p>
                 </div>
               </div>
-              <button
-                onClick={() => setShowAuditDetailModal(false)}
-                className="text-slate-400 hover:text-white text-lg font-bold cursor-pointer"
-              >
-                ✕
-              </button>
+              <button type="button" onClick={() => setShowAuditDetailModal(false)} className="modal-close" title="Cerrar ventana modal"><X /></button>
             </div>
 
             <div className="space-y-4 text-xs">
@@ -27461,14 +26894,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="flex justify-end pt-2 border-t border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setShowAuditDetailModal(false)}
-                  className="px-5 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold cursor-pointer"
-                >
-                  Cerrar Verificador
-                </button>
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowAuditDetailModal(false)} className="btn btn-secondary">Cerrar Verificador</button>
               </div>
             </div>
           </div>

@@ -2093,3 +2093,450 @@
   .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
+
+/* ==========================================================================
+   Modern SaaS Light Theme Overrides for All Dashboard Modules & Modals
+   ========================================================================== */
+
+/* 1. Modal Backdrops & Overlays */
+.modal-backdrop,
+.fixed.inset-0 {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.5) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 999;
+  animation: modalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 2. Modal Dialog Cards */
+.modal-card,
+.modal-dialog,
+.fixed.inset-0 > div:not(.modal-backdrop) {
+  background-color: #ffffff !important;
+  border: 1px solid var(--color-border-subtle, #e2e8f0) !important;
+  border-radius: var(--radius-2xl, 24px) !important;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.2), 0 10px 20px -5px rgba(0, 0, 0, 0.05) !important;
+  color: var(--color-text-main, #0f172a) !important;
+  box-sizing: border-box;
+
+  .is-chromium & {
+    border-radius: calc(var(--radius-2xl, 24px) * 1.5) !important;
+    corner-shape: squircle;
+    -webkit-corner-shape: squircle;
+  }
+}
+
+.modal-card-sm { max-width: 24rem; }
+.modal-card-md { max-width: 32rem; }
+.modal-card-lg { max-width: 42rem; }
+.modal-card-xl { max-width: 52rem; }
+.modal-card-2xl { max-width: 64rem; }
+.modal-card-4xl { max-width: 76rem; }
+
+/* 3. Modal Titles & Headings */
+.fixed.inset-0 h2,
+.fixed.inset-0 h3,
+.fixed.inset-0 .font-black,
+.fixed.inset-0 .font-bold.text-white,
+.modal-title {
+  color: var(--color-text-main, #0f172a) !important;
+  font-weight: 800 !important;
+}
+
+/* 4. Modal Labels */
+.fixed.inset-0 label,
+.modal-card label {
+  color: var(--color-text-secondary, #334155) !important;
+  font-size: 0.6875rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+/* 5. Inputs, Selects & Textareas in Modals and Modules */
+.fixed.inset-0 input:not([type="checkbox"]):not([type="radio"]),
+.fixed.inset-0 select,
+.fixed.inset-0 textarea,
+.modal-card input:not([type="checkbox"]):not([type="radio"]),
+.modal-card select,
+.modal-card textarea,
+.dashboard-main input:not([type="checkbox"]):not([type="radio"]),
+.dashboard-main select,
+.dashboard-main textarea {
+  width: 100%;
+  background-color: #ffffff !important;
+  border: 1px solid var(--color-border-subtle, #e2e8f0) !important;
+  border-radius: var(--radius-md, 12px) !important;
+  color: var(--color-text-main, #0f172a) !important;
+  padding: 0 0.875rem;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  outline: none;
+  box-sizing: border-box;
+  transition: all var(--transition-fast, 150ms ease);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+
+  .is-chromium & {
+    border-radius: calc(var(--radius-md, 12px) * 2) !important;
+    corner-shape: squircle;
+    -webkit-corner-shape: squircle;
+  }
+
+  &::placeholder {
+    color: var(--color-text-faint, #94a3b8) !important;
+  }
+
+  &:hover:not(:disabled) {
+    border-color: var(--color-primary-border, #b8d9ff) !important;
+    background-color: #fafbfc !important;
+  }
+
+  &:focus {
+    border-color: var(--color-primary, #0079ff) !important;
+    box-shadow: 0 0 0 1px var(--color-primary, #0079ff), 0 0 0 4px var(--color-primary-glow, rgba(0, 121, 255, 0.25)) !important;
+    background-color: #ffffff !important;
+  }
+}
+
+.fixed.inset-0 input:not([type="checkbox"]):not([type="radio"]),
+.modal-card input:not([type="checkbox"]):not([type="radio"]),
+.dashboard-main input:not([type="checkbox"]):not([type="radio"]) {
+  height: 37px;
+  min-height: 37px;
+}
+
+.fixed.inset-0 select,
+.modal-card select,
+.dashboard-main select {
+  height: 37px;
+  min-height: 37px;
+  line-height: 35px;
+  padding: 0 2.25rem 0 0.875rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230079ff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 0.75rem center !important;
+  background-size: 1rem 1rem !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.fixed.inset-0 textarea,
+.modal-card textarea,
+.dashboard-main textarea {
+  padding: 0.625rem 0.875rem;
+  min-height: 80px;
+}
+
+/* 6. Modal Dividers & Borders */
+.fixed.inset-0 .border-slate-800,
+.fixed.inset-0 .border-slate-700,
+.fixed.inset-0 .border-b,
+.modal-card .border-slate-800,
+.modal-card .border-slate-700 {
+  border-color: var(--color-border-subtle, #f1f5f9) !important;
+}
+
+/* 7. Modal Close Buttons */
+.fixed.inset-0 .cursor-pointer:has(svg),
+.fixed.inset-0 button.text-slate-400,
+.modal-close {
+  color: var(--color-text-muted, #64748b) !important;
+  transition: color 150ms ease, transform 150ms ease;
+
+  &:hover {
+    color: var(--color-danger, #ef4444) !important;
+  }
+}
+
+/* 8. Dashboard Modules Main Surfaces & Cards */
+.dashboard-main .bg-slate-900,
+.dashboard-main .bg-slate-950,
+.dashboard-main .bg-slate-900\/90,
+.dashboard-main .bg-slate-900\/80 {
+  background-color: #ffffff !important;
+  border: 1px solid var(--color-border-subtle, #e2e8f0) !important;
+  border-radius: var(--radius-2xl, 24px) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 6px 16px -4px rgba(0, 0, 0, 0.03) !important;
+  color: var(--color-text-main, #0f172a) !important;
+  box-sizing: border-box;
+
+  .is-chromium & {
+    border-radius: calc(var(--radius-2xl, 24px) * 1.5) !important;
+    corner-shape: squircle;
+    -webkit-corner-shape: squircle;
+  }
+}
+
+/* 9. Text Colors in Modules and Modals */
+.dashboard-main .text-white,
+.fixed.inset-0 .text-white {
+  color: var(--color-text-main, #0f172a) !important;
+}
+
+.dashboard-main .text-slate-400,
+.dashboard-main .text-slate-500,
+.fixed.inset-0 .text-slate-400,
+.fixed.inset-0 .text-slate-500 {
+  color: var(--color-text-secondary, #64748b) !important;
+}
+
+.dashboard-main .text-slate-200,
+.dashboard-main .text-slate-300,
+.fixed.inset-0 .text-slate-200,
+.fixed.inset-0 .text-slate-300 {
+  color: var(--color-text-main, #1e293b) !important;
+}
+
+/* 10. Stat Cards (KPIs) in Modules */
+.dashboard-main .grid .bg-slate-900.p-4 {
+  background-color: #ffffff !important;
+  border: 1px solid var(--color-border-subtle, #e2e8f0) !important;
+  border-radius: var(--radius-xl, 18px) !important;
+  padding: 1.25rem !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+
+  .is-chromium & {
+    border-radius: calc(var(--radius-xl, 18px) * 1.5) !important;
+    corner-shape: squircle;
+    -webkit-corner-shape: squircle;
+  }
+}
+
+/* 11. Tables in Modules (Asistencia, Calificaciones, Kárdex, Caja, etc.) */
+.dashboard-main table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff !important;
+  color: var(--color-text-main, #0f172a) !important;
+}
+
+.dashboard-main thead,
+.dashboard-main thead.bg-slate-950\/80 {
+  background-color: var(--color-bg-subtle, #f8fafc) !important;
+  border-bottom: 1px solid var(--color-border-subtle, #e2e8f0) !important;
+}
+
+.dashboard-main th {
+  color: var(--color-text-secondary, #475569) !important;
+  font-size: 0.6875rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.75rem 1rem !important;
+  border-bottom: 1px solid var(--color-border-subtle, #e2e8f0) !important;
+}
+
+.dashboard-main tbody tr {
+  border-bottom: 1px solid var(--color-border-subtle, #f1f5f9) !important;
+  transition: background-color var(--transition-fast, 150ms ease);
+
+  &:hover {
+    background-color: #f8fafc !important;
+  }
+}
+
+.dashboard-main td {
+  padding: 0.75rem 1rem !important;
+  color: var(--color-text-main, #0f172a) !important;
+  font-size: 0.8125rem;
+}
+
+/* 12. Primary & Action Buttons across all Modules & Modals */
+.dashboard-main button.bg-emerald-500,
+.dashboard-main button.bg-purple-600,
+.dashboard-main button.bg-sky-500,
+.fixed.inset-0 button.bg-emerald-500,
+.fixed.inset-0 button[type="submit"]:not(.btn-secondary) {
+  background: var(--color-primary, #0079ff) !important;
+  color: #ffffff !important;
+  border: 1px solid var(--color-primary, #0079ff) !important;
+  border-radius: var(--radius-md, 12px) !important;
+  font-weight: 700 !important;
+  height: 37px;
+  min-height: 37px;
+  padding: 0 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 121, 255, 0.25) !important;
+  transition: all var(--transition-fast, 150ms ease);
+  cursor: pointer;
+
+  .is-chromium & {
+    border-radius: calc(var(--radius-md, 12px) * 2) !important;
+    corner-shape: squircle;
+    -webkit-corner-shape: squircle;
+  }
+
+  &:hover {
+    background: var(--color-primary-hover, #0062d1) !important;
+    box-shadow: 0 4px 12px rgba(0, 121, 255, 0.35) !important;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+/* 13. Secondary Buttons across all Modules & Modals */
+.dashboard-main button.bg-slate-800,
+.fixed.inset-0 button.bg-slate-800 {
+  background: #ffffff !important;
+  color: var(--color-text-secondary, #334155) !important;
+  border: 1px solid var(--color-border-subtle, #e2e8f0) !important;
+  border-radius: var(--radius-md, 12px) !important;
+  font-weight: 600 !important;
+  height: 37px;
+  min-height: 37px;
+  padding: 0 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all var(--transition-fast, 150ms ease);
+  cursor: pointer;
+
+  .is-chromium & {
+    border-radius: calc(var(--radius-md, 12px) * 2) !important;
+    corner-shape: squircle;
+    -webkit-corner-shape: squircle;
+  }
+
+  &:hover {
+    background: #f8fafc !important;
+    border-color: var(--color-border-medium, #cbd5e1) !important;
+    color: var(--color-text-main, #0f172a) !important;
+  }
+}
+
+/* 14. Status Badges & Chips */
+.dashboard-main .bg-emerald-500\/10,
+.dashboard-main .bg-emerald-950 {
+  background-color: var(--color-success-bg, #ecfdf5) !important;
+  color: var(--color-success, #059669) !important;
+  border-color: var(--color-success-border, #a7f3d0) !important;
+}
+
+.dashboard-main .bg-amber-500\/10,
+.dashboard-main .bg-amber-950 {
+  background-color: var(--color-warning-bg, #fffbeb) !important;
+  color: var(--color-warning, #d97706) !important;
+  border-color: var(--color-warning-border, #fde68a) !important;
+}
+
+.dashboard-main .bg-rose-500\/10,
+.dashboard-main .bg-rose-950 {
+  background-color: var(--color-danger-bg, #fef2f2) !important;
+  color: var(--color-danger, #ef4444) !important;
+  border-color: var(--color-danger-border, #fecaca) !important;
+}
+
+.dashboard-main .bg-sky-500\/10,
+.dashboard-main .bg-sky-950 {
+  background-color: var(--color-primary-light, #eaf3ff) !important;
+  color: var(--color-primary, #0079ff) !important;
+  border-color: var(--color-primary-border, #b8d9ff) !important;
+}
+
+/* 15. Semantic Dashboard Components */
+.dashboard-stat-card {
+  background-color: #ffffff !important;
+  border: 1px solid var(--color-border-subtle, #e2e8f0) !important;
+  border-radius: var(--radius-xl, 18px) !important;
+  padding: 1.25rem !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: transform var(--transition-fast, 150ms ease), box-shadow var(--transition-fast, 150ms ease);
+
+  .is-chromium & {
+    border-radius: calc(var(--radius-xl, 18px) * 1.5) !important;
+    corner-shape: squircle;
+    -webkit-corner-shape: squircle;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+  }
+}
+
+.dashboard-filter-card {
+  background-color: #ffffff !important;
+  border: 1px solid var(--color-border-subtle, #e2e8f0) !important;
+  border-radius: var(--radius-2xl, 24px) !important;
+  padding: 1.25rem !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+
+  .is-chromium & {
+    border-radius: calc(var(--radius-2xl, 24px) * 1.5) !important;
+    corner-shape: squircle;
+    -webkit-corner-shape: squircle;
+  }
+}
+
+.dashboard-table-card {
+  background-color: #ffffff !important;
+  border: 1px solid var(--color-border-subtle, #e2e8f0) !important;
+  border-radius: var(--radius-2xl, 24px) !important;
+  overflow: hidden !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+
+  .is-chromium & {
+    border-radius: calc(var(--radius-2xl, 24px) * 1.5) !important;
+    corner-shape: squircle;
+    -webkit-corner-shape: squircle;
+  }
+}
+
+.dashboard-subcard {
+  background-color: var(--color-bg-subtle, #f8fafc) !important;
+  border: 1px solid var(--color-border-subtle, #e2e8f0) !important;
+  border-radius: var(--radius-lg, 16px) !important;
+  padding: 1rem !important;
+
+  .is-chromium & {
+    border-radius: calc(var(--radius-lg, 16px) * 1.5) !important;
+    corner-shape: squircle;
+    -webkit-corner-shape: squircle;
+  }
+}
+
+.table-header-row th,
+.table-header-row {
+  background-color: var(--color-bg-subtle, #f8fafc) !important;
+  color: var(--color-text-secondary, #475569) !important;
+  font-size: 0.6875rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  border-bottom: 1px solid var(--color-border-subtle, #e2e8f0) !important;
+}
+
+.table-footer {
+  background-color: var(--color-bg-subtle, #f8fafc) !important;
+  border-top: 1px solid var(--color-border-subtle, #e2e8f0) !important;
+  padding: 1rem 1.25rem !important;
+}
+
+.progress-bar-bg {
+  background-color: #e2e8f0 !important;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+
