@@ -6833,16 +6833,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
     return (
       <div className="dashboard-page flex flex-col min-h-screen">
         <header className="dashboard-header">
-          <div className="container-app header-inner">
+          <div className="container-app dashboard-header-inner">
             <div className="brand-logo" onClick={() => onNavigate('home')} style={{ cursor: 'pointer' }}>
               <div className="brand-icon">ASM</div>
               <div className="brand-title">Avante School Management</div>
             </div>
-            <div className="header-actions flex items-center gap-3">
-              <button onClick={() => onNavigate('login')} className="btn btn-secondary btn-sm cursor-pointer">
+            <div className="dashboard-controls">
+              <button onClick={() => onNavigate('login')} className="btn btn-secondary btn-sm">
                 Iniciar Sesión
               </button>
-              <button onClick={() => onNavigate('register')} className="btn btn-primary btn-sm cursor-pointer">
+              <button onClick={() => onNavigate('register')} className="btn btn-primary btn-sm">
                 Registrar Colegio
               </button>
             </div>
@@ -6852,7 +6852,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         <main className="container-app empty-tenant-main">
           <div className="empty-tenant-card">
             <div className="empty-tenant-icon">
-              <School className="w-12 h-12" />
+              <School />
             </div>
             <h2 className="empty-tenant-title">Ningún Colegio Activo o Seleccionado</h2>
             <p className="empty-tenant-desc">
@@ -6860,12 +6860,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               alumnos, docentes, calificaciones SEP y finanzas, registra tu escuela o inicia sesión con tu cuenta.
             </p>
             <div className="empty-tenant-actions">
-              <button onClick={() => onNavigate('register')} className="btn btn-primary btn-lg cursor-pointer">
-                <School className="w-5 h-5" />
+              <button onClick={() => onNavigate('register')} className="btn btn-primary btn-lg">
+                <School />
                 Registrar Nuevo Colegio Gratis
               </button>
-              <button onClick={() => onNavigate('login')} className="btn btn-secondary btn-lg cursor-pointer">
-                <LogIn className="w-5 h-5" />
+              <button onClick={() => onNavigate('login')} className="btn btn-secondary btn-lg">
+                <LogIn />
                 Iniciar Sesión Institucional
               </button>
             </div>
@@ -6879,64 +6879,62 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const filteredCharges = charges.filter((c) => selectedLevelFilter === 'ALL' || c.levelId === selectedLevelFilter);
 
   return (
-    <div className="dashboard-page min-h-screen flex flex-col bg-slate-950 text-slate-100 font-sans selection:bg-sky-500 selection:text-white">
+    <div className="dashboard-page">
       {/* Toast Notificación */}
       {notification && (
-        <div className="fixed top-5 right-5 z-50 bg-sky-500 text-slate-950 font-bold px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-2 text-xs border border-sky-400 animate-bounce">
-          <Sparkles className="w-4 h-4" />
+        <div className="dashboard-toast">
+          <Sparkles />
           <div>{notification}</div>
         </div>
       )}
 
       {/* TOPBAR PRINCIPAL */}
-      <header className="bg-slate-900 border-b border-slate-800 sticky top-0 z-40 py-3">
-        <div className="container-app flex flex-wrap items-center justify-between gap-4">
+      <header className="dashboard-header">
+        <div className="container-app dashboard-header-inner">
           {/* Identidad de la Escuela */}
-          <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-tr from-sky-600 to-cyan-500 text-white font-black text-xl w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg shadow-sky-500/20">
+          <div className="dashboard-brand">
+            <div className="dashboard-brand-logo">
               ASM
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="font-extrabold text-base sm:text-lg text-white leading-tight">
+            <div className="dashboard-brand-info">
+              <div className="dashboard-brand-heading">
+                <h1 className="dashboard-brand-title">
                   {currentTenant.name || 'Instituto Logos'}
                 </h1>
                 {educationalLevels.length > 0 ? (
-                  <div className="bg-sky-500/15 text-sky-400 border border-sky-500/30 text-[10px] font-mono px-2 py-0.5 rounded-full font-bold">
+                  <div className="badge badge-sky badge-xs font-mono">
                     {educationalLevels.map((l) => l.name.split('/')[0].trim()).join(' & ')}
                   </div>
                 ) : (
-                  <div className="bg-slate-800 text-slate-400 border border-slate-700 text-[10px] font-mono px-2 py-0.5 rounded-full font-bold">
+                  <div className="badge badge-subtle badge-xs font-mono">
                     Sin niveles configurados
                   </div>
                 )}
               </div>
-              <div className="text-[11px] text-slate-400 font-mono flex items-center gap-2">
-                <div>{currentTenant.subdomain || 'logos'}.avanteschoolmanagement.local</div>
+              <div className="dashboard-brand-subdomain">
+                {currentTenant.subdomain || 'logos'}.avanteschoolmanagement.local
               </div>
             </div>
           </div>
 
           {/* Controles de Estado, Acceso al Portal y Rol */}
-          <div className="flex items-center gap-3">
+          <div className="dashboard-controls">
             {/* Botón para ir al Portal Público de la Escuela */}
             <button
               onClick={() => onNavigate('portal')}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 transition-colors cursor-pointer"
+              className="btn btn-outline btn-sm dashboard-portal-btn"
               title="Ver Portal Institucional de la Escuela con accesos para maestros, directores y padres"
             >
-              <Globe2 className="w-3.5 h-3.5" />
-              <div>Ver Portal Institucional</div>
+              <Globe2 />
+              <span>Ver Portal Institucional</span>
             </button>
 
             {/* Selector Rápido de Nivel Escolar */}
-            <div className="flex items-center bg-slate-950 border border-slate-800 rounded-xl p-0.5 text-xs font-bold">
+            <div className="dashboard-filter-group">
               <button
                 type="button"
                 onClick={() => setSelectedLevelFilter('ALL')}
-                className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
-                  selectedLevelFilter === 'ALL' ? 'bg-sky-500 text-slate-950' : 'text-slate-400 hover:text-white'
-                }`}
+                className={`dashboard-filter-btn ${selectedLevelFilter === 'ALL' ? 'active' : ''}`}
               >
                 Todos
               </button>
@@ -6948,12 +6946,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     key={lvl.id}
                     type="button"
                     onClick={() => setSelectedLevelFilter(lvl.id)}
-                    className={`px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 cursor-pointer ${
-                      isSelected ? 'bg-sky-500 text-slate-950' : 'text-slate-400 hover:text-sky-300'
-                    }`}
+                    className={`dashboard-filter-btn ${isSelected ? 'active' : ''}`}
                   >
-                    <IconComp className="w-3.5 h-3.5" />
-                    <div>{lvl.name.split('/')[0].trim()}</div>
+                    <IconComp />
+                    <span>{lvl.name.split('/')[0].trim()}</span>
                   </button>
                 );
               })}
@@ -6965,20 +6961,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 setIsOnline(!isOnline);
                 showToast(isOnline ? '📴 Modo Offline activado.' : '🌐 Modo Online restablecido.');
               }}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
-                isOnline
-                  ? 'bg-emerald-950/60 text-emerald-400 border-emerald-800'
-                  : 'bg-amber-950/80 text-amber-300 border-amber-800'
-              }`}
+              className={`dashboard-status-btn ${isOnline ? 'online' : 'offline'}`}
             >
-              {isOnline ? <Wifi className="w-3.5 h-3.5" /> : <WifiOff className="w-3.5 h-3.5 animate-pulse" />}
-              <div>{isOnline ? 'Online' : 'Offline'}</div>
+              {isOnline ? <Wifi /> : <WifiOff />}
+              <span>{isOnline ? 'Online' : 'Offline'}</span>
             </button>
 
             {/* Información del Usuario Activo */}
             {currentUser && (
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-sky-500/10 text-sky-300 border border-sky-500/30">
-                <ShieldCheck className="w-4 h-4 text-sky-400" />
+              <div className="dashboard-user-badge">
+                <ShieldCheck />
                 <span>
                   {currentUser.fullName} • {isLevelDirector ? (currentUser.assignedLevelName || `Dirección de ${userLevelId}`) : 'Director General'}
                 </span>
@@ -6986,21 +6978,21 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             )}
 
             {/* Selector de Rol */}
-            <div className="flex items-center gap-2 bg-slate-950 border border-slate-800 px-3 py-1 rounded-xl">
-              <ShieldCheck className="w-4 h-4 text-sky-400" />
+            <div className="dashboard-role-select-wrapper">
+              <ShieldCheck />
               <select
                 value={activeRole}
                 onChange={(e) => setActiveRole(e.target.value as any)}
-                className="bg-transparent text-xs text-slate-300 font-semibold outline-none cursor-pointer"
+                className="dashboard-role-select"
               >
-                <option value="DIRECTOR" className="bg-slate-900">
+                <option value="DIRECTOR">
                   {isLevelDirector ? `🎯 Dirección de ${userLevelId}` : 'Director General'}
                 </option>
-                <option value="DOCENTE" className="bg-slate-900">👨‍🏫 Maestro(a) / Docente Titular</option>
-                <option value="CONTROL_ESCOLAR" className="bg-slate-900">Control Escolar</option>
-                <option value="FINANZAS" className="bg-slate-900">Finanzas y Caja</option>
-                <option value="TUTOR" className="bg-slate-900">Portal Familiar / Tutor</option>
-                <option value="SUPER_ADMIN" className="bg-slate-900">SuperAdmin (Dueño SaaS ASM)</option>
+                <option value="DOCENTE">👨‍🏫 Maestro(a) / Docente Titular</option>
+                <option value="CONTROL_ESCOLAR">Control Escolar</option>
+                <option value="FINANZAS">Finanzas y Caja</option>
+                <option value="TUTOR">Portal Familiar / Tutor</option>
+                <option value="SUPER_ADMIN">SuperAdmin (Dueño SaaS ASM)</option>
               </select>
             </div>
 
@@ -7009,382 +7001,266 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 localStorage.removeItem('asm_token');
                 onNavigate(currentTenant.subdomain ? 'portal' : 'home');
               }}
-              className="p-2 rounded-xl bg-slate-800 hover:bg-slate-750 text-slate-400 hover:text-white transition-colors cursor-pointer"
+              className="btn btn-secondary btn-sm dashboard-icon-btn"
               title="Cerrar sesión"
             >
-              <LogOut className="w-4 h-4" />
+              <LogOut />
             </button>
           </div>
         </div>
       </header>
 
       {/* TABS DE NAVEGACIÓN */}
-      <div className="bg-slate-900/60 border-b border-slate-800">
-        <nav className="container-app flex space-x-1 overflow-x-auto py-2">
+      <div className="dashboard-tabs-bar">
+        <nav className="container-app dashboard-nav">
           <button
             onClick={() => setActiveTab('levels')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'levels'
-                ? 'bg-sky-500 text-slate-950 shadow-md shadow-sky-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'levels' ? 'active' : ''}`}
           >
-            <School className="w-4 h-4" />
-            <div>{isLevelDirector ? `Mi Nivel Técnico (${educationalLevels.find(l => l.id === userLevelId)?.name?.split('/')[0].trim() || userLevelId})` : `Niveles & Directores (${educationalLevels.length})`}</div>
+            <School />
+            <span>{isLevelDirector ? `Mi Nivel Técnico (${educationalLevels.find(l => l.id === userLevelId)?.name?.split('/')[0].trim() || userLevelId})` : `Niveles & Directores (${educationalLevels.length})`}</span>
           </button>
 
           <button
             onClick={() => setActiveTab('teachers')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'teachers'
-                ? 'bg-sky-500 text-slate-950 shadow-md shadow-sky-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'teachers' ? 'active' : ''}`}
           >
-            <UserCheck className="w-4 h-4" />
-            <div>Docentes & Maestros ({filteredTeachers.length})</div>
+            <UserCheck />
+            <span>Docentes & Maestros ({filteredTeachers.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('attendance')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'attendance'
-                ? 'bg-emerald-400 text-slate-950 shadow-md shadow-emerald-400/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'attendance' ? 'active' : ''}`}
           >
-            <CalendarCheck className="w-4 h-4" />
-            <div>Pase de Lista Diario</div>
+            <CalendarCheck />
+            <span>Pase de Lista Diario</span>
           </button>
 
           <button
             onClick={() => setActiveTab('grades')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'grades'
-                ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'grades' ? 'active' : ''}`}
           >
-            <Award className="w-4 h-4" />
-            <div>Calificaciones & Boletas SEP</div>
+            <Award />
+            <span>Calificaciones & Boletas SEP</span>
           </button>
 
           <button
             onClick={() => setActiveTab('notices')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'notices'
-                ? 'bg-purple-500 text-white shadow-md shadow-purple-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'notices' ? 'active' : ''}`}
           >
-            <Megaphone className="w-4 h-4" />
-            <div>Circulares & Citatorios ({notices.length})</div>
+            <Megaphone />
+            <span>Circulares & Citatorios ({notices.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('credentials')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'credentials'
-                ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'credentials' ? 'active' : ''}`}
           >
-            <QrCode className="w-4 h-4" />
-            <div>Credenciales & Accesos ({credentials.length})</div>
+            <QrCode />
+            <span>Credenciales & Accesos ({credentials.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('tasks')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'tasks'
-                ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'tasks' ? 'active' : ''}`}
           >
-            <ClipboardList className="w-4 h-4" />
-            <div>Cuaderno de Tareas ({assignments.length})</div>
+            <ClipboardList />
+            <span>Cuaderno de Tareas ({assignments.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('schedules')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'schedules'
-                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'schedules' ? 'active' : ''}`}
           >
-            <CalendarDays className="w-4 h-4" />
-            <div>Horarios Semanales</div>
+            <CalendarDays />
+            <span>Horarios Semanales</span>
           </button>
 
           <button
             onClick={() => setActiveTab('admissions')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'admissions'
-                ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'admissions' ? 'active' : ''}`}
           >
-            <UserPlus className="w-4 h-4" />
-            <div>Admisiones & Aspirantes ({applicants.length})</div>
+            <UserPlus />
+            <span>Admisiones & Aspirantes ({applicants.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('library')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'library'
-                ? 'bg-rose-500 text-white shadow-md shadow-rose-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'library' ? 'active' : ''}`}
           >
-            <BookOpen className="w-4 h-4" />
-            <div>Biblioteca Escolar ({books.length})</div>
+            <BookOpen />
+            <span>Biblioteca Escolar ({books.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('transport')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'transport'
-                ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'transport' ? 'active' : ''}`}
           >
-            <Bus className="w-4 h-4" />
-            <div>Transporte Escolar ({transportRoutes.length})</div>
+            <Bus />
+            <span>Transporte Escolar ({transportRoutes.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('cafeteria')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'cafeteria'
-                ? 'bg-orange-500 text-white shadow-md shadow-orange-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'cafeteria' ? 'active' : ''}`}
           >
-            <Utensils className="w-4 h-4" />
-            <div>Cafetería & Monedero ({cafeteriaProducts.length})</div>
+            <Utensils />
+            <span>Cafetería & Monedero ({cafeteriaProducts.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('infirmary')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'infirmary'
-                ? 'bg-rose-500 text-white shadow-md shadow-rose-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'infirmary' ? 'active' : ''}`}
           >
-            <Stethoscope className="w-4 h-4" />
-            <div>Enfermería Escolar ({medicalConsultations.length})</div>
+            <Stethoscope />
+            <span>Enfermería Escolar ({medicalConsultations.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('workshops')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'workshops'
-                ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'workshops' ? 'active' : ''}`}
           >
-            <Trophy className="w-4 h-4" />
-            <div>Talleres & Academias ({extracurricularWorkshops.length})</div>
+            <Trophy />
+            <span>Talleres & Academias ({extracurricularWorkshops.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('inventory')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'inventory'
-                ? 'bg-teal-500 text-slate-950 shadow-md shadow-teal-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'inventory' ? 'active' : ''}`}
           >
-            <Box className="w-4 h-4" />
-            <div>Almacén, CONALITEG & Activos ({schoolAssets.length + conalitegPackages.length + schoolUniforms.length})</div>
+            <Box />
+            <span>Almacén, CONALITEG & Activos ({schoolAssets.length + conalitegPackages.length + schoolUniforms.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('surveys')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'surveys'
-                ? 'bg-rose-500 text-white shadow-md shadow-rose-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'surveys' ? 'active' : ''}`}
           >
-            <MessageSquareQuote className="w-4 h-4" />
-            <div>Encuestas & Clima ({institutionalSurveys.length})</div>
+            <MessageSquareQuote />
+            <span>Encuestas & Clima ({institutionalSurveys.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('events')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'events'
-                ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'events' ? 'active' : ''}`}
           >
-            <PartyPopper className="w-4 h-4" />
-            <div>Eventos & CTE ({schoolEvents.length})</div>
+            <PartyPopper />
+            <span>Eventos & CTE ({schoolEvents.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('recruitment')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'recruitment'
-                ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'recruitment' ? 'active' : ''}`}
           >
-            <Briefcase className="w-4 h-4" />
-            <div>Reclutamiento & RH ({jobVacancies.length})</div>
+            <Briefcase />
+            <span>Reclutamiento & RH ({jobVacancies.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('safety')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'safety'
-                ? 'bg-rose-500 text-white shadow-md shadow-rose-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'safety' ? 'active' : ''}`}
           >
-            <ShieldAlert className="w-4 h-4" />
-            <div>Protección Civil ({civilProtectionDrills.length})</div>
+            <ShieldAlert />
+            <span>Protección Civil ({civilProtectionDrills.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('community')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'community'
-                ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'community' ? 'active' : ''}`}
           >
-            <HeartHandshake className="w-4 h-4" />
-            <div>CEPS & Familias ({cepsCommittees.length + schoolAssemblies.length})</div>
+            <HeartHandshake />
+            <span>CEPS & Familias ({cepsCommittees.length + schoolAssemblies.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('maintenance')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'maintenance'
-                ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'maintenance' ? 'active' : ''}`}
           >
-            <Hammer className="w-4 h-4" />
-            <div>Infraestructura & Mantenimiento ({facilityWorkOrders.length + facilityInspections.length})</div>
+            <Hammer />
+            <span>Infraestructura & Mantenimiento ({facilityWorkOrders.length + facilityInspections.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('scholarships')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'scholarships'
-                ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'scholarships' ? 'active' : ''}`}
           >
-            <Percent className="w-4 h-4" />
-            <div>Becas SEP & Finanzas ({scholarshipApplications.length})</div>
+            <Percent />
+            <span>Becas SEP & Finanzas ({scholarshipApplications.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('certificates')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'certificates'
-                ? 'bg-sky-500 text-slate-950 shadow-md shadow-sky-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'certificates' ? 'active' : ''}`}
           >
-            <ScrollText className="w-4 h-4" />
-            <div>Certificación Digital & Kárdex ({officialCertificates.length})</div>
+            <ScrollText />
+            <span>Certificación Digital & Kárdex ({officialCertificates.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('audit')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'audit'
-                ? 'bg-sky-500 text-slate-950 shadow-md shadow-sky-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'audit' ? 'active' : ''}`}
           >
-            <ShieldCheck className="w-4 h-4" />
-            <div>Auditoría & Normativa SEP ({auditLogs.length})</div>
+            <ShieldCheck />
+            <span>Auditoría & Normativa SEP ({auditLogs.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('academic')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'academic'
-                ? 'bg-sky-500 text-slate-950 shadow-md shadow-sky-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'academic' ? 'active' : ''}`}
           >
-            <GraduationCap className="w-4 h-4" />
-            <div>Alumnos y Expedientes ({filteredStudents.length})</div>
+            <GraduationCap />
+            <span>Alumnos y Expedientes ({filteredStudents.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('groups')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'groups'
-                ? 'bg-sky-500 text-slate-950 shadow-md shadow-sky-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'groups' ? 'active' : ''}`}
           >
-            <Layers className="w-4 h-4" />
-            <div>Grupos ({filteredGroups.length})</div>
+            <Layers />
+            <span>Grupos ({filteredGroups.length})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('finance')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'finance'
-                ? 'bg-sky-500 text-slate-950 shadow-md shadow-sky-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'finance' ? 'active' : ''}`}
           >
-            <DollarSign className="w-4 h-4" />
-            <div>Caja Escolar & Arqueo</div>
+            <DollarSign />
+            <span>Caja Escolar & Arqueo</span>
           </button>
 
           <button
             onClick={() => setActiveTab('parent')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'parent'
-                ? 'bg-sky-500 text-slate-950 shadow-md shadow-sky-500/20'
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'parent' ? 'active' : ''}`}
           >
-            <Users className="w-4 h-4" />
-            <div>Portal de Padres</div>
+            <Users />
+            <span>Portal de Padres</span>
           </button>
 
           <button
             onClick={() => setActiveTab('superadmin')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeTab === 'superadmin'
-                ? 'bg-purple-600 text-white shadow-md shadow-purple-600/20'
-                : 'text-purple-400 hover:bg-purple-950/40 hover:text-purple-200'
-            }`}
+            className={`dashboard-tab-btn ${activeTab === 'superadmin' ? 'active' : ''}`}
           >
-            <ShieldCheck className="w-4 h-4" />
-            <div>SuperAdmin SaaS ({schools.length})</div>
+            <ShieldCheck />
+            <span>SuperAdmin SaaS ({schools.length})</span>
           </button>
         </nav>
       </div>
 
       {/* CONTENIDO PRINCIPAL */}
-      <main className="flex-1 container-app py-6 space-y-6">
+      <main className="container-app dashboard-main">
 
         {/* 1. MÓDULO DE NIVELES ESCOLARES Y DIRECTORES DE NIVEL */}
         {activeTab === 'levels' && (
-          <div className="space-y-6 animate-in fade-in">
+          <div className="dashboard-section">
             {/* Header de Niveles */}
-            <div className="flex items-center justify-between">
+            <div className="dashboard-section-header">
               <div>
-                <h3 className="text-lg font-black text-white flex items-center gap-2">
-                  <School className="w-5 h-5 text-sky-400" />
+                <h3 className="dashboard-section-title">
+                  <School className="section-title-icon" />
                   Direcciones Técnicas y Niveles Escolares
                 </h3>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="dashboard-section-desc">
                   Registra al director(a) de cada nivel escolar ofertado para que, tras verificar su correo, puedan dar de alta a su plantilla de maestros.
                 </p>
               </div>
@@ -7392,19 +7268,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             {/* Tarjetas de Niveles */}
             {educationalLevels.length === 0 ? (
-              <div className="bg-slate-900 border border-slate-800 rounded-3xl p-10 text-center shadow-xl space-y-4">
-                <div className="w-16 h-16 bg-sky-500/10 text-sky-400 border border-sky-500/20 rounded-3xl flex items-center justify-center mx-auto">
-                  <School className="w-8 h-8" />
+              <div className="dashboard-empty-card">
+                <div className="dashboard-empty-icon">
+                  <School />
                 </div>
-                <div className="max-w-md mx-auto space-y-1">
-                  <h3 className="text-lg font-black text-white">Sin niveles educativos registrados</h3>
-                  <p className="text-xs text-slate-400">
+                <div className="dashboard-empty-info">
+                  <h3>Sin niveles educativos registrados</h3>
+                  <p>
                     Esta institución no tiene niveles educativos configurados todavía.
                   </p>
                 </div>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="levels-grid">
                 {(isLevelDirector && userLevelId
                   ? educationalLevels.filter((lvl) => lvl.id === userLevelId)
                   : educationalLevels
@@ -7415,29 +7291,26 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 const hasDirector = Boolean(lvl.directorName && lvl.directorEmail);
 
                 return (
-                  <div
-                    key={lvl.id}
-                    className={`bg-slate-900 border rounded-3xl p-6 shadow-2xl space-y-5 flex flex-col justify-between ${lvl.color}`}
-                  >
+                  <div key={lvl.id} className="level-card">
                     <div>
-                      <div className="flex items-start justify-between border-b border-slate-800 pb-4">
-                        <div className="flex items-center gap-3">
-                          <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 text-white">
-                            <Icon className="w-6 h-6" />
+                      <div className="level-card-header">
+                        <div className="level-card-identity">
+                          <div className="level-card-icon">
+                            <Icon />
                           </div>
                           <div>
-                            <div className="text-[10px] font-mono font-bold bg-slate-950 px-2 py-0.5 rounded text-slate-300 border border-slate-800">
+                            <div className="level-cct-badge">
                               CCT SEP: {lvl.cctCode}
                             </div>
-                            <h4 className="text-lg font-black text-white mt-1">{lvl.name}</h4>
+                            <h4 className="level-card-name">{lvl.name}</h4>
                           </div>
                         </div>
 
                         {hasDirector ? (
-                          <div className="flex items-center gap-2">
+                          <div className="level-director-actions">
                             {lvl.isEmailVerified ? (
-                              <div className="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
-                                <CheckCircle2 className="w-3 h-3" /> Verificado ✅
+                              <div className="badge badge-emerald badge-sm">
+                                <CheckCircle2 /> Verificado ✅
                               </div>
                             ) : (
                               <button
@@ -7445,26 +7318,26 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                                   setActiveLevelForAction(lvl);
                                   setShowVerifyDirectorModal(true);
                                 }}
-                                className="bg-amber-950/80 hover:bg-amber-900 text-amber-300 text-xs px-3 py-1.5 rounded-xl font-bold flex items-center gap-1.5 transition-colors cursor-pointer border border-amber-800 animate-pulse"
+                                className="btn btn-warning btn-sm"
                               >
-                                <Key className="w-3.5 h-3.5" />
+                                <Key />
                                 <div>Verificar OTP</div>
                               </button>
                             )}
                             {!isLevelDirector ? (
                               <button
                                 onClick={() => handleOpenRegisterDirector(lvl)}
-                                className="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs px-2.5 py-1.5 rounded-xl font-bold transition-colors cursor-pointer"
+                                className="btn btn-secondary btn-sm dashboard-icon-btn"
                                 title="Editar datos de director"
                               >
-                                <Edit3 className="w-3.5 h-3.5" />
+                                <Edit3 />
                               </button>
                             ) : (
                               <button
                                 onClick={() => setActiveTab('teachers')}
-                                className="bg-sky-500 hover:bg-sky-400 text-slate-950 text-xs px-3 py-1.5 rounded-xl font-black flex items-center gap-1.5 transition-all cursor-pointer shadow-md shadow-sky-500/20"
+                                className="btn btn-primary btn-sm"
                               >
-                                <UserCheck className="w-3.5 h-3.5" />
+                                <UserCheck />
                                 <div>Mis Docentes</div>
                               </button>
                             )}
@@ -7473,9 +7346,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           !isLevelDirector && (
                             <button
                               onClick={() => handleOpenRegisterDirector(lvl)}
-                              className="bg-sky-500 hover:bg-sky-400 text-slate-950 text-xs px-3.5 py-2 rounded-xl font-black flex items-center gap-1.5 shadow-lg shadow-sky-500/20 transition-all cursor-pointer"
+                              className="btn btn-primary btn-sm"
                             >
-                              <UserPlus className="w-3.5 h-3.5" />
+                              <UserPlus />
                               <div>+ Asignar Director(a)</div>
                             </button>
                           )
@@ -7483,50 +7356,50 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </div>
 
                       {hasDirector ? (
-                        <div className="bg-slate-950/80 border border-slate-800 p-4 rounded-2xl space-y-2 mt-4">
-                          <div className="text-base font-black text-white">{lvl.directorName}</div>
-                          <div className="text-xs text-sky-400 font-semibold">{lvl.directorTitle}</div>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-slate-800/80 text-[11px] font-mono text-slate-400">
-                            <div className="truncate flex items-center gap-1"><Mail className="w-3.5 h-3.5 text-slate-500" /> {lvl.directorEmail}</div>
-                            <div className="flex items-center gap-1"><Phone className="w-3.5 h-3.5 text-slate-500" /> {lvl.directorPhone}</div>
+                        <div className="level-director-box">
+                          <div className="level-director-name">{lvl.directorName}</div>
+                          <div className="level-director-title">{lvl.directorTitle}</div>
+                          <div className="level-director-contact">
+                            <div className="truncate"><Mail /> {lvl.directorEmail}</div>
+                            <div><Phone /> {lvl.directorPhone}</div>
                           </div>
                         </div>
                       ) : (
-                        <div className="bg-slate-950/50 border border-dashed border-slate-800 p-6 rounded-2xl text-center space-y-2 mt-4">
-                          <div className="text-xs text-slate-400">
+                        <div className="level-empty-director">
+                          <div className="level-empty-text">
                             Sin <strong>Director(a) Técnico(a)</strong> asignado.
                           </div>
                           <button
                             onClick={() => handleOpenRegisterDirector(lvl)}
-                            className="bg-slate-800 hover:bg-slate-700 text-sky-400 text-xs px-4 py-2 rounded-xl font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                            className="btn btn-outline btn-sm"
                           >
-                            <UserPlus className="w-3.5 h-3.5" />
+                            <UserPlus />
                             <div>Registrar Director(a)</div>
                           </button>
                         </div>
                       )}
 
-                      <div className="grid grid-cols-2 gap-3 mt-4 text-xs">
-                        <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                          <div className="text-slate-500 block text-[11px]">Maestros Asignados:</div>
-                          <strong className="text-base font-mono font-black text-emerald-400">{levelTeachersCount} docentes</strong>
+                      <div className="level-stats-grid">
+                        <div className="level-stat-box">
+                          <span className="level-stat-label">Maestros Asignados:</span>
+                          <strong className="level-stat-value text-primary">{levelTeachersCount} docentes</strong>
                         </div>
-                        <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                          <div className="text-slate-500 block text-[11px]">Alumnos Inscritos:</div>
-                          <strong className="text-base font-mono font-black text-white">{levelStudentsCount} alumnos</strong>
+                        <div className="level-stat-box">
+                          <span className="level-stat-label">Alumnos Inscritos:</span>
+                          <strong className="level-stat-value">{levelStudentsCount} alumnos</strong>
                         </div>
                       </div>
                     </div>
 
-                    <div className="pt-4 border-t border-slate-800/80 flex gap-2">
+                    <div className="level-card-footer">
                       <button
                         onClick={() => {
                           setSelectedLevelFilter(lvl.id);
                           setActiveTab('teachers');
                         }}
-                        className="flex-1 bg-slate-800 hover:bg-slate-750 text-slate-200 py-2.5 rounded-xl font-bold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                        className="btn btn-secondary btn-sm level-action-btn"
                       >
-                        <UserCheck className="w-4 h-4 text-emerald-400" />
+                        <UserCheck />
                         <div>Ver Plantilla Docente ({levelTeachersCount})</div>
                       </button>
                     </div>
@@ -7540,60 +7413,62 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
         {/* 2. MÓDULO DE DOCENTES & MAESTROS */}
         {activeTab === 'teachers' && (
-          <div className="space-y-6 animate-in fade-in">
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div>
-                <h2 className="text-xl font-black text-white flex items-center gap-2">
-                  <UserCheck className="w-6 h-6 text-emerald-400" />
-                  Plantilla Docente & Profesores Titulares
-                </h2>
-                <p className="text-xs text-slate-400 mt-1">
-                  Los directores de Preescolar y Primaria pueden dar de alta a sus maestros. Cada docente recibe su correo con código OTP de activación.
-                </p>
-              </div>
+          <div className="dashboard-section">
+            <div className="dashboard-card">
+              <div className="dashboard-section-header">
+                <div>
+                  <h2 className="dashboard-section-title">
+                    <UserCheck className="section-title-icon text-success" />
+                    Plantilla Docente & Profesores Titulares
+                  </h2>
+                  <p className="dashboard-section-desc">
+                    Los directores de Preescolar y Primaria pueden dar de alta a sus maestros. Cada docente recibe su correo con código OTP de activación.
+                  </p>
+                </div>
 
-              <button
-                onClick={handleOpenNewTeacherModal}
-                className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs px-4 py-3 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition-all cursor-pointer shrink-0"
-              >
-                <UserPlus className="w-4 h-4" />
-                <div>+ Dar de Alta Nuevo Maestro</div>
-              </button>
+                <button
+                  onClick={handleOpenNewTeacherModal}
+                  className="btn btn-success btn-sm"
+                >
+                  <UserPlus />
+                  <span>+ Dar de Alta Nuevo Maestro</span>
+                </button>
+              </div>
             </div>
 
             {filteredTeachers.length === 0 ? (
-              <div className="bg-slate-900 border border-slate-800 rounded-3xl p-10 text-center shadow-xl space-y-4">
-                <div className="w-16 h-16 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-3xl flex items-center justify-center mx-auto">
-                  <UserCheck className="w-8 h-8" />
+              <div className="dashboard-empty-card">
+                <div className="dashboard-empty-icon">
+                  <UserCheck />
                 </div>
-                <div className="max-w-md mx-auto space-y-1">
-                  <h3 className="text-lg font-black text-white">Sin maestros registrados en este nivel</h3>
-                  <p className="text-xs text-slate-400">
+                <div className="dashboard-empty-info">
+                  <h3>Sin maestros registrados en este nivel</h3>
+                  <p>
                     Comienza dando de alta al primer maestro de Preescolar o Primaria para asignarle sus grupos y materias.
                   </p>
                 </div>
                 <div className="pt-2">
                   <button
                     onClick={handleOpenNewTeacherModal}
-                    className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs px-6 py-3.5 rounded-2xl shadow-xl shadow-emerald-500/20 inline-flex items-center gap-2 transition-all cursor-pointer"
+                    className="btn btn-success btn-sm"
                   >
-                    <UserPlus className="w-4 h-4" />
-                    <div>Dar de Alta Primer Maestro</div>
+                    <UserPlus />
+                    <span>Dar de Alta Primer Maestro</span>
                   </button>
                 </div>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              <div className="teachers-grid">
                 {filteredTeachers.map((tch) => (
-                  <div key={tch.id} className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4 flex flex-col justify-between">
+                  <div key={tch.id} className="teacher-card">
                     <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="text-[10px] font-mono font-bold bg-slate-950 px-2.5 py-1 rounded-full text-sky-400 border border-slate-800">
+                      <div className="teacher-card-top">
+                        <div className="badge badge-sky badge-xs font-mono">
                           {tch.levelId}
                         </div>
                         {tch.isEmailVerified ? (
-                          <div className="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
-                            <CheckCircle2 className="w-3 h-3" /> Verificado ✅
+                          <div className="badge badge-emerald badge-sm">
+                            <CheckCircle2 /> Verificado ✅
                           </div>
                         ) : (
                           <button
@@ -7601,36 +7476,36 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               setActiveTeacherForVerify(tch);
                               setShowVerifyTeacherModal(true);
                             }}
-                            className="bg-amber-950/80 hover:bg-amber-900 text-amber-300 border border-amber-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1 cursor-pointer animate-pulse"
+                            className="btn btn-warning btn-sm"
                           >
-                            <Key className="w-3 h-3" /> Pendiente OTP
+                            <Key /> Pendiente OTP
                           </button>
                         )}
                       </div>
 
-                      <h4 className="text-base font-black text-white">{tch.fullName}</h4>
-                      <p className="text-xs text-slate-400">{tch.specialty}</p>
+                      <h4 className="teacher-card-name">{tch.fullName}</h4>
+                      <p className="teacher-card-specialty">{tch.specialty}</p>
 
-                      <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 text-xs space-y-1 mt-3">
-                        <div className="text-slate-400">Grupo: <strong className="text-white">{tch.assignedGroup}</strong></div>
-                        <div className="text-slate-400">Materia: <strong className="text-sky-300">{tch.assignedSubject}</strong></div>
-                        <div className="text-slate-400 font-mono text-[11px] truncate mt-1 pt-1 border-t border-slate-800">
+                      <div className="teacher-card-details">
+                        <div>Grupo: <strong>{tch.assignedGroup}</strong></div>
+                        <div>Materia: <strong className="text-primary">{tch.assignedSubject}</strong></div>
+                        <div className="font-mono text-muted text-[11px] truncate pt-1 border-t">
                           ✉️ {tch.email}
                         </div>
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="teacher-card-actions">
                       <button
                         onClick={() => {
                           setAttendanceGroup(tch.assignedGroup);
                           setAttendanceTeacherId(tch.id);
                           setActiveTab('attendance');
                         }}
-                        className="w-full bg-slate-800 hover:bg-emerald-500 hover:text-slate-950 text-slate-200 py-2.5 rounded-xl font-bold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                        className="btn btn-outline btn-sm"
                       >
-                        <CalendarCheck className="w-3.5 h-3.5" />
-                        <div>Pase de Lista</div>
+                        <CalendarCheck />
+                        <span>Pase de Lista</span>
                       </button>
 
                       <button
@@ -7638,10 +7513,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           handleSelectTeacherForGrades(tch.id);
                           setActiveTab('grades');
                         }}
-                        className="w-full bg-slate-800 hover:bg-amber-400 hover:text-slate-950 text-slate-200 py-2.5 rounded-xl font-bold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                        className="btn btn-secondary btn-sm"
                       >
-                        <Award className="w-3.5 h-3.5" />
-                        <div>Calificaciones SEP</div>
+                        <Award />
+                        <span>Calificaciones SEP</span>
                       </button>
                     </div>
                   </div>
@@ -27751,10 +27626,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         </div>
       )}
 
-      <footer className="bg-slate-900 border-t border-slate-800 py-3 text-center text-xs text-slate-500">
-        <div className="container-app flex flex-col sm:flex-row items-center justify-between gap-2">
+      <footer className="dashboard-footer">
+        <div className="container-app dashboard-footer-inner">
           <div>Avante School Management (ASM) • Sistema Escolar Multi-Tenant Offline-First</div>
-          <div className="font-mono text-slate-400">
+          <div className="font-mono text-muted">
             {currentTenant.name}
             {educationalLevels.length > 0 ? ` • ${educationalLevels.map((l) => l.name.split('/')[0].trim()).join(' & ')}` : ''}
           </div>
