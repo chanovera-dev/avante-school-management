@@ -18575,7 +18575,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 className="modal-close"
                 title="Cerrar ventana modal"
               >
-                ✕
+                <X />
               </button>
             </div>
 
@@ -18678,6 +18678,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       {showVerifyDirectorModal && activeLevelForAction && (
         <div className="modal-backdrop">
           <div className="modal-card modal-card-sm text-center">
+            <button
+              type="button"
+              onClick={() => setShowVerifyDirectorModal(false)}
+              className="modal-close"
+              title="Cerrar ventana modal"
+            >
+              <X />
+            </button>
             <div className="modal-verify-icon">
               <MailCheck />
             </div>
