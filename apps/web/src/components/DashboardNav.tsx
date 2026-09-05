@@ -122,8 +122,8 @@ const ROLE_MODULES: Record<string, TabType[]> = {
   FINANZAS: ['finance', 'scholarships', 'cafeteria', 'inventory', 'certificates'],
   CONTROL_ESCOLAR: ['academic', 'groups', 'credentials', 'admissions', 'certificates', 'levels', 'audit'],
   TUTOR: ['parent', 'notices', 'attendance', 'grades', 'tasks', 'credentials'],
-  DIRECTOR: ['levels', 'teachers', 'academic', 'attendance', 'grades', 'finance', 'notices', 'safety', 'audit'],
-  SUPER_ADMIN: ['superadmin', 'audit', 'levels', 'finance', 'academic', 'teachers'],
+  DIRECTOR: ['levels', 'groups', 'teachers', 'academic', 'admissions', 'attendance', 'grades', 'finance', 'notices', 'safety', 'audit'],
+  SUPER_ADMIN: ['superadmin', 'admissions', 'academic', 'groups', 'levels', 'teachers', 'finance', 'audit'],
 };
 
 export interface DashboardNavProps {

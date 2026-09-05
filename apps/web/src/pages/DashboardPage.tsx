@@ -1113,8 +1113,14 @@ interface Student {
   emergencyNotes?: string;
   tutorName?: string;
   tutorPhone?: string;
+  tutorEmail?: string;
+  address?: string;
   bloodType?: string;
   groupName: string;
+  deliveredDocuments?: string[];
+  enrollmentFeePaid?: boolean;
+  enrollmentPaymentMethod?: string;
+  enrollmentFolio?: string;
 }
 
 interface AcademicGroup {
@@ -1129,6 +1135,8 @@ interface AcademicGroup {
   type: 'REGULAR' | 'OPTATIVA_MULTIGRUPO';
   studentCount: number;
   subgroupsNote?: string;
+  classroom?: string;
+  capacity?: number;
 }
 
 interface Charge {
@@ -1464,8 +1472,23 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
     colorHex: '#3b82f6',
   });
 
-  // Admisiones y Preinscripciones en Línea
-  const [applicants, setApplicants] = useState<AdmissionApplicantItem[]>([]);
+  // Admisiones y Preinscripciones en Línea con persistencia local
+  const [applicants, setApplicants] = useState<AdmissionApplicantItem[]>(() => {
+    try {
+      const saved = localStorage.getItem(`asm_applicants_${currentTenant?.id || 'default'}`);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) return parsed;
+      }
+    } catch (e) {}
+    return [];
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(`asm_applicants_${currentTenant?.id || 'default'}`, JSON.stringify(applicants));
+    } catch (e) {}
+  }, [applicants, currentTenant?.id]);
 
   const [selectedApplicantStatusFilter, setSelectedApplicantStatusFilter] = useState<string>('ALL');
   const [selectedApplicantLevelFilter, setSelectedApplicantLevelFilter] = useState<string>('ALL');
@@ -2208,20 +2231,40 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [studentSearch, setStudentSearch] = useState('');
   const [studentFilter, setStudentFilter] = useState<'ALL' | 'ACTIVE' | 'CONDITIONAL'>('ALL');
 
-  // Formulario Alumno
+  // Formulario Alumno Completo (Cédula de Inscripción Oficial SEP)
   const [newStudentForm, setNewStudentForm] = useState({
     firstName: '',
     lastName: '',
     curp: '',
+    birthDate: '',
     gender: 'M' as 'M' | 'F' | 'OTHER',
-    levelId: 'PRIMARIA',
-    groupName: 'Primaria 1º "A"',
-    tutorName: '',
-    tutorPhone: '',
     bloodType: 'O+',
+    levelId: userLevelId || 'PREESCOLAR',
+    groupName: '',
+    emergencyNotes: '',
+    // Tutor
+    tutorName: '',
+    tutorRelationship: 'Madre / Padre',
+    tutorPhone: '',
+    tutorEmail: '',
+    address: '',
+    // Documentos SEP
+    docActa: true,
+    docCurp: true,
+    docCartilla: true,
+    docCertificadoMedico: true,
+    docComprobanteDomicilio: true,
+    docBoletaAnterior: false,
+    docFotos: true,
     isConditional: false,
     conditionalDeadline: '31/Oct/2026',
-    emergencyNotes: '',
+    // Cuota de Inscripción y Caja
+    enrollmentConcept: 'Cuota de Inscripción y Matrícula Ciclo 2026-2027',
+    enrollmentAmount: 3500,
+    enrollmentDiscount: 0,
+    paymentMethod: 'EFECTIVO' as 'EFECTIVO' | 'SPEI' | 'TARJETA' | 'PENDIENTE',
+    paymentFolio: '',
+    paymentStatus: 'PAGADO' as 'PAGADO' | 'PENDIENTE',
   });
 
   // Formulario Cargo
@@ -2234,16 +2277,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
     dueDate: '10/Oct/2026',
   });
 
-  // Formulario Grupo
+  // Formulario Grupo Oficial
   const [newGroupForm, setNewGroupForm] = useState({
-    name: 'Kínder 1º "A"',
-    level: 'Preescolar',
-    levelId: 'PREESCOLAR',
+    name: '1º "A"',
+    level: 'Preescolar / Jardín de Niños',
+    levelId: userLevelId || 'PREESCOLAR',
     grade: '1º',
     groupLetter: 'A',
-    shift: 'Matutino (08:30 - 13:30)',
+    shift: 'Matutino (08:00 - 13:30)',
     leadTeacher: 'Por Asignar',
     type: 'REGULAR' as 'REGULAR' | 'OPTATIVA_MULTIGRUPO',
+    classroom: 'Aula 101',
+    capacity: 30,
     subgroupsNote: '',
   });
 
@@ -2252,18 +2297,166 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   // Escuelas
   const [schools, setSchools] = useState<RegisteredSchool[]>([]);
 
-  // Alumnos y Grupos
-  const [students, setStudents] = useState<Student[]>([]);
-  const [groups, setGroups] = useState<AcademicGroup[]>([]);
+  // Alumnos y Grupos con persistencia y grupos iniciales inteligentes
+  const [groups, setGroups] = useState<AcademicGroup[]>(() => {
+    try {
+      const saved = localStorage.getItem(`asm_groups_${currentTenant?.id || 'default'}`);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (e) {}
 
-  const [charges, setCharges] = useState<Charge[]>([]);
-  const [cashSummary, setCashSummary] = useState<CashSummary>({
-    totalCashInVault: 0,
-    totalBankTransfers: 0,
-    totalCodiBanxico: 0,
-    totalGatewayCards: 0,
-    grandTotal: 0,
+    return [
+      {
+        id: 'grp-pre-1a',
+        name: '1º Kínder "A"',
+        level: 'Preescolar / Jardín de Niños',
+        levelId: 'PREESCOLAR',
+        grade: '1º Kínder',
+        groupLetter: 'A',
+        shift: 'Matutino (08:30 - 13:00)',
+        leadTeacher: 'Por Asignar',
+        type: 'REGULAR',
+        studentCount: 0,
+        classroom: 'Aula K-1',
+        capacity: 25,
+      },
+      {
+        id: 'grp-pre-2a',
+        name: '2º Kínder "A"',
+        level: 'Preescolar / Jardín de Niños',
+        levelId: 'PREESCOLAR',
+        grade: '2º Kínder',
+        groupLetter: 'A',
+        shift: 'Matutino (08:30 - 13:00)',
+        leadTeacher: 'Por Asignar',
+        type: 'REGULAR',
+        studentCount: 0,
+        classroom: 'Aula K-2',
+        capacity: 25,
+      },
+      {
+        id: 'grp-pre-3a',
+        name: '3º Kínder "A"',
+        level: 'Preescolar / Jardín de Niños',
+        levelId: 'PREESCOLAR',
+        grade: '3º Kínder',
+        groupLetter: 'A',
+        shift: 'Matutino (08:30 - 13:00)',
+        leadTeacher: 'Por Asignar',
+        type: 'REGULAR',
+        studentCount: 0,
+        classroom: 'Aula K-3',
+        capacity: 25,
+      },
+      {
+        id: 'grp-prim-1a',
+        name: '1º Primaria "A"',
+        level: 'Primaria',
+        levelId: 'PRIMARIA',
+        grade: '1º Primaria',
+        groupLetter: 'A',
+        shift: 'Matutino (08:00 - 13:30)',
+        leadTeacher: 'Por Asignar',
+        type: 'REGULAR',
+        studentCount: 0,
+        classroom: 'Aula 101',
+        capacity: 30,
+      },
+      {
+        id: 'grp-prim-2a',
+        name: '2º Primaria "A"',
+        level: 'Primaria',
+        levelId: 'PRIMARIA',
+        grade: '2º Primaria',
+        groupLetter: 'A',
+        shift: 'Matutino (08:00 - 13:30)',
+        leadTeacher: 'Por Asignar',
+        type: 'REGULAR',
+        studentCount: 0,
+        classroom: 'Aula 102',
+        capacity: 30,
+      },
+      {
+        id: 'grp-prim-3a',
+        name: '3º Primaria "A"',
+        level: 'Primaria',
+        levelId: 'PRIMARIA',
+        grade: '3º Primaria',
+        groupLetter: 'A',
+        shift: 'Matutino (08:00 - 13:30)',
+        leadTeacher: 'Por Asignar',
+        type: 'REGULAR',
+        studentCount: 0,
+        classroom: 'Aula 201',
+        capacity: 30,
+      },
+    ];
   });
+
+  const [students, setStudents] = useState<Student[]>(() => {
+    try {
+      const saved = localStorage.getItem(`asm_students_${currentTenant?.id || 'default'}`);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) return parsed;
+      }
+    } catch (e) {}
+    return [];
+  });
+
+  const [charges, setCharges] = useState<Charge[]>(() => {
+    try {
+      const saved = localStorage.getItem(`asm_charges_${currentTenant?.id || 'default'}`);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) return parsed;
+      }
+    } catch (e) {}
+    return [];
+  });
+
+  const [cashSummary, setCashSummary] = useState<CashSummary>(() => {
+    try {
+      const saved = localStorage.getItem(`asm_cash_${currentTenant?.id || 'default'}`);
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch (e) {}
+    return {
+      totalCashInVault: 0,
+      totalBankTransfers: 0,
+      totalCodiBanxico: 0,
+      totalGatewayCards: 0,
+      grandTotal: 0,
+    };
+  });
+
+  // Efectos de persistencia en localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem(`asm_groups_${currentTenant?.id || 'default'}`, JSON.stringify(groups));
+    } catch (e) {}
+  }, [groups, currentTenant?.id]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(`asm_students_${currentTenant?.id || 'default'}`, JSON.stringify(students));
+    } catch (e) {}
+  }, [students, currentTenant?.id]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(`asm_charges_${currentTenant?.id || 'default'}`, JSON.stringify(charges));
+    } catch (e) {}
+  }, [charges, currentTenant?.id]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(`asm_cash_${currentTenant?.id || 'default'}`, JSON.stringify(cashSummary));
+    } catch (e) {}
+  }, [cashSummary, currentTenant?.id]);
 
   const showToast = (msg: string) => {
     setNotification(msg);
@@ -6627,61 +6820,163 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
     showToast(`⚖️ Dictamen emitido: ${evaluateScholarshipForm.status} con ${discount}% de beca.`);
   };
 
-  // Inscribir Alumno Real
+  // Inscribir Alumno Real con expediente completo, sincronización con Admisiones y recibo en Caja
   const handleCreateStudent = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newStudentForm.firstName || !newStudentForm.lastName) {
-      showToast('⚠️ Completa el nombre del alumno.');
+      showToast('⚠️ Completa el nombre y apellidos del alumno.');
+      return;
+    }
+
+    if (!newStudentForm.groupName) {
+      showToast('⚠️ Asigna o selecciona un grupo escolar para el alumno.');
       return;
     }
 
     const year = new Date().getFullYear();
     const count = students.length + 1;
-    const prefix = currentTenant.subdomain.substring(0, 3).toUpperCase() || 'ASM';
+    const prefix = currentTenant.subdomain ? currentTenant.subdomain.substring(0, 3).toUpperCase() : 'ASM';
     const studentCode = `${year}-${prefix}-${String(count).padStart(3, '0')}`;
+
+    // Documentos entregados según checklist
+    const deliveredDocs: string[] = [];
+    if (newStudentForm.docActa) deliveredDocs.push('Acta de Nacimiento');
+    if (newStudentForm.docCurp) deliveredDocs.push('CURP Certificada');
+    if (newStudentForm.docCartilla) deliveredDocs.push('Cartilla de Vacunación');
+    if (newStudentForm.docCertificadoMedico) deliveredDocs.push('Certificado Médico Vigente');
+    if (newStudentForm.docComprobanteDomicilio) deliveredDocs.push('Comprobante de Domicilio');
+    if (newStudentForm.docBoletaAnterior) deliveredDocs.push('Boleta del Ciclo Anterior');
+    if (newStudentForm.docFotos) deliveredDocs.push('Fotografías Infantiles');
+
+    const isCond = Boolean(
+      newStudentForm.isConditional ||
+      !newStudentForm.docActa ||
+      !newStudentForm.docCurp ||
+      !newStudentForm.docCertificadoMedico
+    );
+
+    const receiptFolio = newStudentForm.paymentFolio || `REC-${year}-${String(charges.length + 1).padStart(4, '0')}`;
 
     const newStudent: Student = {
       id: `std-${Date.now()}`,
       studentCode,
-      firstName: newStudentForm.firstName,
-      lastName: newStudentForm.lastName,
-      curp: newStudentForm.curp || undefined,
+      firstName: newStudentForm.firstName.trim(),
+      lastName: newStudentForm.lastName.trim(),
+      curp: newStudentForm.curp ? newStudentForm.curp.toUpperCase().trim() : undefined,
+      birthDate: newStudentForm.birthDate || undefined,
       gender: newStudentForm.gender,
       levelId: newStudentForm.levelId,
       groupName: newStudentForm.groupName,
-      tutorName: newStudentForm.tutorName || 'Tutor Principal',
-      tutorPhone: newStudentForm.tutorPhone || 'No registrado',
+      tutorName: newStudentForm.tutorName?.trim() || 'Tutor Principal',
+      tutorPhone: newStudentForm.tutorPhone?.trim() || 'No registrado',
+      tutorEmail: newStudentForm.tutorEmail?.trim() || undefined,
+      address: newStudentForm.address?.trim() || undefined,
       bloodType: newStudentForm.bloodType,
-      isConditional: newStudentForm.isConditional,
-      conditionalDeadline: newStudentForm.isConditional ? newStudentForm.conditionalDeadline : undefined,
-      emergencyNotes: newStudentForm.emergencyNotes || undefined,
-      status: newStudentForm.isConditional ? 'INSCRITO_CONDICIONADO' : 'INSCRITO_ACTIVO',
+      isConditional: isCond,
+      conditionalDeadline: isCond ? newStudentForm.conditionalDeadline : undefined,
+      emergencyNotes: newStudentForm.emergencyNotes?.trim() || undefined,
+      status: isCond ? 'INSCRITO_CONDICIONADO' : 'INSCRITO_ACTIVO',
+      deliveredDocuments: deliveredDocs,
+      enrollmentFeePaid: newStudentForm.paymentStatus === 'PAGADO',
+      enrollmentPaymentMethod: newStudentForm.paymentMethod,
+      enrollmentFolio: receiptFolio,
     };
 
     setStudents((prev) => [newStudent, ...prev]);
 
+    // Incrementar conteo del grupo escolar
     setGroups((prev) =>
       prev.map((g) => (g.name === newStudent.groupName ? { ...g, studentCount: g.studentCount + 1 } : g))
     );
+
+    // Registro sincronizado en ADMISIONES para que el alumno aparezca en el módulo de Admisiones / Aspirantes
+    const applicantFolio = `ADM-${year}-${String(applicants.length + 1).padStart(4, '0')}`;
+    const levelName = educationalLevels.find((l) => l.id === newStudent.levelId)?.name || newStudent.levelId;
+
+    const admissionRecord: AdmissionApplicantItem = {
+      id: `app-${Date.now()}`,
+      folio: applicantFolio,
+      applicantFirstName: newStudent.firstName,
+      applicantLastName: newStudent.lastName,
+      curp: newStudent.curp || '',
+      birthDate: newStudent.birthDate || '',
+      gender: newStudent.gender,
+      targetLevelId: newStudent.levelId,
+      targetLevelName: levelName,
+      targetGrade: newStudent.groupName,
+      parentName: newStudent.tutorName || '',
+      parentPhone: newStudent.tutorPhone || '',
+      parentEmail: newStudentForm.tutorEmail || '',
+      status: 'INSCRITO',
+      documents: [
+        { id: `doc-${Date.now()}-1`, documentType: 'ACTA_NACIMIENTO', documentName: 'Acta de Nacimiento Certificada', status: newStudentForm.docActa ? 'VALIDADO' : 'PENDIENTE' },
+        { id: `doc-${Date.now()}-2`, documentType: 'CURP', documentName: 'CURP Certificada RENAPO', status: newStudentForm.docCurp ? 'VALIDADO' : 'PENDIENTE' },
+        { id: `doc-${Date.now()}-3`, documentType: 'CARTILLA_VACUNACION', documentName: 'Cartilla Nacional de Salud', status: newStudentForm.docCartilla ? 'VALIDADO' : 'PENDIENTE' },
+        { id: `doc-${Date.now()}-4`, documentType: 'COMPROBANTE_DOMICILIO', documentName: 'Comprobante de Domicilio Vigente', status: newStudentForm.docComprobanteDomicilio ? 'VALIDADO' : 'PENDIENTE' },
+      ],
+      appliedAt: new Date().toISOString().split('T')[0],
+      convertedStudentId: newStudent.id,
+      notes: `Inscripción formal directa en Ventanilla. Matrícula: ${newStudent.studentCode}. Grupo: ${newStudent.groupName}. Pago: ${newStudentForm.paymentStatus} ($${Math.max(0, newStudentForm.enrollmentAmount - newStudentForm.enrollmentDiscount)} MXN). Recibo #${receiptFolio}`,
+    };
+    setApplicants((prev) => [admissionRecord, ...prev]);
+
+    // Registro Financiero y Recibo de Caja
+    const netAmount = Math.max(0, newStudentForm.enrollmentAmount - newStudentForm.enrollmentDiscount);
+    const isPaid = newStudentForm.paymentStatus === 'PAGADO';
 
     const autoCharge: Charge = {
       id: `chg-${Date.now()}`,
       studentId: newStudent.id,
       studentName: `${newStudent.firstName} ${newStudent.lastName}`,
       levelId: newStudent.levelId,
-      conceptName: 'Colegiatura de Ingreso 2026',
+      conceptName: newStudentForm.enrollmentConcept || 'Cuota de Inscripción y Matrícula 2026-2027',
       periodName: 'Ciclo 2026-2027',
-      baseAmount: newStudent.levelId === 'PREESCOLAR' ? 3200 : 3800,
-      discountAmount: 0,
-      paidAmount: 0,
-      outstandingBalance: newStudent.levelId === 'PREESCOLAR' ? 3200 : 3800,
-      status: 'POR_VENCER',
+      baseAmount: newStudentForm.enrollmentAmount,
+      discountAmount: newStudentForm.enrollmentDiscount,
+      paidAmount: isPaid ? netAmount : 0,
+      outstandingBalance: isPaid ? 0 : netAmount,
+      status: isPaid ? 'LIQUIDADO' : 'POR_VENCER',
       dueDate: '10/Oct/2026',
     };
     setCharges((prev) => [autoCharge, ...prev]);
 
+    // Arqueo en caja y emisión de recibo si se pagó
+    if (isPaid && netAmount > 0) {
+      if (newStudentForm.paymentMethod === 'EFECTIVO') {
+        setCashSummary((prev) => ({
+          ...prev,
+          totalCashInVault: prev.totalCashInVault + netAmount,
+          grandTotal: prev.grandTotal + netAmount,
+        }));
+      } else if (newStudentForm.paymentMethod === 'SPEI') {
+        setCashSummary((prev) => ({
+          ...prev,
+          totalBankTransfers: prev.totalBankTransfers + netAmount,
+          grandTotal: prev.grandTotal + netAmount,
+        }));
+      } else if (newStudentForm.paymentMethod === 'TARJETA') {
+        setCashSummary((prev) => ({
+          ...prev,
+          totalGatewayCards: prev.totalGatewayCards + netAmount,
+          grandTotal: prev.grandTotal + netAmount,
+        }));
+      }
+
+      setLastReceipt({
+        receiptNumber: receiptFolio,
+        date: new Date().toLocaleString(),
+        studentName: `${newStudent.firstName} ${newStudent.lastName}`,
+        studentCode: newStudent.studentCode,
+        concept: autoCharge.conceptName,
+        paymentMethod: newStudentForm.paymentMethod,
+        amount: netAmount,
+        cashier: currentUser?.fullName || 'Ventanilla General',
+      });
+      setShowReceiptModal(true);
+    }
+
     setShowNewStudentModal(false);
-    showToast(`✅ Alumno ${newStudent.firstName} inscrito con Matrícula ${newStudent.studentCode}`);
+    showToast(`✅ Alumno ${newStudent.firstName} inscrito con Matrícula ${newStudent.studentCode} (Folio Admisión: ${applicantFolio})`);
   };
 
   // Crear Cargo
@@ -6717,18 +7012,25 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   // Crear Grupo
   const handleCreateGroup = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!newGroupForm.name) {
+      showToast('⚠️ Asigna un nombre al grupo escolar.');
+      return;
+    }
+    const lvlObj = educationalLevels.find((l) => l.id === newGroupForm.levelId);
     const newGrp: AcademicGroup = {
       id: `grp-${Date.now()}`,
       name: newGroupForm.name,
-      level: newGroupForm.level,
+      level: lvlObj?.name || newGroupForm.level || 'Primaria',
       levelId: newGroupForm.levelId,
       grade: newGroupForm.grade,
       groupLetter: newGroupForm.groupLetter,
       shift: newGroupForm.shift,
-      leadTeacher: newGroupForm.leadTeacher,
+      leadTeacher: newGroupForm.leadTeacher || 'Por Asignar',
       type: newGroupForm.type,
       studentCount: 0,
       subgroupsNote: newGroupForm.type === 'OPTATIVA_MULTIGRUPO' ? newGroupForm.subgroupsNote : undefined,
+      classroom: newGroupForm.classroom,
+      capacity: newGroupForm.capacity || 30,
     };
 
     setGroups((prev) => [...prev, newGrp]);
@@ -7137,6 +7439,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 const Icon = lvl.icon;
                 const levelStudentsCount = students.filter((s) => s.levelId === lvl.id).length;
                 const levelTeachersCount = teachers.filter((t) => t.levelId === lvl.id).length;
+                const levelGroupsCount = groups.filter((g) => g.levelId === lvl.id).length;
                 const hasDirector = Boolean(lvl.directorName && lvl.directorEmail);
 
                 return (
@@ -7230,6 +7533,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                       <div className="level-stats-grid">
                         <div className="level-stat-box">
+                          <span className="level-stat-label">Grupos Escolares:</span>
+                          <strong className="level-stat-value text-purple-400">{levelGroupsCount} grupos</strong>
+                        </div>
+                        <div className="level-stat-box">
                           <span className="level-stat-label">Maestros Asignados:</span>
                           <strong className="level-stat-value text-primary">{levelTeachersCount} docentes</strong>
                         </div>
@@ -7240,16 +7547,26 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       </div>
                     </div>
 
-                    <div className="level-card-footer">
+                    <div className="level-card-footer flex items-center gap-2">
+                      <button
+                        onClick={() => {
+                          setSelectedLevelFilter(lvl.id);
+                          setActiveTab('groups');
+                        }}
+                        className="btn btn-secondary btn-sm level-action-btn flex-1"
+                      >
+                        <Layers className="w-4 h-4 text-purple-400" />
+                        <div>Ver Grupos ({levelGroupsCount})</div>
+                      </button>
                       <button
                         onClick={() => {
                           setSelectedLevelFilter(lvl.id);
                           setActiveTab('teachers');
                         }}
-                        className="btn btn-secondary btn-sm level-action-btn"
+                        className="btn btn-secondary btn-sm level-action-btn flex-1"
                       >
-                        <UserCheck />
-                        <div>Ver Plantilla Docente ({levelTeachersCount})</div>
+                        <UserCheck className="w-4 h-4 text-emerald-400" />
+                        <div>Docentes ({levelTeachersCount})</div>
                       </button>
                     </div>
                   </div>
@@ -9424,6 +9741,22 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
 
               <div className="flex items-center gap-2.5 flex-wrap">
+                <button
+                  onClick={() => setActiveTab('academic')}
+                  className="btn btn-secondary btn-sm"
+                >
+                  <GraduationCap className="w-4 h-4 text-sky-400" />
+                  <div>Alumnos Inscritos ({students.length})</div>
+                </button>
+
+                <button
+                  onClick={() => setShowNewStudentModal(true)}
+                  className="btn btn-primary btn-sm"
+                >
+                  <UserPlus className="w-4 h-4" />
+                  <div>+ Inscribir Alumno Directo</div>
+                </button>
+
                 <button
                   onClick={() => setShowNewApplicantModal(true)}
                   className="btn btn-warning btn-sm"
@@ -16898,13 +17231,31 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </p>
               </div>
 
-              <button
-                onClick={() => setShowNewStudentModal(true)}
-                className="btn btn-primary btn-sm"
-              >
-                <UserPlus className="w-4 h-4" />
-                <div>+ Inscribir Nuevo Alumno</div>
-              </button>
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <button
+                  onClick={() => setActiveTab('groups')}
+                  className="btn btn-secondary btn-sm"
+                >
+                  <Layers className="w-4 h-4 text-purple-400" />
+                  <div>Ver Grupos ({filteredGroups.length})</div>
+                </button>
+
+                <button
+                  onClick={() => setActiveTab('admissions')}
+                  className="btn btn-secondary btn-sm"
+                >
+                  <UserPlus className="w-4 h-4 text-amber-400" />
+                  <div>Admisiones ({applicants.length})</div>
+                </button>
+
+                <button
+                  onClick={() => setShowNewStudentModal(true)}
+                  className="btn btn-primary btn-sm"
+                >
+                  <PlusCircle className="w-4 h-4" />
+                  <div>+ Inscribir Nuevo Alumno</div>
+                </button>
+              </div>
             </div>
 
             {filteredStudents.length === 0 ? (
@@ -16996,22 +17347,72 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {filteredGroups.map((grp) => (
-                <div key={grp.id} className="dashboard-card p-6 flex flex-col justify-between">
-                  <div>
-                    <div className="text-[10px] font-bold uppercase px-2.5 py-1 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40">
-                      {grp.level}
+            {filteredGroups.length === 0 ? (
+              <div className="dashboard-card p-10 text-center space-y-4">
+                <div className="badge badge-purple inline-flex p-3 rounded-2xl">
+                  <Layers className="w-8 h-8 text-purple-400" />
+                </div>
+                <div className="max-w-md mx-auto space-y-1">
+                  <h3 className="modal-title">Sin grupos registrados en este nivel</h3>
+                  <p className="text-xs text-muted">
+                    Crea el primer grupo escolar asignando grado, letra, turno y docente titular.
+                  </p>
+                </div>
+                <div className="pt-2">
+                  <button
+                    onClick={() => setShowNewGroupModal(true)}
+                    className="btn btn-purple btn-sm"
+                  >
+                    <PlusCircle className="w-4 h-4" />
+                    <div>Crear Primer Grupo</div>
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {filteredGroups.map((grp) => (
+                  <div key={grp.id} className="dashboard-card p-6 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-[10px] font-bold uppercase px-2.5 py-1 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40">
+                          {grp.level}
+                        </span>
+                        <span className="badge badge-emerald font-mono text-[10px]">
+                          {grp.studentCount} {grp.studentCount === 1 ? 'alumno' : 'alumnos'}
+                        </span>
+                      </div>
+                      <h3 className="modal-title text-base">{grp.name}</h3>
+                      <p className="text-xs text-muted mb-2">Turno: {grp.shift}</p>
+                      {grp.classroom && (
+                        <p className="text-[11px] text-muted mb-2">
+                          📍 Salón: <span className="text-main font-medium">{grp.classroom}</span>
+                        </p>
+                      )}
+                      <div className="badge badge-sky w-full justify-start">
+                        Docente: <strong className="text-main ml-1">{grp.leadTeacher}</strong>
+                      </div>
                     </div>
-                    <h3 className="modal-title">{grp.name}</h3>
-                    <p className="text-xs text-muted mb-3">Turno: {grp.shift}</p>
-                    <div className="badge badge-sky">
-                      Docente: <strong className="text-main">{grp.leadTeacher}</strong>
+
+                    <div className="pt-4 border-t border-subtle mt-4 flex items-center gap-2">
+                      <button
+                        onClick={() => {
+                          setNewStudentForm((prev) => ({
+                            ...prev,
+                            levelId: grp.levelId,
+                            groupName: grp.name,
+                          }));
+                          setShowNewStudentModal(true);
+                        }}
+                        className="btn btn-primary btn-xs w-full"
+                      >
+                        <UserPlus className="w-3.5 h-3.5" />
+                        <div>Inscribir Alumno Aquí</div>
+                      </button>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -18703,54 +19104,976 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         </div>
       )}
 
-      {/* MODAL: NUEVO ALUMNO */}
+      {/* MODAL: CÉDULA OFICIAL DE INSCRIPCIÓN Y MATRÍCULA ESCOLAR (EXPEDIENTE SEP) */}
       {showNewStudentModal && (
         <div className="modal-backdrop">
-          <div className="modal-card modal-card-xl">
-            <h3 className="modal-title">Inscripción de Alumno</h3>
-            <form onSubmit={handleCreateStudent} className="space-y-4 text-xs">
-              <div className="grid grid-cols-2 gap-3">
-                <input
-                  type="text"
-                  required
-                  placeholder="Nombre(s)"
-                  value={newStudentForm.firstName}
-                  onChange={(e) => setNewStudentForm({ ...newStudentForm, firstName: e.target.value })}
-                  className="form-input"
-                />
-                <input
-                  type="text"
-                  required
-                  placeholder="Apellidos"
-                  value={newStudentForm.lastName}
-                  onChange={(e) => setNewStudentForm({ ...newStudentForm, lastName: e.target.value })}
-                  className="form-input"
-                />
+          <div className="modal-card modal-card-2xl max-h-[92vh] overflow-y-auto">
+            <div className="modal-header">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-sky-500/20 text-sky-400 flex items-center justify-center flex-shrink-0">
+                  <UserPlus className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="modal-title">Cédula de Inscripción y Matrícula Escolar</h3>
+                    <span className="badge badge-sky text-[10px] font-mono">Oficial SEP</span>
+                  </div>
+                  <p className="text-xs text-muted">
+                    Expediente del alumno, asignación de grupo, cotejo documental y registro de cuota en caja.
+                  </p>
+                </div>
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                <ModernSelect
-                  value={newStudentForm.levelId}
-                  onChange={(e) => setNewStudentForm({ ...newStudentForm, levelId: e.target.value })}
-                  className="form-select"
-                >
-                  <option value="PREESCOLAR">Preescolar</option>
-                  <option value="PRIMARIA">Primaria</option>
-                </ModernSelect>
-                <ModernSelect
-                  value={newStudentForm.groupName}
-                  onChange={(e) => setNewStudentForm({ ...newStudentForm, groupName: e.target.value })}
-                  className="form-select"
-                >
-                  {groups.filter((g) => g.levelId === newStudentForm.levelId).map((g) => (
-                    <option key={g.id} value={g.name}>{g.name}</option>
-                  ))}
-                </ModernSelect>
+              <button
+                type="button"
+                onClick={() => setShowNewStudentModal(false)}
+                className="modal-close"
+                title="Cerrar ventana modal"
+              >
+                <X />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateStudent} className="space-y-4 text-xs pt-1">
+              {/* SECCIÓN 1: ASIGNACIÓN ACADÉMICA (NIVEL Y GRUPO) */}
+              <div className="dashboard-subcard p-4 rounded-2xl bg-surface border border-subtle space-y-3">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
+                  <School className="w-3.5 h-3.5" /> 1. Asignación Académica y Nivel Escolar
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <label className="form-label">Nivel Escolar Ofertado *</label>
+                    <ModernSelect
+                      value={newStudentForm.levelId}
+                      onChange={(valOrEvent: any) => {
+                        const val = typeof valOrEvent === 'string' ? valOrEvent : valOrEvent?.target?.value || '';
+                        const levelGroups = groups.filter((g) => g.levelId === val);
+                        setNewStudentForm((prev) => ({
+                          ...prev,
+                          levelId: val,
+                          groupName: levelGroups[0]?.name || '',
+                          enrollmentAmount: val === 'PREESCOLAR' ? 3200 : val === 'SECUNDARIA' ? 4200 : 3800,
+                        }));
+                      }}
+                      disabled={isLevelDirector}
+                      className="form-select w-full"
+                    >
+                      {educationalLevels.length > 0 ? (
+                        educationalLevels.map((lvl) => (
+                          <option key={lvl.id} value={lvl.id}>
+                            {lvl.name} (CCT: {lvl.cctCode})
+                          </option>
+                        ))
+                      ) : (
+                        <>
+                          <option value="PREESCOLAR">Preescolar / Jardín de Niños</option>
+                          <option value="PRIMARIA">Primaria</option>
+                          <option value="SECUNDARIA">Secundaria</option>
+                        </>
+                      )}
+                    </ModernSelect>
+                    {isLevelDirector && (
+                      <span className="text-[10px] text-amber-400 mt-1 block">
+                        🔒 Restringido al nivel asignado a tu dirección técnica.
+                      </span>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="form-label">Grupo y Turno Asignado *</label>
+                    {groups.filter((g) => g.levelId === newStudentForm.levelId).length > 0 ? (
+                      <ModernSelect
+                        value={newStudentForm.groupName}
+                        onChange={(valOrEvent: any) => {
+                          const val = typeof valOrEvent === 'string' ? valOrEvent : valOrEvent?.target?.value || '';
+                          setNewStudentForm((prev) => ({ ...prev, groupName: val }));
+                        }}
+                        className="form-select w-full"
+                        placeholder="Selecciona grupo escolar..."
+                      >
+                        {groups
+                          .filter((g) => g.levelId === newStudentForm.levelId)
+                          .map((g) => (
+                            <option key={g.id} value={g.name}>
+                              {g.name} • {g.shift} ({g.studentCount} alumnos)
+                            </option>
+                          ))}
+                      </ModernSelect>
+                    ) : (
+                      <div className="flex items-center gap-2 pt-1">
+                        <div className="text-[11px] text-amber-400">
+                          ⚠️ Sin grupos en este nivel aún.
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setNewGroupForm((prev) => ({
+                              ...prev,
+                              levelId: newStudentForm.levelId,
+                              level: educationalLevels.find((l) => l.id === newStudentForm.levelId)?.name || 'Primaria',
+                            }));
+                            setShowNewGroupModal(true);
+                          }}
+                          className="btn btn-purple btn-xs"
+                        >
+                          <Plus className="w-3 h-3" /> Crear Grupo
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
-              <div className="modal-actions">
-                <button type="button" onClick={() => setShowNewStudentModal(false)} className="btn btn-secondary">Cancelar</button>
-                <button type="submit" className="btn btn-primary flex-1">Inscribir</button>
+
+              {/* SECCIÓN 2: DATOS PERSONALES DEL ALUMNO */}
+              <div className="dashboard-subcard p-4 rounded-2xl bg-surface border border-subtle space-y-3">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-sky-400 flex items-center gap-1.5">
+                  <GraduationCap className="w-3.5 h-3.5" /> 2. Datos Personales del Alumno
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <label className="form-label">Nombre(s) del Alumno *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Ej. Sofía Mariana"
+                      value={newStudentForm.firstName}
+                      onChange={(e) => setNewStudentForm({ ...newStudentForm, firstName: e.target.value })}
+                      className="form-input w-full"
+                    />
+                  </div>
+                  <div>
+                    <label className="form-label">Apellidos (Paterno y Materno) *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Ej. Gómez Morales"
+                      value={newStudentForm.lastName}
+                      onChange={(e) => setNewStudentForm({ ...newStudentForm, lastName: e.target.value })}
+                      className="form-input w-full"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                  <div className="md:col-span-2">
+                    <label className="form-label flex items-center justify-between">
+                      <span>CURP Oficial (RENAPO)</span>
+                      <span className="font-mono text-[10px] text-muted">
+                        {newStudentForm.curp ? `${newStudentForm.curp.length}/18` : '18 caracteres'}
+                      </span>
+                    </label>
+                    <input
+                      type="text"
+                      maxLength={18}
+                      placeholder="ABCD990101HDFXXX01"
+                      value={newStudentForm.curp}
+                      onChange={(e) => {
+                        const val = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 18);
+                        const updates: any = { ...newStudentForm, curp: val };
+                        if (val.length >= 10) {
+                          const yy = val.slice(4, 6);
+                          const mm = val.slice(6, 8);
+                          const dd = val.slice(8, 10);
+                          const yearPrefix = parseInt(yy, 10) > 30 ? '19' : '20';
+                          const formattedDate = `${yearPrefix}${yy}-${mm}-${dd}`;
+                          if (!isNaN(Date.parse(formattedDate))) {
+                            updates.birthDate = formattedDate;
+                          }
+                          const genderChar = val.charAt(10);
+                          if (genderChar === 'H') updates.gender = 'M';
+                          if (genderChar === 'M') updates.gender = 'F';
+                        }
+                        setNewStudentForm(updates);
+                      }}
+                      className="form-input w-full font-mono uppercase tracking-wider"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="form-label">Fecha de Nacimiento</label>
+                    <input
+                      type="date"
+                      value={newStudentForm.birthDate}
+                      onChange={(e) => setNewStudentForm({ ...newStudentForm, birthDate: e.target.value })}
+                      className="form-input w-full font-mono"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="form-label">Género</label>
+                    <ModernSelect
+                      value={newStudentForm.gender}
+                      onChange={(valOrEvent: any) => {
+                        const val = typeof valOrEvent === 'string' ? valOrEvent : valOrEvent?.target?.value || 'M';
+                        setNewStudentForm({ ...newStudentForm, gender: val as any });
+                      }}
+                      className="form-select w-full"
+                    >
+                      <option value="M">Masculino (H)</option>
+                      <option value="F">Femenino (M)</option>
+                      <option value="OTHER">Otro / No binario</option>
+                    </ModernSelect>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div>
+                    <label className="form-label">Tipo de Sangre</label>
+                    <ModernSelect
+                      value={newStudentForm.bloodType}
+                      onChange={(valOrEvent: any) => {
+                        const val = typeof valOrEvent === 'string' ? valOrEvent : valOrEvent?.target?.value || 'O+';
+                        setNewStudentForm({ ...newStudentForm, bloodType: val });
+                      }}
+                      className="form-select w-full"
+                    >
+                      <option value="O+">O Positivo (O+)</option>
+                      <option value="O-">O Negativo (O-)</option>
+                      <option value="A+">A Positivo (A+)</option>
+                      <option value="A-">A Negativo (A-)</option>
+                      <option value="B+">B Positivo (B+)</option>
+                      <option value="B-">B Negativo (B-)</option>
+                      <option value="AB+">AB Positivo (AB+)</option>
+                      <option value="AB-">AB Negativo (AB-)</option>
+                    </ModernSelect>
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="form-label">Alergias o Cuidados Médicos de Emergencia</label>
+                    <input
+                      type="text"
+                      placeholder="Ej. Alergia a penicilina, asma, uso de anteojos, ninguno"
+                      value={newStudentForm.emergencyNotes}
+                      onChange={(e) => setNewStudentForm({ ...newStudentForm, emergencyNotes: e.target.value })}
+                      className="form-input w-full"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* SECCIÓN 3: DATOS DEL TUTOR / RESPONSABLE LEGAL */}
+              <div className="dashboard-subcard p-4 rounded-2xl bg-surface border border-subtle space-y-3">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                  <Users className="w-3.5 h-3.5" /> 3. Tutor o Responsable Legal
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div>
+                    <label className="form-label">Nombre Completo del Tutor *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Ej. Carlos Gómez Pérez"
+                      value={newStudentForm.tutorName}
+                      onChange={(e) => setNewStudentForm({ ...newStudentForm, tutorName: e.target.value })}
+                      className="form-input w-full"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="form-label">Parentesco</label>
+                    <ModernSelect
+                      value={newStudentForm.tutorRelationship}
+                      onChange={(valOrEvent: any) => {
+                        const val = typeof valOrEvent === 'string' ? valOrEvent : valOrEvent?.target?.value || '';
+                        setNewStudentForm({ ...newStudentForm, tutorRelationship: val });
+                      }}
+                      className="form-select w-full"
+                    >
+                      <option value="Madre / Padre">Madre / Padre de Familia</option>
+                      <option value="Tutor Legal">Tutor(a) Legal Oficial</option>
+                      <option value="Abuelo(a)">Abuelo / Abuela</option>
+                      <option value="Tío(a)">Tío / Tía</option>
+                      <option value="Otro">Otro Familiar Directo</option>
+                    </ModernSelect>
+                  </div>
+
+                  <div>
+                    <label className="form-label">Teléfono Celular / WhatsApp *</label>
+                    <input
+                      type="tel"
+                      required
+                      placeholder="Ej. 55 1234 5678"
+                      value={newStudentForm.tutorPhone}
+                      onChange={(e) => setNewStudentForm({ ...newStudentForm, tutorPhone: e.target.value })}
+                      className="form-input w-full font-mono"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <label className="form-label">Correo Electrónico (Portal de Padres y Facturas)</label>
+                    <input
+                      type="email"
+                      placeholder="ejemplo@correo.com"
+                      value={newStudentForm.tutorEmail}
+                      onChange={(e) => setNewStudentForm({ ...newStudentForm, tutorEmail: e.target.value })}
+                      className="form-input w-full"
+                    />
+                  </div>
+                  <div>
+                    <label className="form-label">Domicilio Familiar Completo</label>
+                    <input
+                      type="text"
+                      placeholder="Calle, Número, Colonia, C.P. y Municipio"
+                      value={newStudentForm.address}
+                      onChange={(e) => setNewStudentForm({ ...newStudentForm, address: e.target.value })}
+                      className="form-input w-full"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* SECCIÓN 4: COTEJO DE EXPEDIENTE SEP (DOCUMENTOS) */}
+              <div className="dashboard-subcard p-4 rounded-2xl bg-surface border border-subtle space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                    <FileText className="w-3.5 h-3.5" /> 4. Cotejo de Documentación Oficial SEP
+                  </div>
+                  <span className="text-[10px] text-muted">Marca los documentos físicos recibidos</span>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
+                  <label className="flex items-center gap-2 p-2 rounded-xl bg-slate-900/40 border border-subtle hover:border-sky-500/40 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={newStudentForm.docActa}
+                      onChange={(e) => setNewStudentForm({ ...newStudentForm, docActa: e.target.checked })}
+                      className="rounded border-slate-700 text-primary"
+                    />
+                    <span className="text-[11px]">Acta de Nacimiento</span>
+                  </label>
+
+                  <label className="flex items-center gap-2 p-2 rounded-xl bg-slate-900/40 border border-subtle hover:border-sky-500/40 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={newStudentForm.docCurp}
+                      onChange={(e) => setNewStudentForm({ ...newStudentForm, docCurp: e.target.checked })}
+                      className="rounded border-slate-700 text-primary"
+                    />
+                    <span className="text-[11px]">CURP Certificada</span>
+                  </label>
+
+                  <label className="flex items-center gap-2 p-2 rounded-xl bg-slate-900/40 border border-subtle hover:border-sky-500/40 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={newStudentForm.docCartilla}
+                      onChange={(e) => setNewStudentForm({ ...newStudentForm, docCartilla: e.target.checked })}
+                      className="rounded border-slate-700 text-primary"
+                    />
+                    <span className="text-[11px]">Cartilla de Vacunación</span>
+                  </label>
+
+                  <label className="flex items-center gap-2 p-2 rounded-xl bg-slate-900/40 border border-subtle hover:border-sky-500/40 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={newStudentForm.docCertificadoMedico}
+                      onChange={(e) => setNewStudentForm({ ...newStudentForm, docCertificadoMedico: e.target.checked })}
+                      className="rounded border-slate-700 text-primary"
+                    />
+                    <span className="text-[11px]">Certificado Médico Vigente</span>
+                  </label>
+
+                  <label className="flex items-center gap-2 p-2 rounded-xl bg-slate-900/40 border border-subtle hover:border-sky-500/40 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={newStudentForm.docComprobanteDomicilio}
+                      onChange={(e) => setNewStudentForm({ ...newStudentForm, docComprobanteDomicilio: e.target.checked })}
+                      className="rounded border-slate-700 text-primary"
+                    />
+                    <span className="text-[11px]">Comprobante de Domicilio</span>
+                  </label>
+
+                  <label className="flex items-center gap-2 p-2 rounded-xl bg-slate-900/40 border border-subtle hover:border-sky-500/40 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={newStudentForm.docFotos}
+                      onChange={(e) => setNewStudentForm({ ...newStudentForm, docFotos: e.target.checked })}
+                      className="rounded border-slate-700 text-primary"
+                    />
+                    <span className="text-[11px]">4 Fotografías Infantiles</span>
+                  </label>
+                </div>
+
+                <div className="pt-1">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={newStudentForm.isConditional}
+                      onChange={(e) => setNewStudentForm({ ...newStudentForm, isConditional: e.target.checked })}
+                      className="rounded border-amber-500 text-amber-500"
+                    />
+                    <span className="text-[11px] font-semibold text-amber-400">
+                      ⚠️ Matrícula Condicionada (Entrega diferida de documentos con carta compromiso)
+                    </span>
+                  </label>
+
+                  {newStudentForm.isConditional && (
+                    <div className="mt-2 flex items-center gap-3 bg-amber-500/10 p-2.5 rounded-xl border border-amber-500/20">
+                      <span className="text-[11px] text-muted">Fecha límite de entrega de adeudo documental:</span>
+                      <input
+                        type="date"
+                        value={newStudentForm.conditionalDeadline}
+                        onChange={(e) => setNewStudentForm({ ...newStudentForm, conditionalDeadline: e.target.value })}
+                        className="form-input text-xs font-mono py-1"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* SECCIÓN 5: CUOTA DE INSCRIPCIÓN Y CAJA ESCOLAR */}
+              <div className="dashboard-subcard p-4 rounded-2xl bg-surface border border-subtle space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                    <Wallet className="w-3.5 h-3.5" /> 5. Cuota de Inscripción y Caja Escolar
+                  </div>
+                  <div className="badge badge-emerald font-mono font-bold text-xs">
+                    Total a Cobrar: ${Math.max(0, newStudentForm.enrollmentAmount - newStudentForm.enrollmentDiscount).toLocaleString()} MXN
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                  <div className="md:col-span-2">
+                    <label className="form-label">Concepto de Cobro</label>
+                    <input
+                      type="text"
+                      value={newStudentForm.enrollmentConcept}
+                      onChange={(e) => setNewStudentForm({ ...newStudentForm, enrollmentConcept: e.target.value })}
+                      className="form-input w-full"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="form-label">Cuota Base (MXN)</label>
+                    <input
+                      type="number"
+                      min={0}
+                      value={newStudentForm.enrollmentAmount}
+                      onChange={(e) => setNewStudentForm({ ...newStudentForm, enrollmentAmount: Number(e.target.value) })}
+                      className="form-input w-full font-mono"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="form-label">Beca / Descuento (MXN)</label>
+                    <input
+                      type="number"
+                      min={0}
+                      value={newStudentForm.enrollmentDiscount}
+                      onChange={(e) => setNewStudentForm({ ...newStudentForm, enrollmentDiscount: Number(e.target.value) })}
+                      className="form-input w-full font-mono"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+                  <div>
+                    <label className="form-label">Estado de la Cuota</label>
+                    <ModernSelect
+                      value={newStudentForm.paymentStatus}
+                      onChange={(valOrEvent: any) => {
+                        const val = typeof valOrEvent === 'string' ? valOrEvent : valOrEvent?.target?.value || 'PAGADO';
+                        setNewStudentForm({ ...newStudentForm, paymentStatus: val as any });
+                      }}
+                      className="form-select w-full"
+                    >
+                      <option value="PAGADO">✅ Liquidado en Ventanilla (Emite Recibo)</option>
+                      <option value="PENDIENTE">⏳ Pendiente por Liquidar (Genera Saldo)</option>
+                    </ModernSelect>
+                  </div>
+
+                  <div>
+                    <label className="form-label">Método de Pago</label>
+                    <ModernSelect
+                      value={newStudentForm.paymentMethod}
+                      onChange={(valOrEvent: any) => {
+                        const val = typeof valOrEvent === 'string' ? valOrEvent : valOrEvent?.target?.value || 'EFECTIVO';
+                        setNewStudentForm({ ...newStudentForm, paymentMethod: val as any });
+                      }}
+                      disabled={newStudentForm.paymentStatus === 'PENDIENTE'}
+                      className="form-select w-full"
+                    >
+                      <option value="EFECTIVO">💵 Efectivo en Bóveda / Caja</option>
+                      <option value="SPEI">🏦 Transferencia SPEI / Bancaria</option>
+                      <option value="TARJETA">💳 Tarjeta Débito / Crédito (TPV)</option>
+                    </ModernSelect>
+                  </div>
+
+                  <div>
+                    <label className="form-label">Folio / Referencia de Pago</label>
+                    <input
+                      type="text"
+                      placeholder="Autogenerado si está vacío"
+                      value={newStudentForm.paymentFolio}
+                      onChange={(e) => setNewStudentForm({ ...newStudentForm, paymentFolio: e.target.value })}
+                      className="form-input w-full font-mono"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* ACCIONES DEL FORMULARIO */}
+              <div className="modal-actions pt-2 border-t border-subtle">
+                <button
+                  type="button"
+                  onClick={() => setShowNewStudentModal(false)}
+                  className="btn btn-secondary"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-primary flex-1"
+                >
+                  <CheckCircle2 className="w-4 h-4" />
+                  <div>Formalizar Inscripción e Inscribir Alumno</div>
+                </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: CREAR NUEVO GRUPO ESCOLAR */}
+      {showNewGroupModal && (
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg">
+            <div className="modal-header">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center flex-shrink-0">
+                  <Layers className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="modal-title">Crear Nuevo Grupo Escolar</h3>
+                  <p className="text-xs text-muted">
+                    Estructura académica por nivel educativo, grado escolar, turno y titular.
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowNewGroupModal(false)}
+                className="modal-close"
+                title="Cerrar ventana modal"
+              >
+                <X />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateGroup} className="space-y-4 text-xs pt-1">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label className="form-label">Nivel Educativo *</label>
+                  <ModernSelect
+                    value={newGroupForm.levelId}
+                    onChange={(valOrEvent: any) => {
+                      const val = typeof valOrEvent === 'string' ? valOrEvent : valOrEvent?.target?.value || '';
+                      const lvlObj = educationalLevels.find((l) => l.id === val);
+                      setNewGroupForm((prev) => ({
+                        ...prev,
+                        levelId: val,
+                        level: lvlObj?.name || val,
+                      }));
+                    }}
+                    disabled={isLevelDirector}
+                    className="form-select w-full"
+                  >
+                    {educationalLevels.map((lvl) => (
+                      <option key={lvl.id} value={lvl.id}>
+                        {lvl.name} (CCT: {lvl.cctCode})
+                      </option>
+                    ))}
+                  </ModernSelect>
+                </div>
+
+                <div>
+                  <label className="form-label">Grado Escolar *</label>
+                  <ModernSelect
+                    value={newGroupForm.grade}
+                    onChange={(valOrEvent: any) => {
+                      const val = typeof valOrEvent === 'string' ? valOrEvent : valOrEvent?.target?.value || '';
+                      setNewGroupForm((prev) => {
+                        const updated = { ...prev, grade: val };
+                        updated.name = `${val} "${prev.groupLetter || 'A'}"`;
+                        return updated;
+                      });
+                    }}
+                    className="form-select w-full"
+                  >
+                    <option value="1º">1º Grado</option>
+                    <option value="2º">2º Grado</option>
+                    <option value="3º">3º Grado</option>
+                    <option value="4º">4º Grado</option>
+                    <option value="5º">5º Grado</option>
+                    <option value="6º">6º Grado</option>
+                  </ModernSelect>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                  <label className="form-label">Letra / Identificador *</label>
+                  <ModernSelect
+                    value={newGroupForm.groupLetter}
+                    onChange={(valOrEvent: any) => {
+                      const val = typeof valOrEvent === 'string' ? valOrEvent : valOrEvent?.target?.value || '';
+                      setNewGroupForm((prev) => {
+                        const updated = { ...prev, groupLetter: val };
+                        updated.name = `${prev.grade} "${val}"`;
+                        return updated;
+                      });
+                    }}
+                    className="form-select w-full"
+                  >
+                    <option value="A">Grupo "A"</option>
+                    <option value="B">Grupo "B"</option>
+                    <option value="C">Grupo "C"</option>
+                    <option value="D">Grupo "D"</option>
+                    <option value="Único">Grupo Único</option>
+                  </ModernSelect>
+                </div>
+
+                <div>
+                  <label className="form-label">Nombre Oficial del Grupo *</label>
+                  <input
+                    type="text"
+                    required
+                    value={newGroupForm.name}
+                    onChange={(e) => setNewGroupForm({ ...newGroupForm, name: e.target.value })}
+                    placeholder='Ej. 1º "A"'
+                    className="form-input w-full font-bold"
+                  />
+                </div>
+
+                <div>
+                  <label className="form-label">Turno Escolar *</label>
+                  <ModernSelect
+                    value={newGroupForm.shift}
+                    onChange={(valOrEvent: any) => {
+                      const val = typeof valOrEvent === 'string' ? valOrEvent : valOrEvent?.target?.value || '';
+                      setNewGroupForm({ ...newGroupForm, shift: val });
+                    }}
+                    className="form-select w-full"
+                  >
+                    <option value="Matutino (08:00 - 13:30)">Matutino (08:00 - 13:30)</option>
+                    <option value="Vespertino (13:30 - 18:30)">Vespertino (13:30 - 18:30)</option>
+                    <option value="Jornada Completa (08:00 - 16:00)">Jornada Completa (08:00 - 16:00)</option>
+                  </ModernSelect>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div className="md:col-span-2">
+                  <label className="form-label">Docente Titular Asignado</label>
+                  <ModernSelect
+                    value={newGroupForm.leadTeacher}
+                    onChange={(valOrEvent: any) => {
+                      const val = typeof valOrEvent === 'string' ? valOrEvent : valOrEvent?.target?.value || '';
+                      setNewGroupForm({ ...newGroupForm, leadTeacher: val });
+                    }}
+                    className="form-select w-full"
+                  >
+                    <option value="Por Asignar">⚠️ Por Asignar (Sin titular definido)</option>
+                    {teachers.map((t) => (
+                      <option key={t.id} value={t.fullName}>
+                        👨‍🏫 {t.fullName} ({t.specialty || 'Docente'})
+                      </option>
+                    ))}
+                  </ModernSelect>
+                </div>
+
+                <div>
+                  <label className="form-label">Cupo Máximo de Alumnos</label>
+                  <input
+                    type="number"
+                    min={5}
+                    max={60}
+                    value={newGroupForm.capacity || 30}
+                    onChange={(e) => setNewGroupForm({ ...newGroupForm, capacity: Number(e.target.value) })}
+                    className="form-input w-full font-mono text-center"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label className="form-label">Aula Física / Salón</label>
+                  <input
+                    type="text"
+                    placeholder="Ej. Salón 101 - Edificio A Planta Baja"
+                    value={newGroupForm.classroom || ''}
+                    onChange={(e) => setNewGroupForm({ ...newGroupForm, classroom: e.target.value })}
+                    className="form-input w-full"
+                  />
+                </div>
+
+                <div>
+                  <label className="form-label">Tipo de Grupo</label>
+                  <ModernSelect
+                    value={newGroupForm.type}
+                    onChange={(valOrEvent: any) => {
+                      const val = typeof valOrEvent === 'string' ? valOrEvent : valOrEvent?.target?.value || 'REGULAR';
+                      setNewGroupForm({ ...newGroupForm, type: val as any });
+                    }}
+                    className="form-select w-full"
+                  >
+                    <option value="REGULAR">Grupo Regular Oficial SEP</option>
+                    <option value="OPTATIVA_MULTIGRUPO">Taller / Multigrado</option>
+                  </ModernSelect>
+                </div>
+              </div>
+
+              <div className="modal-actions pt-2 border-t border-subtle">
+                <button
+                  type="button"
+                  onClick={() => setShowNewGroupModal(false)}
+                  className="btn btn-secondary"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-purple flex-1"
+                >
+                  <Layers className="w-4 h-4" />
+                  <div>Crear Grupo Oficial</div>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: EXPEDIENTE OFICIAL Y DOSSIER SEP DEL ALUMNO */}
+      {showDossierModal && selectedStudent && (
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-2xl max-h-[90vh] overflow-y-auto">
+            <div className="modal-header">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-sky-500/20 text-sky-400 flex items-center justify-center flex-shrink-0">
+                  <GraduationCap className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="modal-title">
+                      Expediente Escolar: {selectedStudent.firstName} {selectedStudent.lastName}
+                    </h3>
+                    <span className="badge badge-sky font-mono text-[11px] font-bold">
+                      {selectedStudent.studentCode}
+                    </span>
+                  </div>
+                  <p className="text-xs text-muted">
+                    {selectedStudent.groupName} • Nivel {selectedStudent.levelId} • Estatus: {selectedStudent.status === 'INSCRITO_ACTIVO' ? 'Inscrito Regular' : 'Inscripción Condicionada'}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowDossierModal(false)}
+                className="modal-close"
+                title="Cerrar ventana modal"
+              >
+                <X />
+              </button>
+            </div>
+
+            <div className="space-y-3.5 text-xs pt-1">
+              {/* Bloque Alumno */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 p-4 rounded-2xl bg-surface border border-subtle">
+                <div>
+                  <span className="text-muted block text-[10px] uppercase font-bold">CURP SEP</span>
+                  <span className="font-mono font-bold text-main">{selectedStudent.curp || 'No registrada'}</span>
+                </div>
+                <div>
+                  <span className="text-muted block text-[10px] uppercase font-bold">Género / Nacimiento</span>
+                  <span className="text-main">
+                    {selectedStudent.gender === 'M' ? 'Masculino' : selectedStudent.gender === 'F' ? 'Femenino' : 'Otro'}
+                    {selectedStudent.birthDate ? ` • ${selectedStudent.birthDate}` : ''}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-muted block text-[10px] uppercase font-bold">Tipo de Sangre</span>
+                  <span className="badge badge-rose font-bold">{selectedStudent.bloodType || 'O+'}</span>
+                </div>
+                <div>
+                  <span className="text-muted block text-[10px] uppercase font-bold">Estatus SEP</span>
+                  <span className={`badge ${selectedStudent.status === 'INSCRITO_ACTIVO' ? 'badge-emerald' : 'badge-amber'}`}>
+                    {selectedStudent.status === 'INSCRITO_ACTIVO' ? 'Inscrito Regular' : 'Condicionado'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Bloque Tutor */}
+              <div className="p-4 rounded-2xl bg-surface border border-subtle space-y-2">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
+                  <Users className="w-3.5 h-3.5" /> Tutor o Responsable Legal
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div>
+                    <span className="text-muted block text-[10px]">Tutor Principal:</span>
+                    <span className="font-bold text-main">{selectedStudent.tutorName || 'No registrado'}</span>
+                  </div>
+                  <div>
+                    <span className="text-muted block text-[10px]">Teléfono / WhatsApp:</span>
+                    <span className="font-mono text-main">{selectedStudent.tutorPhone || 'No registrado'}</span>
+                  </div>
+                  <div>
+                    <span className="text-muted block text-[10px]">Correo Electrónico:</span>
+                    <span className="text-main truncate block">{selectedStudent.tutorEmail || 'Sin correo'}</span>
+                  </div>
+                </div>
+                {selectedStudent.address && (
+                  <div className="pt-1 text-[11px] text-muted">
+                    <strong>Domicilio:</strong> {selectedStudent.address}
+                  </div>
+                )}
+                {selectedStudent.emergencyNotes && (
+                  <div className="pt-1 text-[11px] text-amber-400 bg-amber-500/10 p-2 rounded-xl border border-amber-500/20">
+                    <strong>Notas Médicas / Alergias:</strong> {selectedStudent.emergencyNotes}
+                  </div>
+                )}
+              </div>
+
+              {/* Bloque Documentos */}
+              <div className="p-4 rounded-2xl bg-surface border border-subtle space-y-2">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                  <FileText className="w-3.5 h-3.5" /> Documentación Oficial del Alumno
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                  <div className="badge badge-emerald flex items-center gap-1.5 py-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5" /> Acta de Nacimiento
+                  </div>
+                  <div className="badge badge-emerald flex items-center gap-1.5 py-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5" /> CURP Oficial RENAPO
+                  </div>
+                  <div className="badge badge-emerald flex items-center gap-1.5 py-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5" /> Cartilla de Vacunación
+                  </div>
+                  <div className={`badge ${selectedStudent.isConditional ? 'badge-amber' : 'badge-emerald'} flex items-center gap-1.5 py-1.5`}>
+                    <CheckCircle2 className="w-3.5 h-3.5" /> Certificado Médico
+                  </div>
+                  <div className="badge badge-emerald flex items-center gap-1.5 py-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5" /> Comprobante Domicilio
+                  </div>
+                  <div className="badge badge-sky flex items-center gap-1.5 py-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5" /> Cuota de Inscripción
+                  </div>
+                </div>
+                {selectedStudent.isConditional && selectedStudent.conditionalDeadline && (
+                  <div className="text-[11px] text-amber-400 bg-amber-500/10 p-2.5 rounded-xl border border-amber-500/20 mt-2">
+                    ⚠️ <strong>Plazo de Tolerancia SEP:</strong> Debe entregar documentos faltantes antes del{' '}
+                    <strong>{selectedStudent.conditionalDeadline}</strong>.
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="modal-actions pt-2 border-t border-subtle">
+              <button
+                type="button"
+                onClick={() => setShowDossierModal(false)}
+                className="btn btn-secondary"
+              >
+                Cerrar
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveStudentForReportCard(selectedStudent);
+                  setShowDossierModal(false);
+                  setShowReportCardModal(true);
+                }}
+                className="btn btn-primary flex-1"
+              >
+                <Award className="w-4 h-4" />
+                <div>Generar Boleta Oficial SEP</div>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: RECIBO OFICIAL DE CAJA / COMPROBANTE DE PAGO */}
+      {showReceiptModal && lastReceipt && (
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-lg print-document">
+            <div className="modal-header">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0">
+                  <Receipt className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="modal-title">Comprobante Oficial de Pago en Caja</h3>
+                  <p className="text-xs text-muted">Recibo de cobro y matrícula escolar</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowReceiptModal(false)}
+                className="modal-close"
+                title="Cerrar recibo"
+              >
+                <X />
+              </button>
+            </div>
+
+            <div className="dashboard-subcard space-y-3 bg-surface p-5 rounded-2xl border border-subtle">
+              <div className="flex items-center justify-between border-b border-subtle pb-3">
+                <div>
+                  <div className="text-xs font-bold text-main">{currentTenant.name || 'Colegio Institucional'}</div>
+                  <div className="text-[11px] text-muted">Caja Central Escolar • Recibo Digital</div>
+                </div>
+                <div className="text-right">
+                  <div className="badge badge-emerald font-mono font-bold">{lastReceipt.receiptNumber}</div>
+                  <div className="text-[10px] text-muted mt-1">{lastReceipt.date}</div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 text-xs">
+                <div>
+                  <span className="text-muted block text-[10px] uppercase font-bold">Alumno Matriculado</span>
+                  <span className="font-bold text-main">{lastReceipt.studentName}</span>
+                  <div className="font-mono text-primary text-[11px]">{lastReceipt.studentCode}</div>
+                </div>
+                <div>
+                  <span className="text-muted block text-[10px] uppercase font-bold">Concepto</span>
+                  <span className="font-bold text-main">{lastReceipt.concept}</span>
+                </div>
+                <div>
+                  <span className="text-muted block text-[10px] uppercase font-bold">Método de Pago</span>
+                  <span className="badge badge-sky inline-flex mt-0.5">{lastReceipt.paymentMethod}</span>
+                </div>
+                <div>
+                  <span className="text-muted block text-[10px] uppercase font-bold">Atendió en Caja</span>
+                  <span className="text-main">{lastReceipt.cashier}</span>
+                </div>
+              </div>
+
+              <div className="border-t border-subtle pt-3 flex items-center justify-between">
+                <span className="text-xs font-bold uppercase text-muted">Total Liquidado</span>
+                <span className="text-2xl font-black font-mono text-emerald-400">
+                  ${Number(lastReceipt.amount).toLocaleString()} MXN
+                </span>
+              </div>
+            </div>
+
+            <div className="modal-actions pt-2 border-t border-subtle">
+              <button
+                type="button"
+                onClick={() => window.print()}
+                className="btn btn-secondary"
+              >
+                <Printer className="w-4 h-4" />
+                <div>Imprimir Comprobante</div>
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowReceiptModal(false)}
+                className="btn btn-primary flex-1"
+              >
+                Aceptar y Finalizar
+              </button>
+            </div>
           </div>
         </div>
       )}
