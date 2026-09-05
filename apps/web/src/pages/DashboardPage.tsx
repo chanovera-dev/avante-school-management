@@ -109,6 +109,7 @@ import {
   Lock,
 } from 'lucide-react';
 import { ModernSelect, type ModernSelectOption } from '../components/ModernSelect.js';
+import { DashboardNav } from '../components/DashboardNav.js';
 
 interface DashboardPageProps {
   onNavigate: (route: 'home' | 'register' | 'login' | 'dashboard' | 'portal') => void;
@@ -6930,6 +6931,33 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
     },
   ];
 
+  const navCounts: Record<string, number> = {
+    levels: educationalLevels.length,
+    teachers: filteredTeachers.length,
+    academic: filteredStudents.length,
+    groups: filteredGroups.length,
+    notices: notices.length,
+    credentials: credentials.length,
+    tasks: assignments.length,
+    admissions: applicants.length,
+    library: books.length,
+    transport: transportRoutes.length,
+    cafeteria: cafeteriaProducts.length,
+    infirmary: medicalConsultations.length,
+    workshops: extracurricularWorkshops.length,
+    inventory: schoolAssets.length + conalitegPackages.length + schoolUniforms.length,
+    surveys: institutionalSurveys.length,
+    events: schoolEvents.length,
+    recruitment: jobVacancies.length,
+    safety: civilProtectionDrills.length,
+    community: cepsCommittees.length + schoolAssemblies.length,
+    maintenance: facilityWorkOrders.length + facilityInspections.length,
+    scholarships: scholarshipApplications.length,
+    certificates: officialCertificates.length,
+    audit: auditLogs.length,
+    superadmin: schools.length,
+  };
+
   return (
     <div className="dashboard-page">
       {/* Toast Notificación */}
@@ -7058,242 +7086,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         </div>
       </header>
 
-      {/* TABS DE NAVEGACIÓN */}
-      <div className="dashboard-tabs-bar">
-        <nav className="container-app dashboard-nav">
-          <button
-            onClick={() => setActiveTab('levels')}
-            className={`dashboard-tab-btn ${activeTab === 'levels' ? 'active' : ''}`}
-          >
-            <School />
-            <span>{isLevelDirector ? `Mi Nivel Técnico (${educationalLevels.find(l => l.id === userLevelId)?.name?.split('/')[0].trim() || userLevelId})` : `Niveles & Directores (${educationalLevels.length})`}</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('teachers')}
-            className={`dashboard-tab-btn ${activeTab === 'teachers' ? 'active' : ''}`}
-          >
-            <UserCheck />
-            <span>Docentes & Maestros ({filteredTeachers.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('attendance')}
-            className={`dashboard-tab-btn ${activeTab === 'attendance' ? 'active' : ''}`}
-          >
-            <CalendarCheck />
-            <span>Pase de Lista Diario</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('grades')}
-            className={`dashboard-tab-btn ${activeTab === 'grades' ? 'active' : ''}`}
-          >
-            <Award />
-            <span>Calificaciones & Boletas SEP</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('notices')}
-            className={`dashboard-tab-btn ${activeTab === 'notices' ? 'active' : ''}`}
-          >
-            <Megaphone />
-            <span>Circulares & Citatorios ({notices.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('credentials')}
-            className={`dashboard-tab-btn ${activeTab === 'credentials' ? 'active' : ''}`}
-          >
-            <QrCode />
-            <span>Credenciales & Accesos ({credentials.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('tasks')}
-            className={`dashboard-tab-btn ${activeTab === 'tasks' ? 'active' : ''}`}
-          >
-            <ClipboardList />
-            <span>Cuaderno de Tareas ({assignments.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('schedules')}
-            className={`dashboard-tab-btn ${activeTab === 'schedules' ? 'active' : ''}`}
-          >
-            <CalendarDays />
-            <span>Horarios Semanales</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('admissions')}
-            className={`dashboard-tab-btn ${activeTab === 'admissions' ? 'active' : ''}`}
-          >
-            <UserPlus />
-            <span>Admisiones & Aspirantes ({applicants.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('library')}
-            className={`dashboard-tab-btn ${activeTab === 'library' ? 'active' : ''}`}
-          >
-            <BookOpen />
-            <span>Biblioteca Escolar ({books.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('transport')}
-            className={`dashboard-tab-btn ${activeTab === 'transport' ? 'active' : ''}`}
-          >
-            <Bus />
-            <span>Transporte Escolar ({transportRoutes.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('cafeteria')}
-            className={`dashboard-tab-btn ${activeTab === 'cafeteria' ? 'active' : ''}`}
-          >
-            <Utensils />
-            <span>Cafetería & Monedero ({cafeteriaProducts.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('infirmary')}
-            className={`dashboard-tab-btn ${activeTab === 'infirmary' ? 'active' : ''}`}
-          >
-            <Stethoscope />
-            <span>Enfermería Escolar ({medicalConsultations.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('workshops')}
-            className={`dashboard-tab-btn ${activeTab === 'workshops' ? 'active' : ''}`}
-          >
-            <Trophy />
-            <span>Talleres & Academias ({extracurricularWorkshops.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('inventory')}
-            className={`dashboard-tab-btn ${activeTab === 'inventory' ? 'active' : ''}`}
-          >
-            <Box />
-            <span>Almacén, CONALITEG & Activos ({schoolAssets.length + conalitegPackages.length + schoolUniforms.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('surveys')}
-            className={`dashboard-tab-btn ${activeTab === 'surveys' ? 'active' : ''}`}
-          >
-            <MessageSquareQuote />
-            <span>Encuestas & Clima ({institutionalSurveys.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('events')}
-            className={`dashboard-tab-btn ${activeTab === 'events' ? 'active' : ''}`}
-          >
-            <PartyPopper />
-            <span>Eventos & CTE ({schoolEvents.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('recruitment')}
-            className={`dashboard-tab-btn ${activeTab === 'recruitment' ? 'active' : ''}`}
-          >
-            <Briefcase />
-            <span>Reclutamiento & RH ({jobVacancies.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('safety')}
-            className={`dashboard-tab-btn ${activeTab === 'safety' ? 'active' : ''}`}
-          >
-            <ShieldAlert />
-            <span>Protección Civil ({civilProtectionDrills.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('community')}
-            className={`dashboard-tab-btn ${activeTab === 'community' ? 'active' : ''}`}
-          >
-            <HeartHandshake />
-            <span>CEPS & Familias ({cepsCommittees.length + schoolAssemblies.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('maintenance')}
-            className={`dashboard-tab-btn ${activeTab === 'maintenance' ? 'active' : ''}`}
-          >
-            <Hammer />
-            <span>Infraestructura & Mantenimiento ({facilityWorkOrders.length + facilityInspections.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('scholarships')}
-            className={`dashboard-tab-btn ${activeTab === 'scholarships' ? 'active' : ''}`}
-          >
-            <Percent />
-            <span>Becas SEP & Finanzas ({scholarshipApplications.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('certificates')}
-            className={`dashboard-tab-btn ${activeTab === 'certificates' ? 'active' : ''}`}
-          >
-            <ScrollText />
-            <span>Certificación Digital & Kárdex ({officialCertificates.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('audit')}
-            className={`dashboard-tab-btn ${activeTab === 'audit' ? 'active' : ''}`}
-          >
-            <ShieldCheck />
-            <span>Auditoría & Normativa SEP ({auditLogs.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('academic')}
-            className={`dashboard-tab-btn ${activeTab === 'academic' ? 'active' : ''}`}
-          >
-            <GraduationCap />
-            <span>Alumnos y Expedientes ({filteredStudents.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('groups')}
-            className={`dashboard-tab-btn ${activeTab === 'groups' ? 'active' : ''}`}
-          >
-            <Layers />
-            <span>Grupos ({filteredGroups.length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('finance')}
-            className={`dashboard-tab-btn ${activeTab === 'finance' ? 'active' : ''}`}
-          >
-            <DollarSign />
-            <span>Caja Escolar & Arqueo</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('parent')}
-            className={`dashboard-tab-btn ${activeTab === 'parent' ? 'active' : ''}`}
-          >
-            <Users />
-            <span>Portal de Padres</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('superadmin')}
-            className={`dashboard-tab-btn ${activeTab === 'superadmin' ? 'active' : ''}`}
-          >
-            <ShieldCheck />
-            <span>SuperAdmin SaaS ({schools.length})</span>
-          </button>
-        </nav>
-      </div>
+      {/* TABS DE NAVEGACIÓN INTUITIVA CON CATEGORÍAS, BUSCADOR Y MÓDULOS */}
+      <DashboardNav
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        activeRole={activeRole}
+        isLevelDirector={isLevelDirector}
+        userLevelLabel={educationalLevels.find(l => l.id === userLevelId)?.name?.split('/')[0].trim() || userLevelId}
+        counts={navCounts}
+      />
 
       {/* CONTENIDO PRINCIPAL */}
       <main className="container-app dashboard-main">
