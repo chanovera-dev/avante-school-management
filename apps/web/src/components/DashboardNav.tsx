@@ -71,6 +71,7 @@ export type CategoryType = 'role' | 'academic' | 'community' | 'campus' | 'manag
 export interface ModuleDef {
   id: TabType;
   label: string;
+  fullTitle: string;
   category: 'academic' | 'community' | 'campus' | 'management';
   icon: React.ComponentType<{ className?: string }>;
   keywords: string;
@@ -79,41 +80,41 @@ export interface ModuleDef {
 
 export const MODULES: ModuleDef[] = [
   // 1. GESTIÓN ACADÉMICA
-  { id: 'levels', label: 'Niveles & Directores', category: 'academic', icon: School, keywords: 'direcciones tecnicas directores escolar nivel', countKey: 'levels' },
-  { id: 'teachers', label: 'Docentes & Maestros', category: 'academic', icon: UserCheck, keywords: 'profesores maestros docentes titular', countKey: 'teachers' },
-  { id: 'academic', label: 'Alumnos y Expedientes', category: 'academic', icon: GraduationCap, keywords: 'estudiantes alumnos matricula kardex expediente', countKey: 'academic' },
-  { id: 'groups', label: 'Grupos Escolares', category: 'academic', icon: Layers, keywords: 'aulas salones grupos grados turnos', countKey: 'groups' },
-  { id: 'attendance', label: 'Pase de Lista Diario', category: 'academic', icon: CalendarCheck, keywords: 'asistencia faltas lista retardo diario' },
-  { id: 'grades', label: 'Calificaciones & Boletas SEP', category: 'academic', icon: Award, keywords: 'notas boleta sep evaluaciones calificaciones parcial' },
-  { id: 'tasks', label: 'Cuaderno de Tareas', category: 'academic', icon: ClipboardList, keywords: 'tareas deberes actividades entregas rubricas', countKey: 'tasks' },
-  { id: 'schedules', label: 'Horarios Semanales', category: 'academic', icon: CalendarDays, keywords: 'horarios clases materias bloques horas' },
+  { id: 'levels', label: 'Niveles', fullTitle: 'Niveles Escolares & Directores de Nivel', category: 'academic', icon: School, keywords: 'direcciones tecnicas directores escolar nivel', countKey: 'levels' },
+  { id: 'teachers', label: 'Docentes', fullTitle: 'Docentes & Plantilla de Maestros', category: 'academic', icon: UserCheck, keywords: 'profesores maestros docentes titular', countKey: 'teachers' },
+  { id: 'academic', label: 'Alumnos', fullTitle: 'Alumnos, Matrícula y Expedientes Escolares', category: 'academic', icon: GraduationCap, keywords: 'estudiantes alumnos matricula kardex expediente', countKey: 'academic' },
+  { id: 'groups', label: 'Grupos', fullTitle: 'Grupos Escolares, Salones y Turnos', category: 'academic', icon: Layers, keywords: 'aulas salones grupos grados turnos', countKey: 'groups' },
+  { id: 'attendance', label: 'Pase de Lista', fullTitle: 'Pase de Lista Diario y Registro de Asistencias', category: 'academic', icon: CalendarCheck, keywords: 'asistencia faltas lista retardo diario' },
+  { id: 'grades', label: 'Calificaciones', fullTitle: 'Calificaciones y Boletas Oficiales SEP', category: 'academic', icon: Award, keywords: 'notas boleta sep evaluaciones calificaciones parcial' },
+  { id: 'tasks', label: 'Tareas', fullTitle: 'Cuaderno de Tareas y Actividades', category: 'academic', icon: ClipboardList, keywords: 'tareas deberes actividades entregas rubricas', countKey: 'tasks' },
+  { id: 'schedules', label: 'Horarios', fullTitle: 'Horarios Semanales de Clases y Materias', category: 'academic', icon: CalendarDays, keywords: 'horarios clases materias bloques horas' },
 
   // 2. COMUNIDAD Y COMUNICACIÓN
-  { id: 'notices', label: 'Circulares & Citatorios', category: 'community', icon: Megaphone, keywords: 'avisos comunicados circulares citatorios noticias', countKey: 'notices' },
-  { id: 'credentials', label: 'Credenciales & Accesos QR', category: 'community', icon: QrCode, keywords: 'credenciales gafete carnet torniquete entrada qr', countKey: 'credentials' },
-  { id: 'parent', label: 'Portal de Familias', category: 'community', icon: Users, keywords: 'tutor familia padres comunicados portal familiar' },
-  { id: 'community', label: 'CEPS & Asambleas', category: 'community', icon: HeartHandshake, keywords: 'ceps comites asambleas asociacion padres', countKey: 'community' },
-  { id: 'surveys', label: 'Encuestas & Clima', category: 'community', icon: MessageSquareQuote, keywords: 'encuestas formularios clima escolar satisfaccion preguntas', countKey: 'surveys' },
-  { id: 'events', label: 'Eventos & CTE', category: 'community', icon: PartyPopper, keywords: 'eventos cte consejo tecnico calendario escolar festivales', countKey: 'events' },
+  { id: 'notices', label: 'Circulares', fullTitle: 'Circulares, Citatorios y Avisos Institucionales', category: 'community', icon: Megaphone, keywords: 'avisos comunicados circulares citatorios noticias', countKey: 'notices' },
+  { id: 'credentials', label: 'Credenciales QR', fullTitle: 'Credenciales Digitales y Accesos por QR', category: 'community', icon: QrCode, keywords: 'credenciales gafete carnet torniquete entrada qr', countKey: 'credentials' },
+  { id: 'parent', label: 'Portal Padres', fullTitle: 'Portal Familiar y de Padres de Familia', category: 'community', icon: Users, keywords: 'tutor familia padres comunicados portal familiar' },
+  { id: 'community', label: 'CEPS & Familias', fullTitle: 'Comités CEPS y Asambleas Escolares', category: 'community', icon: HeartHandshake, keywords: 'ceps comites asambleas asociacion padres', countKey: 'community' },
+  { id: 'surveys', label: 'Encuestas', fullTitle: 'Encuestas de Satisfacción y Clima Escolar', category: 'community', icon: MessageSquareQuote, keywords: 'encuestas formularios clima escolar satisfaccion preguntas', countKey: 'surveys' },
+  { id: 'events', label: 'Eventos & CTE', fullTitle: 'Eventos Escolares y Sesiones de CTE', category: 'community', icon: PartyPopper, keywords: 'eventos cte consejo tecnico calendario escolar festivales', countKey: 'events' },
 
   // 3. CAMPUS Y SERVICIOS
-  { id: 'admissions', label: 'Admisiones & Aspirantes', category: 'campus', icon: UserPlus, keywords: 'admisiones aspirantes nuevo ingreso inscripciones fichas', countKey: 'admissions' },
-  { id: 'library', label: 'Biblioteca Escolar', category: 'campus', icon: BookOpen, keywords: 'libros biblioteca prestamos acervo editorial isbn', countKey: 'library' },
-  { id: 'transport', label: 'Transporte Escolar', category: 'campus', icon: Bus, keywords: 'rutas camiones choferes transporte paradas', countKey: 'transport' },
-  { id: 'cafeteria', label: 'Cafetería & Monedero', category: 'campus', icon: Utensils, keywords: 'cafeteria tienda saldo monedero comida productos comedor', countKey: 'cafeteria' },
-  { id: 'infirmary', label: 'Enfermería Escolar', category: 'campus', icon: Stethoscope, keywords: 'enfermeria salud consultas medicamentos alergias medico', countKey: 'infirmary' },
-  { id: 'workshops', label: 'Talleres & Academias', category: 'campus', icon: Trophy, keywords: 'talleres extracurriculares deportes musica artes torneos', countKey: 'workshops' },
+  { id: 'admissions', label: 'Admisiones', fullTitle: 'Admisiones y Nuevos Aspirantes', category: 'campus', icon: UserPlus, keywords: 'admisiones aspirantes nuevo ingreso inscripciones fichas', countKey: 'admissions' },
+  { id: 'library', label: 'Biblioteca', fullTitle: 'Biblioteca Escolar y Catálogo de Libros', category: 'campus', icon: BookOpen, keywords: 'libros biblioteca prestamos acervo editorial isbn', countKey: 'library' },
+  { id: 'transport', label: 'Transporte', fullTitle: 'Rutas y Transporte Escolar', category: 'campus', icon: Bus, keywords: 'rutas camiones choferes transporte paradas', countKey: 'transport' },
+  { id: 'cafeteria', label: 'Cafetería', fullTitle: 'Cafetería Escolar y Monedero Electrónico', category: 'campus', icon: Utensils, keywords: 'cafeteria tienda saldo monedero comida productos comedor', countKey: 'cafeteria' },
+  { id: 'infirmary', label: 'Enfermería', fullTitle: 'Enfermería y Consultas Médicas Escolares', category: 'campus', icon: Stethoscope, keywords: 'enfermeria salud consultas medicamentos alergias medico', countKey: 'infirmary' },
+  { id: 'workshops', label: 'Talleres', fullTitle: 'Talleres y Academias Extracurriculares', category: 'campus', icon: Trophy, keywords: 'talleres extracurriculares deportes musica artes torneos', countKey: 'workshops' },
 
   // 4. GESTIÓN Y FINANZAS
-  { id: 'finance', label: 'Caja Escolar & Arqueo', category: 'management', icon: DollarSign, keywords: 'caja cobros arqueo colegiaturas pagos recibos finanzas' },
-  { id: 'scholarships', label: 'Becas SEP & Finanzas', category: 'management', icon: Percent, keywords: 'becas descuento sep comite socioeconomico solicitud', countKey: 'scholarships' },
-  { id: 'certificates', label: 'Certificados & Kárdex', category: 'management', icon: ScrollText, keywords: 'certificados digitales constancias kardex folios sep', countKey: 'certificates' },
-  { id: 'inventory', label: 'Almacén & Activos', category: 'management', icon: Box, keywords: 'inventario activos conaliteg uniformes libros almacen stock', countKey: 'inventory' },
-  { id: 'maintenance', label: 'Mantenimiento & Obras', category: 'management', icon: Hammer, keywords: 'mantenimiento obras reparaciones infraestructura ordenes', countKey: 'maintenance' },
-  { id: 'recruitment', label: 'Reclutamiento & RH', category: 'management', icon: Briefcase, keywords: 'vacantes empleo curriculum rh contratacion plazas', countKey: 'recruitment' },
-  { id: 'safety', label: 'Protección Civil', category: 'management', icon: ShieldAlert, keywords: 'simulacros proteccion civil emergencias seguridad sismos', countKey: 'safety' },
-  { id: 'audit', label: 'Auditoría & Normativa SEP', category: 'management', icon: ShieldCheck, keywords: 'auditoria normativa sep bitacora logs inspeccion supervision', countKey: 'audit' },
-  { id: 'superadmin', label: 'SuperAdmin SaaS', category: 'management', icon: Landmark, keywords: 'superadmin escuelas colegios saas multisede platform', countKey: 'superadmin' },
+  { id: 'finance', label: 'Caja Escolar', fullTitle: 'Caja Escolar, Arqueos y Colegiaturas', category: 'management', icon: DollarSign, keywords: 'caja cobros arqueo colegiaturas pagos recibos finanzas' },
+  { id: 'scholarships', label: 'Becas SEP', fullTitle: 'Becas SEP, Exenciones y Descuentos', category: 'management', icon: Percent, keywords: 'becas descuento sep comite socioeconomico solicitud', countKey: 'scholarships' },
+  { id: 'certificates', label: 'Certificados', fullTitle: 'Certificados Digitales y Kárdex Oficial', category: 'management', icon: ScrollText, keywords: 'certificados digitales constancias kardex folios sep', countKey: 'certificates' },
+  { id: 'inventory', label: 'Almacén', fullTitle: 'Almacén, Libros CONALITEG, Uniformes y Activos', category: 'management', icon: Box, keywords: 'inventario activos conaliteg uniformes libros almacen stock', countKey: 'inventory' },
+  { id: 'maintenance', label: 'Mantenimiento', fullTitle: 'Infraestructura, Mantenimiento y Obras', category: 'management', icon: Hammer, keywords: 'mantenimiento obras reparaciones infraestructura ordenes', countKey: 'maintenance' },
+  { id: 'recruitment', label: 'Reclutamiento RH', fullTitle: 'Bolsa de Trabajo, Reclutamiento y RH', category: 'management', icon: Briefcase, keywords: 'vacantes empleo curriculum rh contratacion plazas', countKey: 'recruitment' },
+  { id: 'safety', label: 'Protección Civil', fullTitle: 'Protección Civil, Simulacros y Brigadas', category: 'management', icon: ShieldAlert, keywords: 'simulacros proteccion civil emergencias seguridad sismos', countKey: 'safety' },
+  { id: 'audit', label: 'Auditoría SEP', fullTitle: 'Auditoría Normativa SEP y Bitácora de Acciones', category: 'management', icon: ShieldCheck, keywords: 'auditoria normativa sep bitacora logs inspeccion supervision', countKey: 'audit' },
+  { id: 'superadmin', label: 'SuperAdmin', fullTitle: 'Panel Maestro SuperAdmin SaaS ASM', category: 'management', icon: Landmark, keywords: 'superadmin escuelas colegios saas multisede platform', countKey: 'superadmin' },
 ];
 
 const ROLE_MODULES: Record<string, TabType[]> = {
@@ -210,6 +211,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({
     return MODULES.filter(
       (m) =>
         m.label.toLowerCase().includes(q) ||
+        m.fullTitle.toLowerCase().includes(q) ||
         m.keywords.toLowerCase().includes(q)
     );
   }, [searchQuery]);
@@ -251,6 +253,12 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({
       label: 'Gestión & Finanzas',
       icon: Landmark,
       count: MODULES.filter((m) => m.category === 'management').length,
+    },
+    {
+      id: 'all',
+      label: 'Todos',
+      icon: LayoutGrid,
+      count: MODULES.length,
     },
   ];
 
@@ -321,10 +329,11 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({
                           type="button"
                           onClick={() => handleSelectTab(m.id)}
                           className={`dashboard-search-item ${isTabActive ? 'active' : ''}`}
+                          title={m.fullTitle}
                         >
                           <div className="dashboard-search-item-left">
                             <IconComp />
-                            <span>{m.label}</span>
+                            <span>{m.fullTitle}</span>
                           </div>
                           <span className="dashboard-search-item-cat">
                             {m.category === 'academic'
@@ -348,15 +357,15 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({
               type="button"
               onClick={() => setIsGridModalOpen(true)}
               className="dashboard-nav-grid-btn"
-              title="Explorar todos los 29 módulos organizados"
+              title="Explorar los 29 módulos organizados por categoría"
             >
               <LayoutGrid />
-              <span className="desktop-only">Explorar Módulos</span>
+              <span className="desktop-only">Mapa General</span>
             </button>
           </div>
         </div>
 
-        {/* FILA 2: SUBMÓDULOS DE LA CATEGORÍA ACTIVA */}
+        {/* FILA 2: SUBMÓDULOS DE LA CATEGORÍA ACTIVA (WRAP TOTAL, NUNCA SCROLLBAR) */}
         <nav className="dashboard-nav-submodules">
           {visibleModules.map((m) => {
             const IconComp = m.icon;
@@ -366,7 +375,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({
             // Etiqueta personalizada para directores de nivel
             let displayLabel = m.label;
             if (m.id === 'levels' && isLevelDirector && userLevelLabel) {
-              displayLabel = `Mi Nivel (${userLevelLabel})`;
+              displayLabel = `Nivel (${userLevelLabel})`;
             }
 
             return (
@@ -375,6 +384,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({
                 type="button"
                 onClick={() => handleSelectTab(m.id)}
                 className={`dashboard-subtab-btn ${isTabActive ? 'active' : ''}`}
+                title={m.fullTitle}
               >
                 <IconComp />
                 <span className="subtab-label">{displayLabel}</span>
@@ -398,7 +408,7 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({
               <div className="flex items-center gap-2">
                 <LayoutGrid className="text-primary" />
                 <div>
-                  <h3 className="dashboard-grid-modal-title">Explorador de Módulos</h3>
+                  <h3 className="dashboard-grid-modal-title">Mapa General de Módulos</h3>
                   <p className="dashboard-grid-modal-subtitle">
                     29 herramientas agrupadas por categoría funcional
                   </p>
@@ -432,9 +442,10 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({
                         type="button"
                         onClick={() => handleSelectTab(m.id)}
                         className={`dashboard-grid-item ${isTabActive ? 'active' : ''}`}
+                        title={m.fullTitle}
                       >
                         <IconComp />
-                        <span>{m.label}</span>
+                        <span>{m.fullTitle}</span>
                         {typeof count === 'number' && count > 0 && (
                           <span className="dashboard-tab-counter">{count}</span>
                         )}
@@ -461,9 +472,10 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({
                         type="button"
                         onClick={() => handleSelectTab(m.id)}
                         className={`dashboard-grid-item ${isTabActive ? 'active' : ''}`}
+                        title={m.fullTitle}
                       >
                         <IconComp />
-                        <span>{m.label}</span>
+                        <span>{m.fullTitle}</span>
                         {typeof count === 'number' && count > 0 && (
                           <span className="dashboard-tab-counter">{count}</span>
                         )}
@@ -490,9 +502,10 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({
                         type="button"
                         onClick={() => handleSelectTab(m.id)}
                         className={`dashboard-grid-item ${isTabActive ? 'active' : ''}`}
+                        title={m.fullTitle}
                       >
                         <IconComp />
-                        <span>{m.label}</span>
+                        <span>{m.fullTitle}</span>
                         {typeof count === 'number' && count > 0 && (
                           <span className="dashboard-tab-counter">{count}</span>
                         )}
@@ -519,9 +532,10 @@ export const DashboardNav: React.FC<DashboardNavProps> = ({
                         type="button"
                         onClick={() => handleSelectTab(m.id)}
                         className={`dashboard-grid-item ${isTabActive ? 'active' : ''}`}
+                        title={m.fullTitle}
                       >
                         <IconComp />
-                        <span>{m.label}</span>
+                        <span>{m.fullTitle}</span>
                         {typeof count === 'number' && count > 0 && (
                           <span className="dashboard-tab-counter">{count}</span>
                         )}
