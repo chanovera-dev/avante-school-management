@@ -7454,7 +7454,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <Layers className="w-3.5 h-3.5 text-emerald-400" />
                     <div>Grado y Grupo:</div>
                   </label>
-                  <select
+                  <ModernSelect
                     value={attendanceGroup}
                     onChange={(e) => setAttendanceGroup(e.target.value)}
                     className="form-select"
@@ -7464,7 +7464,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {g.name} ({g.level})
                       </option>
                     ))}
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 {/* Selector de Maestro Titular */}
@@ -7473,7 +7473,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <UserCheck className="w-3.5 h-3.5 text-amber-400" />
                     <div>Maestro(a) Responsable:</div>
                   </label>
-                  <select
+                  <ModernSelect
                     value={attendanceTeacherId}
                     onChange={(e) => setAttendanceTeacherId(e.target.value)}
                     className="form-select"
@@ -7483,7 +7483,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {t.fullName} ({t.assignedSubject})
                       </option>
                     ))}
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 {/* Selector de Materia o Turno */}
@@ -7492,7 +7492,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <Clock className="w-3.5 h-3.5 text-purple-400" />
                     <div>Jornada / Asignatura:</div>
                   </label>
-                  <select
+                  <ModernSelect
                     value={attendanceSubjectId}
                     onChange={(e) => setAttendanceSubjectId(e.target.value)}
                     className="form-select"
@@ -7503,7 +7503,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {s.name}
                       </option>
                     ))}
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
             </div>
@@ -7833,7 +7833,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <UserCheck className="w-3.5 h-3.5 text-emerald-400" />
                     <div>Maestro(a) Responsable:</div>
                   </label>
-                  <select
+                  <ModernSelect
                     value={selectedTeacherId}
                     onChange={(e) => handleSelectTeacherForGrades(e.target.value)}
                     className="form-select"
@@ -7843,7 +7843,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {t.fullName} ({t.assignedSubject})
                       </option>
                     ))}
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 {/* Selector de Grupo */}
@@ -7852,7 +7852,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <Layers className="w-3.5 h-3.5 text-sky-400" />
                     <div>Grado y Grupo:</div>
                   </label>
-                  <select
+                  <ModernSelect
                     value={selectedGradeGroup}
                     onChange={(e) => setSelectedGradeGroup(e.target.value)}
                     className="form-select"
@@ -7862,7 +7862,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {g.name} ({g.level})
                       </option>
                     ))}
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 {/* Selector de Asignatura Oficial SEP */}
@@ -7871,7 +7871,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <BookOpen className="w-3.5 h-3.5 text-amber-400" />
                     <div>Materia Oficial SEP:</div>
                   </label>
-                  <select
+                  <ModernSelect
                     value={selectedSubjectId}
                     onChange={(e) => setSelectedSubjectId(e.target.value)}
                     className="form-select"
@@ -7881,7 +7881,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {s.name} [{s.levelId}]
                       </option>
                     ))}
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 {/* Filtro de Periodo / Trimestre */}
@@ -8640,7 +8640,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {credentialFilter === 'STUDENT' && (
                 <div className="flex items-center gap-2 text-xs">
                   <div className="text-muted font-bold">Grupo:</div>
-                  <select
+                  <ModernSelect
                     value={selectedGroupForCreds}
                     onChange={(e) => setSelectedGroupForCreds(e.target.value)}
                     className="form-select"
@@ -8651,7 +8651,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {g.name}
                       </option>
                     ))}
-                  </select>
+                  </ModernSelect>
                 </div>
               )}
             </div>
@@ -9205,14 +9205,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex items-center gap-3 flex-wrap">
                 <div className="flex items-center gap-2">
                   <div className="text-xs font-bold text-muted">Grupo:</div>
-                  <select
+                  <ModernSelect
                     value={selectedGroupForSchedule}
                     onChange={(e) => setSelectedGroupForSchedule(e.target.value)}
                     className="form-select font-bold"
                   >
                     <option value='Primaria 1º "A"'>Primaria 1º "A" (Prof. Roberto Salazar)</option>
                     <option value='Preescolar 2º "A"'>Preescolar 2º "A" (Profra. Carmen Vega)</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div className="h-4 w-px bg-subtle hidden sm:block"></div>
@@ -9491,7 +9491,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="flex items-center gap-3 flex-wrap">
                 <div className="flex items-center gap-2">
                   <div className="text-xs font-bold text-muted">Nivel:</div>
-                  <select
+                  <ModernSelect
                     value={selectedApplicantLevelFilter}
                     onChange={(e) => setSelectedApplicantLevelFilter(e.target.value)}
                     className="form-select font-bold"
@@ -9499,14 +9499,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="ALL">Todos los Niveles</option>
                     <option value="PREESCOLAR">Preescolar</option>
                     <option value="PRIMARIA">Primaria</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div className="h-4 w-px bg-subtle hidden sm:block"></div>
 
                 <div className="flex items-center gap-2">
                   <div className="text-xs font-bold text-muted">Estatus:</div>
-                  <select
+                  <ModernSelect
                     value={selectedApplicantStatusFilter}
                     onChange={(e) => setSelectedApplicantStatusFilter(e.target.value)}
                     className="form-select font-bold"
@@ -9518,7 +9518,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="ACEPTADO">Aceptado</option>
                     <option value="INSCRITO">Inscrito Oficial</option>
                     <option value="RECHAZADO">No Admitido</option>
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
 
@@ -9895,7 +9895,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       />
                     </div>
 
-                    <select
+                    <ModernSelect
                       value={selectedBookCategoryFilter}
                       onChange={(e) => setSelectedBookCategoryFilter(e.target.value)}
                       className="form-select font-bold"
@@ -9907,7 +9907,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <option value="HISTORIA_GEOGRAFIA">Historia y Geografía</option>
                       <option value="MATEMATICAS">Matemáticas</option>
                       <option value="DICCIONARIOS_ENCICLOPEDIAS">Diccionarios y Enciclopedias</option>
-                    </select>
+                    </ModernSelect>
                   </div>
 
                   <div className="text-xs text-muted font-mono">
@@ -10021,7 +10021,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="bg-surface border border-subtle p-4 rounded-3xl shadow-xl flex items-center justify-between gap-4">
                   <div className="flex items-center gap-2">
                     <div className="text-xs font-bold text-muted">Filtrar Estatus:</div>
-                    <select
+                    <ModernSelect
                       value={loanStatusFilter}
                       onChange={(e) => setLoanStatusFilter(e.target.value)}
                       className="form-select font-bold"
@@ -10029,7 +10029,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <option value="ALL">Todos los Préstamos</option>
                       <option value="ACTIVO">Préstamos Activos</option>
                       <option value="DEVUELTO">Devueltos</option>
-                    </select>
+                    </ModernSelect>
                   </div>
 
                   <div className="text-xs text-muted font-mono">
@@ -10120,7 +10120,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div className="flex items-center gap-3 max-w-md">
                   <label className="form-label">Seleccionar Alumno:</label>
-                  <select
+                  <ModernSelect
                     value={clearanceSearchStudentId}
                     onChange={(e) => setClearanceSearchStudentId(e.target.value)}
                     className="form-select flex-1 font-bold"
@@ -10130,7 +10130,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {s.firstName} {s.lastName} ({s.studentCode})
                       </option>
                     ))}
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 {(() => {
@@ -10416,7 +10416,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="bg-surface border border-subtle p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="flex items-center gap-3 flex-wrap">
                     <div className="text-xs text-muted font-bold">Seleccionar Ruta:</div>
-                    <select
+                    <ModernSelect
                       value={selectedTransportRouteId}
                       onChange={(e) => setSelectedTransportRouteId(e.target.value)}
                       className="form-select font-bold"
@@ -10426,7 +10426,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           {r.code} - {r.name}
                         </option>
                       ))}
-                    </select>
+                    </ModernSelect>
 
                     <div className="badge badge-sky">
                       <button
@@ -10927,7 +10927,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           Escanear Credencial QR / Buscar Alumno
                         </h3>
                       </div>
-                      <select
+                      <ModernSelect
                         value={posStudentId}
                         onChange={(e) => {
                           setPosStudentId(e.target.value);
@@ -10940,7 +10940,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                             {w.studentName} ({w.studentCode}) • Saldo: ${w.currentBalanceMXN} MXN
                           </option>
                         ))}
-                      </select>
+                      </ModernSelect>
                     </div>
 
                     {/* Ficha en Vivo del Monedero y Alergias del Alumno */}
@@ -12070,7 +12070,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                   <div className="flex items-center gap-3">
                     <label className="form-label">Seleccionar Taller:</label>
-                    <select
+                    <ModernSelect
                       value={selectedWorkshopForAttendance}
                       onChange={(e) => setSelectedWorkshopForAttendance(e.target.value)}
                       className="form-select"
@@ -12080,7 +12080,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           {w.name} ({w.scheduleTime})
                         </option>
                       ))}
-                    </select>
+                    </ModernSelect>
                   </div>
                 </div>
 
@@ -16037,7 +16037,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 <div className="dashboard-subcard p-4 flex flex-wrap items-center justify-between gap-4">
                   <div className="flex items-center gap-2">
                     <div className="text-xs text-muted font-medium">Filtrar por tipo:</div>
-                    <select
+                    <ModernSelect
                       value={selectedCertTypeFilter}
                       onChange={(e) => setSelectedCertTypeFilter(e.target.value)}
                       className="form-select"
@@ -16048,7 +16048,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <option value="CONSTANCIA_BUENA_CONDUCTA">Constancia de Buena Conducta</option>
                       <option value="CONSTANCIA_PROMEDIO">Constancia con Promedio</option>
                       <option value="KARDEX_HISTORICO">Kárdex Histórico</option>
-                    </select>
+                    </ModernSelect>
                   </div>
                   <div className="text-xs text-muted">
                     Mostrando <strong className="text-main">
@@ -16519,7 +16519,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     />
                   </div>
                   <div className="flex items-center gap-3 w-full md:w-auto">
-                    <select
+                    <ModernSelect
                       value={selectedAuditCategoryFilter}
                       onChange={(e) => setSelectedAuditCategoryFilter(e.target.value)}
                       className="form-select"
@@ -16530,9 +16530,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <option value="APLICACION_BECA_SEP">Becas SEP (Art. 149)</option>
                       <option value="EMISION_DOCUMENTO_OFICIAL">Emisión Documento Oficial</option>
                       <option value="CORRECCION_ASISTENCIA">Corrección de Asistencia</option>
-                    </select>
+                    </ModernSelect>
 
-                    <select
+                    <ModernSelect
                       value={selectedAuditSeverityFilter}
                       onChange={(e) => setSelectedAuditSeverityFilter(e.target.value)}
                       className="form-select"
@@ -16542,7 +16542,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       <option value="ALERTA_NORMATIVA">🟡 Alerta Normativa</option>
                       <option value="AVISO">🔵 Aviso</option>
                       <option value="INFO">⚪ Información</option>
-                    </select>
+                    </ModernSelect>
                   </div>
                 </div>
 
@@ -18568,7 +18568,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="form-label">Nivel Escolar</label>
-                  <select
+                  <ModernSelect
                     value={newTeacherForm.levelId}
                     onChange={(e) => setNewTeacherForm({ ...newTeacherForm, levelId: e.target.value })}
                     disabled={isLevelDirector}
@@ -18579,7 +18579,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         {lvl.name}
                       </option>
                     ))}
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div>
@@ -18624,7 +18624,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="form-label">Grupo Asignado</label>
-                  <select
+                  <ModernSelect
                     value={newTeacherForm.assignedGroup}
                     onChange={(e) => setNewTeacherForm({ ...newTeacherForm, assignedGroup: e.target.value })}
                     className="form-select w-full"
@@ -18634,7 +18634,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       .map((g) => (
                         <option key={g.id} value={g.name}>{g.name}</option>
                       ))}
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div>
@@ -18728,15 +18728,15 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <select
+                <ModernSelect
                   value={newStudentForm.levelId}
                   onChange={(e) => setNewStudentForm({ ...newStudentForm, levelId: e.target.value })}
                   className="form-select"
                 >
                   <option value="PREESCOLAR">Preescolar</option>
                   <option value="PRIMARIA">Primaria</option>
-                </select>
-                <select
+                </ModernSelect>
+                <ModernSelect
                   value={newStudentForm.groupName}
                   onChange={(e) => setNewStudentForm({ ...newStudentForm, groupName: e.target.value })}
                   className="form-select"
@@ -18744,7 +18744,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   {groups.filter((g) => g.levelId === newStudentForm.levelId).map((g) => (
                     <option key={g.id} value={g.name}>{g.name}</option>
                   ))}
-                </select>
+                </ModernSelect>
               </div>
               <div className="modal-actions">
                 <button type="button" onClick={() => setShowNewStudentModal(false)} className="btn btn-secondary">Cancelar</button>
@@ -18989,7 +18989,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               {/* Selector de Alumno */}
               <div className="space-y-1">
                 <label className="form-label">Alumno(a):</label>
-                <select
+                <ModernSelect
                   value={justificationForm.studentId}
                   onChange={(e) => setJustificationForm({ ...justificationForm, studentId: e.target.value })}
                   className="form-select"
@@ -18999,7 +18999,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {s.firstName} {s.lastName} ({s.studentCode}) — {s.groupName}
                     </option>
                   ))}
-                </select>
+                </ModernSelect>
               </div>
 
               {/* Rango de Fechas */}
@@ -19031,7 +19031,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <label className="form-label">Categoría del Motivo:</label>
-                  <select
+                  <ModernSelect
                     value={justificationForm.reasonCategory}
                     onChange={(e) =>
                       setJustificationForm({
@@ -19046,7 +19046,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="TRAMITE_OFICIAL">Trámite Oficial / Cita Legal</option>
                     <option value="EVENTO_CIVICO_DEPORTIVO">Representación Escolar / Cívica</option>
                     <option value="FUERZA_MAYOR">Causa de Fuerza Mayor</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div className="space-y-1">
@@ -19289,7 +19289,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <label className="form-label">Tipo de Comunicado:</label>
-                  <select
+                  <ModernSelect
                     value={createNoticeForm.type}
                     onChange={(e) =>
                       setCreateNoticeForm({
@@ -19304,12 +19304,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="AVISO_URGENTE">Aviso Urgente / Contingencia</option>
                     <option value="EVENTO_CIVICO_CULTURAL">Evento Cívico / Cultural</option>
                     <option value="SUSPENSION_CLASES">Suspensión Oficial de Clases</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div className="space-y-1">
                   <label className="form-label">Nivel de Prioridad:</label>
-                  <select
+                  <ModernSelect
                     value={createNoticeForm.priority}
                     onChange={(e) =>
                       setCreateNoticeForm({
@@ -19322,7 +19322,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="NORMAL">Normal</option>
                     <option value="ALTA">Alta</option>
                     <option value="URGENTE">Urgente</option>
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
 
@@ -19330,7 +19330,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <label className="form-label">Audiencia / Destinatarios:</label>
-                  <select
+                  <ModernSelect
                     value={createNoticeForm.targetAudience}
                     onChange={(e) =>
                       setCreateNoticeForm({
@@ -19343,13 +19343,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="TODOS">Todo el Colegio</option>
                     <option value="GRUPO">Por Grupo Escolar</option>
                     <option value="INDIVIDUAL">Alumno Específico (Citatorio)</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 {createNoticeForm.targetAudience === 'GRUPO' && (
                   <div className="space-y-1">
                     <label className="form-label">Seleccionar Grupo:</label>
-                    <select
+                    <ModernSelect
                       value={createNoticeForm.targetGroupId}
                       onChange={(e) =>
                         setCreateNoticeForm({
@@ -19364,14 +19364,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           {g.name}
                         </option>
                       ))}
-                    </select>
+                    </ModernSelect>
                   </div>
                 )}
 
                 {createNoticeForm.targetAudience === 'INDIVIDUAL' && (
                   <div className="space-y-1">
                     <label className="form-label">Seleccionar Alumno(a):</label>
-                    <select
+                    <ModernSelect
                       value={createNoticeForm.targetStudentId}
                       onChange={(e) =>
                         setCreateNoticeForm({
@@ -19386,7 +19386,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           {s.firstName} {s.lastName} ({s.studentCode})
                         </option>
                       ))}
-                    </select>
+                    </ModernSelect>
                   </div>
                 )}
               </div>
@@ -19938,7 +19938,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <label className="form-label">Tipo de Asignación:</label>
-                  <select
+                  <ModernSelect
                     value={createTaskForm.type}
                     onChange={(e) =>
                       setCreateTaskForm({
@@ -19953,12 +19953,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="LECTURA">Control de Lectura</option>
                     <option value="INVESTIGACION">Investigación</option>
                     <option value="EJERCICIO_CLASE">Ejercicio en Clase</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div className="space-y-1">
                   <label className="form-label">Materia / Campo:</label>
-                  <select
+                  <ModernSelect
                     value={createTaskForm.subjectName}
                     onChange={(e) => setCreateTaskForm({ ...createTaskForm, subjectName: e.target.value })}
                     className="form-select w-full"
@@ -19967,7 +19967,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="Saberes y Pensamiento Científico (Matemáticas)">Saberes y Pensamiento Científico</option>
                     <option value="Ética, Naturaleza y Sociedades">Ética, Naturaleza y Sociedades</option>
                     <option value="De lo Humano y lo Comunitario">De lo Humano y lo Comunitario</option>
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
 
@@ -20253,19 +20253,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <label className="form-label">Grupo:</label>
-                  <select
+                  <ModernSelect
                     value={createSlotForm.groupName}
                     onChange={(e) => setCreateSlotForm({ ...createSlotForm, groupName: e.target.value })}
                     className="form-select w-full font-bold"
                   >
                     <option value='Primaria 1º "A"'>Primaria 1º "A"</option>
                     <option value='Preescolar 2º "A"'>Preescolar 2º "A"</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div className="space-y-1">
                   <label className="form-label">Día de la Semana:</label>
-                  <select
+                  <ModernSelect
                     value={createSlotForm.dayOfWeek}
                     onChange={(e) =>
                       setCreateSlotForm({
@@ -20280,7 +20280,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="MIERCOLES">Miércoles</option>
                     <option value="JUEVES">Jueves</option>
                     <option value="VIERNES">Viernes</option>
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
 
@@ -20325,14 +20325,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div className="space-y-1">
                   <label className="form-label">Docente Asignado:</label>
-                  <select
+                  <ModernSelect
                     value={createSlotForm.teacherName}
                     onChange={(e) => setCreateSlotForm({ ...createSlotForm, teacherName: e.target.value })}
                     className="form-select w-full"
                   >
                     <option value="Prof. Roberto Salazar">Prof. Roberto Salazar</option>
                     <option value="Profra. Carmen Vega">Profra. Carmen Vega</option>
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
 
@@ -20352,7 +20352,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div className="space-y-1">
                   <label className="form-label">Tipo de Instalación:</label>
-                  <select
+                  <ModernSelect
                     value={createSlotForm.facility}
                     onChange={(e) =>
                       setCreateSlotForm({
@@ -20368,7 +20368,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="AULA_ARTES">Aula de Artes / Música</option>
                     <option value="BIBLIOTECA">Biblioteca Escolar</option>
                     <option value="PATIO_CIVICO">Patio Cívico</option>
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
 
@@ -20452,7 +20452,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div className="space-y-1">
                   <label className="form-label">Género:</label>
-                  <select
+                  <ModernSelect
                     value={newApplicantForm.gender}
                     onChange={(e) =>
                       setNewApplicantForm({ ...newApplicantForm, gender: e.target.value as any })
@@ -20462,7 +20462,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="M">Masculino</option>
                     <option value="F">Femenino</option>
                     <option value="OTHER">Otro</option>
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
 
@@ -20482,7 +20482,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div className="space-y-1">
                   <label className="form-label">Nivel:</label>
-                  <select
+                  <ModernSelect
                     value={newApplicantForm.targetLevelId}
                     onChange={(e) => {
                       const level = e.target.value;
@@ -20497,12 +20497,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   >
                     <option value="PREESCOLAR">Preescolar</option>
                     <option value="PRIMARIA">Primaria</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div className="space-y-1">
                   <label className="form-label">Grado Solicitado:</label>
-                  <select
+                  <ModernSelect
                     value={newApplicantForm.targetGrade}
                     onChange={(e) =>
                       setNewApplicantForm({ ...newApplicantForm, targetGrade: e.target.value })
@@ -20525,7 +20525,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                         <option value="6º de Primaria">6º de Primaria</option>
                       </>
                     )}
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
 
@@ -21030,7 +21030,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-3 gap-3">
                 <div className="space-y-1">
                   <label className="form-label">Categoría:</label>
-                  <select
+                  <ModernSelect
                     value={newBookForm.category}
                     onChange={(e) => setNewBookForm({ ...newBookForm, category: e.target.value as any })}
                     className="form-select w-full font-bold"
@@ -21042,12 +21042,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="MATEMATICAS">Matemáticas</option>
                     <option value="DICCIONARIOS_ENCICLOPEDIAS">Diccionarios</option>
                     <option value="ARTE_MUSICA">Arte y Música</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div className="space-y-1">
                   <label className="form-label">Nivel Sugerido:</label>
-                  <select
+                  <ModernSelect
                     value={newBookForm.targetLevel}
                     onChange={(e) => setNewBookForm({ ...newBookForm, targetLevel: e.target.value as any })}
                     className="form-select w-full"
@@ -21055,7 +21055,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="TODOS">Todos los Niveles</option>
                     <option value="PREESCOLAR">Preescolar</option>
                     <option value="PRIMARIA">Primaria</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div className="space-y-1">
@@ -21135,7 +21135,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <form onSubmit={handleCreateBookLoan} className="space-y-4 text-xs">
               <div className="space-y-1">
                 <label className="form-label">Seleccionar Libro:</label>
-                <select
+                <ModernSelect
                   value={newLoanForm.bookId}
                   onChange={(e) => setNewLoanForm({ ...newLoanForm, bookId: e.target.value })}
                   className="form-select w-full font-bold"
@@ -21145,12 +21145,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {b.title} ({b.availableCopies} disp.) - {b.shelfLocation}
                     </option>
                   ))}
-                </select>
+                </ModernSelect>
               </div>
 
               <div className="space-y-1">
                 <label className="form-label">Seleccionar Alumno Solicitante:</label>
-                <select
+                <ModernSelect
                   value={newLoanForm.studentId}
                   onChange={(e) => setNewLoanForm({ ...newLoanForm, studentId: e.target.value })}
                   className="form-select w-full font-bold"
@@ -21160,20 +21160,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {s.firstName} {s.lastName} ({s.studentCode}) • {s.groupName}
                     </option>
                   ))}
-                </select>
+                </ModernSelect>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <label className="form-label">Modalidad de Préstamo:</label>
-                  <select
+                  <ModernSelect
                     value={newLoanForm.loanType}
                     onChange={(e) => setNewLoanForm({ ...newLoanForm, loanType: e.target.value as any })}
                     className="form-select w-full"
                   >
                     <option value="DOMICILIO">Préstamo a Domicilio (7 días)</option>
                     <option value="SALA">Préstamo en Sala de Biblioteca</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div className="space-y-1">
@@ -21426,7 +21426,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div className="space-y-1">
                   <label className="form-label">Turno de Operación:</label>
-                  <select
+                  <ModernSelect
                     value={newRouteForm.shift}
                     onChange={(e) => setNewRouteForm({ ...newRouteForm, shift: e.target.value as any })}
                     className="form-select w-full font-bold"
@@ -21434,7 +21434,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="AMBOS">Ambos Turnos (Matutino & Vespertino)</option>
                     <option value="MATUTINO_RECOGIDA">Solo Turno Matutino (Recogida)</option>
                     <option value="VESPERTINO_ENTREGA">Solo Turno Vespertino (Entrega)</option>
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
 
@@ -21527,7 +21527,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <form onSubmit={handleEnrollStudentInTransport} className="space-y-4 text-xs">
               <div className="space-y-1">
                 <label className="form-label">Seleccionar Alumno:</label>
-                <select
+                <ModernSelect
                   value={enrollTransportForm.studentId}
                   onChange={(e) => setEnrollTransportForm({ ...enrollTransportForm, studentId: e.target.value })}
                   className="form-select w-full font-bold"
@@ -21537,12 +21537,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {s.firstName} {s.lastName} ({s.studentCode}) • {s.groupName}
                     </option>
                   ))}
-                </select>
+                </ModernSelect>
               </div>
 
               <div className="space-y-1">
                 <label className="form-label">Seleccionar Ruta Escolar:</label>
-                <select
+                <ModernSelect
                   value={enrollTransportForm.routeId}
                   onChange={(e) => {
                     const rId = e.target.value;
@@ -21560,7 +21560,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {r.code} - {r.name} (Chofer: {r.driverName})
                     </option>
                   ))}
-                </select>
+                </ModernSelect>
               </div>
 
               {(() => {
@@ -21568,7 +21568,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 return (
                   <div className="space-y-1">
                     <label className="form-label">Seleccionar Parada de Abordaje / Descenso:</label>
-                    <select
+                    <ModernSelect
                       value={enrollTransportForm.stopId}
                       onChange={(e) => setEnrollTransportForm({ ...enrollTransportForm, stopId: e.target.value })}
                       className="form-select w-full font-bold"
@@ -21578,14 +21578,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           {s.name} (🌅 {s.scheduledTimeMorning} | 🌇 {s.scheduledTimeAfternoon})
                         </option>
                       ))}
-                    </select>
+                    </ModernSelect>
                   </div>
                 );
               })()}
 
               <div className="space-y-1">
                 <label className="form-label">Modalidad de Servicio:</label>
-                <select
+                <ModernSelect
                   value={enrollTransportForm.shift}
                   onChange={(e) => setEnrollTransportForm({ ...enrollTransportForm, shift: e.target.value as any })}
                   className="form-select w-full"
@@ -21593,7 +21593,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <option value="AMBOS">Servicio Completo (Ida y Vuelta)</option>
                   <option value="MATUTINO_RECOGIDA">Solo Turno Matutino (A la Escuela)</option>
                   <option value="VESPERTINO_ENTREGA">Solo Turno Vespertino (A Casa)</option>
-                </select>
+                </ModernSelect>
               </div>
 
               <div className="space-y-1">
@@ -21654,7 +21654,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <label className="form-label">Categoría:</label>
-                  <select
+                  <ModernSelect
                     value={newProductForm.category}
                     onChange={(e) =>
                       setNewProductForm({
@@ -21669,7 +21669,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="SNACKS_NUTRITIVOS">🌾 Snacks Nutritivos</option>
                     <option value="BEBIDAS_NATURALES">🥤 Bebidas Naturales</option>
                     <option value="COMIDAS_CALIENTES">🍲 Comidas Calientes</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div className="space-y-1">
@@ -21820,7 +21820,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="space-y-1">
                 <label className="form-label">Método de Recepción:</label>
-                <select
+                <ModernSelect
                   value={topUpForm.paymentMethod}
                   onChange={(e) =>
                     setTopUpForm({
@@ -21833,7 +21833,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <option value="EFECTIVO">💵 Efectivo en Caja Escolar</option>
                   <option value="TRANSFERENCIA">📱 Transferencia SPEI / Banco</option>
                   <option value="TARJETA">💳 Tarjeta de Débito / Crédito</option>
-                </select>
+                </ModernSelect>
               </div>
 
               <div className="space-y-1">
@@ -22030,7 +22030,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <form onSubmit={handleCreateMedicalConsultation} className="space-y-4 text-xs">
               <div className="space-y-1">
                 <label className="form-label">Alumno que Ingresa a Enfermería:</label>
-                <select
+                <ModernSelect
                   value={newConsultationForm.studentId}
                   onChange={(e) => setNewConsultationForm({ ...newConsultationForm, studentId: e.target.value })}
                   className="form-select w-full"
@@ -22040,13 +22040,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {s.firstName} {s.lastName} ({s.studentCode})
                     </option>
                   ))}
-                </select>
+                </ModernSelect>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <label className="form-label">Motivo de Atención:</label>
-                  <select
+                  <ModernSelect
                     value={newConsultationForm.reason}
                     onChange={(e) =>
                       setNewConsultationForm({
@@ -22062,12 +22062,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="CEFALEA_FIEBRE">🌡️ Cefalea / Fiebre / Malestar</option>
                     <option value="REACCION_ALERGICA">⚠️ Sospecha Reacción Alérgica</option>
                     <option value="OTRO">🩺 Otra Valoración</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div className="space-y-1">
                   <label className="form-label">Nivel de Gravedad:</label>
-                  <select
+                  <ModernSelect
                     value={newConsultationForm.severity}
                     onChange={(e) =>
                       setNewConsultationForm({
@@ -22080,7 +22080,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="LEVE">🟢 Leve (Atención y alta a salón)</option>
                     <option value="MODERADA">🟡 Moderada (Requiere reposo/observación)</option>
                     <option value="URGENTE_REVISION_MEDICA">🔴 Urgente (Valoración pediátrica externa)</option>
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
 
@@ -22232,7 +22232,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <form onSubmit={handleCreateScheduledMedication} className="space-y-4 text-xs">
               <div className="space-y-1">
                 <label className="form-label">Alumno:</label>
-                <select
+                <ModernSelect
                   value={newMedicationForm.studentId}
                   onChange={(e) => setNewMedicationForm({ ...newMedicationForm, studentId: e.target.value })}
                   className="form-select w-full"
@@ -22242,7 +22242,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {s.firstName} {s.lastName} ({s.studentCode})
                     </option>
                   ))}
-                </select>
+                </ModernSelect>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
@@ -22510,7 +22510,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div className="space-y-1">
                   <label className="form-label">Categoría:</label>
-                  <select
+                  <ModernSelect
                     value={newWorkshopForm.category}
                     onChange={(e) =>
                       setNewWorkshopForm({
@@ -22525,7 +22525,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="ARTES_CULTURA">🩰 Artes, Danza y Música</option>
                     <option value="DESARROLLO_HABILIDADES">♟️ Ajedrez y Agilidad Mental</option>
                     <option value="ACADEMICO_REGULARIZACION">📐 Regularización NEM</option>
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
 
@@ -22677,7 +22677,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <form onSubmit={handleEnrollStudentWorkshop} className="space-y-4 text-xs">
               <div className="space-y-1">
                 <label className="form-label">Seleccionar Academia / Taller:</label>
-                <select
+                <ModernSelect
                   value={enrollWorkshopForm.workshopId}
                   onChange={(e) => setEnrollWorkshopForm({ ...enrollWorkshopForm, workshopId: e.target.value })}
                   className="form-select w-full"
@@ -22687,12 +22687,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {w.name} ({w.enrolledCount}/{w.maxCapacity} cupos) - ${w.monthlyFeeMXN} MXN/mes
                     </option>
                   ))}
-                </select>
+                </ModernSelect>
               </div>
 
               <div className="space-y-1">
                 <label className="form-label">Alumno a Inscribir:</label>
-                <select
+                <ModernSelect
                   value={enrollWorkshopForm.studentId}
                   onChange={(e) => setEnrollWorkshopForm({ ...enrollWorkshopForm, studentId: e.target.value })}
                   className="form-select w-full"
@@ -22702,7 +22702,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {s.firstName} {s.lastName} ({s.studentCode})
                     </option>
                   ))}
-                </select>
+                </ModernSelect>
               </div>
 
               <div className="badge badge-sky">
@@ -22747,7 +22747,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <label className="form-label">Categoría de Activo:</label>
-                  <select
+                  <ModernSelect
                     value={newAssetForm.category}
                     onChange={(e) =>
                       setNewAssetForm({
@@ -22762,12 +22762,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="LABORATORIO_CIENCIAS">🔬 Laboratorio de Ciencias</option>
                     <option value="EQUIPO_DEPORTIVO">⚽ Equipo Deportivo</option>
                     <option value="INFRAESTRUCTURA_GENERAL">📢 Audio e Infraestructura</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div className="space-y-1">
                   <label className="form-label">Condición Inicial:</label>
-                  <select
+                  <ModernSelect
                     value={newAssetForm.condition}
                     onChange={(e) =>
                       setNewAssetForm({
@@ -22780,7 +22780,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="EXCELENTE">🟢 Excelente (Nuevo)</option>
                     <option value="BUENO">🟢 Bueno (Operativo)</option>
                     <option value="REGULAR_REQUIERE_SERVICIO">🟡 Requiere Servicio</option>
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
 
@@ -22915,7 +22915,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <form onSubmit={handleCreateMaintenanceTicket} className="space-y-4 text-xs">
               <div className="space-y-1">
                 <label className="form-label">Activo con Desperfecto:</label>
-                <select
+                <ModernSelect
                   value={newTicketForm.assetId}
                   onChange={(e) => setNewTicketForm({ ...newTicketForm, assetId: e.target.value })}
                   className="form-select w-full"
@@ -22925,13 +22925,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       [{a.assetTag}] {a.name} ({a.assignedLocation})
                     </option>
                   ))}
-                </select>
+                </ModernSelect>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <label className="form-label">Nivel de Prioridad:</label>
-                  <select
+                  <ModernSelect
                     value={newTicketForm.priority}
                     onChange={(e) =>
                       setNewTicketForm({
@@ -22945,7 +22945,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="MEDIA">🟡 Media (Requiere Atención)</option>
                     <option value="ALTA">🟠 Alta (Afecta Clases)</option>
                     <option value="URGENTE">🔴 Urgente (Riesgo o Inutilizable)</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div className="space-y-1">
@@ -23111,7 +23111,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div className="space-y-1">
                   <label className="form-label">Audiencia Objetivo:</label>
-                  <select
+                  <ModernSelect
                     value={newSurveyForm.targetAudience}
                     onChange={(e) =>
                       setNewSurveyForm({
@@ -23125,7 +23125,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="DOCENTES">👩‍🏫 Personal Docente</option>
                     <option value="ALUMNOS">🎒 Estudiantes</option>
                     <option value="COMUNIDAD_GENERAL">🌐 Comunidad Escolar General</option>
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
 
@@ -23155,7 +23155,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <label className="form-label">Categoría Principal:</label>
-                  <select
+                  <ModernSelect
                     value={newSurveyForm.category}
                     onChange={(e) =>
                       setNewSurveyForm({
@@ -23170,7 +23170,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="CLIMA_ESCOLAR">🤝 Clima y Convivencia Escolar</option>
                     <option value="SERVICIOS_CAFETERIA_TRANSPORTE">🚌 Cafetería y Transporte</option>
                     <option value="INSTALACIONES_SEGURIDAD">🛡️ Instalaciones y Seguridad</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div className="space-y-1">
@@ -23368,7 +23368,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <form onSubmit={handleCreateConfidentialSuggestion} className="space-y-4 text-xs">
               <div className="space-y-1">
                 <label className="form-label">Área o Categoría del Asunto:</label>
-                <select
+                <ModernSelect
                   value={newSuggestionForm.category}
                   onChange={(e) =>
                     setNewSuggestionForm({
@@ -23384,7 +23384,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <option value="TRANSPORTE">🚌 Rutas y Transporte Escolar</option>
                   <option value="CONVIVENCIA_ESCOLAR">🤝 Convivencia y Clima Escolar</option>
                   <option value="ADMINISTRATIVA">💼 Administración y Cobranza</option>
-                </select>
+                </ModernSelect>
               </div>
 
               <div className="space-y-1">
@@ -23487,7 +23487,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <label className="form-label">Tipo de Actividad:</label>
-                  <select
+                  <ModernSelect
                     value={newEventForm.type}
                     onChange={(e) =>
                       setNewEventForm({
@@ -23507,7 +23507,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="SUSPENSION_OFICIAL_SEP">🔴 Suspensión Oficial SEP</option>
                     <option value="PERIODO_EVALUACION_SEP">📝 Periodo de Evaluación SEP</option>
                     <option value="VACACIONES_OFICIALES">🏖️ Vacaciones Oficiales</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div className="space-y-1">
@@ -23583,7 +23583,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div className="space-y-1">
                   <label className="form-label">Audiencia Convocada:</label>
-                  <select
+                  <ModernSelect
                     value={newEventForm.audience}
                     onChange={(e) =>
                       setNewEventForm({
@@ -23597,7 +23597,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="SOLO_DOCENTES">👩‍🏫 Exclusivo Personal Docente</option>
                     <option value="PADRES_FAMILIA">👨‍👩‍👧 Padres de Familia</option>
                     <option value="ALUMNOS">🎒 Alumnos del Plantel</option>
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
 
@@ -23649,7 +23649,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <form onSubmit={handleAssignTeacherCommission} className="space-y-4 text-xs">
               <div className="space-y-1">
                 <label className="form-label">Docente Responsable:</label>
-                <select
+                <ModernSelect
                   value={newCommissionForm.teacherId}
                   onChange={(e) => {
                     const selected = teachers.find((t) => t.id === e.target.value);
@@ -23666,7 +23666,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {t.fullName} ({t.specialty || 'Docente'})
                     </option>
                   ))}
-                </select>
+                </ModernSelect>
               </div>
 
               <div className="space-y-1">
@@ -23805,7 +23805,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <label className="form-label">Área / Departamento:</label>
-                  <select
+                  <ModernSelect
                     value={newVacancyForm.department}
                     onChange={(e) =>
                       setNewVacancyForm({
@@ -23820,12 +23820,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="INGLES_BILINGUE">Inglés / Coordinación Bilingüe</option>
                     <option value="EXTRACURRICULAR_DEPORTES">Deportes & Talleres Extracurriculares</option>
                     <option value="SERVICIOS_MEDICOS">Servicios Médicos / Enfermería</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div className="space-y-1">
                   <label className="form-label">Tipo de Contratación:</label>
-                  <select
+                  <ModernSelect
                     value={newVacancyForm.type}
                     onChange={(e) =>
                       setNewVacancyForm({
@@ -23838,7 +23838,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="TIEMPO_COMPLETO">Tiempo Completo (Matutino)</option>
                     <option value="MEDIO_TIEMPO">Medio Tiempo</option>
                     <option value="POR_HORAS_ASIGNATURA">Por Horas / Asignatura</option>
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
 
@@ -23924,7 +23924,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <form onSubmit={handleCreateCandidate} className="space-y-4 text-xs">
               <div className="space-y-1">
                 <label className="form-label">Plaza a la que se Postula:</label>
-                <select
+                <ModernSelect
                   value={newCandidateForm.vacancyId}
                   onChange={(e) =>
                     setNewCandidateForm({ ...newCandidateForm, vacancyId: e.target.value })
@@ -23936,7 +23936,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {v.code} - {v.title}
                     </option>
                   ))}
-                </select>
+                </ModernSelect>
               </div>
 
               <div className="space-y-1">
@@ -24090,7 +24090,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <form onSubmit={handleAdvanceCandidateStatus} className="space-y-4 text-xs">
               <div className="space-y-1">
                 <label className="form-label">Fase en el Proceso de Selección:</label>
-                <select
+                <ModernSelect
                   value={candidateEvaluationForm.status}
                   onChange={(e) =>
                     setCandidateEvaluationForm({
@@ -24107,7 +24107,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <option value="OFERTA_ACEPTADA">5. Propuesta Económica Aceptada</option>
                   <option value="CONTRATADO">✓ 6. Contratado / Alta en Plantilla Docente</option>
                   <option value="NO_SELECCIONADO">✕ No Seleccionado</option>
-                </select>
+                </ModernSelect>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -24132,7 +24132,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div className="space-y-1">
                   <label className="form-label">Validación SEP / DGP:</label>
-                  <select
+                  <ModernSelect
                     value={candidateEvaluationForm.sepAccreditation}
                     onChange={(e) =>
                       setCandidateEvaluationForm({
@@ -24145,7 +24145,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="VALIDADA_DGP">Cédula Oficial Validada DGP</option>
                     <option value="EN_TRAMITE">Constancia Oficial en Trámite</option>
                     <option value="PENDIENTE_COTEJO">Pendiente de Cotejo</option>
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
 
@@ -24222,7 +24222,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="space-y-1">
                   <label className="form-label">Tipo de Amenaza:</label>
-                  <select
+                  <ModernSelect
                     value={newDrillForm.drillType}
                     onChange={(e) =>
                       setNewDrillForm({
@@ -24236,7 +24236,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="INCENDIO">🔥 Conato de Incendio</option>
                     <option value="FUGA_GAS">⚠️ Fuga de Gas / Químico</option>
                     <option value="EVACUACION_HIDROMETEOROLOGICA">🌧️ Fenómeno Meteorológico</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div className="space-y-1">
@@ -24383,7 +24383,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <label className="form-label">Dictamen del Comité:</label>
-                  <select
+                  <ModernSelect
                     value={newDrillForm.evaluation}
                     onChange={(e) =>
                       setNewDrillForm({
@@ -24397,7 +24397,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="BUENO">Bueno (Desalojo ordenado)</option>
                     <option value="REGULAR">Regular (Retraso en escaleras o salidas)</option>
                     <option value="REQUIERE_MEJORA">Requiere Mejora Inmediata</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div className="space-y-1">
@@ -24444,7 +24444,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <form onSubmit={handleAddBrigadeMember} className="space-y-4 text-xs">
               <div className="space-y-1">
                 <label className="form-label">Docente o Personal Asignado:</label>
-                <select
+                <ModernSelect
                   value={newBrigadeMemberForm.teacherId}
                   onChange={(e) => {
                     const selected = teachers.find((t) => t.id === e.target.value);
@@ -24461,7 +24461,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {t.fullName} ({t.specialty || 'Docente'})
                     </option>
                   ))}
-                </select>
+                </ModernSelect>
               </div>
 
               <div className="space-y-1">
@@ -24559,7 +24559,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <form onSubmit={handleUpdateDrillEvaluation} className="space-y-4 text-xs">
               <div className="space-y-1">
                 <label className="form-label">Dictamen y Evaluación del Ejercicio:</label>
-                <select
+                <ModernSelect
                   value={drillEvaluationEditForm.evaluation}
                   onChange={(e) =>
                     setDrillEvaluationEditForm({
@@ -24573,7 +24573,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <option value="BUENO">Bueno - Desalojo ordenado con detalles menores</option>
                   <option value="REGULAR">Regular - Excedió tiempo estimado o hubo cuellos de botella</option>
                   <option value="REQUIERE_MEJORA">Requiere Mejora Inmediata</option>
-                </select>
+                </ModernSelect>
               </div>
 
               <div className="space-y-1">
@@ -24669,7 +24669,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="space-y-1">
                   <label className="form-label">Tipo de Órgano Colegiado:</label>
-                  <select
+                  <ModernSelect
                     value={newAssemblyForm.type}
                     onChange={(e) =>
                       setNewAssemblyForm({
@@ -24682,7 +24682,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="ASAMBLEA_GENERAL_APF">Asamblea General de Padres (APF)</option>
                     <option value="SESION_ORDINARIA_CEPS">Sesión Ordinaria de Consejo (CEPS)</option>
                     <option value="SESION_EXTRAORDINARIA">Sesión Extraordinaria Urgente</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div className="space-y-1">
@@ -24760,7 +24760,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div className="space-y-1">
                 <label className="form-label">Estatus de la Convocatoria:</label>
-                <select
+                <ModernSelect
                   value={newAssemblyForm.status}
                   onChange={(e) =>
                     setNewAssemblyForm({
@@ -24773,7 +24773,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <option value="CONVOCADA">Convocada (Notificación enviada a tutores)</option>
                   <option value="REALIZADA_CON_ACTA">Realizada con Acta Formal Asentada</option>
                   <option value="CANCELADA">Cancelada / Pospuesta</option>
-                </select>
+                </ModernSelect>
               </div>
 
               <div className="modal-actions">
@@ -24805,7 +24805,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <form onSubmit={handleAddApfBoardMember} className="space-y-4 text-xs">
               <div className="space-y-1">
                 <label className="form-label">Cargo en la Mesa Directiva:</label>
-                <select
+                <ModernSelect
                   value={newBoardMemberForm.role}
                   onChange={(e) =>
                     setNewBoardMemberForm({
@@ -24821,7 +24821,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <option value="VOCAL_PREESCOLAR">Vocal de Preescolar</option>
                   <option value="VOCAL_PRIMARIA_BAJA">Vocal de Primaria Baja (1º a 3º)</option>
                   <option value="VOCAL_PRIMARIA_ALTA">Vocal de Primaria Alta (4º a 6º)</option>
-                </select>
+                </ModernSelect>
               </div>
 
               <div className="space-y-1">
@@ -24993,7 +24993,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div>
                   <label className="form-label">Prioridad</label>
-                  <select
+                  <ModernSelect
                     value={newWorkOrderForm.priority}
                     onChange={(e) =>
                       setNewWorkOrderForm({
@@ -25007,13 +25007,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="MEDIA">Media</option>
                     <option value="ALTA">Alta</option>
                     <option value="URGENTE">Urgente (Riesgo)</option>
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
 
               <div>
                 <label className="form-label">Sistema de Infraestructura</label>
-                <select
+                <ModernSelect
                   value={newWorkOrderForm.systemType}
                   onChange={(e) =>
                     setNewWorkOrderForm({
@@ -25028,7 +25028,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <option value="ESTRUCTURA_IMPERMEABILIZACION">🏗️ Estructura & Impermeabilización</option>
                   <option value="CERRAJERIA_ACCESIBILIDAD">🚪 Cerrajería & Accesibilidad Universal</option>
                   <option value="AREAS_VERDES_RECREATIVAS">🌳 Áreas Verdes & Patios Deportivos</option>
-                </select>
+                </ModernSelect>
               </div>
 
               <div>
@@ -25154,7 +25154,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <form onSubmit={handleUpdateFacilityWorkOrderStatus} className="space-y-4 text-xs">
               <div>
                 <label className="form-label">Nuevo Estatus</label>
-                <select
+                <ModernSelect
                   value={updateWorkOrderForm.status}
                   onChange={(e) =>
                     setUpdateWorkOrderForm({
@@ -25168,7 +25168,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <option value="EN_EJECUCION">En Ejecución</option>
                   <option value="FINALIZADA_CON_VB">Finalizada con Visto Bueno</option>
                   <option value="CANCELADA">Cancelada</option>
-                </select>
+                </ModernSelect>
               </div>
 
               <div>
@@ -25247,7 +25247,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
                 <div>
                   <label className="form-label">Frecuencia</label>
-                  <select
+                  <ModernSelect
                     value={newInspectionForm.frequency}
                     onChange={(e) =>
                       setNewInspectionForm({
@@ -25262,13 +25262,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="BIMESTRAL">Bimestral</option>
                     <option value="SEMESTRAL">Semestral (Cisternas)</option>
                     <option value="ANUAL">Anual (Estructural)</option>
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
 
               <div>
                 <label className="form-label">Sistema Evaluado</label>
-                <select
+                <ModernSelect
                   value={newInspectionForm.systemType}
                   onChange={(e) =>
                     setNewInspectionForm({
@@ -25283,7 +25283,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <option value="ESTRUCTURA_IMPERMEABILIZACION">🏗️ Estructura & Impermeabilización</option>
                   <option value="CERRAJERIA_ACCESIBILIDAD">🚪 Cerrajería & Accesibilidad Universal</option>
                   <option value="AREAS_VERDES_RECREATIVAS">🌳 Áreas Verdes & Patios Deportivos</option>
-                </select>
+                </ModernSelect>
               </div>
 
               <div>
@@ -25335,7 +25335,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="form-label">Dictamen Global</label>
-                  <select
+                  <ModernSelect
                     value={newInspectionForm.overallStatus}
                     onChange={(e) =>
                       setNewInspectionForm({
@@ -25348,7 +25348,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="CONFORME">Conforme (Sin observaciones)</option>
                     <option value="REQUIERE_MANTENIMIENTO">Requiere Mantenimiento Preventivo</option>
                     <option value="NO_CONFORME_RIESGO">No Conforme (Riesgo)</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div>
@@ -25428,7 +25428,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="form-label">Nivel Educativo</label>
-                  <select
+                  <ModernSelect
                     value={newScholarshipForm.level}
                     onChange={(e) => {
                       const lvl = e.target.value as 'PREESCOLAR' | 'PRIMARIA';
@@ -25443,7 +25443,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   >
                     <option value="PREESCOLAR">Preescolar</option>
                     <option value="PRIMARIA">Primaria</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div>
@@ -25460,7 +25460,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
               <div>
                 <label className="form-label">Modalidad de Beca Solicitada</label>
-                <select
+                <ModernSelect
                   value={newScholarshipForm.type}
                   onChange={(e) =>
                     setNewScholarshipForm({
@@ -25475,7 +25475,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <option value="BECA_SOCIOECONOMICA">🤝 Apoyo Socioeconómico Familiar</option>
                   <option value="BECA_HERMANOS_FAMILIA">👨‍👩‍👦 Descuento Hermanos Matriculados</option>
                   <option value="BECA_DEPORTIVA_CULTURAL">🎨 Talento Deportivo / Cultural</option>
-                </select>
+                </ModernSelect>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -25522,7 +25522,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="form-label">% Descuento Solicitado</label>
-                  <select
+                  <ModernSelect
                     value={newScholarshipForm.requestedDiscountPercentage}
                     onChange={(e) =>
                       setNewScholarshipForm({
@@ -25536,7 +25536,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="50">50% de Descuento</option>
                     <option value="75">75% de Descuento</option>
                     <option value="100">100% de Exención Total</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div>
@@ -25615,7 +25615,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="form-label">Resolución del Comité</label>
-                  <select
+                  <ModernSelect
                     value={evaluateScholarshipForm.status}
                     onChange={(e) =>
                       setEvaluateScholarshipForm({
@@ -25628,12 +25628,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="APROBADA">✅ Aprobada</option>
                     <option value="CONDICIONADA">⚠️ Aprobada Condicionada (Promedio)</option>
                     <option value="RECHAZADA">❌ No Aprobada</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div>
                   <label className="form-label">% Beca Aprobado</label>
-                  <select
+                  <ModernSelect
                     value={evaluateScholarshipForm.approvedDiscountPercentage}
                     onChange={(e) =>
                       setEvaluateScholarshipForm({
@@ -25648,7 +25648,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="50">50% Descuento</option>
                     <option value="75">75% Descuento</option>
                     <option value="100">100% Exención Total</option>
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
 
@@ -25752,7 +25752,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
                 <div>
                   <label className="form-label">Nivel Educativo</label>
-                  <select
+                  <ModernSelect
                     value={newConalitegPackageForm.level}
                     onChange={(e) =>
                       setNewConalitegPackageForm({
@@ -25764,7 +25764,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   >
                     <option value="PRIMARIA">Primaria</option>
                     <option value="PREESCOLAR">Preescolar</option>
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
 
@@ -25889,7 +25889,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <form onSubmit={handleCreateConalitegReceipt} className="space-y-4 text-xs">
               <div>
                 <label className="form-label">Paquete / Grado de Remesa *</label>
-                <select
+                <ModernSelect
                   value={newConalitegReceiptForm.packageId}
                   onChange={(e) => {
                     const sel = conalitegPackages.find((p) => p.id === e.target.value);
@@ -25907,7 +25907,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                       {pkg.grade} — {pkg.remesaFolio} ({pkg.warehouseReserveCount} en reserva)
                     </option>
                   ))}
-                </select>
+                </ModernSelect>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
@@ -26062,7 +26062,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-3 gap-3">
                 <div>
                   <label className="form-label">Categoría</label>
-                  <select
+                  <ModernSelect
                     value={newUniformItemForm.category}
                     onChange={(e) =>
                       setNewUniformItemForm({
@@ -26076,11 +26076,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="UNIFORME_DEPORTIVO">Uniforme Deportivo</option>
                     <option value="BATA_LABORATORIO_ARTE">Bata Laboratorio / Arte</option>
                     <option value="MATERIAL_DIDACTICO">Material Didáctico</option>
-                  </select>
+                  </ModernSelect>
                 </div>
                 <div>
                   <label className="form-label">Nivel</label>
-                  <select
+                  <ModernSelect
                     value={newUniformItemForm.level}
                     onChange={(e) =>
                       setNewUniformItemForm({
@@ -26093,11 +26093,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="PRIMARIA">Primaria</option>
                     <option value="PREESCOLAR">Preescolar</option>
                     <option value="AMBOS">Ambos Niveles</option>
-                  </select>
+                  </ModernSelect>
                 </div>
                 <div>
                   <label className="form-label">Talla</label>
-                  <select
+                  <ModernSelect
                     value={newUniformItemForm.size}
                     onChange={(e) =>
                       setNewUniformItemForm({
@@ -26115,7 +26115,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="TALLA_14">Talla 14</option>
                     <option value="TALLA_16">Talla 16</option>
                     <option value="UNITALLA">Unitalla</option>
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
 
@@ -26258,7 +26258,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <form onSubmit={handleAdjustUniformStock} className="space-y-4 text-xs">
               <div>
                 <label className="form-label">Motivo del Movimiento</label>
-                <select
+                <ModernSelect
                   value={adjustStockForm.reason}
                   onChange={(e) => setAdjustStockForm({ ...adjustStockForm, reason: e.target.value })}
                   className="form-select w-full"
@@ -26267,7 +26267,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <option value="RECEPCION_PROVEEDOR">Entrada / Resurtido de Proveedor (+)</option>
                   <option value="AJUSTE_MERMA">Ajuste por Merma o Defecto (-)</option>
                   <option value="DEVOLUCION">Devolución / Cambio de Talla (+)</option>
-                </select>
+                </ModernSelect>
               </div>
 
               <div>
@@ -26333,7 +26333,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <form onSubmit={handleCreateOfficialCertificate} className="space-y-4 text-xs">
               <div>
                 <label className="form-label">Seleccionar Alumno Registrado</label>
-                <select
+                <ModernSelect
                   onChange={(e) => {
                     const studentId = e.target.value;
                     if (studentId === 'student-01') {
@@ -26379,7 +26379,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <option value="student-01">Carlos Mendoza Ruiz (2026-PRI-001 - 1º Primaria)</option>
                   <option value="student-sof-01">Sofía Morales Rivas (2026-PRI-014 - 5º Primaria)</option>
                   <option value="student-emi-01">Emiliano Estrada Gómez (2026-KND-005 - 2º Kínder)</option>
-                </select>
+                </ModernSelect>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
@@ -26408,7 +26408,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="form-label">Tipo de Constancia</label>
-                  <select
+                  <ModernSelect
                     value={newCertificateForm.type}
                     onChange={(e) =>
                       setNewCertificateForm({
@@ -26423,7 +26423,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="CONSTANCIA_BUENA_CONDUCTA">Constancia de Buena Conducta</option>
                     <option value="CONSTANCIA_PROMEDIO">Constancia con Desglose de Promedio</option>
                     <option value="KARDEX_HISTORICO">Kárdex Histórico de Calificaciones</option>
-                  </select>
+                  </ModernSelect>
                 </div>
 
                 <div>
@@ -26766,7 +26766,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 </div>
                 <div>
                   <label className="form-label">Dictamen</label>
-                  <select
+                  <ModernSelect
                     value={newSupervisionInspectionForm.status}
                     onChange={(e) => setNewSupervisionInspectionForm({ ...newSupervisionInspectionForm, status: e.target.value as SupervisionInspectionItem['status'] })}
                     className="form-select w-full"
@@ -26774,7 +26774,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <option value="CONFORME">CONFORME</option>
                     <option value="CON_OBSERVACIONES_SOLVENTADAS">CON OBSERVACIONES SOLVENTADAS</option>
                     <option value="OBSERVACIONES_PENDIENTES">OBSERVACIONES PENDIENTES</option>
-                  </select>
+                  </ModernSelect>
                 </div>
               </div>
 
