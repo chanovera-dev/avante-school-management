@@ -1177,9 +1177,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const isLevelDirector = Boolean(currentUser?.assignedLevel);
   const userLevelId = currentUser?.assignedLevel || null;
 
-  const [activeTab, setActiveTab] = useState<'levels' | 'teachers' | 'attendance' | 'grades' | 'notices' | 'credentials' | 'tasks' | 'schedules' | 'admissions' | 'library' | 'transport' | 'cafeteria' | 'infirmary' | 'workshops' | 'inventory' | 'surveys' | 'events' | 'recruitment' | 'safety' | 'community' | 'maintenance' | 'scholarships' | 'certificates' | 'audit' | 'academic' | 'finance' | 'groups' | 'parent' | 'superadmin'>(
-    activeRole === 'DOCENTE' ? 'attendance' : (isLevelDirector ? 'teachers' : 'levels')
-  );
+  const [activeTab, setActiveTab] = useState<'levels' | 'teachers' | 'attendance' | 'grades' | 'notices' | 'credentials' | 'tasks' | 'schedules' | 'admissions' | 'library' | 'transport' | 'cafeteria' | 'infirmary' | 'workshops' | 'inventory' | 'surveys' | 'events' | 'recruitment' | 'safety' | 'community' | 'maintenance' | 'scholarships' | 'certificates' | 'audit' | 'academic' | 'finance' | 'groups' | 'parent' | 'superadmin'>(() => {
+    try {
+      const requested = sessionStorage.getItem('asm_initial_tab');
+      if (requested) {
+        sessionStorage.removeItem('asm_initial_tab');
+        return requested as any;
+      }
+    } catch (e) {}
+    return activeRole === 'DOCENTE' ? 'attendance' : (isLevelDirector ? 'teachers' : 'levels');
+  });
   const [selectedLevelFilter, setSelectedLevelFilter] = useState<string>(userLevelId || 'ALL');
   
   const [isOnline, setIsOnline] = useState(true);
@@ -1475,9 +1482,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   // Admisiones y Preinscripciones en Línea con persistencia local
   const [applicants, setApplicants] = useState<AdmissionApplicantItem[]>(() => {
     try {
-      const saved = localStorage.getItem(`asm_applicants_${currentTenant?.id || 'default'}`);
-      if (saved) {
-        const parsed = JSON.parse(saved);
+      const specific = localStorage.getItem(`asm_applicants_${currentTenant?.id || 'default'}`);
+      if (specific) {
+        const parsed = JSON.parse(specific);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+      const fallback = localStorage.getItem('asm_applicants_default');
+      if (fallback) {
+        const parsed = JSON.parse(fallback);
         if (Array.isArray(parsed)) return parsed;
       }
     } catch (e) {}
@@ -1489,6 +1501,74 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       localStorage.setItem(`asm_applicants_${currentTenant?.id || 'default'}`, JSON.stringify(applicants));
     } catch (e) {}
   }, [applicants, currentTenant?.id]);
+
+  // Sincronizar solicitudes de admisión desde el portal y backend
+  useEffect(() => {
+    const syncApplicants = async () => {
+      try {
+        const specificKey = `asm_applicants_${currentTenant?.id || 'default'}`;
+        const specificData = localStorage.getItem(specificKey);
+        const fallbackData = localStorage.getItem('asm_applicants_default');
+        const map = new Map<string, AdmissionApplicantItem>();
+
+        if (specificData) {
+          try {
+            const parsed = JSON.parse(specificData);
+            if (Array.isArray(parsed)) {
+              parsed.forEach((a) => map.set(a.folio || a.id, a));
+            }
+          } catch (e) {}
+        }
+
+        if (fallbackData) {
+          try {
+            const parsed = JSON.parse(fallbackData);
+            if (Array.isArray(parsed)) {
+              parsed.forEach((a) => {
+                if (!map.has(a.folio || a.id)) {
+                  map.set(a.folio || a.id, a);
+                }
+              });
+            }
+          } catch (e) {}
+        }
+
+        // Consultar API backend si está disponible
+        try {
+          const res = await fetch('/api/academic/admissions/applicants', {
+            headers: {
+              ...(currentTenant?.id ? { 'x-tenant-id': currentTenant.id } : {}),
+            },
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.applicants && Array.isArray(data.applicants)) {
+              data.applicants.forEach((a: AdmissionApplicantItem) => {
+                map.set(a.folio || a.id, { ...map.get(a.folio || a.id), ...a });
+              });
+            }
+          }
+        } catch (apiErr) {}
+
+        const merged = Array.from(map.values());
+        if (merged.length > 0) {
+          setApplicants(merged);
+        }
+      } catch (err) {}
+    };
+
+    syncApplicants();
+
+    window.addEventListener('focus', syncApplicants);
+    window.addEventListener('storage', syncApplicants);
+    window.addEventListener('asm_applicant_created', syncApplicants);
+
+    return () => {
+      window.removeEventListener('focus', syncApplicants);
+      window.removeEventListener('storage', syncApplicants);
+      window.removeEventListener('asm_applicant_created', syncApplicants);
+    };
+  }, [currentTenant?.id]);
 
   const [selectedApplicantStatusFilter, setSelectedApplicantStatusFilter] = useState<string>('ALL');
   const [selectedApplicantLevelFilter, setSelectedApplicantLevelFilter] = useState<string>('ALL');

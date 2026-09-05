@@ -32,6 +32,7 @@ export async function tenantRoutes(fastify: FastifyInstance) {
       try {
         const dbTenant = await prisma.tenant.findUnique({
           where: { subdomain: cleanSub },
+          include: { campuses: true, educationalLevels: true },
         });
         if (dbTenant && dbTenant.status === 'ACTIVO') {
           tenant = dbTenant as any;
@@ -51,6 +52,20 @@ export async function tenantRoutes(fastify: FastifyInstance) {
     const campuses = store.campuses.filter((c) => c.tenantId === tenant!.id);
     const levels = store.educationalLevels.filter((lvl) => lvl.tenantId === tenant!.id);
 
+    let levelsOffered: string[] = levels.map((l) => l.id);
+    if (levelsOffered.length === 0 && campuses.length > 0 && campuses[0].levelsOffered) {
+      levelsOffered = campuses[0].levelsOffered;
+    }
+    if (levelsOffered.length === 0 && (tenant as any).educationalLevels && (tenant as any).educationalLevels.length > 0) {
+      levelsOffered = (tenant as any).educationalLevels.map((l: any) => l.level || l.id);
+    }
+    if (levelsOffered.length === 0 && (tenant as any).campuses?.[0]?.levelsOffered?.length > 0) {
+      levelsOffered = (tenant as any).campuses[0].levelsOffered;
+    }
+    if (levelsOffered.length === 0) {
+      levelsOffered = ['PREESCOLAR', 'PRIMARIA'];
+    }
+
     return reply.send({
       id: tenant.id,
       name: tenant.name,
@@ -58,8 +73,8 @@ export async function tenantRoutes(fastify: FastifyInstance) {
       contactEmail: tenant.contactEmail,
       contactPhone: tenant.contactPhone,
       status: tenant.status,
-      levelsOffered: levels.map((l) => l.id),
-      campuses: campuses.map((c) => ({ id: c.id, name: c.name, code: c.code })),
+      levelsOffered,
+      campuses: campuses.length > 0 ? campuses.map((c) => ({ id: c.id, name: c.name, code: c.code })) : ((tenant as any).campuses || []),
     });
   });
 

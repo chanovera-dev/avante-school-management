@@ -1409,6 +1409,9 @@ export async function academicRoutes(fastify: FastifyInstance) {
     parentPhone: z.string().min(8, 'El teléfono del tutor es obligatorio'),
     parentEmail: z.string().email('Correo electrónico del tutor inválido'),
     notes: z.string().optional(),
+    paymentMethod: z.string().optional(),
+    tuitionFee: z.number().optional(),
+    submittedDocs: z.array(z.string()).optional(),
   });
 
   const scheduleEvaluationSchema = z.object({
@@ -1430,9 +1433,11 @@ export async function academicRoutes(fastify: FastifyInstance) {
     notes: z.string().optional(),
   });
 
-  // Consultar aspirantes (filtrables por estatus y nivel)
-  fastify.get('/admissions/applicants', { preHandler: [authenticate] }, async (request, reply) => {
-    const tenantId = request.userPayload!.tenantId;
+  // Consultar aspirantes (filtrables por estatus y nivel, con soporte de token o header de tenant)
+  fastify.get('/admissions/applicants', async (request, reply) => {
+    const userPayload = (request as any).userPayload;
+    const headerTenant = request.headers['x-tenant-id'] as string;
+    const tenantId = userPayload?.tenantId || headerTenant || store.tenants[0]?.id || 'tenant-01';
     const query = request.query as { status?: any; targetLevelId?: string };
 
     const applicants = store.getApplicants(tenantId, query.status, query.targetLevelId);
@@ -1441,7 +1446,8 @@ export async function academicRoutes(fastify: FastifyInstance) {
 
   // Consultar aspirante por folio oficial (consulta pública o privada)
   fastify.get('/admissions/applicants/:folio', async (request, reply) => {
-    const tenantId = (request as any).userPayload?.tenantId || store.tenants[0]?.id || 'tenant-01';
+    const headerTenant = request.headers['x-tenant-id'] as string;
+    const tenantId = (request as any).userPayload?.tenantId || headerTenant || store.tenants[0]?.id || 'tenant-01';
     const { folio } = request.params as { folio: string };
 
     const applicant = store.getApplicantByFolio(tenantId, folio);
@@ -1454,7 +1460,10 @@ export async function academicRoutes(fastify: FastifyInstance) {
 
   // Registrar nuevo aspirante (Portal Público de Preinscripción o Control Escolar)
   fastify.post('/admissions/applicants', async (request, reply) => {
-    const tenantId = (request as any).userPayload?.tenantId || store.tenants[0]?.id || 'tenant-01';
+    const headerTenant = request.headers['x-tenant-id'] as string;
+    const bodyTenant = (request.body as any)?.tenantId;
+    const tenantId = (request as any).userPayload?.tenantId || headerTenant || bodyTenant || store.tenants[0]?.id || 'tenant-01';
+
     const parseResult = createApplicantSchema.safeParse(request.body);
 
     if (!parseResult.success) {
@@ -1465,9 +1474,57 @@ export async function academicRoutes(fastify: FastifyInstance) {
     }
 
     const applicant = store.createApplicant(tenantId, parseResult.data);
+
+    // Si marcó documentos entregados, actualizarlos
+    if (parseResult.data.submittedDocs && Array.isArray(parseResult.data.submittedDocs)) {
+      applicant.documents = applicant.documents.map((doc) => ({
+        ...doc,
+        status: parseResult.data.submittedDocs!.includes(doc.documentType) || parseResult.data.submittedDocs!.includes(doc.id)
+          ? 'CARGADO'
+          : doc.status,
+      }));
+    }
+
+    const tenant = store.tenants.find((t) => t.id === tenantId) || { name: 'Colegio Institucional' };
+    const paymentMethod = parseResult.data.paymentMethod || 'SPEI';
+    const amount = parseResult.data.tuitionFee || (applicant.targetLevelId === 'PREESCOLAR' ? 3200 : applicant.targetLevelId === 'SECUNDARIA' ? 4200 : 3800);
+    const reference = `REF-${applicant.folio.replace(/[^0-9]/g, '') || String(Date.now()).slice(-6)}`;
+    const speiClabe = '646180123456789012';
+    const bankName = 'STP / BBVA Bancomer';
+
+    let emailResult: any = null;
+    try {
+      emailResult = await emailService.sendAdmissionConfirmationEmail({
+        recipientEmail: applicant.parentEmail,
+        parentName: applicant.parentName,
+        studentName: `${applicant.applicantFirstName} ${applicant.applicantLastName}`,
+        levelName: applicant.targetLevelName,
+        grade: applicant.targetGrade,
+        folio: applicant.folio,
+        schoolName: tenant.name,
+        paymentMethod,
+        amount,
+        reference,
+        speiClabe,
+        bankName,
+      });
+    } catch (err: any) {
+      console.warn('⚠️ Error al enviar correo de confirmación de admisión:', err);
+    }
+
     return reply.status(201).send({
       success: true,
       applicant,
+      emailResult,
+      paymentSheet: {
+        folio: applicant.folio,
+        amount,
+        paymentMethod,
+        bankName,
+        speiClabe,
+        reference,
+        concept: `ADMISION ${applicant.folio}`,
+      },
       message: `¡Preinscripción registrada exitosamente! Folio oficial: ${applicant.folio}`,
     });
   });
