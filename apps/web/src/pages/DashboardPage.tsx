@@ -108,6 +108,7 @@ import {
   ScrollText,
   Lock,
 } from 'lucide-react';
+import { ModernSelect, type ModernSelectOption } from '../components/ModernSelect.js';
 
 interface DashboardPageProps {
   onNavigate: (route: 'home' | 'register' | 'login' | 'dashboard' | 'portal') => void;
@@ -6878,6 +6879,57 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const filteredGroups = groups.filter((g) => selectedLevelFilter === 'ALL' || g.levelId === selectedLevelFilter);
   const filteredCharges = charges.filter((c) => selectedLevelFilter === 'ALL' || c.levelId === selectedLevelFilter);
 
+  const roleSelectOptions: ModernSelectOption[] = [
+    {
+      value: 'DIRECTOR',
+      label: isLevelDirector ? `🎯 Dirección de ${userLevelId}` : 'Director General',
+      description: isLevelDirector ? 'Gestión académica de su nivel escolar' : 'Control total y administración del plantel',
+      badge: 'Dirección',
+      icon: <Landmark />,
+      iconBg: '#eff6ff',
+    },
+    {
+      value: 'DOCENTE',
+      label: '👨‍🏫 Maestro(a) / Docente Titular',
+      description: 'Pase de lista diario, asistencias y calificaciones',
+      badge: 'Academia',
+      icon: <GraduationCap />,
+      iconBg: '#ecfdf5',
+    },
+    {
+      value: 'CONTROL_ESCOLAR',
+      label: 'Control Escolar',
+      description: 'Kardex, expedientes, matrículas e inscripciones',
+      badge: 'Gestión',
+      icon: <ClipboardList />,
+      iconBg: '#eef2ff',
+    },
+    {
+      value: 'FINANZAS',
+      label: 'Finanzas y Caja',
+      description: 'Cobranza de colegiaturas, cortes y estados de cuenta',
+      badge: 'Caja',
+      icon: <Wallet />,
+      iconBg: '#fffbeb',
+    },
+    {
+      value: 'TUTOR',
+      label: 'Portal Familiar / Tutor',
+      description: 'Seguimiento de alumnos, reportes y avisos escolares',
+      badge: 'Familia',
+      icon: <Users />,
+      iconBg: '#f0fdfa',
+    },
+    {
+      value: 'SUPER_ADMIN',
+      label: 'SuperAdmin SaaS',
+      description: 'Configuración global de la red escolar ASM',
+      badge: 'Root',
+      icon: <ShieldAlert />,
+      iconBg: '#fef2f2',
+    },
+  ];
+
   return (
     <div className="dashboard-page">
       {/* Toast Notificación */}
@@ -6977,24 +7029,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               </div>
             )}
 
-            {/* Selector de Rol */}
-            <div className="dashboard-role-select-wrapper">
-              <ShieldCheck />
-              <select
-                value={activeRole}
-                onChange={(e) => setActiveRole(e.target.value as any)}
-                className="dashboard-role-select"
-              >
-                <option value="DIRECTOR">
-                  {isLevelDirector ? `🎯 Dirección de ${userLevelId}` : 'Director General'}
-                </option>
-                <option value="DOCENTE">👨‍🏫 Maestro(a) / Docente Titular</option>
-                <option value="CONTROL_ESCOLAR">Control Escolar</option>
-                <option value="FINANZAS">Finanzas y Caja</option>
-                <option value="TUTOR">Portal Familiar / Tutor</option>
-                <option value="SUPER_ADMIN">SuperAdmin (Dueño SaaS ASM)</option>
-              </select>
-            </div>
+            {/* Selector de Rol Moderno con Menú Desplegable Flotante */}
+            <ModernSelect
+              value={activeRole}
+              onChange={(newRole) => setActiveRole(newRole as any)}
+              options={roleSelectOptions}
+              prefixIcon={<ShieldCheck />}
+              headerTitle="Rol Activo de Sesión"
+              headerSubtitle="Simula accesos, módulos y permisos según el perfil"
+              align="right"
+              menuWidth="340px"
+              className="dashboard-role-select-wrapper"
+              triggerClassName="dashboard-role-select-trigger"
+              aria-label="Seleccionar rol activo"
+            />
 
             <button
               onClick={() => {
