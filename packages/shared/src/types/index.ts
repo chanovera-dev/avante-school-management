@@ -232,6 +232,11 @@ export interface EducationalLevelDTO {
   isEmailVerified: boolean;
   academicCoordinator?: string;
   grades: string[];
+  enrollmentFee?: number;
+  monthlyTuitionFee?: number;
+  tuitionMonths?: number;
+  annualDiscountPercent?: number;
+  tuitionDueDay?: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -722,6 +727,13 @@ export interface AdmissionApplicantDTO {
   documents: ApplicantDocumentDTO[];
   appliedAt: string;
   convertedStudentId?: string;
+  enrollmentFee?: number;
+  monthlyTuitionFee?: number;
+  initialPaymentAmount?: number;
+  paymentModality?: string;
+  recurringPaymentMethod?: string;
+  isRecurringAutoDebit?: boolean;
+  tuitionMonths?: number;
   notes?: string;
 }
 
@@ -737,6 +749,16 @@ export interface CreateAdmissionApplicantRequestDTO {
   parentName: string;
   parentPhone: string;
   parentEmail: string;
+  enrollmentFee?: number;
+  monthlyTuitionFee?: number;
+  initialPaymentAmount?: number;
+  paymentModality?: string;
+  recurringPaymentMethod?: string;
+  isRecurringAutoDebit?: boolean;
+  tuitionMonths?: number;
+  paymentMethod?: string;
+  tuitionFee?: number;
+  submittedDocs?: string[];
   notes?: string;
 }
 

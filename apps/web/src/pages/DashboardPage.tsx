@@ -34,6 +34,8 @@ import {
   Receipt,
   Download,
   Settings,
+  Save,
+  Eye,
   Baby,
   Palette,
   BookOpen,
@@ -189,6 +191,11 @@ interface EducationalLevel {
   grades: string[];
   color: string;
   icon: any;
+  enrollmentFee?: number;
+  monthlyTuitionFee?: number;
+  tuitionMonths?: number;
+  annualDiscountPercent?: number;
+  tuitionDueDay?: number;
 }
 
 interface Teacher {
@@ -383,6 +390,14 @@ interface AdmissionApplicantItem {
   appliedAt: string;
   convertedStudentId?: string;
   notes?: string;
+  enrollmentFee?: number;
+  monthlyTuitionFee?: number;
+  initialPaymentAmount?: number;
+  tuitionFee?: number;
+  paymentModality?: string;
+  recurringPaymentMethod?: string;
+  isRecurringAutoDebit?: boolean;
+  tuitionMonths?: number;
 }
 
 interface SchoolBookItem {
@@ -1200,6 +1215,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
     grades: string[];
     color: string;
     icon: any;
+    enrollmentFee: number;
+    monthlyTuitionFee: number;
+    tuitionMonths: number;
+    annualDiscountPercent: number;
+    tuitionDueDay: number;
   }> = {
     GUARDERIA: {
       name: 'Guardería / Maternal',
@@ -1208,6 +1228,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       grades: ['Lactantes', 'Maternal A', 'Maternal B'],
       color: 'border-emerald-500/40 bg-emerald-950/20 text-emerald-300',
       icon: Baby,
+      enrollmentFee: 3500,
+      monthlyTuitionFee: 2900,
+      tuitionMonths: 10,
+      annualDiscountPercent: 10,
+      tuitionDueDay: 10,
     },
     PREESCOLAR: {
       name: 'Preescolar / Jardín de Niños',
@@ -1216,6 +1241,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       grades: ['1º Kínder', '2º Kínder', '3º Kínder'],
       color: 'border-pink-500/40 bg-pink-950/20 text-pink-300',
       icon: Palette,
+      enrollmentFee: 3800,
+      monthlyTuitionFee: 3200,
+      tuitionMonths: 10,
+      annualDiscountPercent: 10,
+      tuitionDueDay: 10,
     },
     KINDER_PREESCOLAR: {
       name: 'Preescolar / Jardín de Niños',
@@ -1224,6 +1254,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       grades: ['1º Kínder', '2º Kínder', '3º Kínder'],
       color: 'border-pink-500/40 bg-pink-950/20 text-pink-300',
       icon: Palette,
+      enrollmentFee: 3800,
+      monthlyTuitionFee: 3200,
+      tuitionMonths: 10,
+      annualDiscountPercent: 10,
+      tuitionDueDay: 10,
     },
     PRIMARIA: {
       name: 'Primaria',
@@ -1232,6 +1267,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       grades: ['1º Primaria', '2º Primaria', '3º Primaria', '4º Primaria', '5º Primaria', '6º Primaria'],
       color: 'border-sky-500/40 bg-sky-950/20 text-sky-300',
       icon: BookOpen,
+      enrollmentFee: 4500,
+      monthlyTuitionFee: 3800,
+      tuitionMonths: 10,
+      annualDiscountPercent: 10,
+      tuitionDueDay: 10,
     },
     SECUNDARIA: {
       name: 'Secundaria',
@@ -1240,6 +1280,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       grades: ['1º Secundaria', '2º Secundaria', '3º Secundaria'],
       color: 'border-amber-500/40 bg-amber-950/20 text-amber-300',
       icon: Compass,
+      enrollmentFee: 5200,
+      monthlyTuitionFee: 4400,
+      tuitionMonths: 10,
+      annualDiscountPercent: 10,
+      tuitionDueDay: 10,
     },
     PREPARATORIA: {
       name: 'Preparatoria / Bachillerato',
@@ -1248,6 +1293,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       grades: ['1º Semestre', '2º Semestre', '3º Semestre', '4º Semestre', '5º Semestre', '6º Semestre'],
       color: 'border-purple-500/40 bg-purple-950/20 text-purple-300',
       icon: Award,
+      enrollmentFee: 5800,
+      monthlyTuitionFee: 4900,
+      tuitionMonths: 10,
+      annualDiscountPercent: 10,
+      tuitionDueDay: 10,
     },
   };
 
@@ -1262,6 +1312,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   // Niveles Escolares
   const [educationalLevels, setEducationalLevels] = useState<EducationalLevel[]>(() => {
     const offered = currentTenant.levelsOffered || [];
+    let savedFees: Record<string, any> = {};
+    try {
+      const stored = localStorage.getItem(`asm_tenant_fees_${currentTenant?.id || 'default'}`);
+      if (stored) savedFees = JSON.parse(stored);
+    } catch (e) {}
+
     return offered.map((lvl) => {
       const config = LEVEL_CONFIG_MAP[lvl] || {
         name: lvl,
@@ -1270,8 +1326,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         grades: [],
         color: 'border-sky-500/40 bg-sky-950/20 text-sky-300',
         icon: BookOpen,
+        enrollmentFee: 4000,
+        monthlyTuitionFee: 3500,
+        tuitionMonths: 10,
+        annualDiscountPercent: 10,
+        tuitionDueDay: 10,
       };
       const normId = lvl === 'KINDER_PREESCOLAR' ? 'PREESCOLAR' : lvl;
+      const custom = savedFees[normId] || savedFees[lvl];
       return {
         id: normId,
         name: config.name,
@@ -1286,6 +1348,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         grades: config.grades,
         color: config.color,
         icon: config.icon,
+        enrollmentFee: custom?.enrollmentFee ? Number(custom.enrollmentFee) : config.enrollmentFee,
+        monthlyTuitionFee: custom?.monthlyTuitionFee ? Number(custom.monthlyTuitionFee) : config.monthlyTuitionFee,
+        tuitionMonths: custom?.tuitionMonths ? Number(custom.tuitionMonths) : config.tuitionMonths,
+        annualDiscountPercent: custom?.annualDiscountPercent ? Number(custom.annualDiscountPercent) : config.annualDiscountPercent,
+        tuitionDueDay: custom?.tuitionDueDay ? Number(custom.tuitionDueDay) : config.tuitionDueDay,
       };
     });
   });
@@ -1294,6 +1361,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   useEffect(() => {
     const fetchLevels = async () => {
       try {
+        let savedFees: Record<string, any> = {};
+        try {
+          const stored = localStorage.getItem(`asm_tenant_fees_${currentTenant?.id || 'default'}`);
+          if (stored) savedFees = JSON.parse(stored);
+        } catch (e) {}
+
         const token = localStorage.getItem('asm_token');
         const res = await fetch('/api/academic/levels', {
           headers: {
@@ -1313,7 +1386,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   grades: lvl.grades || [],
                   color: 'border-sky-500/40 bg-sky-950/20 text-sky-300',
                   icon: BookOpen,
+                  enrollmentFee: 4000,
+                  monthlyTuitionFee: 3500,
+                  tuitionMonths: 10,
+                  annualDiscountPercent: 10,
+                  tuitionDueDay: 10,
                 };
+                const custom = savedFees[lvl.id] || savedFees[lvl.level];
                 return {
                   id: lvl.id || lvl.level,
                   name: lvl.name || config.name,
@@ -1328,6 +1407,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   grades: lvl.grades && lvl.grades.length > 0 ? lvl.grades : config.grades,
                   color: config.color,
                   icon: config.icon,
+                  enrollmentFee: Number(lvl.enrollmentFee || custom?.enrollmentFee || config.enrollmentFee),
+                  monthlyTuitionFee: Number(lvl.monthlyTuitionFee || custom?.monthlyTuitionFee || config.monthlyTuitionFee),
+                  tuitionMonths: Number(lvl.tuitionMonths || custom?.tuitionMonths || config.tuitionMonths || 10),
+                  annualDiscountPercent: Number(lvl.annualDiscountPercent || custom?.annualDiscountPercent || config.annualDiscountPercent || 10),
+                  tuitionDueDay: Number(lvl.tuitionDueDay || custom?.tuitionDueDay || config.tuitionDueDay || 10),
                 };
               })
             );
@@ -2262,6 +2346,85 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
     academicCoordinator: '',
     directorPassword: '',
   });
+
+  // Formulario Cuotas Oficiales por Nivel
+  const [levelFeesForm, setLevelFeesForm] = useState({
+    enrollmentFee: 3800,
+    monthlyTuitionFee: 3200,
+    tuitionMonths: 10,
+    annualDiscountPercent: 10,
+    tuitionDueDay: 10,
+  });
+
+  const handleOpenLevelFeesModal = (level: EducationalLevel) => {
+    setActiveLevelForAction(level);
+    setLevelFeesForm({
+      enrollmentFee: level.enrollmentFee || (level.id === 'PREESCOLAR' ? 3800 : level.id === 'PRIMARIA' ? 4500 : level.id === 'SECUNDARIA' ? 5200 : level.id === 'PREPARATORIA' ? 5800 : 3500),
+      monthlyTuitionFee: level.monthlyTuitionFee || (level.id === 'PREESCOLAR' ? 3200 : level.id === 'PRIMARIA' ? 3800 : level.id === 'SECUNDARIA' ? 4400 : level.id === 'PREPARATORIA' ? 4900 : 2900),
+      tuitionMonths: level.tuitionMonths || 10,
+      annualDiscountPercent: level.annualDiscountPercent || 10,
+      tuitionDueDay: level.tuitionDueDay || 10,
+    });
+    setShowLevelSettingsModal(true);
+  };
+
+  const handleSaveLevelFees = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!activeLevelForAction) return;
+
+    const levelId = activeLevelForAction.id;
+    const updated: EducationalLevel = {
+      ...activeLevelForAction,
+      enrollmentFee: Number(levelFeesForm.enrollmentFee),
+      monthlyTuitionFee: Number(levelFeesForm.monthlyTuitionFee),
+      tuitionMonths: Number(levelFeesForm.tuitionMonths),
+      annualDiscountPercent: Number(levelFeesForm.annualDiscountPercent),
+      tuitionDueDay: Number(levelFeesForm.tuitionDueDay),
+    };
+
+    // 1. Actualizar estado local
+    setEducationalLevels((prev) =>
+      prev.map((lvl) => (lvl.id === levelId ? updated : lvl))
+    );
+
+    // 2. Guardar en localStorage para sincronización instantánea con el portal público
+    try {
+      const storageKey = `asm_tenant_fees_${currentTenant?.id || 'default'}`;
+      const existing = JSON.parse(localStorage.getItem(storageKey) || '{}');
+      existing[levelId] = {
+        enrollmentFee: updated.enrollmentFee,
+        monthlyTuitionFee: updated.monthlyTuitionFee,
+        tuitionMonths: updated.tuitionMonths,
+        annualDiscountPercent: updated.annualDiscountPercent,
+        tuitionDueDay: updated.tuitionDueDay,
+      };
+      localStorage.setItem(storageKey, JSON.stringify(existing));
+      window.dispatchEvent(new CustomEvent('asm_tenant_fees_updated', { detail: existing }));
+    } catch (e) {}
+
+    // 3. Persistir en API backend
+    try {
+      const token = localStorage.getItem('asm_token');
+      await fetch(`/api/academic/levels/${levelId}/settings`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          ...(currentTenant?.id ? { 'x-tenant-id': currentTenant.id } : {}),
+        },
+        body: JSON.stringify({
+          enrollmentFee: updated.enrollmentFee,
+          monthlyTuitionFee: updated.monthlyTuitionFee,
+          tuitionMonths: updated.tuitionMonths,
+          annualDiscountPercent: updated.annualDiscountPercent,
+          tuitionDueDay: updated.tuitionDueDay,
+        }),
+      });
+    } catch (apiErr) {}
+
+    setShowLevelSettingsModal(false);
+    alert(`✅ Cuotas del nivel "${updated.name}" actualizadas correctamente.\n\n- Inscripción: $${(updated.enrollmentFee || 0).toLocaleString('es-MX')}\n- Colegiatura mensual: $${(updated.monthlyTuitionFee || 0).toLocaleString('es-MX')} (${updated.tuitionMonths || 10} mensualidades)\n- Descuento pago anual: ${updated.annualDiscountPercent}%\n- Día límite de pago: día ${updated.tuitionDueDay} de cada mes.\n\nLos cambios ya están disponibles de inmediato para los padres de familia en el portal de admisión.`);
+  };
 
   // Formulario Docente
   const [newTeacherForm, setNewTeacherForm] = useState({
@@ -7625,6 +7788,46 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                           <strong className="level-stat-value">{levelStudentsCount} alumnos</strong>
                         </div>
                       </div>
+
+                      {/* Cuotas y Colegiaturas Oficiales del Nivel */}
+                      <div className="bg-surface-subtle p-3 rounded-2xl border border-subtle mt-3 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div className="text-[10px] font-bold text-muted uppercase tracking-wider flex items-center gap-1.5">
+                            <CreditCard className="w-3.5 h-3.5 text-primary" /> Cuotas y Colegiaturas Oficiales
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleOpenLevelFeesModal(lvl)}
+                            className="btn btn-ghost btn-xs text-primary font-bold flex items-center gap-1 text-[11px]"
+                            title="Editar cuotas oficiales de inscripción y colegiaturas"
+                          >
+                            <Settings className="w-3.5 h-3.5" />
+                            <span>Configurar Cuotas</span>
+                          </button>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2 text-xs">
+                          <div className="bg-surface p-2 rounded-xl border border-subtle">
+                            <span className="text-[10px] text-muted block">Inscripción Anual</span>
+                            <strong className="text-primary font-mono text-sm">
+                              ${(lvl.enrollmentFee || (lvl.id === 'PREESCOLAR' ? 3800 : lvl.id === 'PRIMARIA' ? 4500 : lvl.id === 'SECUNDARIA' ? 5200 : lvl.id === 'PREPARATORIA' ? 5800 : 3500)).toLocaleString('es-MX')}
+                            </strong>
+                          </div>
+                          <div className="bg-surface p-2 rounded-xl border border-subtle">
+                            <span className="text-[10px] text-muted block">Colegiatura Mensual</span>
+                            <strong className="text-emerald-400 font-mono text-sm">
+                              ${(lvl.monthlyTuitionFee || (lvl.id === 'PREESCOLAR' ? 3200 : lvl.id === 'PRIMARIA' ? 3800 : lvl.id === 'SECUNDARIA' ? 4400 : lvl.id === 'PREPARATORIA' ? 4900 : 2900)).toLocaleString('es-MX')}
+                              <span className="text-[10px] font-normal text-muted">/mes</span>
+                            </strong>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between text-[10px] text-muted px-1">
+                          <span>{lvl.tuitionMonths || 10} mensualidades (Sept - Jun)</span>
+                          <span>Desc. Anual: <strong>{lvl.annualDiscountPercent || 10}%</strong></span>
+                          <span>Vence: día <strong>{lvl.tuitionDueDay || 10}</strong></span>
+                        </div>
+                      </div>
                     </div>
 
                     <div className="level-card-footer flex items-center gap-2">
@@ -10011,6 +10214,32 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               ❌ No Admitido
                             </div>
                           )}
+
+                          {/* Badges Financieros */}
+                          <div className="badge badge-sky font-mono font-bold text-[11px] flex items-center gap-1">
+                            <CreditCard className="w-3 h-3" />
+                            <span>Inicial: ${(applicant.initialPaymentAmount || applicant.tuitionFee || 3800).toLocaleString('es-MX')}</span>
+                          </div>
+
+                          {applicant.paymentModality && (
+                            <div className="badge badge-subtle font-mono text-[10px]">
+                              {applicant.paymentModality === 'ONLY_ENROLLMENT'
+                                ? 'Solo Inscripción'
+                                : applicant.paymentModality === 'ENROLLMENT_AND_FIRST_MONTH'
+                                ? 'Inscripción + 1º Mes'
+                                : 'Ciclo Completo (-10%)'}
+                            </div>
+                          )}
+
+                          {applicant.recurringPaymentMethod && (
+                            <div className="badge badge-emerald font-mono text-[10px]">
+                              {applicant.recurringPaymentMethod === 'DOMICILIACION_AUTOMATICA'
+                                ? '🔄 Cargo Automático'
+                                : applicant.recurringPaymentMethod === 'SPEI_RECURRENTE'
+                                ? '🏦 SPEI Recurrente'
+                                : '🏢 Ventanilla'}
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -10035,6 +10264,34 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                               {applicant.notes}
                             </div>
                           )}
+
+                          {/* Caja de Desglose Financiero */}
+                          <div className="bg-surface-subtle p-2.5 rounded-xl border border-subtle text-xs space-y-1 mt-1.5">
+                            <div className="flex items-center justify-between text-[11px]">
+                              <span className="text-muted font-bold flex items-center gap-1">
+                                <CreditCard className="w-3 h-3 text-primary" /> Plan Financiero Acordado:
+                              </span>
+                              <strong className="text-emerald-400 font-mono">
+                                ${(applicant.initialPaymentAmount || applicant.tuitionFee || 3800).toLocaleString('es-MX')}
+                              </strong>
+                            </div>
+                            <div className="text-[10px] text-muted flex items-center justify-between">
+                              <span>Colegiatura Mensual:</span>
+                              <strong className="text-main font-mono">
+                                ${(applicant.monthlyTuitionFee || (applicant.targetLevelId === 'PREESCOLAR' ? 3200 : 3800)).toLocaleString('es-MX')}/mes
+                              </strong>
+                            </div>
+                            <div className="text-[10px] text-muted flex items-center justify-between">
+                              <span>Régimen Recurrente:</span>
+                              <span className="text-primary font-medium">
+                                {applicant.recurringPaymentMethod === 'DOMICILIACION_AUTOMATICA'
+                                  ? 'Cargo Automático Domiciliado'
+                                  : applicant.recurringPaymentMethod === 'SPEI_RECURRENTE'
+                                  ? 'SPEI Mensual a CLABE Fija'
+                                  : 'Ventanilla Escolar'}
+                              </span>
+                            </div>
+                          </div>
                         </div>
 
                         {/* Documentos y Requisitos */}
@@ -18885,6 +19142,171 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           </div>
         )}
       </main>
+
+      {/* MODAL: CONFIGURAR CUOTAS Y COLEGIATURAS DEL NIVEL */}
+      {showLevelSettingsModal && activeLevelForAction && (
+        <div className="modal-backdrop">
+          <div className="modal-card modal-card-md">
+            <div className="modal-header">
+              <div>
+                <div className="badge badge-emerald font-mono text-[10px]">
+                  Administración Financiera & Control Escolar
+                </div>
+                <h3 className="modal-title flex items-center gap-2">
+                  <CreditCard className="w-5 h-5 text-primary" />
+                  Configurar Cuotas de {activeLevelForAction.name}
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowLevelSettingsModal(false)}
+                className="modal-close"
+                title="Cerrar ventana modal"
+              >
+                <X />
+              </button>
+            </div>
+
+            <p className="text-xs text-muted mb-3">
+              Define los costos autorizados oficiales de inscripción y colegiaturas para este nivel escolar. Los cambios se sincronizan en tiempo real con el portal público de admisiones de los padres de familia.
+            </p>
+
+            <form onSubmit={handleSaveLevelFees} className="space-y-3.5 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="form-label font-bold text-main">
+                    Cuota de Inscripción Anual ($ MXN) *
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="50"
+                    required
+                    value={levelFeesForm.enrollmentFee}
+                    onChange={(e) => setLevelFeesForm({ ...levelFeesForm, enrollmentFee: Number(e.target.value) })}
+                    className="form-input w-full font-mono text-sm"
+                  />
+                  <span className="text-[10px] text-muted mt-0.5 block">
+                    Pago único al inicio del ciclo escolar.
+                  </span>
+                </div>
+
+                <div>
+                  <label className="form-label font-bold text-main">
+                    Colegiatura Mensual Ordinaria ($ MXN) *
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="50"
+                    required
+                    value={levelFeesForm.monthlyTuitionFee}
+                    onChange={(e) => setLevelFeesForm({ ...levelFeesForm, monthlyTuitionFee: Number(e.target.value) })}
+                    className="form-input w-full font-mono text-sm"
+                  />
+                  <span className="text-[10px] text-muted mt-0.5 block">
+                    Costo mensual estándar por alumno.
+                  </span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="form-label font-bold text-main">
+                    Mensualidades por Ciclo *
+                  </label>
+                  <ModernSelect
+                    value={levelFeesForm.tuitionMonths}
+                    onChange={(e: any) => setLevelFeesForm({ ...levelFeesForm, tuitionMonths: Number(e?.target?.value || e) })}
+                    className="form-select w-full"
+                  >
+                    <option value={10}>10 meses (Sept - Jun)</option>
+                    <option value={11}>11 meses (Agosto - Jun)</option>
+                    <option value={12}>12 meses (Año Completo)</option>
+                  </ModernSelect>
+                </div>
+
+                <div>
+                  <label className="form-label font-bold text-main">
+                    % Descuento Anualidad *
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="50"
+                    required
+                    value={levelFeesForm.annualDiscountPercent}
+                    onChange={(e) => setLevelFeesForm({ ...levelFeesForm, annualDiscountPercent: Number(e.target.value) })}
+                    className="form-input w-full font-mono"
+                  />
+                  <span className="text-[10px] text-muted mt-0.5 block">
+                    Pronto pago ciclo 100%.
+                  </span>
+                </div>
+
+                <div>
+                  <label className="form-label font-bold text-main">
+                    Día Límite de Pago *
+                  </label>
+                  <ModernSelect
+                    value={levelFeesForm.tuitionDueDay}
+                    onChange={(e: any) => setLevelFeesForm({ ...levelFeesForm, tuitionDueDay: Number(e?.target?.value || e) })}
+                    className="form-select w-full font-mono"
+                  >
+                    <option value={5}>Día 05 de cada mes</option>
+                    <option value={10}>Día 10 de cada mes</option>
+                    <option value={15}>Día 15 de cada mes</option>
+                  </ModernSelect>
+                </div>
+              </div>
+
+              {/* Vista previa de cómo lo verán los tutores en el portal */}
+              <div className="p-3 rounded-2xl bg-surface-subtle border border-subtle space-y-2 mt-2">
+                <div className="text-[10px] font-bold text-muted uppercase tracking-wider flex items-center gap-1">
+                  <Eye className="w-3.5 h-3.5 text-primary" /> Vista Previa para Padres de Familia en Admisión:
+                </div>
+                <div className="grid grid-cols-3 gap-2 text-center text-xs">
+                  <div className="p-2 rounded-xl bg-surface border border-subtle">
+                    <span className="text-[10px] text-muted block">Solo Inscripción</span>
+                    <strong className="text-primary font-mono text-sm block mt-0.5">
+                      ${levelFeesForm.enrollmentFee.toLocaleString('es-MX')}
+                    </strong>
+                  </div>
+                  <div className="p-2 rounded-xl bg-surface border border-subtle">
+                    <span className="text-[10px] text-muted block">Inscripción + 1º Mes</span>
+                    <strong className="text-emerald-400 font-mono text-sm block mt-0.5">
+                      ${(levelFeesForm.enrollmentFee + levelFeesForm.monthlyTuitionFee).toLocaleString('es-MX')}
+                    </strong>
+                  </div>
+                  <div className="p-2 rounded-xl bg-surface border border-subtle">
+                    <span className="text-[10px] text-muted block">Ciclo Completo (-{levelFeesForm.annualDiscountPercent}%)</span>
+                    <strong className="text-amber-400 font-mono text-sm block mt-0.5">
+                      ${Math.round(levelFeesForm.enrollmentFee + (levelFeesForm.monthlyTuitionFee * levelFeesForm.tuitionMonths * ((100 - levelFeesForm.annualDiscountPercent) / 100))).toLocaleString('es-MX')}
+                    </strong>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-subtle">
+                <button
+                  type="button"
+                  onClick={() => setShowLevelSettingsModal(false)}
+                  className="btn btn-secondary"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-primary flex items-center gap-1.5 font-bold shadow-md"
+                >
+                  <Save className="w-4 h-4" />
+                  <span>💾 Guardar y Publicar Cuotas</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* MODAL: REGISTRAR DIRECTOR DE NIVEL */}
       {showRegisterDirectorModal && activeLevelForAction && (

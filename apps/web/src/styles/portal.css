@@ -230,10 +230,17 @@
   max-width: 56rem;
   max-height: 90vh;
   overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 121, 255, 0.45) transparent;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
   padding: 1.75rem;
+  padding-right: 1.35rem;
   background: #ffffff;
   border: 1px solid var(--color-border-subtle, #e2e8f0);
   border-radius: var(--radius-2xl, 24px);
@@ -241,13 +248,81 @@
   box-sizing: border-box;
 }
 
+/* Scrollbar estilizado en WebKit (Chrome, Safari, Edge, Opera) */
+.enrollment-modal-card::-webkit-scrollbar {
+  width: 8px;
+}
+
+.enrollment-modal-card::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.5);
+  border-radius: 9999px;
+  margin: 14px 0; /* Margen para respetar el radio de 24px de la tarjeta */
+}
+
+.enrollment-modal-card::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(0, 121, 255, 0.55) 0%, rgba(16, 185, 129, 0.65) 100%);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: all 0.25s ease-in-out;
+}
+
+.enrollment-modal-card::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #0079ff 0%, #10b981 100%);
+  box-shadow: 0 0 10px rgba(0, 121, 255, 0.35);
+}
+
+.enrollment-modal-card::-webkit-scrollbar-thumb:active {
+  background: #0056b3;
+}
+
 @media (max-width: 640px) {
   .enrollment-modal-card {
     padding: 1rem;
+    padding-right: 0.85rem;
     max-height: 95vh;
     border-radius: var(--radius-xl, 16px);
     gap: 1rem;
   }
+
+  .enrollment-modal-card::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .enrollment-modal-card::-webkit-scrollbar-track {
+    margin: 8px 0;
+  }
+}
+
+/* Estilización del scroll para otros modales del portal (ej. visor de correo) */
+.modal-card.modal-card-lg {
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 121, 255, 0.45) transparent;
+}
+
+.modal-card.modal-card-lg::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-card.modal-card-lg::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.5);
+  border-radius: 9999px;
+  margin: 12px 0;
+}
+
+.modal-card.modal-card-lg::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.65);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: all 0.2s ease;
+}
+
+.modal-card.modal-card-lg::-webkit-scrollbar-thumb:hover {
+  background: #0079ff;
 }
 
 .enrollment-section {
@@ -461,4 +536,60 @@
   margin-top: 0.125rem;
   accent-color: #d97706;
   flex-shrink: 0;
+}
+
+/* Desglose de Cuotas y Planes de Pago Escolar */
+.tuition-breakdown-banner {
+  background: linear-gradient(135deg, rgba(0, 121, 255, 0.08) 0%, rgba(16, 185, 129, 0.08) 100%);
+  border: 1px solid rgba(0, 121, 255, 0.25);
+  border-radius: var(--radius-xl, 16px);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-sizing: border-box;
+}
+
+.fee-stat-badge {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem 1rem;
+  background: #ffffff;
+  border: 1px solid var(--color-border-subtle, #e2e8f0);
+  border-radius: var(--radius-lg, 12px);
+  box-sizing: border-box;
+}
+
+.fee-stat-badge .stat-label {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary, #64748b);
+}
+
+.fee-stat-badge .stat-amount {
+  font-size: 1.25rem;
+  font-weight: 900;
+  font-family: monospace;
+  color: var(--color-text-main, #0f172a);
+}
+
+.fee-stat-badge.primary .stat-amount {
+  color: var(--color-primary, #0079ff);
+}
+
+.fee-stat-badge.emerald .stat-amount {
+  color: #10b981;
+}
+
+.recurring-agreement-box {
+  background: #f8fafc;
+  border: 1px solid var(--color-border-subtle, #e2e8f0);
+  border-radius: var(--radius-xl, 16px);
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-sizing: border-box;
 }

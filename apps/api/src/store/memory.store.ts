@@ -7182,6 +7182,13 @@ class MemoryStore {
       status: 'REGISTRADO',
       documents: defaultDocs,
       appliedAt: new Date().toISOString().split('T')[0],
+      enrollmentFee: req.enrollmentFee,
+      monthlyTuitionFee: req.monthlyTuitionFee,
+      initialPaymentAmount: req.initialPaymentAmount || req.tuitionFee,
+      paymentModality: req.paymentModality,
+      recurringPaymentMethod: req.recurringPaymentMethod,
+      isRecurringAutoDebit: req.isRecurringAutoDebit,
+      tuitionMonths: req.tuitionMonths || 10,
       notes: req.notes,
     };
 

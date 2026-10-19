@@ -82,48 +82,131 @@ const verifyDirectorEmailSchema = z.object({
 });
 
 const updateLevelSettingsSchema = z.object({
-  cctCode: z.string().min(4),
+  cctCode: z.string().min(4).optional(),
   academicCoordinator: z.string().optional(),
   directorPhone: z.string().optional(),
+  enrollmentFee: z.number().optional(),
+  monthlyTuitionFee: z.number().optional(),
+  tuitionMonths: z.number().optional(),
+  annualDiscountPercent: z.number().optional(),
+  tuitionDueDay: z.number().optional(),
 });
 
 export async function academicRoutes(fastify: FastifyInstance) {
+  const levelMap: Record<
+    string,
+    {
+      name: string;
+      cctCode: string;
+      grades: string[];
+      enrollmentFee: number;
+      monthlyTuitionFee: number;
+      tuitionMonths: number;
+      annualDiscountPercent: number;
+      tuitionDueDay: number;
+    }
+  > = {
+    GUARDERIA: {
+      name: 'Guardería / Maternal',
+      cctCode: '30PDI0001X',
+      grades: ['Lactantes', 'Maternal A', 'Maternal B'],
+      enrollmentFee: 3500,
+      monthlyTuitionFee: 2900,
+      tuitionMonths: 10,
+      annualDiscountPercent: 10,
+      tuitionDueDay: 10,
+    },
+    PREESCOLAR: {
+      name: 'Preescolar / Jardín de Niños',
+      cctCode: '30PJN0145X',
+      grades: ['1º Kínder', '2º Kínder', '3º Kínder'],
+      enrollmentFee: 3800,
+      monthlyTuitionFee: 3200,
+      tuitionMonths: 10,
+      annualDiscountPercent: 10,
+      tuitionDueDay: 10,
+    },
+    KINDER_PREESCOLAR: {
+      name: 'Preescolar / Jardín de Niños',
+      cctCode: '30PJN0145X',
+      grades: ['1º Kínder', '2º Kínder', '3º Kínder'],
+      enrollmentFee: 3800,
+      monthlyTuitionFee: 3200,
+      tuitionMonths: 10,
+      annualDiscountPercent: 10,
+      tuitionDueDay: 10,
+    },
+    PRIMARIA: {
+      name: 'Primaria',
+      cctCode: '30PPR0289Z',
+      grades: ['1º Primaria', '2º Primaria', '3º Primaria', '4º Primaria', '5º Primaria', '6º Primaria'],
+      enrollmentFee: 4500,
+      monthlyTuitionFee: 3800,
+      tuitionMonths: 10,
+      annualDiscountPercent: 10,
+      tuitionDueDay: 10,
+    },
+    SECUNDARIA: {
+      name: 'Secundaria',
+      cctCode: '30PES0100Y',
+      grades: ['1º Secundaria', '2º Secundaria', '3º Secundaria'],
+      enrollmentFee: 5200,
+      monthlyTuitionFee: 4400,
+      tuitionMonths: 10,
+      annualDiscountPercent: 10,
+      tuitionDueDay: 10,
+    },
+    PREPARATORIA: {
+      name: 'Preparatoria / Bachillerato',
+      cctCode: '30PBH0050W',
+      grades: ['1º Semestre', '2º Semestre', '3º Semestre', '4º Semestre', '5º Semestre', '6º Semestre'],
+      enrollmentFee: 5800,
+      monthlyTuitionFee: 4900,
+      tuitionMonths: 10,
+      annualDiscountPercent: 10,
+      tuitionDueDay: 10,
+    },
+  };
+
+  // 1.1 Listar Niveles Públicos con Cuotas Oficiales (para padres y portal de admisión)
+  fastify.get('/levels/public', async (request, reply) => {
+    const headerTenant = request.headers['x-tenant-id'] as string;
+    const queryTenant = (request.query as any)?.tenantId;
+    const tenantId = headerTenant || queryTenant || store.tenants[0]?.id || 'tenant-01';
+
+    let levels = store.educationalLevels.filter((l) => l.tenantId === tenantId);
+    if (levels.length === 0) {
+      const defaultKeys = ['PREESCOLAR', 'PRIMARIA'];
+      levels = defaultKeys.map((k) => {
+        const info = levelMap[k] || levelMap.PRIMARIA;
+        return {
+          id: k,
+          tenantId,
+          name: info.name,
+          cctCode: info.cctCode,
+          grades: info.grades,
+          enrollmentFee: info.enrollmentFee,
+          monthlyTuitionFee: info.monthlyTuitionFee,
+          tuitionMonths: info.tuitionMonths,
+          annualDiscountPercent: info.annualDiscountPercent,
+          tuitionDueDay: info.tuitionDueDay,
+          directorName: '',
+          directorEmail: '',
+          directorPhone: '',
+          directorTitle: `Dirección de ${info.name}`,
+          isEmailVerified: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+      });
+    }
+
+    return reply.send({ levels });
+  });
+
   // 1. Listar Niveles Educativos y Directores
   fastify.get('/levels', { preHandler: [authenticate] }, async (request, reply) => {
     const tenantId = request.userPayload!.tenantId;
-
-    const levelMap: Record<string, { name: string; cctCode: string; grades: string[] }> = {
-      GUARDERIA: {
-        name: 'Guardería / Maternal',
-        cctCode: '30PDI0001X',
-        grades: ['Lactantes', 'Maternal A', 'Maternal B'],
-      },
-      PREESCOLAR: {
-        name: 'Preescolar / Jardín de Niños',
-        cctCode: '30PJN0145X',
-        grades: ['1º Kínder', '2º Kínder', '3º Kínder'],
-      },
-      KINDER_PREESCOLAR: {
-        name: 'Preescolar / Jardín de Niños',
-        cctCode: '30PJN0145X',
-        grades: ['1º Kínder', '2º Kínder', '3º Kínder'],
-      },
-      PRIMARIA: {
-        name: 'Primaria',
-        cctCode: '30PPR0289Z',
-        grades: ['1º Primaria', '2º Primaria', '3º Primaria', '4º Primaria', '5º Primaria', '6º Primaria'],
-      },
-      SECUNDARIA: {
-        name: 'Secundaria',
-        cctCode: '30PES0100Y',
-        grades: ['1º Secundaria', '2º Secundaria', '3º Secundaria'],
-      },
-      PREPARATORIA: {
-        name: 'Preparatoria / Bachillerato',
-        cctCode: '30PBH0050W',
-        grades: ['1º Semestre', '2º Semestre', '3º Semestre', '4º Semestre', '5º Semestre', '6º Semestre'],
-      },
-    };
 
     let dbLevels = await prisma.educationalLevel.findMany({
       where: { tenantId },
@@ -139,6 +222,11 @@ export async function academicRoutes(fastify: FastifyInstance) {
             name: lvl,
             cctCode: '30PPR0000X',
             grades: [],
+            enrollmentFee: 3800,
+            monthlyTuitionFee: 3200,
+            tuitionMonths: 10,
+            annualDiscountPercent: 10,
+            tuitionDueDay: 10,
           };
           const normId = lvl === 'KINDER_PREESCOLAR' ? 'PREESCOLAR' : lvl;
           try {
@@ -169,13 +257,24 @@ export async function academicRoutes(fastify: FastifyInstance) {
           name: dl.name,
           cctCode: dl.code,
           grades: [],
+          enrollmentFee: 3800,
+          monthlyTuitionFee: 3200,
+          tuitionMonths: 10,
+          annualDiscountPercent: 10,
+          tuitionDueDay: 10,
         };
+        const memoryMatch = store.educationalLevels.find((l) => l.tenantId === dl.tenantId && l.id === dl.level);
         return {
           id: dl.level,
           tenantId: dl.tenantId,
           name: dl.name || info.name,
           cctCode: dl.code || info.cctCode,
           grades: info.grades,
+          enrollmentFee: memoryMatch?.enrollmentFee || info.enrollmentFee,
+          monthlyTuitionFee: memoryMatch?.monthlyTuitionFee || info.monthlyTuitionFee,
+          tuitionMonths: memoryMatch?.tuitionMonths || info.tuitionMonths,
+          annualDiscountPercent: memoryMatch?.annualDiscountPercent || info.annualDiscountPercent,
+          tuitionDueDay: memoryMatch?.tuitionDueDay || info.tuitionDueDay,
           directorName: dl.directorName || '',
           directorEmail: dl.directorEmail || '',
           directorPhone: dl.directorPhone || '',
@@ -482,16 +581,54 @@ export async function academicRoutes(fastify: FastifyInstance) {
         });
       }
 
-      const tenantId = request.userPayload!.tenantId;
-      const level = store.educationalLevels.find((l) => l.tenantId === tenantId && l.id === levelId);
+      const headerTenantId = request.headers['x-tenant-id'] as string | undefined;
+      const tenantId = headerTenantId || request.userPayload!.tenantId;
+      let level = store.educationalLevels.find((l) => (l.tenantId === tenantId || l.tenantId === 'platform-master') && l.id === levelId);
       if (!level) {
-        return reply.status(404).send({ error: 'Nivel no encontrado' });
+        level = store.educationalLevels.find((l) => l.id === levelId);
+      }
+      if (!level) {
+        const info = levelMap[levelId] || {
+          name: levelId,
+          cctCode: '30PPR0000X',
+          grades: [],
+          enrollmentFee: 3800,
+          monthlyTuitionFee: 3200,
+          tuitionMonths: 10,
+          annualDiscountPercent: 10,
+          tuitionDueDay: 10,
+        };
+        level = {
+          id: levelId,
+          tenantId,
+          name: info.name,
+          cctCode: info.cctCode,
+          grades: info.grades,
+          enrollmentFee: info.enrollmentFee,
+          monthlyTuitionFee: info.monthlyTuitionFee,
+          tuitionMonths: info.tuitionMonths,
+          annualDiscountPercent: info.annualDiscountPercent,
+          tuitionDueDay: info.tuitionDueDay,
+          directorName: '',
+          directorEmail: '',
+          directorPhone: '',
+          directorTitle: `Dirección de ${info.name}`,
+          isEmailVerified: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+        store.educationalLevels.push(level);
       }
 
       const data = parseResult.data;
-      level.cctCode = data.cctCode.toUpperCase().trim();
+      if (data.cctCode) level.cctCode = data.cctCode.toUpperCase().trim();
       if (data.academicCoordinator !== undefined) level.academicCoordinator = data.academicCoordinator;
       if (data.directorPhone !== undefined) level.directorPhone = data.directorPhone;
+      if (data.enrollmentFee !== undefined) level.enrollmentFee = data.enrollmentFee;
+      if (data.monthlyTuitionFee !== undefined) level.monthlyTuitionFee = data.monthlyTuitionFee;
+      if (data.tuitionMonths !== undefined) level.tuitionMonths = data.tuitionMonths;
+      if (data.annualDiscountPercent !== undefined) level.annualDiscountPercent = data.annualDiscountPercent;
+      if (data.tuitionDueDay !== undefined) level.tuitionDueDay = data.tuitionDueDay;
       level.updatedAt = new Date();
 
       return reply.send({ success: true, level });
@@ -1411,6 +1548,13 @@ export async function academicRoutes(fastify: FastifyInstance) {
     notes: z.string().optional(),
     paymentMethod: z.string().optional(),
     tuitionFee: z.number().optional(),
+    enrollmentFee: z.number().optional(),
+    monthlyTuitionFee: z.number().optional(),
+    initialPaymentAmount: z.number().optional(),
+    paymentModality: z.string().optional(),
+    recurringPaymentMethod: z.string().optional(),
+    isRecurringAutoDebit: z.boolean().optional(),
+    tuitionMonths: z.number().optional(),
     submittedDocs: z.array(z.string()).optional(),
   });
 
@@ -1487,7 +1631,7 @@ export async function academicRoutes(fastify: FastifyInstance) {
 
     const tenant = store.tenants.find((t) => t.id === tenantId) || { name: 'Colegio Institucional' };
     const paymentMethod = parseResult.data.paymentMethod || 'SPEI';
-    const amount = parseResult.data.tuitionFee || (applicant.targetLevelId === 'PREESCOLAR' ? 3200 : applicant.targetLevelId === 'SECUNDARIA' ? 4200 : 3800);
+    const amount = parseResult.data.initialPaymentAmount || parseResult.data.tuitionFee || parseResult.data.enrollmentFee || 3800;
     const reference = `REF-${applicant.folio.replace(/[^0-9]/g, '') || String(Date.now()).slice(-6)}`;
     const speiClabe = '646180123456789012';
     const bankName = 'STP / BBVA Bancomer';
@@ -1507,6 +1651,12 @@ export async function academicRoutes(fastify: FastifyInstance) {
         reference,
         speiClabe,
         bankName,
+        enrollmentFee: parseResult.data.enrollmentFee,
+        monthlyTuitionFee: parseResult.data.monthlyTuitionFee,
+        paymentModality: parseResult.data.paymentModality,
+        recurringPaymentMethod: parseResult.data.recurringPaymentMethod,
+        isRecurringAutoDebit: parseResult.data.isRecurringAutoDebit,
+        tuitionMonths: parseResult.data.tuitionMonths,
       });
     } catch (err: any) {
       console.warn('⚠️ Error al enviar correo de confirmación de admisión:', err);
@@ -1524,6 +1674,11 @@ export async function academicRoutes(fastify: FastifyInstance) {
         speiClabe,
         reference,
         concept: `ADMISION ${applicant.folio}`,
+        enrollmentFee: parseResult.data.enrollmentFee,
+        monthlyTuitionFee: parseResult.data.monthlyTuitionFee,
+        paymentModality: parseResult.data.paymentModality,
+        recurringPaymentMethod: parseResult.data.recurringPaymentMethod,
+        isRecurringAutoDebit: parseResult.data.isRecurringAutoDebit,
       },
       message: `¡Preinscripción registrada exitosamente! Folio oficial: ${applicant.folio}`,
     });

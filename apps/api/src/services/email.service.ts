@@ -325,6 +325,12 @@ class EmailService {
     reference: string;
     speiClabe: string;
     bankName: string;
+    enrollmentFee?: number;
+    monthlyTuitionFee?: number;
+    paymentModality?: string;
+    recurringPaymentMethod?: string;
+    isRecurringAutoDebit?: boolean;
+    tuitionMonths?: number;
   }): Promise<{ messageId: string; devMode?: boolean; previewUrl?: string; htmlContent: string; subject: string }> {
     const transporter = await this.getTransporter();
 
@@ -335,6 +341,22 @@ class EmailService {
     const subject = `[${params.schoolName}] Cédula de Preinscripción y Ficha de Pago - Folio: ${params.folio}`;
 
     const formattedAmount = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(params.amount);
+    const formattedEnrollmentFee = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(params.enrollmentFee || 3800);
+    const formattedMonthlyTuition = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(params.monthlyTuitionFee || 3200);
+
+    const modalityLabels: Record<string, string> = {
+      ONLY_ENROLLMENT: 'Solo Cuota de Inscripción Inicial',
+      ENROLLMENT_AND_FIRST_MONTH: 'Inscripción + 1ª Colegiatura (Septiembre)',
+      FULL_YEAR_DISCOUNT: 'Ciclo Completo / Anualidad Anticipada (10% Descuento)',
+    };
+    const modalityText = modalityLabels[params.paymentModality || ''] || 'Inscripción Estándar';
+
+    const recurringLabels: Record<string, string> = {
+      DOMICILIACION_AUTOMATICA: '🔄 Costo Recurrente Domiciliado (Cargo Automático a Tarjeta)',
+      SPEI_RECURRENTE: '🏦 Transferencia SPEI Recurrente (CLABE Fija Alumno)',
+      VENTANILLA_MENSUAL: '🏢 Pago en Ventanilla / Caja Escolar Mensual',
+    };
+    const recurringText = recurringLabels[params.recurringPaymentMethod || ''] || 'Transferencia SPEI Mensual';
 
     const htmlContent = `
       <!DOCTYPE html>
@@ -359,8 +381,10 @@ class EmailService {
           .data-table td.label { color: #94a3b8; width: 40%; }
           .data-table td.value { color: #f8fafc; font-weight: 600; }
           .payment-card { background: linear-gradient(135deg, rgba(2,132,199,0.1) 0%, rgba(15,23,42,0.9) 100%); border: 1px solid #0284c7; border-radius: 14px; padding: 18px; margin: 20px 0; }
-          .payment-amount { font-size: 22px; font-weight: 800; color: #34d399; margin: 6px 0; }
+          .payment-amount { font-size: 24px; font-weight: 800; color: #34d399; margin: 6px 0; }
           .clabe-box { background: #0f172a; border-radius: 8px; padding: 10px 14px; font-family: monospace; font-size: 15px; color: #fbbf24; font-weight: 700; margin: 8px 0; letter-spacing: 1px; }
+          .plan-box { background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 14px; margin-bottom: 16px; font-size: 12px; }
+          .plan-item { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px dashed #1e293b; }
           .docs-list { background: #0f172a; border-radius: 12px; padding: 14px 18px; font-size: 12px; color: #cbd5e1; line-height: 1.6; }
           .footer { margin-top: 28px; text-align: center; font-size: 11px; color: #64748b; border-top: 1px solid #334155; padding-top: 16px; }
         </style>
@@ -375,7 +399,7 @@ class EmailService {
           </div>
 
           <p>Estimado(a) <strong>${params.parentName}</strong>,</p>
-          <p>Hemos recibido formalmente la solicitud de ingreso para el(la) aspirante <strong>${params.studentName}</strong>. A continuación detallamos los datos registrados y la ficha oficial para concretar el proceso de inscripción:</p>
+          <p>Hemos recibido formalmente la solicitud de ingreso para el(la) aspirante <strong>${params.studentName}</strong>. A continuación detallamos el plan de pagos acordado y la ficha oficial para concretar la inscripción:</p>
 
           <div class="folio-box">
             <div class="folio-label">Folio Oficial de Preinscripción</div>
@@ -406,12 +430,32 @@ class EmailService {
             </tr>
           </table>
 
-          <div class="section-title">Ficha Oficial de Pago de Inscripción</div>
+          <div class="section-title">Plan de Cuotas y Colegiaturas Autorizadas</div>
+          <div class="plan-box">
+            <div class="plan-item">
+              <span style="color:#94a3b8;">Cuota de Inscripción Anual:</span>
+              <strong style="color:#ffffff;">${formattedEnrollmentFee} MXN</strong>
+            </div>
+            <div class="plan-item">
+              <span style="color:#94a3b8;">Colegiatura Mensual (10 meses Sep-Jun):</span>
+              <strong style="color:#38bdf8;">${formattedMonthlyTuition} MXN / mes</strong>
+            </div>
+            <div class="plan-item">
+              <span style="color:#94a3b8;">Modalidad Elegida para Hoy:</span>
+              <strong style="color:#34d399;">${modalityText}</strong>
+            </div>
+            <div class="plan-item" style="border-bottom:none; margin-top:4px;">
+              <span style="color:#94a3b8;">Régimen de Mensualidades Subsecuentes:</span>
+              <strong style="color:#fbbf24;">${recurringText}</strong>
+            </div>
+          </div>
+
+          <div class="section-title">Ficha Oficial de Pago Inicial</div>
           <div class="payment-card">
-            <div style="font-size: 11px; color: #94a3b8; text-transform: uppercase;">Cuota de Matrícula / Preinscripción</div>
+            <div style="font-size: 11px; color: #94a3b8; text-transform: uppercase;">Monto Inicial a Liquidar Hoy</div>
             <div class="payment-amount">${formattedAmount}</div>
             <p style="font-size: 12px; color: #cbd5e1; margin: 4px 0 10px;">
-              Método seleccionado: <strong>${params.paymentMethod}</strong>
+              Concepto: <strong>${modalityText}</strong> • Método: <strong>${params.paymentMethod}</strong>
             </p>
             <div style="font-size: 12px; color: #94a3b8;">CLABE Interbancaria SPEI (Receptor: ${params.bankName}):</div>
             <div class="clabe-box">${params.speiClabe}</div>
@@ -447,7 +491,7 @@ class EmailService {
           from: fromAddress,
           to: params.recipientEmail,
           subject,
-          text: `Cédula de Preinscripción ${params.schoolName}. Aspirante: ${params.studentName}. Folio: ${params.folio}. Monto: ${formattedAmount}. CLABE SPEI: ${params.speiClabe}, Ref: ${params.reference}.`,
+          text: `Cédula de Preinscripción ${params.schoolName}. Aspirante: ${params.studentName}. Folio: ${params.folio}. Monto: ${formattedAmount}. Plan: ${modalityText}. CLABE SPEI: ${params.speiClabe}, Ref: ${params.reference}.`,
           html: htmlContent,
         });
 
@@ -472,7 +516,11 @@ class EmailService {
     console.log(`Folio:        ⭐ ${params.folio}`);
     console.log(`Tutor:        ${params.parentName}`);
     console.log(`Destinatario: ${params.recipientEmail}`);
-    console.log(`Monto Cuota:  ${formattedAmount} (${params.paymentMethod})`);
+    console.log(`Inscripción:  ${formattedEnrollmentFee}`);
+    console.log(`Colegiatura:  ${formattedMonthlyTuition} / mes`);
+    console.log(`Modalidad:    ${modalityText}`);
+    console.log(`Recurrente:   ${recurringText}`);
+    console.log(`Total Inicial: ${formattedAmount} (${params.paymentMethod})`);
     console.log(`CLABE SPEI:   ${params.speiClabe}`);
     console.log(`Referencia:   ${params.reference}`);
     console.log(`=============================================================\n`);

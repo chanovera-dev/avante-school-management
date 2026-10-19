@@ -31,6 +31,8 @@ import {
   CheckSquare2,
   Square,
   Sparkle,
+  RefreshCw,
+  Award,
 } from 'lucide-react';
 import { ModernSelect } from '../components/ModernSelect';
 
@@ -127,57 +129,123 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
       rawLevels = ['PREESCOLAR', 'PRIMARIA'];
     }
 
-    const LEVEL_MAP: Record<string, { id: string; name: string; grades: string[]; defaultFee: number }> = {
+    const LEVEL_MAP: Record<
+      string,
+      {
+        id: string;
+        name: string;
+        grades: string[];
+        enrollmentFee: number;
+        monthlyTuitionFee: number;
+        tuitionMonths: number;
+        annualDiscountPercent: number;
+        tuitionDueDay: number;
+      }
+    > = {
       PREESCOLAR: {
         id: 'PREESCOLAR',
         name: 'Preescolar / Jardín de Niños',
         grades: ['1º Kínder', '2º Kínder', '3º Kínder'],
-        defaultFee: 3200,
+        enrollmentFee: 3800,
+        monthlyTuitionFee: 3200,
+        tuitionMonths: 10,
+        annualDiscountPercent: 10,
+        tuitionDueDay: 10,
       },
       KINDER_PREESCOLAR: {
         id: 'PREESCOLAR',
         name: 'Preescolar / Jardín de Niños',
         grades: ['1º Kínder', '2º Kínder', '3º Kínder'],
-        defaultFee: 3200,
+        enrollmentFee: 3800,
+        monthlyTuitionFee: 3200,
+        tuitionMonths: 10,
+        annualDiscountPercent: 10,
+        tuitionDueDay: 10,
       },
       GUARDERIA: {
         id: 'GUARDERIA',
         name: 'Guardería / Maternal',
         grades: ['Lactantes', 'Maternal A', 'Maternal B'],
-        defaultFee: 2900,
+        enrollmentFee: 3500,
+        monthlyTuitionFee: 2900,
+        tuitionMonths: 10,
+        annualDiscountPercent: 10,
+        tuitionDueDay: 10,
       },
       PRIMARIA: {
         id: 'PRIMARIA',
         name: 'Primaria',
         grades: ['1º Primaria', '2º Primaria', '3º Primaria', '4º Primaria', '5º Primaria', '6º Primaria'],
-        defaultFee: 3800,
+        enrollmentFee: 4500,
+        monthlyTuitionFee: 3800,
+        tuitionMonths: 10,
+        annualDiscountPercent: 10,
+        tuitionDueDay: 10,
       },
       SECUNDARIA: {
         id: 'SECUNDARIA',
         name: 'Secundaria',
         grades: ['1º Secundaria', '2º Secundaria', '3º Secundaria'],
-        defaultFee: 4200,
+        enrollmentFee: 5200,
+        monthlyTuitionFee: 4400,
+        tuitionMonths: 10,
+        annualDiscountPercent: 10,
+        tuitionDueDay: 10,
       },
       PREPARATORIA: {
         id: 'PREPARATORIA',
         name: 'Preparatoria / Bachillerato',
         grades: ['1º Semestre', '2º Semestre', '3º Semestre', '4º Semestre', '5º Semestre', '6º Semestre'],
-        defaultFee: 4600,
+        enrollmentFee: 5800,
+        monthlyTuitionFee: 4900,
+        tuitionMonths: 10,
+        annualDiscountPercent: 10,
+        tuitionDueDay: 10,
       },
     };
 
+    // Consultar cuotas personalizadas guardadas por la dirección escolar
+    let customFees: Record<string, any> = {};
+    try {
+      const savedFees = localStorage.getItem(`asm_tenant_fees_${currentTenant.id || 'default'}`);
+      if (savedFees) {
+        customFees = JSON.parse(savedFees);
+      }
+    } catch (e) {}
+
     const resolved = rawLevels.map((lvl) => {
       const upper = lvl.toUpperCase();
-      if (LEVEL_MAP[upper]) return LEVEL_MAP[upper];
-      if (upper.includes('PREESCOLAR') || upper.includes('KINDER')) return LEVEL_MAP.PREESCOLAR;
-      if (upper.includes('PRIMARIA')) return LEVEL_MAP.PRIMARIA;
-      if (upper.includes('SECUNDARIA')) return LEVEL_MAP.SECUNDARIA;
-      return {
-        id: lvl,
-        name: lvl,
-        grades: ['1º Grado', '2º Grado', '3º Grado'],
-        defaultFee: 3500,
-      };
+      let item = LEVEL_MAP[upper];
+      if (!item) {
+        if (upper.includes('PREESCOLAR') || upper.includes('KINDER')) item = { ...LEVEL_MAP.PREESCOLAR };
+        else if (upper.includes('PRIMARIA')) item = { ...LEVEL_MAP.PRIMARIA };
+        else if (upper.includes('SECUNDARIA')) item = { ...LEVEL_MAP.SECUNDARIA };
+        else {
+          item = {
+            id: lvl,
+            name: lvl,
+            grades: ['1º Grado', '2º Grado', '3º Grado'],
+            enrollmentFee: 4000,
+            monthlyTuitionFee: 3500,
+            tuitionMonths: 10,
+            annualDiscountPercent: 10,
+            tuitionDueDay: 10,
+          };
+        }
+      } else {
+        item = { ...item };
+      }
+
+      const custom = customFees[item.id];
+      if (custom) {
+        if (custom.enrollmentFee) item.enrollmentFee = Number(custom.enrollmentFee);
+        if (custom.monthlyTuitionFee) item.monthlyTuitionFee = Number(custom.monthlyTuitionFee);
+        if (custom.tuitionMonths) item.tuitionMonths = Number(custom.tuitionMonths);
+        if (custom.annualDiscountPercent) item.annualDiscountPercent = Number(custom.annualDiscountPercent);
+        if (custom.tuitionDueDay) item.tuitionDueDay = Number(custom.tuitionDueDay);
+      }
+
+      return item;
     });
 
     if (resolved.length === 1) {
@@ -207,6 +275,9 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
     parentPhone: '',
     parentRelationship: 'MADRE' as 'MADRE' | 'PADRE' | 'TUTOR_LEGAL',
     paymentMethod: 'SPEI' as 'SPEI' | 'CAJA' | 'TARJETA',
+    paymentModality: 'ONLY_ENROLLMENT' as 'ONLY_ENROLLMENT' | 'ENROLLMENT_AND_FIRST_MONTH' | 'FULL_YEAR_DISCOUNT',
+    recurringPaymentMethod: 'DOMICILIACION_AUTOMATICA' as 'DOMICILIACION_AUTOMATICA' | 'SPEI_RECURRENTE' | 'VENTANILLA_MENSUAL',
+    isRecurringAutoDebit: true,
     notes: '',
   });
 
@@ -256,13 +327,48 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
       speiClabe: string;
       reference: string;
       concept: string;
+      enrollmentFee?: number;
+      monthlyTuitionFee?: number;
+      paymentModality?: string;
+      recurringPaymentMethod?: string;
+      isRecurringAutoDebit?: boolean;
     };
   } | null>(null);
 
-  const currentFee = useMemo(() => {
-    const found = schoolLevels.find((l) => l.id === studentForm.levelId);
-    return found ? found.defaultFee : 3500;
+  const selectedLevel = useMemo(() => {
+    return schoolLevels.find((l) => l.id === studentForm.levelId) || schoolLevels[0] || {
+      id: 'PREESCOLAR',
+      name: 'Preescolar / Jardín de Niños',
+      grades: ['1º Kínder'],
+      enrollmentFee: 3800,
+      monthlyTuitionFee: 3200,
+      tuitionMonths: 10,
+      annualDiscountPercent: 10,
+      tuitionDueDay: 10,
+    };
   }, [schoolLevels, studentForm.levelId]);
+
+  const enrollmentFee = selectedLevel.enrollmentFee || 3800;
+  const monthlyTuitionFee = selectedLevel.monthlyTuitionFee || 3200;
+  const tuitionMonths = selectedLevel.tuitionMonths || 10;
+  const annualDiscountPercent = selectedLevel.annualDiscountPercent || 10;
+
+  // Cálculo transparente del monto inicial según la modalidad de pago elegida
+  const initialPaymentAmount = useMemo(() => {
+    if (studentForm.paymentModality === 'ONLY_ENROLLMENT') {
+      return enrollmentFee;
+    }
+    if (studentForm.paymentModality === 'ENROLLMENT_AND_FIRST_MONTH') {
+      return enrollmentFee + monthlyTuitionFee;
+    }
+    if (studentForm.paymentModality === 'FULL_YEAR_DISCOUNT') {
+      const discountMultiplier = (100 - annualDiscountPercent) / 100;
+      return Math.round(enrollmentFee + (monthlyTuitionFee * tuitionMonths * discountMultiplier));
+    }
+    return enrollmentFee;
+  }, [studentForm.paymentModality, enrollmentFee, monthlyTuitionFee, tuitionMonths, annualDiscountPercent]);
+
+  const currentFee = initialPaymentAmount;
 
   const handleCurpChange = (val: string) => {
     const curp = val.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 18);
@@ -337,6 +443,24 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
       ? `⚠️ INSCRIPCIÓN CONDICIONADA SEP: Carta Compromiso firmada por ${finalSigner}. Documentos pendientes de entrega física en 30 días naturales (${compromiseDeadlineDate}): ${missingRequiredDocs.map((d) => d.name).join(', ')}. `
       : '';
 
+    const modalityLabel =
+      studentForm.paymentModality === 'ONLY_ENROLLMENT'
+        ? 'Solo Cuota de Inscripción'
+        : studentForm.paymentModality === 'ENROLLMENT_AND_FIRST_MONTH'
+        ? 'Inscripción + 1ª Colegiatura (Septiembre)'
+        : 'Ciclo Completo Anticipado (10% Desc.)';
+
+    const recurringLabel =
+      studentForm.paymentModality === 'FULL_YEAR_DISCOUNT'
+        ? 'Ciclo Cubierto 100%'
+        : studentForm.recurringPaymentMethod === 'DOMICILIACION_AUTOMATICA'
+        ? 'Cargo Automático Domiciliado (Días 1 al 5)'
+        : studentForm.recurringPaymentMethod === 'SPEI_RECURRENTE'
+        ? `SPEI Mensual a CLABE Fija (Días 1 al ${selectedLevel.tuitionDueDay || 10})`
+        : `Ventanilla Escolar / Caja (Días 1 al ${selectedLevel.tuitionDueDay || 10})`;
+
+    const financialNotice = `[Plan Financiero: ${modalityLabel} | Monto Inicial: $${initialPaymentAmount.toLocaleString('es-MX')} | Colegiatura Mensual: $${monthlyTuitionFee.toLocaleString('es-MX')} (${recurringLabel})] `;
+
     const newApplicant = {
       id: `app-${Date.now()}`,
       folio: fallbackFolio,
@@ -353,13 +477,21 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
       parentEmail: studentForm.parentEmail,
       status: isConditional ? ('DOCUMENTACION_EN_REVISION' as const) : ('REGISTRADO' as const),
       appliedAt: new Date().toISOString().split('T')[0],
+      enrollmentFee,
+      monthlyTuitionFee,
+      initialPaymentAmount,
+      tuitionFee: initialPaymentAmount,
+      paymentModality: studentForm.paymentModality,
+      recurringPaymentMethod: studentForm.recurringPaymentMethod,
+      isRecurringAutoDebit: studentForm.isRecurringAutoDebit,
+      tuitionMonths,
       documents: studentDocs.map((d) => ({
         id: `doc-${d.id}`,
         documentType: d.id,
         documentName: d.name,
         status: d.attached ? ('CARGADO' as const) : ('PENDIENTE' as const),
       })),
-      notes: `${compromiseNotice}Tutor: ${studentForm.parentRelationship}. Sangre: ${studentForm.bloodType}. ${studentForm.medicalNotes ? `Notas médicas: ${studentForm.medicalNotes}` : ''}`,
+      notes: `${financialNotice}${compromiseNotice}Tutor: ${studentForm.parentRelationship}. Sangre: ${studentForm.bloodType}. ${studentForm.medicalNotes ? `Notas médicas: ${studentForm.medicalNotes}` : ''}`,
     };
 
     // 1. Guardar de inmediato en localStorage para este colegio y el default
@@ -384,7 +516,13 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
     let emailResultData: any = null;
     let paymentSheetData = {
       folio: fallbackFolio,
-      amount: currentFee,
+      amount: initialPaymentAmount,
+      enrollmentFee,
+      monthlyTuitionFee,
+      tuitionMonths,
+      paymentModality: studentForm.paymentModality,
+      recurringPaymentMethod: studentForm.recurringPaymentMethod,
+      isRecurringAutoDebit: studentForm.isRecurringAutoDebit,
       paymentMethod: studentForm.paymentMethod,
       bankName: 'STP / BBVA Bancomer',
       speiClabe: '646180123456789012',
@@ -414,7 +552,14 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
           parentPhone: studentForm.parentPhone,
           parentEmail: studentForm.parentEmail,
           paymentMethod: studentForm.paymentMethod,
-          tuitionFee: currentFee,
+          paymentModality: studentForm.paymentModality,
+          recurringPaymentMethod: studentForm.recurringPaymentMethod,
+          isRecurringAutoDebit: studentForm.isRecurringAutoDebit,
+          enrollmentFee,
+          monthlyTuitionFee,
+          initialPaymentAmount,
+          tuitionFee: initialPaymentAmount,
+          tuitionMonths,
           submittedDocs: studentDocs.filter((d) => d.attached).map((d) => d.id),
           notes: newApplicant.notes,
         }),
@@ -438,7 +583,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
           emailResultData = data.emailResult;
         }
         if (data.paymentSheet) {
-          paymentSheetData = data.paymentSheet;
+          paymentSheetData = { ...paymentSheetData, ...data.paymentSheet };
         }
       }
     } catch (err) {
@@ -495,6 +640,9 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
       parentPhone: '',
       parentRelationship: 'MADRE',
       paymentMethod: 'SPEI',
+      paymentModality: 'ONLY_ENROLLMENT',
+      recurringPaymentMethod: 'DOMICILIACION_AUTOMATICA',
+      isRecurringAutoDebit: true,
       notes: '',
     });
   };
@@ -812,20 +960,54 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                 <div className="enrollment-section" style={{ borderColor: 'var(--color-primary)' }}>
                   <div className="flex items-center justify-between flex-wrap gap-2">
                     <div className="enrollment-section-title">
-                      <CreditCard className="w-4 h-4" /> Ficha Oficial de Pago de Matrícula
+                      <CreditCard className="w-4 h-4" /> Ficha Oficial de Liquidación Inicial y Plan de Colegiaturas
                     </div>
                     <div className="text-xs font-mono text-muted">
-                      Método: <strong className="text-main">{studentForm.paymentMethod}</strong>
+                      Método Inicial: <strong className="text-main">{studentForm.paymentMethod}</strong>
+                    </div>
+                  </div>
+
+                  {/* Resumen del plan financiero acordado */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 mb-3">
+                    <div className="bg-surface-subtle p-2.5 rounded-xl border border-subtle">
+                      <span className="text-[10px] text-muted uppercase block font-semibold">Modalidad Elegida</span>
+                      <strong className="text-xs text-main block font-semibold mt-0.5">
+                        {studentForm.paymentModality === 'ONLY_ENROLLMENT'
+                          ? 'Solo Cuota de Inscripción'
+                          : studentForm.paymentModality === 'ENROLLMENT_AND_FIRST_MONTH'
+                          ? 'Inscripción + 1ª Colegiatura'
+                          : 'Ciclo Completo Anticipado'}
+                      </strong>
+                    </div>
+
+                    <div className="bg-surface-subtle p-2.5 rounded-xl border border-subtle">
+                      <span className="text-[10px] text-muted uppercase block font-semibold">Régimen Subsecuente</span>
+                      <strong className="text-xs text-primary block font-semibold mt-0.5">
+                        {studentForm.paymentModality === 'FULL_YEAR_DISCOUNT'
+                          ? 'Ciclo Cubierto al 100%'
+                          : studentForm.recurringPaymentMethod === 'DOMICILIACION_AUTOMATICA'
+                          ? 'Cargo Automático Domiciliado'
+                          : studentForm.recurringPaymentMethod === 'SPEI_RECURRENTE'
+                          ? `SPEI Mensual a CLABE Fija`
+                          : 'Ventanilla Escolar / Caja'}
+                      </strong>
+                    </div>
+
+                    <div className="bg-surface-subtle p-2.5 rounded-xl border border-subtle">
+                      <span className="text-[10px] text-muted uppercase block font-semibold">Colegiatura Ordinaria</span>
+                      <strong className="text-xs text-emerald-400 block font-semibold mt-0.5">
+                        {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(monthlyTuitionFee)} / mes
+                      </strong>
                     </div>
                   </div>
 
                   <div className="p-4 rounded-xl bg-surface-subtle border border-subtle flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                     <div>
                       <span className="text-[10px] text-primary uppercase tracking-wider font-semibold block">
-                        Cuota de Admisión y Matrícula ({studentForm.levelName})
+                        Importe Inicial a Liquidar Hoy ({studentForm.levelName})
                       </span>
                       <div className="text-2xl font-black text-emerald-400 font-mono mt-0.5">
-                        {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(submissionResult?.paymentSheet?.amount || currentFee)}
+                        {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(submissionResult?.paymentSheet?.amount || initialPaymentAmount)}
                       </div>
                       <span className="text-[11px] text-muted block mt-1">
                         Concepto: <strong className="text-main font-mono">{submissionResult?.paymentSheet?.concept || `ADM ${submissionResult?.applicant?.folio}`}</strong>
@@ -1072,9 +1254,14 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                     <div className="enrollment-section-title">
                       <School className="w-4 h-4" /> 2. Nivel Educativo y Grado Ofertado
                     </div>
-                    <span className="badge badge-sky text-[10px] font-mono font-bold">
-                      Cuota: {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(currentFee)}
-                    </span>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="badge badge-sky text-[10px] font-mono font-bold">
+                        Inscripción: {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(enrollmentFee)}
+                      </span>
+                      <span className="badge badge-emerald text-[10px] font-mono font-bold">
+                        Colegiatura: {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(monthlyTuitionFee)}/mes
+                      </span>
+                    </div>
                   </div>
 
                   <div className="grid-cols-2 gap-3">
@@ -1336,10 +1523,237 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({
                   )}
                 </div>
 
-                {/* SECCIÓN 5: MÉTODO DE PAGO */}
+                {/* SECCIÓN 5: PLAN DE PAGO: INSCRIPCIÓN Y COLEGIATURAS MENSUALES */}
                 <div className="enrollment-section">
                   <div className="enrollment-section-title">
-                    <CreditCard className="w-4 h-4" /> 5. Método de Pago de la Cuota de Matrícula
+                    <CreditCard className="w-4 h-4" /> 5. Plan de Cuotas y Colegiaturas Mensuales
+                  </div>
+
+                  {/* Banner de cuotas oficiales del nivel */}
+                  <div className="tuition-breakdown-banner">
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <div>
+                        <span className="text-[10px] uppercase font-bold tracking-wider text-primary">
+                          Cuotas Oficiales Autorizadas SEP • {studentForm.levelName}
+                        </span>
+                        <div className="text-xs text-muted mt-0.5">
+                          Estructura de costos transparentes para el Ciclo Escolar 2026 - 2027
+                        </div>
+                      </div>
+                      <span className="badge badge-sky text-[10px] font-mono">
+                        {tuitionMonths} Mensualidades (Sept - Jun)
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-1">
+                      <div className="fee-stat-badge primary">
+                        <span className="stat-label">Inscripción / Reinscripción Anual</span>
+                        <span className="stat-amount">
+                          {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(enrollmentFee)}
+                        </span>
+                        <span className="text-[10px] text-muted mt-0.5">Pago único anual para registro de matrícula oficial</span>
+                      </div>
+
+                      <div className="fee-stat-badge emerald">
+                        <span className="stat-label">Colegiatura Mensual Ordinaria</span>
+                        <span className="stat-amount">
+                          {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(monthlyTuitionFee)} <span className="text-xs font-normal text-muted">/ mes</span>
+                        </span>
+                        <span className="text-[10px] text-muted mt-0.5">Vence los días {selectedLevel.tuitionDueDay || 10} de cada mes</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Subsección A: ¿Qué desea liquidar hoy? */}
+                  <div className="mt-3">
+                    <label className="form-label font-bold text-main block mb-1.5">
+                      A) ¿Qué concepto deseas liquidar el día de hoy para formalizar la admisión? *
+                    </label>
+
+                    <div className="payment-methods-grid">
+                      <button
+                        type="button"
+                        onClick={() => setStudentForm({ ...studentForm, paymentModality: 'ONLY_ENROLLMENT' })}
+                        className={`payment-method-card ${studentForm.paymentModality === 'ONLY_ENROLLMENT' ? 'selected' : ''}`}
+                      >
+                        <div className="method-header">
+                          <div className="flex items-center gap-2">
+                            <CheckCircle2 className="w-4 h-4 text-sky-500" />
+                            <span className="method-title">Solo Cuota de Inscripción</span>
+                          </div>
+                          <div className="radio-indicator">
+                            <div className="radio-indicator-dot" />
+                          </div>
+                        </div>
+                        <div className="text-base font-black text-sky-400 font-mono my-1">
+                          {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(enrollmentFee)}
+                        </div>
+                        <p className="method-desc">
+                          Asegura el cupo y matrícula oficial SEP hoy. La 1ª mensualidad se pagará al inicio de clases en Septiembre.
+                        </p>
+                        <span className="badge badge-sky text-[9px] self-start mt-1">Garantiza Cupo</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setStudentForm({ ...studentForm, paymentModality: 'ENROLLMENT_AND_FIRST_MONTH' })}
+                        className={`payment-method-card ${studentForm.paymentModality === 'ENROLLMENT_AND_FIRST_MONTH' ? 'selected' : ''}`}
+                      >
+                        <div className="method-header">
+                          <div className="flex items-center gap-2">
+                            <Sparkles className="w-4 h-4 text-emerald-500" />
+                            <span className="method-title">Inscripción + 1ª Colegiatura</span>
+                          </div>
+                          <div className="radio-indicator">
+                            <div className="radio-indicator-dot" />
+                          </div>
+                        </div>
+                        <div className="text-base font-black text-emerald-400 font-mono my-1">
+                          {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(enrollmentFee + monthlyTuitionFee)}
+                        </div>
+                        <p className="method-desc">
+                          Inscripción anual más la colegiatura del mes de Septiembre cubierta anticipadamente. Arranque escolar sin pendientes.
+                        </p>
+                        <span className="badge badge-emerald text-[9px] self-start mt-1">Más Elegido</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setStudentForm({ ...studentForm, paymentModality: 'FULL_YEAR_DISCOUNT' })}
+                        className={`payment-method-card ${studentForm.paymentModality === 'FULL_YEAR_DISCOUNT' ? 'selected' : ''}`}
+                      >
+                        <div className="method-header">
+                          <div className="flex items-center gap-2">
+                            <Award className="w-4 h-4 text-amber-500" />
+                            <span className="method-title">Ciclo Completo Anticipado</span>
+                          </div>
+                          <div className="radio-indicator">
+                            <div className="radio-indicator-dot" />
+                          </div>
+                        </div>
+                        <div className="text-base font-black text-amber-400 font-mono my-1">
+                          {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(
+                            Math.round(enrollmentFee + (monthlyTuitionFee * tuitionMonths * ((100 - annualDiscountPercent) / 100)))
+                          )}
+                        </div>
+                        <p className="method-desc">
+                          Inscripción + {tuitionMonths} mensualidades con {annualDiscountPercent}% de descuento por pago anticipado en una sola exhibición.
+                        </p>
+                        <span className="badge badge-amber text-[9px] self-start mt-1">Ahorra {annualDiscountPercent}% Anual</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Subsección B: Régimen para Colegiaturas Mensuales (si no pagó el año completo) */}
+                  {studentForm.paymentModality !== 'FULL_YEAR_DISCOUNT' && (
+                    <div className="mt-4 pt-3 border-t border-subtle">
+                      <div className="flex items-center justify-between mb-1.5 flex-wrap gap-1">
+                        <label className="form-label font-bold text-main block">
+                          B) ¿Cómo cubrirás las colegiaturas mensuales subsecuentes ({new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(monthlyTuitionFee)}/mes)? *
+                        </label>
+                        <span className="text-[10px] text-muted">
+                          {studentForm.paymentModality === 'ENROLLMENT_AND_FIRST_MONTH' ? '9 mensualidades restantes' : `${tuitionMonths} mensualidades`}
+                        </span>
+                      </div>
+
+                      <div className="payment-methods-grid">
+                        <button
+                          type="button"
+                          onClick={() => setStudentForm({ ...studentForm, recurringPaymentMethod: 'DOMICILIACION_AUTOMATICA', isRecurringAutoDebit: true })}
+                          className={`payment-method-card ${studentForm.recurringPaymentMethod === 'DOMICILIACION_AUTOMATICA' ? 'selected' : ''}`}
+                        >
+                          <div className="method-header">
+                            <div className="flex items-center gap-2">
+                              <RefreshCw className="w-4 h-4 text-sky-500" />
+                              <span className="method-title">Cargo Recurrente Automático</span>
+                            </div>
+                            <div className="radio-indicator">
+                              <div className="radio-indicator-dot" />
+                            </div>
+                          </div>
+                          <p className="method-desc">
+                            Domiciliación bancaria sin comisiones los días 1 al 5 de cada mes a tarjeta de débito o crédito registrada.
+                          </p>
+                          <span className="badge badge-sky text-[9px] self-start mt-1">Automático • Cero Filas</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setStudentForm({ ...studentForm, recurringPaymentMethod: 'SPEI_RECURRENTE', isRecurringAutoDebit: false })}
+                          className={`payment-method-card ${studentForm.recurringPaymentMethod === 'SPEI_RECURRENTE' ? 'selected' : ''}`}
+                        >
+                          <div className="method-header">
+                            <div className="flex items-center gap-2">
+                              <Building2 className="w-4 h-4 text-purple-500" />
+                              <span className="method-title">SPEI Mensual a CLABE Fija</span>
+                            </div>
+                            <div className="radio-indicator">
+                              <div className="radio-indicator-dot" />
+                            </div>
+                          </div>
+                          <p className="method-desc">
+                            Transferencia interbancaria cada mes a la CLABE única del alumno antes del día {selectedLevel.tuitionDueDay || 10}.
+                          </p>
+                          <span className="badge badge-purple text-[9px] self-start mt-1">CLABE Fija Alumno</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setStudentForm({ ...studentForm, recurringPaymentMethod: 'VENTANILLA_MENSUAL', isRecurringAutoDebit: false })}
+                          className={`payment-method-card ${studentForm.recurringPaymentMethod === 'VENTANILLA_MENSUAL' ? 'selected' : ''}`}
+                        >
+                          <div className="method-header">
+                            <div className="flex items-center gap-2">
+                              <DollarSign className="w-4 h-4 text-amber-500" />
+                              <span className="method-title">Pago en Ventanilla / Caja</span>
+                            </div>
+                            <div className="radio-indicator">
+                              <div className="radio-indicator-dot" />
+                            </div>
+                          </div>
+                          <p className="method-desc">
+                            Pago presencial en efectivo o terminal en la caja del colegio del 1 al {selectedLevel.tuitionDueDay || 10} de cada mes.
+                          </p>
+                          <span className="badge badge-amber text-[9px] self-start mt-1">Presencial en Plantel</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Resumen dinámico del plan financiero */}
+                  <div className="recurring-agreement-box mt-3">
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                        <span className="text-xs font-bold text-main">
+                          Resumen del Plan Financiero Seleccionado:
+                        </span>
+                      </div>
+                      <div className="text-xs font-mono font-bold text-emerald-600">
+                        Total Inicial a Liquidar Hoy: {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(initialPaymentAmount)}
+                      </div>
+                    </div>
+                    <div className="text-[11px] text-muted leading-relaxed">
+                      {studentForm.paymentModality === 'FULL_YEAR_DISCOUNT' ? (
+                        <span>✨ Has seleccionado cubrir la totalidad del Ciclo Escolar por anticipado con descuento del {annualDiscountPercent}%. No tendrás que preocuparte por colegiaturas mensuales.</span>
+                      ) : (
+                        <span>
+                          Hoy liquidas {studentForm.paymentModality === 'ONLY_ENROLLMENT' ? 'la Cuota de Inscripción Oficial' : 'la Inscripción y la Primera Colegiatura'}. Las mensualidades posteriores de <strong>{new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(monthlyTuitionFee)} / mes</strong> se cubrirán mediante <strong>{studentForm.recurringPaymentMethod === 'DOMICILIACION_AUTOMATICA' ? 'Cargo Automático Domiciliado' : studentForm.recurringPaymentMethod === 'SPEI_RECURRENTE' ? `Transferencia SPEI a CLABE Única (Días 1 al ${selectedLevel.tuitionDueDay || 10})` : `Ventanilla Escolar (Días 1 al ${selectedLevel.tuitionDueDay || 10})`}</strong>.
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* SECCIÓN 6: MÉTODO DE LIQUIDACIÓN DEL PAGO INICIAL */}
+                <div className="enrollment-section">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <div className="enrollment-section-title">
+                      <CreditCard className="w-4 h-4" /> 6. Método de Liquidación del Pago Inicial
+                    </div>
+                    <span className="badge badge-emerald text-[10px] font-mono font-bold">
+                      A Pagar Hoy: {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(initialPaymentAmount)}
+                    </span>
                   </div>
 
                   <div className="payment-methods-grid">
